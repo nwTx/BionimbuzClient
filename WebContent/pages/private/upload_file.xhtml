@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:decorate template="/resources/templates/template.xhtml">
+
+	<!-- Conteúdo do Centro -->
+	<ui:define name="conteudo_centro">
+		<h:form>
+			<p:growl id="growl" autoUpdate="true"/>
+			
+			<p:panel>
+				<p:panel>
+					Página utilizada para realizar upload de arquivos
+				</p:panel>
+				<br />
+				<p:panel>
+					<p:fileUpload id="file_upload" mode="advanced"
+						dragDropSupport="false" multiple="true"
+						invalidFileMessage="Formato de arquivo inválido"
+						fileUploadListener="#{fileUploadBean.handleUploadedFile}"
+						cancelLabel="Cancelar" uploadLabel="Enviar"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Escolher Arquivo"
+						update="growl" />
+				</p:panel>
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+</ui:decorate>
+</html>

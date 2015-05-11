@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet library="css" name="login.css" />
+</h:head>
+
+<h:body>
+	
+	<h:panelGroup layout="block" styleClass="error-header" rendered="#{param.error}">
+		<center>
+			Usuário/Senha incorretos
+		</center>
+	</h:panelGroup>
+
+	<div class="centered">
+		<h:form>
+			<p:growl id="growl" autoUpdate="true" />
+			<p:panel styleClass="LoginPanel">
+				<center>
+					<br /> <br />
+					<h:graphicImage value="/resources/img/logo_bionimbuz.jpg" />
+					<br /> <br /> <br />
+					<h:panelGrid columns="2" cellpadding="4" >
+						<p:inputText placeholder="Login" value="#{sessionBean.user.login}" />
+						<br />
+						<p:password placeholder="Senha" value="#{sessionBean.user.password}" />
+					</h:panelGrid>
+					<br />
+					<h:commandButton value="Entrar" style="width: 200px"
+						action="#{sessionBean.login()}" styleClass="btn" />
+					<br /> <br />
+				</center>
+			</p:panel>
+		</h:form>
+	</div>
+</h:body>
+</html>
