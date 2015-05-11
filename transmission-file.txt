@@ -1,3 +1,9 @@
+Cloud Design Pattern
+- Retry Pattern: https://msdn.microsoft.com/en-us/library/dn589788.aspx
+- Federated Identity Pattern: https://msdn.microsoft.com/en-us/library/dn589790.aspx
+- Circuit Breaker Pattern: https://msdn.microsoft.com/en-us/library/dn589784.aspx
+- LIVRO: Microsoft Cloud Design Pattern - Prescriptive Architecture Guidance for Cloud Applications
+
 INTERCEPTOR (http://www.mastertheboss.com/jboss-frameworks/resteasy/resteasy-interceptors-tutorial)
 			(Atualizado: http://howtodoinjava.com/2013/07/25/jax-rs-2-0-resteasy-3-0-2-final-security-tutorial/)
 			
