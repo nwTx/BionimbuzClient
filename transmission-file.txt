@@ -1,0 +1,64 @@
+INTERCEPTOR (http://www.mastertheboss.com/jboss-frameworks/resteasy/resteasy-interceptors-tutorial)
+			(Atualizado: http://howtodoinjava.com/2013/07/25/jax-rs-2-0-resteasy-3-0-2-final-security-tutorial/)
+			
+- No Interceptor, verificar o método:
+	- método  = "login": Não realizar a verificação (Se login realizado com sucesso, lembrar de adicionar este usuário no mapa) 
+	- método != "login": Realizar a verificação de usuário logado
+									----+------
+										|
+										|
+										|
+	+-----------------------------------+
+	|
+	|
+	V
+VERIFICAÇÃO:
+- Segurança mantém um mapa (ConcurrentHashMap) contendo <login, boolean, lastAccess> que diz se um usuário está logado ou não, e em que momento foi seu último acesso
+- Quando um usuário efetuar login, esse mapa será atualizado incluindo este usuário e tornando true na posição de logado
+- Sempre que um usuário requisitar algum serviço do BioNimbuz, será verificado se a posição do mapa está verdadeira
+	- Se sim, o usuário realiza a ação
+	- Se não, será enviada uma resposta à aplicação dizendo que o usuário não está mais logado ----> Redirecionar para tela de login
+- O timeout de sessão será 5 minutos, ou seja, a lista de usuários logados deve ser atualizada a cada 5 minutos. 
+	- Se, no momento de verificação de timeout, o horário atual menos o horário do último acesso for maior que 5 minutor, atualiza-se o booleano do mapa de usuários logados
+	
+UTILIZAR Quartz PARA TIMEOUT DE SESSÃO (http://www.mkyong.com/java/quartz-2-scheduler-tutorial/)
+
+
+@Provider
+public class SecurityInterceptor implements ContainerRequestFilter {
+	
+	@Override
+	public void filter (ContainerRequestContext context){
+		ResourceMethodInvoker methodInvoker = (ResourceMethodInvoker) requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
+		
+		// Verificar o que é esse method
+        Method method = methodInvoker.getMethod();
+	}
+}
+
+
+public class LoggedUserVerifier implements Job {
+	private static ConcurrentHashMap<?, ?> loggedUsers = new ConcurrentHashMap<>();
+	private Logger logger = Logger.getLogger("Logger criado");	
+	
+	// Access only via static methods
+	private LoggedUserVerifier() {}
+	
+	@Override
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		// Verificar a cada 5 minutos e realizar o timeout das sessões
+	}
+
+	public static ConcurrentHashMap getLoggedUsers () {
+		return this.loggedUsers;
+	}
+	
+	public static void addLoggedUser() {
+		loggedUsers.put(?,?);
+	}
+	
+	public static void removeLoggedUser() {
+		loggedUsers.remove(?,?);
+	}
+
+}
