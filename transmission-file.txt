@@ -1,3 +1,21 @@
+Como iterar um Map:
+	@Override
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		Long start = System.currentTimeMillis();
+		System.out.println("Start: " + start);
+		
+		ConcurrentHashMap<User, Calendar> loggedUsers = LoggedUsers.getLoggedUsers();
+		Iterator<User> iterator = loggedUsers.keySet().iterator();
+		
+		while (iterator.hasNext()) {
+			User u = iterator.next();
+			System.out.println("Usuario: " + u);
+			System.out.println("Calendario: " + loggedUsers.get(u).getTime());
+			System.out.println("Comparação:" + loggedUsers.get(u).getTime().compareTo(Calendar.getInstance().getTime()));
+			System.out.println(System.currentTimeMillis() - start);
+		}
+	}
+
 Como calcular a diferença entre dois horários:
  - http://www.mkyong.com/java/java-time-elapsed-in-days-hours-minutes-seconds/
 
