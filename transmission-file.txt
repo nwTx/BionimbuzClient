@@ -1,3 +1,6 @@
+Como calcular a diferença entre dois horários:
+ - http://www.mkyong.com/java/java-time-elapsed-in-days-hours-minutes-seconds/
+
 Cloud Design Pattern
 - Retry Pattern: https://msdn.microsoft.com/en-us/library/dn589788.aspx
 - Federated Identity Pattern: https://msdn.microsoft.com/en-us/library/dn589790.aspx
