@@ -89,3 +89,25 @@ public class LoggedUserVerifier implements Job {
 	}
 
 }
+
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	Execução de um Job
+=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+LADO CLIENTE:
+	- Criar um formulário para execução de tarefas
+	- Campos necessários:
+		- String id
+		- String localId
+		- Long serviceId: Identificador do serviço ("1111" - bowtie, "", ...)
+		- String args: Argumentos para execução do serviço
+		- List<Pair<>> inputs = new ArrayList<Pair<String, Long>>(): Nome do arquivo e tamanho do mesmo
+		- List<String> outputs = new ArrayList<String>(): Lista de arquivos de output.
+		- Long timestamp: Horário de início do Job.
+	- Enviar JobInfo via Rest para o Servidor
+	
+LADO SERVIDOR:
+	- Criar um Resource REST para receber a requisição do Job
+	- Acessar o ZooKeeper
+	- Criar um novo PersistentZNode 
