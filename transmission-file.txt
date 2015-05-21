@@ -111,3 +111,46 @@ LADO SERVIDOR:
 	- Criar um Resource REST para receber a requisição do Job
 	- Acessar o ZooKeeper
 	- Criar um novo PersistentZNode 
+
+
+=-=-=-=-=-=-=-=-=-=-=-=-
+          Sites
+=-=-=-=-=-=-=-=-=-=-=-=-
+http://www.restapitutorial.com/media/RESTful_Best_Practices-v1_1.pdf
+http://stackoverflow.com/questions/15490265/rest-web-service-authentication-token-implementation
+http://docs.oracle.com/cd/E19575-01/820-3746/ghhsk/index.html
+https://msdn.microsoft.com/en-us/library/ff650503.aspx
+http://howtodoinjava.com/2013/07/22/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
+http://stackoverflow.com/questions/2375541/password-verification-with-pbkdf2-in-java
+http://stackoverflow.com/questions/20047418/pbkdf2-with-hmac-in-java
+
+--------------
+    IDEIAS
+--------------
+	1. Criar uma classe que será usada para realizar a Autenticação (class SecurityToken). 
+	2. Adicionar um atributo de segurança na classe User -> SecurityToken securityToken;
+	3. Esse campo será utilizado para efetuar a autenticação do usuário em cada requisição da seguinte maneira:
+		a. Ao efetuar o Login, o objeto de usuário que será passado ao servidor (apenas com Login e 
+		   Senha setados) será enviado com o atributo securityToken vazio.
+		b. Servidor efetua a Autenticação a partir da senha enviada.
+		c. Servidor calcula o token do usuário da seguinte forma:
+			* String token = bCrypt(userId + login + timestamp);
+		d. Servidor seta o campo securityToken e o inclui na resposta que será enviada ao cliente
+		e. Servidor envia a resposta.
+		f. Cliente recebe a resposta e seta o securityToken do Usuário que está logado.
+	4. A partir deste momento, à cada requisição que o cliente disparar para o Servidor, deverá ser verificado 
+
+
+Timeouts:
+- De sessão:
+	- De tempos em tempos, deverá ser verificado o último acesso dos usuários 
+	- Caso o horário do último acesso ultrapassar um determinado valor, esse usuário será desconectado do Servidor,
+	  devendo assim realizar o Login novamente.
+- De Token de Segurança
+	- Todo token de usuário deve ter um Timeout associado.
+	- Caso estoure o Timeout, o usuário deve ser desconectado do Servidor, devendo assim realizar o Login novamente.
+	
+Guardar no Servidor:
+	- Usuários logados
+	- Tokens de segurança
+	- Horário do último acesso (para realizar o Timeout de sessões)
