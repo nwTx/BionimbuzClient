@@ -9,6 +9,7 @@
 		<navigation-case>
 			<from-outcome>success</from-outcome>
 			<to-view-id>/pages/private/home.xhtml?faces-redirect=true</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 
@@ -17,6 +18,22 @@
 		<navigation-case>
 			<from-outcome>logout</from-outcome>
 			<to-view-id>/pages/public/login.xhtml?faces-redirect=true</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>submit_job</from-outcome>
+			<to-view-id>/pages/private/submit_job.xhtml?faces-redirect=true</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>file_list</from-outcome>
+			<to-view-id>/pages/private/file_list.xhtml?faces-redirect=true</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>download_file</from-outcome>
+			<to-view-id>/pages/private/download_file.xhtml?faces-redirect=true</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 </faces-config>

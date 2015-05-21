@@ -14,7 +14,6 @@ import br.unb.cic.bionimbuz.model.User;
 public class SessionBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final JobController jobController;
-	private boolean loginError;
 
 	private User user = new User();
 	
@@ -30,10 +29,8 @@ public class SessionBean implements Serializable {
 		boolean serverResponse = jobController.login(user.getLogin(), user.getPassword());
 
 		if (serverResponse) {
-			loginError = false;
 			return "success";
 		} else {
-			loginError = true;
 			return "login?faces-redirect=true&error=true";			
 		}
 		
@@ -46,7 +43,7 @@ public class SessionBean implements Serializable {
 	public String logout() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 
-		return "logout";
+		return "logout?faces-redirect=true";
 	}
 	
 	public User getUser() {
@@ -55,14 +52,6 @@ public class SessionBean implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public boolean isLoginError() {
-		return loginError;
-	}
-
-	public void setLoginError(boolean loginError) {
-		this.loginError = loginError;
 	}
 
 }

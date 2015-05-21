@@ -30,7 +30,7 @@
 				<p:panelMenu>
 					<!-- Job's submenu -->
 					<p:submenu label="Tarefas">
-						<p:menuitem value="Submeter Tarefa" />
+						<p:menuitem value="Submeter Tarefa" action="submit_job"/>
 						<p:menuitem value="Cancelar Tarefa" />
 						<p:menuitem value="Visualizar Status de Tarefa" />
 						<p:menuitem value="Histórico de Tarefas" />
@@ -38,9 +38,9 @@
 					
 					<!-- File's submenu -->
 					<p:submenu label="Arquivos">
-						<p:menuitem value="Meus Arquivos" />
+						<p:menuitem value="Meus Arquivos" action="file_list?faces-redirect=true"/>
 						<p:menuitem value="Enviar Arquivo" action="upload_file?faces-redirect=true"/>
-						<p:menuitem value="Realizar Download" />
+						<p:menuitem value="Realizar Download" action="download_file?faces-redirect=true" />
 					</p:submenu>
 				</p:panelMenu>
 			</h:form>

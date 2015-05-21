@@ -18,6 +18,24 @@
     NAME="output" PATH="/pages/public/login.xhtml?faces-redirect=true"
     TARGET="rules:#pages#public#login.xhtml?faces-redirect=true"
     TITLE="logout" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="submit_job::#pages#private#submit_job.xhtml?faces-redirect=true"
+    NAME="output1"
+    PATH="/pages/private/submit_job.xhtml?faces-redirect=true"
+    TARGET="rules:#pages#private#submit_job.xhtml?faces-redirect=true"
+    TITLE="submit_job" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="file_list::#pages#private#file_list.xhtml?faces-redirect=true"
+    NAME="output2"
+    PATH="/pages/private/file_list.xhtml?faces-redirect=true"
+    TARGET="rules:#pages#private#file_list.xhtml?faces-redirect=true"
+    TITLE="file_list" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="download_file::#pages#private#download_file.xhtml?faces-redirect=true"
+    NAME="output3"
+    PATH="/pages/private/download_file.xhtml?faces-redirect=true"
+    TARGET="rules:#pages#private#download_file.xhtml?faces-redirect=true"
+    TITLE="download_file" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM
@@ -28,4 +46,16 @@
   NAME="rules:#pages#public#login.xhtml?faces-redirect=true"
   PATH="/pages/public/login.xhtml?faces-redirect=true"
   SHAPE="240,145,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#private#submit_job.xhtml?faces-redirect=true"
+  PATH="/pages/private/submit_job.xhtml?faces-redirect=true"
+  SHAPE="240,257,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#private#file_list.xhtml?faces-redirect=true"
+  PATH="/pages/private/file_list.xhtml?faces-redirect=true"
+  SHAPE="256,401,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#pages#private#download_file.xhtml?faces-redirect=true"
+  PATH="/pages/private/download_file.xhtml?faces-redirect=true"
+  SHAPE="272,545,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

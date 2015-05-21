@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:decorate template="/resources/templates/template.xhtml">	
+
+	<!-- Center Content -->
+	<ui:define name="conteudo_centro">
+		<h:form>
+			<p:panel header="Submissão de Tarefas">
+				<p:panel>
+					Selecione os parâmetros de entrada e saída da execução desta tarefa
+				</p:panel>
+				<br />			
+				<p:panelGrid columns="2" style="width: 550px">
+					<f:facet name="header">
+						Parâmetros de Entrada
+					</f:facet>
+					
+					Programa 
+					<p:selectOneMenu effect="fade" >
+						<f:selectItem itemLabel="Bowtie"/>
+						<f:selectItem itemLabel="CoverageBed"/>
+						<f:selectItem itemLabel="Genome2Interval"/>
+						<f:selectItem itemLabel="Sam2Bed"/>
+					</p:selectOneMenu>
+					
+					Argumentos <p:inputText />
+					
+					Arquivos de Entrada
+					<p:dataTable value="#{testData.fileList}" var="f">
+						<p:column headerText="Arquivo" width="200" style="text-align: center">
+							<h:outputText value="#{f.name}" />
+						</p:column>
+
+						<p:column headerText="Tamanho" width="200" style="text-align: center">
+							<h:outputText value="#{f.size}" />
+						</p:column>
+
+						<p:column headerText="Escolher" width="70" style="text-align: center">
+							<p:selectBooleanCheckbox />
+						</p:column>
+					</p:dataTable>
+					
+				</p:panelGrid>
+				
+				<br />
+				
+				<p:panelGrid columns="2" style="width: 400px">
+					<f:facet name="header">
+						Parâmetros de Saída
+					</f:facet>
+
+					Saída <p:inputText size="40"/>
+
+					<f:facet name="header"></f:facet>
+				</p:panelGrid>
+				
+				<f:facet name="footer">
+					<p:commandButton value="Submeter"/>
+				</f:facet>
+			</p:panel>
+		</h:form>
+	</ui:define>
+	
+</ui:decorate>
+</html>
