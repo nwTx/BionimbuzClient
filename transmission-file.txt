@@ -116,6 +116,7 @@ LADO SERVIDOR:
 =-=-=-=-=-=-=-=-=-=-=-=-
           Sites
 =-=-=-=-=-=-=-=-=-=-=-=-
+
 http://www.restapitutorial.com/media/RESTful_Best_Practices-v1_1.pdf
 http://stackoverflow.com/questions/15490265/rest-web-service-authentication-token-implementation
 http://docs.oracle.com/cd/E19575-01/820-3746/ghhsk/index.html
@@ -123,6 +124,7 @@ https://msdn.microsoft.com/en-us/library/ff650503.aspx
 http://howtodoinjava.com/2013/07/22/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
 http://stackoverflow.com/questions/2375541/password-verification-with-pbkdf2-in-java
 http://stackoverflow.com/questions/20047418/pbkdf2-with-hmac-in-java
+http://blog.cloudfoundry.org/2012/10/09/securing-restful-web-services-with-oauth2/
 
 --------------
     IDEIAS
