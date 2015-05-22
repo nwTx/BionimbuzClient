@@ -156,3 +156,22 @@ Guardar no Servidor:
 	- Usuários logados
 	- Tokens de segurança
 	- Horário do último acesso (para realizar o Timeout de sessões)
+
+----------------------------
+  Artigos sobre Segurança
+----------------------------
+
+Security Issues:
+	 - Password Weakness
+
+Web Security:
+	- Automatically Securing Web 2.0 Applications through Replicated Execution
+		o  K. Vikram, Abhishek Prateek and Benjamin Livshits
+	- Browser Interfaces and Extended Validation SSL Certificates: An Empirical Study
+		o  Robert Biddle, P.C. van Oorschot, Andre S. Patrickm Jennifer Sobey and Tara Whalen
+	- Effectively and Securely using the Cloud Computing Paradigm.
+		o  P. Mell and T. Grance
+	- NIST definition of Cloud Computing. NIST
+		o  P. Mell and T. Grance
+	- Cloud Computing security - Raining on the trendy new parade
+		- A. Stamos, A. Becherer and N. Wilcox
