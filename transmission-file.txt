@@ -1,122 +1,103 @@
-Como iterar um Map:
-	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		Long start = System.currentTimeMillis();
-		System.out.println("Start: " + start);
-		
-		ConcurrentHashMap<User, Calendar> loggedUsers = LoggedUsers.getLoggedUsers();
-		Iterator<User> iterator = loggedUsers.keySet().iterator();
-		
-		while (iterator.hasNext()) {
-			User u = iterator.next();
-			System.out.println("Usuario: " + u);
-			System.out.println("Calendario: " + loggedUsers.get(u).getTime());
-			System.out.println("Comparação:" + loggedUsers.get(u).getTime().compareTo(Calendar.getInstance().getTime()));
-			System.out.println(System.currentTimeMillis() - start);
-		}
-	}
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+									JOBCONTROLLER									
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+- Responsabilidades:
+	o	Manter controle sobre os Jobs em execução na Nuvem
+		Como:
+			> Na inicialização do sistema, verificar no banco de dados quais Jobs ficaram no estado EM_EXECUÇÃO.
+			> Verificar se estes Jobs continuam em execução na Nuvem.
+			> Caso não estejam em execução, alterar seu estado no Banco de Dados.
+			> Quando um usuário submeter um job para ser executado, criar um novo registro no Banco de Dados
+			> Quando um Job finalizar sua execução, atualizar seu estado no Banco de Dados.
+	o	Servir como repositório sobre informações sobre a execução dos Jobs
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+									   TIMEOUTS
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+- De sessão:
+	- De tempos em tempos, deverá ser verificado o último acesso dos usuários 
+	- Caso o horário do último acesso ultrapassar um determinado valor, esse usuário será desconectado do Servidor,
+	  devendo assim realizar o Login novamente.
 
 Como calcular a diferença entre dois horários:
- - http://www.mkyong.com/java/java-time-elapsed-in-days-hours-minutes-seconds/
-
+	- http://www.mkyong.com/java/java-time-elapsed-in-days-hours-minutes-seconds/
 Cloud Design Pattern
-- Retry Pattern: https://msdn.microsoft.com/en-us/library/dn589788.aspx
-- Federated Identity Pattern: https://msdn.microsoft.com/en-us/library/dn589790.aspx
-- Circuit Breaker Pattern: https://msdn.microsoft.com/en-us/library/dn589784.aspx
-- LIVRO: Microsoft Cloud Design Pattern - Prescriptive Architecture Guidance for Cloud Applications
-
+	- Retry Pattern: https://msdn.microsoft.com/en-us/library/dn589788.aspx
+	- Federated Identity Pattern: https://msdn.microsoft.com/en-us/library/dn589790.aspx
+	- Circuit Breaker Pattern: https://msdn.microsoft.com/en-us/library/dn589784.aspx
+	- LIVRO: Microsoft Cloud Design Pattern - Prescriptive Architecture Guidance for Cloud Applications
 INTERCEPTOR (http://www.mastertheboss.com/jboss-frameworks/resteasy/resteasy-interceptors-tutorial)
-			(Atualizado: http://howtodoinjava.com/2013/07/25/jax-rs-2-0-resteasy-3-0-2-final-security-tutorial/)
-			
-- No Interceptor, verificar o método:
-	- método  = "login": Não realizar a verificação (Se login realizado com sucesso, lembrar de adicionar este usuário no mapa) 
-	- método != "login": Realizar a verificação de usuário logado
-									----+------
-										|
-										|
-										|
-	+-----------------------------------+
-	|
-	|
-	V
+(Atualizado: http://howtodoinjava.com/2013/07/25/jax-rs-2-0-resteasy-3-0-2-final-security-tutorial/)
+	- No Interceptor, verificar o método:
+		- método = "login": Não realizar a verificação (Se login realizado com sucesso, lembrar de adicionar este usuário no mapa)
+		- método != "login": Realizar a verificação de usuário logado
+										----+------
+											|
+											|
+											|
+		+-----------------------------------+
+		|
+		|
+		V
 VERIFICAÇÃO:
-- Segurança mantém um mapa (ConcurrentHashMap) contendo <login, boolean, lastAccess> que diz se um usuário está logado ou não, e em que momento foi seu último acesso
-- Quando um usuário efetuar login, esse mapa será atualizado incluindo este usuário e tornando true na posição de logado
-- Sempre que um usuário requisitar algum serviço do BioNimbuz, será verificado se a posição do mapa está verdadeira
+	- Segurança mantém um mapa (ConcurrentHashMap) contendo <login, boolean, lastAccess> que diz se um usuário está logado ou não, e em que momento foi seu último acesso
+	- Quando um usuário efetuar login, esse mapa será atualizado incluindo este usuário e tornando true na posição de logado
+	- Sempre que um usuário requisitar algum serviço do BioNimbuz, será verificado se a posição do mapa está verdadeira
 	- Se sim, o usuário realiza a ação
 	- Se não, será enviada uma resposta à aplicação dizendo que o usuário não está mais logado ----> Redirecionar para tela de login
-- O timeout de sessão será 5 minutos, ou seja, a lista de usuários logados deve ser atualizada a cada 5 minutos. 
+	- O timeout de sessão será 5 minutos, ou seja, a lista de usuários logados deve ser atualizada a cada 5 minutos.
 	- Se, no momento de verificação de timeout, o horário atual menos o horário do último acesso for maior que 5 minutor, atualiza-se o booleano do mapa de usuários logados
-	
-UTILIZAR Quartz PARA TIMEOUT DE SESSÃO (http://www.mkyong.com/java/quartz-2-scheduler-tutorial/)
 
+	UTILIZAR Quartz PARA TIMEOUT DE SESSÃO (http://www.mkyong.com/java/quartz-2-scheduler-tutorial/)
 
-@Provider
-public class SecurityInterceptor implements ContainerRequestFilter {
+	@Provider
+	public class SecurityInterceptor implements ContainerRequestFilter {
 	
-	@Override
-	public void filter (ContainerRequestContext context){
-		ResourceMethodInvoker methodInvoker = (ResourceMethodInvoker) requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
+		@Override
+		public void filter (ContainerRequestContext context){
+			ResourceMethodInvoker methodInvoker = (ResourceMethodInvoker) requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
+			
+			// Verificar o que é esse method
+			Method method = methodInvoker.getMethod();
+		}
+	}
+	
+	public class LoggedUserVerifier implements Job {
+		private static ConcurrentHashMap<?, ?> loggedUsers = new ConcurrentHashMap<>();
+		private Logger logger = Logger.getLogger("Logger criado");
 		
-		// Verificar o que é esse method
-        Method method = methodInvoker.getMethod();
-	}
-}
-
-
-public class LoggedUserVerifier implements Job {
-	private static ConcurrentHashMap<?, ?> loggedUsers = new ConcurrentHashMap<>();
-	private Logger logger = Logger.getLogger("Logger criado");	
+		// Access only via static methods
+		private LoggedUserVerifier() {}
+			
+		@Override
+		public void execute(JobExecutionContext context) throws JobExecutionException {
 	
-	// Access only via static methods
-	private LoggedUserVerifier() {}
-	
-	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
 		// Verificar a cada 5 minutos e realizar o timeout das sessões
-	}
-
-	public static ConcurrentHashMap getLoggedUsers () {
-		return this.loggedUsers;
-	}
+		}
 	
-	public static void addLoggedUser() {
-		loggedUsers.put(?,?);
-	}
+		public static ConcurrentHashMap getLoggedUsers () {
+			return this.loggedUsers;
+		}
 	
-	public static void removeLoggedUser() {
-		loggedUsers.remove(?,?);
+		public static void addLoggedUser() {
+			loggedUsers.put(?,?);
+		}
+		
+		public static void removeLoggedUser() {
+			loggedUsers.remove(?,?);
+		}
 	}
+	  
+- De Token de Segurança
+	- Todo token de usuário deve ter um Timeout associado.
+	- Caso estoure o Timeout, o usuário deve ser desconectado do Servidor, devendo assim realizar o Login novamente.
 
-}
-
-
-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	Execução de um Job
-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
-LADO CLIENTE:
-	- Criar um formulário para execução de tarefas
-	- Campos necessários:
-		- String id
-		- String localId
-		- Long serviceId: Identificador do serviço ("1111" - bowtie, "", ...)
-		- String args: Argumentos para execução do serviço
-		- List<Pair<>> inputs = new ArrayList<Pair<String, Long>>(): Nome do arquivo e tamanho do mesmo
-		- List<String> outputs = new ArrayList<String>(): Lista de arquivos de output.
-		- Long timestamp: Horário de início do Job.
-	- Enviar JobInfo via Rest para o Servidor
-	
-LADO SERVIDOR:
-	- Criar um Resource REST para receber a requisição do Job
-	- Acessar o ZooKeeper
-	- Criar um novo PersistentZNode 
-
-
-=-=-=-=-=-=-=-=-=-=-=-=-
-          Sites
-=-=-=-=-=-=-=-=-=-=-=-=-
-
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+									 AUTENTICAÇÃO
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+Sites:
 http://www.restapitutorial.com/media/RESTful_Best_Practices-v1_1.pdf
 http://stackoverflow.com/questions/15490265/rest-web-service-authentication-token-implementation
 http://docs.oracle.com/cd/E19575-01/820-3746/ghhsk/index.html
@@ -125,10 +106,7 @@ http://howtodoinjava.com/2013/07/22/how-to-generate-secure-password-hash-md5-sha
 http://stackoverflow.com/questions/2375541/password-verification-with-pbkdf2-in-java
 http://stackoverflow.com/questions/20047418/pbkdf2-with-hmac-in-java
 http://blog.cloudfoundry.org/2012/10/09/securing-restful-web-services-with-oauth2/
-
---------------
-    IDEIAS
---------------
+		
 	1. Criar uma classe que será usada para realizar a Autenticação (class SecurityToken). 
 	2. Adicionar um atributo de segurança na classe User -> SecurityToken securityToken;
 	3. Esse campo será utilizado para efetuar a autenticação do usuário em cada requisição da seguinte maneira:
@@ -142,36 +120,59 @@ http://blog.cloudfoundry.org/2012/10/09/securing-restful-web-services-with-oauth
 		f. Cliente recebe a resposta e seta o securityToken do Usuário que está logado.
 	4. A partir deste momento, à cada requisição que o cliente disparar para o Servidor, deverá ser verificado 
 
-
-Timeouts:
-- De sessão:
-	- De tempos em tempos, deverá ser verificado o último acesso dos usuários 
-	- Caso o horário do último acesso ultrapassar um determinado valor, esse usuário será desconectado do Servidor,
-	  devendo assim realizar o Login novamente.
-- De Token de Segurança
-	- Todo token de usuário deve ter um Timeout associado.
-	- Caso estoure o Timeout, o usuário deve ser desconectado do Servidor, devendo assim realizar o Login novamente.
-	
-Guardar no Servidor:
-	- Usuários logados
-	- Tokens de segurança
-	- Horário do último acesso (para realizar o Timeout de sessões)
-
-----------------------------
-  Artigos sobre Segurança
-----------------------------
-
-Security Issues:
-	 - Password Weakness
+Artigos:
 
 Web Security:
 	- Automatically Securing Web 2.0 Applications through Replicated Execution
-		o  K. Vikram, Abhishek Prateek and Benjamin Livshits
+o K. Vikram, Abhishek Prateek and Benjamin Livshits
 	- Browser Interfaces and Extended Validation SSL Certificates: An Empirical Study
-		o  Robert Biddle, P.C. van Oorschot, Andre S. Patrickm Jennifer Sobey and Tara Whalen
+o Robert Biddle, P.C. van Oorschot, Andre S. Patrickm Jennifer Sobey and Tara Whalen
 	- Effectively and Securely using the Cloud Computing Paradigm.
-		o  P. Mell and T. Grance
+o P. Mell and T. Grance
 	- NIST definition of Cloud Computing. NIST
-		o  P. Mell and T. Grance
+o P. Mell and T. Grance
 	- Cloud Computing security - Raining on the trendy new parade
-		- A. Stamos, A. Becherer and N. Wilcox
+	- A. Stamos, A. Becherer and N. Wilcox
+		
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+								  EXECUÇÃO DE UM JOB
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+LADO CLIENTE:
+	- Página de montagem do workflow
+		- Página contendo os possíveis serviços (programas) disponíveis para execução.
+		- Para cada software, pedir os dados de entrada para o Job. Campos:
+			- String id
+			- String localId
+			- Long serviceId: Identificador do serviço ("1111" - bowtie, "", ...)
+			- String args: Argumentos para execução do serviço
+			- List<Pair<>> inputs = new ArrayList<Pair<String, Long>>(): Nome do arquivo e tamanho do mesmo
+			- List<String> outputs = new ArrayList<String>(): Lista de arquivos de output.
+			- Long timestamp: Horário de início do Job.
+		- Ao final, mostrar o workflow final e pedir confirmação do usuário		
+	- Enviar JobInfo via Rest para o Servidor
+	
+LADO SERVIDOR:
+	- Criar um Resource REST para receber a requisição do Job
+	- Acessar o ZooKeeper
+	- Criar um novo PersistentZNode 
+	
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+								   COMO ITERAR UM MAP
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-		
+
+	@Override
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		Long start = System.currentTimeMillis();
+		System.out.println("Start: " + start);
+		ConcurrentHashMap<User, Calendar> loggedUsers = LoggedUsers.getLoggedUsers();
+		Iterator<User> iterator = loggedUsers.keySet().iterator();
+		
+		while (iterator.hasNext()) {
+			User u = iterator.next();
+			System.out.println("Usuario: " + u);
+			System.out.println("Calendario: " + loggedUsers.get(u).getTime());
+			System.out.println("Comparação:" + loggedUsers.get(u).getTime().compareTo(Calendar.getInstance().getTime()));
+			System.out.println(System.currentTimeMillis() - start);
+		}
+	}
