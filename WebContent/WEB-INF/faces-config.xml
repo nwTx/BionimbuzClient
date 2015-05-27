@@ -8,7 +8,16 @@
 		<from-view-id>/pages/public/login.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>success</from-outcome>
-			<to-view-id>/pages/private/home.xhtml?faces-redirect=true</to-view-id>
+			<to-view-id>/pages/private/home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/pages/public/login.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
@@ -16,23 +25,28 @@
 	<navigation-rule>
 		<from-view-id>/pages/*</from-view-id>
 		<navigation-case>
-			<from-outcome>logout</from-outcome>
-			<to-view-id>/pages/public/login.xhtml?faces-redirect=true</to-view-id>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/pages/private/home.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>submit_job</from-outcome>
-			<to-view-id>/pages/private/submit_job.xhtml?faces-redirect=true</to-view-id>
+			<to-view-id>/pages/private/submit_job.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>file_list</from-outcome>
-			<to-view-id>/pages/private/file_list.xhtml?faces-redirect=true</to-view-id>
+			<to-view-id>/pages/private/file_list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>download_file</from-outcome>
-			<to-view-id>/pages/private/download_file.xhtml?faces-redirect=true</to-view-id>
+			<to-view-id>/pages/private/download_file.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>edit_personal_data</from-outcome>
+			<to-view-id>/pages/private/edit_personal_data.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

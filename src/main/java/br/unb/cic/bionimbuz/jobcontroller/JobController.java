@@ -10,6 +10,7 @@ import br.unb.cic.bionimbuz.communication.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.communication.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.communication.rest.response.LoginResponse;
 import br.unb.cic.bionimbuz.communication.rest.response.UploadResponse;
+import br.unb.cic.bionimbuz.model.User;
 
 public class JobController {
 	private RestCommunicator restCommunicator;
@@ -22,17 +23,24 @@ public class JobController {
 	}
 
 	/**
-	 * 
+	 * Fires a Login request to the server
 	 * @param login
 	 * @param password
 	 */
-	public boolean login(String login, String password) {
-		RequestInfo loginRequest = new LoginRequest(login, password);		
+	public User login(User user) {
+		RequestInfo loginRequest = new LoginRequest(user);		
 		LoginResponse resp = (LoginResponse) restCommunicator.sendRequest(new LoginRestClient(), loginRequest);
-
-		return resp.isAuthorized();
+		
+		return resp.getUser();
 	}
 	
+	/**
+	 * Fires an Upload request to the server
+	 * @param filename
+	 * @param filepath
+	 * @return
+	 * @throws IOException
+	 */
 	public boolean uploadFile(String filename, String filepath) throws IOException {
 		RequestInfo uploadRequest = new UploadRequest(filename, filepath);
 		UploadResponse resp = (UploadResponse) restCommunicator.sendRequest(new UploadRestClient(), uploadRequest);

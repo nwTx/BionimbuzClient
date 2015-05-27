@@ -1,5 +1,7 @@
 package br.unb.cic.bionimbuz.communication.rest.request;
 
+import br.unb.cic.bionimbuz.model.User;
+
 /**
  * Class that defines a login request to the BioNimbuZ core
  * 
@@ -7,38 +9,25 @@ package br.unb.cic.bionimbuz.communication.rest.request;
  * 
  */
 public class LoginRequest implements RequestInfo {
-	private String login;
+	private User user;
 
-	private String password;
-
-	public LoginRequest(String login, String password) {
-		this.login = login;
-		this.password = password;
+	public LoginRequest(User user) {
+		this.user = user;
 	}
 
-	public String getLogin() {
-		return login;
+	public User getUser() {
+		return user;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
 
@@ -50,22 +39,18 @@ public class LoginRequest implements RequestInfo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-
 		LoginRequest other = (LoginRequest) obj;
-
-		if (login == null) {
-			if (other.login != null)
+		if (user == null) {
+			if (other.user != null)
 				return false;
-		} else if (!login.equals(other.login))
+		} else if (!user.equals(other.user))
 			return false;
-
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "LoginRequest [user=" + user + "]";
 	}
 
 }
