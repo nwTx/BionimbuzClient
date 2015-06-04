@@ -5,14 +5,41 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<ui:decorate template="/resources/templates/template.xhtml">	
+<ui:decorate template="/resources/templates/template.xhtml">
 
 	<!-- Center Content -->
 	<ui:define name="conteudo_centro">
 		<h:form>
-		
+			<p:outputLabel value="#{sessionBean.loggedUser.id}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.celphone}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.cpf}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.email}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.login}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.password}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.securityToken}" />
+			<br />
+			<br />
+			Files
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.files.get(0).id}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.files.get(0).name}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.files.get(0).path}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.files.get(0).size}" />
+			<br />
+			<p:outputLabel value="#{sessionBean.loggedUser.files.get(0).createdDate}" />
+			
+			
 		</h:form>
 	</ui:define>
-	
+
 </ui:decorate>
 </html>
