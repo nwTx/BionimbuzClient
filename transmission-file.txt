@@ -158,21 +158,38 @@ LADO SERVIDOR:
 	- Criar um novo PersistentZNode 
 	
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-								   COMO ITERAR UM MAP
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-		
+								  TODO
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		Long start = System.currentTimeMillis();
-		System.out.println("Start: " + start);
-		ConcurrentHashMap<User, Calendar> loggedUsers = LoggedUsers.getLoggedUsers();
-		Iterator<User> iterator = loggedUsers.keySet().iterator();
-		
-		while (iterator.hasNext()) {
-			User u = iterator.next();
-			System.out.println("Usuario: " + u);
-			System.out.println("Calendario: " + loggedUsers.get(u).getTime());
-			System.out.println("Comparação:" + loggedUsers.get(u).getTime().compareTo(Calendar.getInstance().getTime()));
-			System.out.println(System.currentTimeMillis() - start);
+Implementar PING antes de cada requisição disparada ao servidor, para evitar requisições que não terão retorno. Para isso:
+	- Modificar a interface Action para public abstract class Action.
+	- implementar o método ping, que retornará um boolean (true, caso servidor online, false, caso contrário)
+	- Nesse método, lançar uma exceção ServerOfflineException caso o retorno de ping() seja diferente de 200
+	
+	/**
+	 * Exception used to indicate that the Server is offline
+	 */
+	public class ServerOfflineException extends Exception {
+		public ServerOfflineException(String message) {
+			super(message);
 		}
 	}
+	
+	/**
+	 * Ping the server to know if it is online to request it properly
+	 * @return boolean
+	 */
+	public boolean ping () {
+		Response response = target.get();
+		
+		if (response.getStatus() != 200) {
+			throw new ServerOfflineException("Server is offline. Unable to continue request");
+		}
+		return true;
+	}
+	
+	- Adicionar a verficação a seguir antes de toda requisição feita ao servido: 
+	if (!ping()) {
+		... lança exceção
+	}
+	
