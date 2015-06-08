@@ -6,51 +6,68 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import br.unb.cic.bionimbuz.jobcontroller.JobController;
 import br.unb.cic.bionimbuz.model.User;
+import br.unb.cic.bionimbuz.rest.service.RestService;
 
 @Named
 @SessionScoped
 public class SessionBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private final JobController jobController;
+	private final RestService restService;
 	private User loggedUser = new User();
-	
+
 	private User user = new User();
-	
+
 	public SessionBean() {
-		jobController = new JobController();
+		restService = new RestService();
 	}
-	
+
 	/**
 	 * 
 	 * @return redirectView
 	 */
 	public String login() {
-		User responseUser = jobController.login(user);
+		User responseUser = null;
+
+		try {
+			responseUser = restService.login(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
 
 		if (responseUser.getCpf() != null) {
 			loggedUser = responseUser;
-			
+
 			return "success";
 		} else {
 			user = new User();
-			
-			return "login?faces-redirect=true&error=true";			
+
+			return "login?faces-redirect=true&error=true";
 		}
-		
+
 	}
 
 	/**
-	 * Invalidates user session
+	 * Invalidates user session and communicates to the server
+	 * 
 	 * @return
 	 */
 	public String logout() {
+		// Invalidates user session
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+
+		// Send a logout message to the server
+		try {
+			restService.logout(loggedUser);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return "logout";
 	}
-	
+
 	public User getUser() {
 		return user;
 	}

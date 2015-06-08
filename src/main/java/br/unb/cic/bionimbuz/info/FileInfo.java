@@ -1,13 +1,12 @@
 package br.unb.cic.bionimbuz.info;
 
-import java.util.Date;
 import java.util.UUID;
 
 public class FileInfo {
 	private String id = UUID.randomUUID().toString();
 	private String name;
 	private String path;
-	private Date createdDate;
+	private String uploadTimestamp;
 	private long size;
 
 	public String getId() {
@@ -30,12 +29,12 @@ public class FileInfo {
 		this.path = path;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public String getUploadTimestamp() {
+		return uploadTimestamp;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setUploadTimestamp(String uploadTimestamp) {
+		this.uploadTimestamp = uploadTimestamp;
 	}
 
 	public long getSize() {

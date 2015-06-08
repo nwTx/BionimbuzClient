@@ -25,6 +25,11 @@
 	<navigation-rule>
 		<from-view-id>/pages/*</from-view-id>
 		<navigation-case>
+			<from-outcome>error</from-outcome>
+			<to-view-id>/pages/private/error_page.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/pages/private/home.xhtml</to-view-id>
 			<redirect />

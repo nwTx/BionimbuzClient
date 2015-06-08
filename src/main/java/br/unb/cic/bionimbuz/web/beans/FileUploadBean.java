@@ -10,29 +10,38 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.FileUploadEvent;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationLoader;
-import br.unb.cic.bionimbuz.jobcontroller.JobController;
+import br.unb.cic.bionimbuz.rest.service.RestService;
 
 @Named
 @SessionScoped
 public class FileUploadBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final String UPLOADED_FILES_DIRECTORY = ConfigurationLoader.readConfiguration().getUploadedFilesDirectory(); 
-	private JobController jobController;
+	private RestService restService;
+	
+	@Inject private SessionBean sessionBean;
 
 	public FileUploadBean() {
-		jobController = new JobController();
+		restService = new RestService();
 	}
 
+	/**
+	 * Triggered when an user tries to upload a file
+	 * @param event
+	 */
 	public void handleUploadedFile(FileUploadEvent event) {
 		try {
 			saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
-			jobController.uploadFile(event.getFile().getFileName(), UPLOADED_FILES_DIRECTORY + event.getFile().getFileName());
-		} catch (IOException e) {
+			restService.uploadFile(event.getFile().getFileName(), UPLOADED_FILES_DIRECTORY + 
+					event.getFile().getFileName(), 
+					sessionBean.getLoggedUser().getLogin());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -40,6 +49,11 @@ public class FileUploadBean implements Serializable {
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
+	/**
+	 * Saves temporary file in disk
+	 * @param fileName
+	 * @param in
+	 */
 	public void saveTempFile(String fileName, InputStream in) {
 		try {
 

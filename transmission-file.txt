@@ -51,18 +51,6 @@ VERIFICAÇÃO:
 	- Se, no momento de verificação de timeout, o horário atual menos o horário do último acesso for maior que 5 minutor, atualiza-se o booleano do mapa de usuários logados
 
 	UTILIZAR Quartz PARA TIMEOUT DE SESSÃO (http://www.mkyong.com/java/quartz-2-scheduler-tutorial/)
-
-	@Provider
-	public class SecurityInterceptor implements ContainerRequestFilter {
-	
-		@Override
-		public void filter (ContainerRequestContext context){
-			ResourceMethodInvoker methodInvoker = (ResourceMethodInvoker) requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
-			
-			// Verificar o que é esse method
-			Method method = methodInvoker.getMethod();
-		}
-	}
 	
 	public class LoggedUserVerifier implements Job {
 		private static ConcurrentHashMap<?, ?> loggedUsers = new ConcurrentHashMap<>();

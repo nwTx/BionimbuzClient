@@ -10,8 +10,8 @@
 	<!-- Conteúdo do Centro -->
 	<ui:define name="conteudo_centro">
 		<h:form>
-			<p:growl id="growl" autoUpdate="true"/>
-			
+			<p:growl id="growl" autoUpdate="true" />
+
 			<p:panel>
 				<p:panel>
 					Página utilizada para realizar upload de arquivos
@@ -23,8 +23,29 @@
 						invalidFileMessage="Formato de arquivo inválido"
 						fileUploadListener="#{fileUploadBean.handleUploadedFile}"
 						cancelLabel="Cancelar" uploadLabel="Enviar"
-						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" label="Escolher Arquivo"
+						allowTypes="/(\.|\/)(iso|gif|jpe?g|png)$/" label="Escolher Arquivo"
 						update="growl" />
+				</p:panel>
+				<br />
+				<p:panel>
+					<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
+						<f:facet name="header">Sua lista de arquivos</f:facet>
+						<p:column headerText="Id" width="200">
+							<h:outputText value="#{f.id}" />
+						</p:column>
+
+						<p:column headerText="Nome" width="200">
+							<h:outputText value="#{f.name}" />
+						</p:column>
+
+						<p:column headerText="Tamanho" width="200">
+							<h:outputText value="#{f.size}" />
+						</p:column>
+
+						<p:column headerText="Data e Horário de Upload" width="200">
+							<h:outputText value="#{f.uploadTimestamp}" />
+						</p:column>
+					</p:dataTable>
 				</p:panel>
 			</p:panel>
 		</h:form>

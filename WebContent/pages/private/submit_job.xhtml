@@ -14,20 +14,24 @@
 				<p:tab id="workflow_1" title="Primeira Etapa">
 					<p:panel>
 						<p:panel header="Escolha o software">
-							<p:ring value="#{submitJobBean.list}" var="l" easing="easeInOutBack" >
-								<p:outputPanel id="job_pnl" style="text-align:center;" layout="block">
-										<br />									
-										<p:commandButton id="choose_btn" action="#{submitJobBean.choose(l)}"
-											value="#{l}" update=":form:panel1" />
-										<p:overlayPanel for="job_pnl" showEffect="fade" hideEffect="fade">
-											<p:panel header="teste">
+							<p:ring value="#{submitJobBean.list}" var="l"
+								easing="easeInOutBack">
+								<p:outputPanel id="job_pnl" style="text-align:center;"
+									layout="block">
+									<br />
+									<p:commandButton id="choose_btn"
+										action="#{submitJobBean.choose(l)}" value="#{l}"
+										update=":form:panel1" />
+									<p:overlayPanel for="job_pnl" showEffect="fade"
+										hideEffect="fade">
+										<p:panel header="teste">
 												teste
 											</p:panel>
-										</p:overlayPanel>
+									</p:overlayPanel>
 								</p:outputPanel>
 							</p:ring>
 							<f:facet name="footer">
-								<p:commandButton value="Inclusão de novo Software"/>
+								<p:commandButton value="Inclusão de novo Software" />
 							</f:facet>
 						</p:panel>
 						<br />
@@ -36,7 +40,7 @@
 						</p:panel>
 						<br />
 						<p:panel header="Lista de Arquivos de Entrada">
-							<p:dataTable value="#{testData.fileList}" var="f">
+							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
 								<p:column headerText="Arquivo" width="200">
 									<h:outputText value="#{f.name}" />
 								</p:column>
@@ -45,12 +49,13 @@
 									<h:outputText value="#{f.size}" />
 								</p:column>
 
-								<p:column headerText="Data de Upload" width="200">
-									<h:outputText value="#{f.date}" />
+								<p:column headerText="Data e horário de Upload" width="200">
+									<h:outputText value="#{f.uploadTimestamp}" />
 								</p:column>
-								
-								<p:column headerText="Escolher" width="70" style="text-align: center">
-									<p:selectBooleanCheckbox required="true"/>
+
+								<p:column headerText="Escolher" width="70"
+									style="text-align: center">
+									<p:selectBooleanCheckbox required="true" />
 								</p:column>
 							</p:dataTable>
 
@@ -61,11 +66,12 @@
 						</p:panel>
 					</p:panel>
 				</p:tab>
-				
+
 				<p:tab id="workflow_2" title="Segunda Etapa">
 					<p:panel>
 						<p:panel header="Escolha o software">
-							<p:ring value="#{submitJobBean.list}" var="l" easing="easeInOutBack">
+							<p:ring value="#{submitJobBean.list}" var="l"
+								easing="easeInOutBack">
 								<p:outputPanel style="text-align:center;" layout="block">
 									<p:column>
 										<p:outputLabel value="#{l}" />
@@ -76,7 +82,7 @@
 								</p:outputPanel>
 							</p:ring>
 							<f:facet name="footer">
-								<p:commandButton value="Inclusão de novo Software"/>
+								<p:commandButton value="Inclusão de novo Software" />
 							</f:facet>
 						</p:panel>
 						<br />
@@ -85,7 +91,7 @@
 						</p:panel>
 						<br />
 						<p:panel header="Lista de Arquivos de Entrada">
-							<p:dataTable value="#{testData.fileList}" var="f">
+							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
 								<p:column headerText="Arquivo" width="200">
 									<h:outputText value="#{f.name}" />
 								</p:column>
@@ -94,12 +100,13 @@
 									<h:outputText value="#{f.size}" />
 								</p:column>
 
-								<p:column headerText="Data de Upload" width="200">
-									<h:outputText value="#{f.date}" />
+								<p:column headerText="Data e horário de Upload" width="200">
+									<h:outputText value="#{f.uploadTimestamp}" />
 								</p:column>
-								
-								<p:column headerText="Escolher" width="70" style="text-align: center">
-									<p:selectBooleanCheckbox />
+
+								<p:column headerText="Escolher" width="70"
+									style="text-align: center">
+									<p:selectBooleanCheckbox required="true" />
 								</p:column>
 							</p:dataTable>
 
@@ -110,12 +117,13 @@
 						</p:panel>
 					</p:panel>
 				</p:tab>
-				
+
 				<p:tab id="workflow_3" title="Terceira Etapa">
 					<p:panel>
 						<p:panel header="Escolha o software">
-							<p:ring value="#{submitJobBean.list}" var="l" easing="easeInOutBack">
-								<p:outputPanel style="text-align:center;" layout="block" >
+							<p:ring value="#{submitJobBean.list}" var="l"
+								easing="easeInOutBack">
+								<p:outputPanel style="text-align:center;" layout="block">
 									<p:column>
 										<p:outputLabel value="#{l}" />
 										<br />
@@ -125,7 +133,7 @@
 								</p:outputPanel>
 							</p:ring>
 							<f:facet name="footer">
-								<p:commandButton value="Inclusão de novo Software"/>
+								<p:commandButton value="Inclusão de novo Software" />
 							</f:facet>
 						</p:panel>
 						<br />
@@ -134,7 +142,7 @@
 						</p:panel>
 						<br />
 						<p:panel header="Lista de Arquivos de Entrada">
-							<p:dataTable value="#{testData.fileList}" var="f">
+							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
 								<p:column headerText="Arquivo" width="200">
 									<h:outputText value="#{f.name}" />
 								</p:column>
@@ -143,12 +151,13 @@
 									<h:outputText value="#{f.size}" />
 								</p:column>
 
-								<p:column headerText="Data de Upload" width="200">
-									<h:outputText value="#{f.date}" />
+								<p:column headerText="Data e horário de Upload" width="200">
+									<h:outputText value="#{f.uploadTimestamp}" />
 								</p:column>
-								
-								<p:column headerText="Escolher" width="70" style="text-align: center">
-									<p:selectBooleanCheckbox />
+
+								<p:column headerText="Escolher" width="70"
+									style="text-align: center">
+									<p:selectBooleanCheckbox required="true" />
 								</p:column>
 							</p:dataTable>
 
@@ -160,61 +169,7 @@
 					</p:panel>
 				</p:tab>
 			</p:wizard>
-			<!-- <p:panel header="Submissão de Tarefas">
-				<p:panel>
-					Selecione os parâmetros de entrada e saída da execução desta tarefa
-				</p:panel>
-				<br />			
-				<p:panelGrid columns="2" style="width: 550px">
-					<f:facet name="header">
-						Parâmetros de Entrada
-					</f:facet>
-					
-					Programa 
-					<p:selectOneMenu effect="fade" >
-						<f:selectItem itemLabel="Bowtie"/>
-						<f:selectItem itemLabel="CoverageBed"/>
-						<f:selectItem itemLabel="Genome2Interval"/>
-						<f:selectItem itemLabel="Sam2Bed"/>
-					</p:selectOneMenu>
-					
-					Argumentos <p:inputText />
-					
-					Arquivos de Entrada
-					<p:dataTable value="#{testData.fileList}" var="f">
-						<p:column headerText="Arquivo" width="200" style="text-align: center">
-							<h:outputText value="#{f.name}" />
-						</p:column>
-
-						<p:column headerText="Tamanho" width="200" style="text-align: center">
-							<h:outputText value="#{f.size}" />
-						</p:column>
-
-						<p:column headerText="Escolher" width="70" style="text-align: center">
-							<p:selectBooleanCheckbox />
-						</p:column>
-					</p:dataTable>
-					
-				</p:panelGrid>
-				
-				<br />
-				
-				<p:panelGrid columns="2" style="width: 400px">
-					<f:facet name="header">
-						Parâmetros de Saída
-					</f:facet>
-
-					Saída <p:inputText size="40"/>
-
-					<f:facet name="header"></f:facet>
-				</p:panelGrid>
-				
-				<f:facet name="footer">
-					<p:commandButton value="Submeter"/>
-				</f:facet>
-			</p:panel> -->
 		</h:form>
 	</ui:define>
-
 </ui:decorate>
 </html>

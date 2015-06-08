@@ -16,8 +16,13 @@
 				</p:panel>
 				<br />
 				<p:panel>
-					<p:dataTable value="#{testData.fileList}" var="f">
-						<p:column headerText="Arquivo" width="200">
+					<p:dataTable value="#{sessionBean.loggedUser.files}" var="f" >
+						<f:facet name="header">Sua lista de arquivos</f:facet>
+						<p:column headerText="Id" width="200">
+							<h:outputText value="#{f.id}" />
+						</p:column>
+
+						<p:column headerText="Nome" width="200">
 							<h:outputText value="#{f.name}" />
 						</p:column>
 
@@ -25,8 +30,8 @@
 							<h:outputText value="#{f.size}" />
 						</p:column>
 
-						<p:column headerText="Data de Upload" width="200">
-							<h:outputText value="#{f.date}" />
+						<p:column headerText="Data e Horário de Upload" width="200">
+							<h:outputText value="#{f.uploadTimestamp}" />
 						</p:column>
 					</p:dataTable>
 

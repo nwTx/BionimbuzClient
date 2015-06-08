@@ -11,17 +11,15 @@
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#pages#*" PATH="/pages/*" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#pages#*:0" NAME="item" PATH="/pages/*" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="home::#pages#private#home.xhtml"
-    NAME="output" PATH="/pages/private/home.xhtml"
-    TARGET="rules:#pages#private#home.xhtml" TITLE="home" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="error::#pages#private#error_page.xhtml"
+    NAME="output" PATH="/pages/private/error_page.xhtml"
+    TARGET="rules:#pages#private#error_page.xhtml" TITLE="error" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="submit_job::#pages#private#submit_job.xhtml"
+    NAME="output1" PATH="/pages/private/submit_job.xhtml"
+    TARGET="rules:#pages#private#submit_job.xhtml" TITLE="submit_job" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT ID="file_list::#pages#private#file_list.xhtml"
-    NAME="output1" PATH="/pages/private/file_list.xhtml"
+    NAME="output2" PATH="/pages/private/file_list.xhtml"
     TARGET="rules:#pages#private#file_list.xhtml" TITLE="file_list" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT
-    ID="download_file::#pages#private#download_file.xhtml"
-    NAME="output2" PATH="/pages/private/download_file.xhtml"
-    TARGET="rules:#pages#private#download_file.xhtml"
-    TITLE="download_file" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
     ID="edit_personal_data::#pages#private#edit_personal_data.xhtml"
     NAME="output3" PATH="/pages/private/edit_personal_data.xhtml"
@@ -46,4 +44,6 @@
   PATH="/pages/private/submit_job.xhtml" SHAPE="272,321,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#pages#private#home.xhtml"
   PATH="/pages/private/home.xhtml" SHAPE="288,913,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#private#error_page.xhtml"
+  PATH="/pages/private/error_page.xhtml" SHAPE="288,689,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>
