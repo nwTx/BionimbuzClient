@@ -181,3 +181,33 @@ Implementar PING antes de cada requisição disparada ao servidor, para evitar r
 		... lança exceção
 	}
 	
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+					Job Workflow
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Job
+	- Um job é uma unidade de trabalho que pode compreender diversos passos. Cada passo é especificado via um JobControlStep
+	- O sistema utiliza o JobEntrySystem para receber jobs, escaloná-los, processá-los e controlar seu Outputs.
+	- Fluxo do processamento de um Job:
+	
+	 Job Workflow composto por diversos Jobs, recebidos da aplicação cliente:	 
+		 -> Recebidos no JobEntrySystem: Realiza verificações e valida o Job (Sistema Online, arquivos 
+			de entrada existem, parâmetros de execução válidos...)
+		 -> Interpretação do Job 
+		 -> Enfileiramento de Jobs para execução 
+		 -> Execução do Job (Levando-se em conta os inputs e outputs)
+		 -> Retorno dos dados para a aplicação
+		 -> Salva-se o Log da execução e realiza-se o purge dos recursos alocados para sua execução
+
+Composição de um JobWorkflow
+	- Identificador de Workflow
+	- Identificador de Usuário que requisitou sua execução
+	- Lista de Jobs (Steps do workflow)
+	- Lista de Outputs <Step, Output>
+	
+Composição de um Job
+	- Identificador do Job
+	- Identificador do Usuário
+	- Identificador do Workflow ao qual este Job pertence
+	- Programa (Bowtie, Sam2Bed, ...)
+	- Lista de arquivos de Entrada
