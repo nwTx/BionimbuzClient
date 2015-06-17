@@ -6,6 +6,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 
@@ -15,6 +16,7 @@ public class SessionBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private final RestService restService;
 	private User loggedUser = new User();
+	private boolean serverStatus;
 
 	private User user = new User();
 
@@ -23,23 +25,33 @@ public class SessionBean implements Serializable {
 	}
 
 	/**
-	 * 
+	 * Connect to the server to execute a Login request
 	 * @return redirectView
 	 */
 	public String login() {
 		User responseUser = null;
 
+		// ServerNotReachable Exception
 		try {
 			responseUser = restService.login(user);
+		} catch (ServerNotReachableException e) {
+			e.printStackTrace();
+			
+			return "server_offline";
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "error";
+			
+			return "server_offline";
 		}
 
+		// If user.cpf is not null, user sent to the server was found on database
 		if (responseUser.getCpf() != null) {
 			loggedUser = responseUser;
 
 			return "success";
+
+		// Login not found 
 		} else {
 			user = new User();
 
@@ -61,7 +73,6 @@ public class SessionBean implements Serializable {
 		try {
 			restService.logout(loggedUser);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -82,6 +93,14 @@ public class SessionBean implements Serializable {
 
 	public void setLoggedUser(User loggedUser) {
 		this.loggedUser = loggedUser;
+	}
+
+	public boolean isServerStatus() {
+		return serverStatus;
+	}
+
+	public void setServerStatus(boolean serverStatus) {
+		this.serverStatus = serverStatus;
 	}
 
 }

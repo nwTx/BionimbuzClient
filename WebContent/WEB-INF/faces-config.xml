@@ -11,6 +11,20 @@
 			<to-view-id>/pages/private/home.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>sign_in</from-outcome>
+			<to-view-id>/pages/public/sign_in.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/pages/error/*</from-view-id>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/pages/public/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
@@ -26,7 +40,12 @@
 		<from-view-id>/pages/*</from-view-id>
 		<navigation-case>
 			<from-outcome>error</from-outcome>
-			<to-view-id>/pages/private/error_page.xhtml</to-view-id>
+			<to-view-id>/pages/error/error_page.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>server_offline</from-outcome>
+			<to-view-id>/pages/error/server_offline.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>

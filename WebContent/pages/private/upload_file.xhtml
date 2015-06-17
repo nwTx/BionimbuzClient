@@ -23,26 +23,22 @@
 						invalidFileMessage="Formato de arquivo inválido"
 						fileUploadListener="#{fileUploadBean.handleUploadedFile}"
 						cancelLabel="Cancelar" uploadLabel="Enviar"
-						allowTypes="/(\.|\/)(iso|gif|jpe?g|png)$/" label="Escolher Arquivo"
-						update="growl" />
+						allowTypes="/(\.|\/)(txt|iso|gif|jpe?g|png)$/" label="Escolher Arquivo"
+						update="growl,panel" />
 				</p:panel>
 				<br />
-				<p:panel>
-					<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
+				<p:panel id="panel">
+					<p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center">
 						<f:facet name="header">Sua lista de arquivos</f:facet>
-						<p:column headerText="Id" width="200">
-							<h:outputText value="#{f.id}" />
-						</p:column>
-
-						<p:column headerText="Nome" width="200">
+						<p:column headerText="Nome" width="300">
 							<h:outputText value="#{f.name}" />
 						</p:column>
 
 						<p:column headerText="Tamanho" width="200">
-							<h:outputText value="#{f.size}" />
+							<h:outputText value="#{f.size/1000} kb" />
 						</p:column>
 
-						<p:column headerText="Data e Horário de Upload" width="200">
+						<p:column headerText="Upload em" width="200">
 							<h:outputText value="#{f.uploadTimestamp}" />
 						</p:column>
 					</p:dataTable>

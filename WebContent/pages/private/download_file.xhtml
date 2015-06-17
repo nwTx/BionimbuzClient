@@ -16,7 +16,7 @@
 				</p:panel>
 				<br />
 				<p:panel>
-					<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
+					<p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center">
 						<f:facet name="header">Lista de Arquivos</f:facet>
 					
 						<p:column headerText="Arquivo" width="200" style="text-align: center">
@@ -24,7 +24,7 @@
 						</p:column>
 
 						<p:column headerText="Tamanho" width="200" style="text-align: center">
-							<h:outputText value="#{f.size} Mb"  />
+							<h:outputText value="#{f.size/1000} kb"  />
 						</p:column>
 
 						<p:column headerText="Data e horário de Upload" width="200" style="text-align: center">

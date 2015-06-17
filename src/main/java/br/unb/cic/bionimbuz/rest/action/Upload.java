@@ -18,7 +18,7 @@ import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 
-public class Upload implements Action {
+public class Upload extends Action {
 	private static final String REST_UPLOAD_URL = "/rest/upload";
 	private UploadRequest uploadRequest;
 	private WebTarget target;
@@ -45,8 +45,8 @@ public class Upload implements Action {
 	    MultipartFormDataOutput multipart = new MultipartFormDataOutput();
 	    
 	    try {
-			multipart.addFormData("file", new FileInputStream(new File(uploadRequest.getFilepath())), MediaType.MULTIPART_FORM_DATA_TYPE);
-			multipart.addFormData("filename", uploadRequest.getFilename(), MediaType.TEXT_PLAIN_TYPE);
+			multipart.addFormData("file", new FileInputStream(new File(config.getUploadedFilesDirectory() + uploadRequest.getFileInfo().getName())), MediaType.MULTIPART_FORM_DATA_TYPE);
+			multipart.addFormData("file_info", uploadRequest.getFileInfo(), MediaType.APPLICATION_JSON_TYPE);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

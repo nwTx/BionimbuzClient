@@ -11,7 +11,7 @@ import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
 
-public class Logout implements Action {
+public class Logout extends Action {
 	private static final String REST_LOGOUT_URL = "/rest/logout";
 	private LogoutRequest logoutRequest;
 	private WebTarget target;

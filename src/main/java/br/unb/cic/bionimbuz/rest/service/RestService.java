@@ -3,6 +3,8 @@ package br.unb.cic.bionimbuz.rest.service;
 import java.io.IOException;
 
 import br.unb.cic.bionimbuz.communication.RestCommunicator;
+import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
+import br.unb.cic.bionimbuz.info.FileInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.action.Login;
 import br.unb.cic.bionimbuz.rest.action.Logout;
@@ -29,8 +31,9 @@ public class RestService {
 	 * Fires a Login request to the server
 	 * @param login
 	 * @param password
+	 * @throws Exception 
 	 */
-	public User login(User user) throws Exception {
+	public User login(User user) throws ServerNotReachableException {
 		RequestInfo loginRequest = new LoginRequest(user);		
 		LoginResponse resp = (LoginResponse) restCommunicator.sendRequest(new Login(), loginRequest);
 		
@@ -41,8 +44,9 @@ public class RestService {
 	 * Communicates an user logout to the server
 	 * @param user
 	 * @return
+	 * @throws ServerNotReachableException 
 	 */
-	public boolean logout (User user) throws Exception {
+	public boolean logout (User user) throws ServerNotReachableException {
 		RequestInfo logoutRequest = new LogoutRequest(user);
 		LogoutResponse resp = (LogoutResponse) restCommunicator.sendRequest(new Logout(), logoutRequest);
 		
@@ -56,8 +60,8 @@ public class RestService {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean uploadFile(String filename, String filepath, String login) throws Exception {
-		RequestInfo uploadRequest = new UploadRequest(filename, filepath, login);
+	public boolean uploadFile(FileInfo fileInfo) throws Exception {
+		RequestInfo uploadRequest = new UploadRequest(fileInfo);
 		UploadResponse resp = (UploadResponse) restCommunicator.sendRequest(new Upload(), uploadRequest);
 		
 		return resp.isUploaded();

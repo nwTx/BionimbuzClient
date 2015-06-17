@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -16,6 +18,7 @@ import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationLoader;
+import br.unb.cic.bionimbuz.info.FileInfo;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 
 @Named
@@ -36,15 +39,27 @@ public class FileUploadBean implements Serializable {
 	 * @param event
 	 */
 	public void handleUploadedFile(FileUploadEvent event) {
+		FileInfo fileInfo = new FileInfo();
+		
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		
+		// Creates Information object about the file
+		fileInfo.setName(event.getFile().getFileName());
+		fileInfo.setSize(event.getFile().getSize());
+		fileInfo.setUploadTimestamp(format.format(new Date()));
+		fileInfo.setUserId(sessionBean.getLoggedUser().getId());
+		
+		// Saves temporary file, then calls RestService to upload file
 		try {
 			saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
-			restService.uploadFile(event.getFile().getFileName(), UPLOADED_FILES_DIRECTORY + 
-					event.getFile().getFileName(), 
-					sessionBean.getLoggedUser().getLogin());
+			restService.uploadFile(fileInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		// If file was uploaded with success, adds file on user file list
+		sessionBean.getLoggedUser().getFiles().add(fileInfo);
+		
 		FacesMessage message = new FacesMessage("Arquivo enviado com sucesso");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}

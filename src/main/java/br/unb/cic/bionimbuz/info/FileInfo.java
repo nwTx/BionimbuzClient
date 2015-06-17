@@ -1,16 +1,26 @@
 package br.unb.cic.bionimbuz.info;
 
-import java.util.UUID;
-
 public class FileInfo {
-	private String id = UUID.randomUUID().toString();
+	private Long id;
+	private Long userId;
 	private String name;
-	private String path;
 	private String uploadTimestamp;
 	private long size;
 
-	public String getId() {
+	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {
@@ -19,14 +29,6 @@ public class FileInfo {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 	public String getUploadTimestamp() {

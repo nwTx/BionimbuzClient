@@ -8,7 +8,7 @@ import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 
-public class Schedule implements Action {
+public class Schedule extends Action {
 	private static final String SCHED_LOGIN_URL = "/rest/sched";
 	private LoginRequest loginRequest;
 	private WebTarget target;

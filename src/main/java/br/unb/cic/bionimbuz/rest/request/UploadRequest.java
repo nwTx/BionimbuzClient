@@ -1,38 +1,23 @@
 package br.unb.cic.bionimbuz.rest.request;
 
+import br.unb.cic.bionimbuz.info.FileInfo;
+
 public class UploadRequest implements RequestInfo {
-	private String filename;
-	private String filepath;
-	private String login;
+	private FileInfo fileInfo;
 
-	public UploadRequest(String filename, String filepath, String login) {
-		this.filename = filename;
-		this.filepath = filepath;
-		this.login 	  = login;
+	public UploadRequest() {
 	}
 
-	public String getFilename() {
-		return filename;
+	public UploadRequest(FileInfo fileInfo) {
+		this.fileInfo = fileInfo;
 	}
 
-	public void setFilename(String filename) {
-		this.filename = filename;
+	public FileInfo getFileInfo() {
+		return fileInfo;
 	}
 
-	public String getFilepath() {
-		return filepath;
-	}
-
-	public void setFilepath(String filepath) {
-		this.filepath = filepath;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
+	public void setFileInfo(FileInfo fileInfo) {
+		this.fileInfo = fileInfo;
 	}
 
 }

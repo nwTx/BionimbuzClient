@@ -11,7 +11,7 @@ import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
 
-public class Login implements Action {
+public class Login extends Action {
 	private static final String REST_LOGIN_URL = "/rest/login";
 	private LoginRequest loginRequest;
 	private WebTarget target;

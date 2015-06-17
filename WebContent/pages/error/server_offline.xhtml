@@ -6,17 +6,11 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<h:outputStylesheet library="css" name="login.css" />
+	<h:outputStylesheet library="css" name="error.css" />
 </h:head>
 
 <h:body>
 	
-	<h:panelGroup layout="block" styleClass="error-header" rendered="#{param.error}">
-		<center>
-			Usuário/Senha incorretos
-		</center>
-	</h:panelGroup>
-
 	<div class="centered">
 		<h:form>
 			<p:growl id="growl" autoUpdate="true" />
@@ -25,16 +19,12 @@
 					<br /> <br />
 					<h:graphicImage value="/resources/img/logo_bionimbuz.jpg" />
 					<br /> <br /> <br />
-					<h:panelGrid columns="2" cellpadding="4" >
-						<p:inputText placeholder="Login" value="#{sessionBean.user.login}" />
-						<br />
-						<p:password placeholder="Senha" value="#{sessionBean.user.password}" />
+					<h:panelGrid columns="1" cellpadding="4" >
+						Erro! <br />
+						Servidor Offline
 					</h:panelGrid>
 					<br />
-					<h:commandButton value="Entrar" style="width: 200px"
-						action="#{sessionBean.login()}" styleClass="btn" />
-					<br />
-					<p:commandLink value="Inscreva-se aqui" action="sign_in?faces-redirect=true" style="color: gray; font-size: 80%"/>
+					<p:commandLink action="login" value="Retornar"/>
 					<br /> <br />
 				</center>
 			</p:panel>

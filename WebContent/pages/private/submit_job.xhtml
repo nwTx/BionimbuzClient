@@ -60,7 +60,7 @@
 							</p:dataTable>
 
 							<f:facet name="footer">
-								<p:commandButton value="Realizar novo Upload"
+								<p:commandButton id="upload_btn" value="Realizar novo Upload" 
 									action="upload_file?faces-redirect=true" />
 							</f:facet>
 						</p:panel>
@@ -141,17 +141,17 @@
 							<p:outputLabel value="#{submitJobBean.label}" />
 						</p:panel>
 						<br />
-						<p:panel header="Lista de Arquivos de Entrada">
-							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
-								<p:column headerText="Arquivo" width="200">
+						<p:panel id="panel" header="Lista de Arquivos de Entrada">
+							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center">
+								<p:column headerText="Arquivo" width="300">
 									<h:outputText value="#{f.name}" />
 								</p:column>
 
-								<p:column headerText="Tamanho" width="200">
+								<p:column headerText="Tamanho" width="150">
 									<h:outputText value="#{f.size}" />
 								</p:column>
 
-								<p:column headerText="Data e horário de Upload" width="200">
+								<p:column headerText="Data e horário de Upload" width="150">
 									<h:outputText value="#{f.uploadTimestamp}" />
 								</p:column>
 
