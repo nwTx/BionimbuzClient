@@ -29,6 +29,10 @@
 						<p:column headerText="Upload em" width="200">
 							<h:outputText value="#{f.uploadTimestamp}" />
 						</p:column>
+						
+						<p:column headerText="Excluir arquivo" width="100" style="text-align: center">
+							<p:commandButton icon="ui-icon-circle-close" action="#{fileListBean.deleteFile(f)}"/>
+						</p:column>
 					</p:dataTable>
 
 					<f:facet name="footer">

@@ -17,7 +17,7 @@ import javax.inject.Named;
 
 import org.primefaces.event.FileUploadEvent;
 
-import br.unb.cic.bionimbuz.configuration.ConfigurationLoader;
+import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.info.FileInfo;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 
@@ -25,7 +25,7 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 @SessionScoped
 public class FileUploadBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final String UPLOADED_FILES_DIRECTORY = ConfigurationLoader.readConfiguration().getUploadedFilesDirectory(); 
+	private static final String UPLOADED_FILES_DIRECTORY = ConfigurationRepository.getApplicationConfiguration().getUploadedFilesDirectory();  
 	private RestService restService;
 	
 	@Inject private SessionBean sessionBean;
@@ -53,15 +53,22 @@ public class FileUploadBean implements Serializable {
 		try {
 			saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
 			restService.uploadFile(fileInfo);
+			
 		} catch (Exception e) {
+			FacesMessage message = new FacesMessage("Erro interno", "Não foi possível enviar o arquivo");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			
 			e.printStackTrace();
+
+			return;
 		}
 
 		// If file was uploaded with success, adds file on user file list
 		sessionBean.getLoggedUser().getFiles().add(fileInfo);
 		
-		FacesMessage message = new FacesMessage("Arquivo enviado com sucesso");
+		FacesMessage message = new FacesMessage("Arquivo enviado com sucesso", "");
 		FacesContext.getCurrentInstance().addMessage(null, message);
+		
 	}
 
 	/**

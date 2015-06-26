@@ -58,7 +58,7 @@
 	</servlet-mapping>
 
 	<listener>
-		<listener-class>br.unb.cic.bionimbuz.configuration.ApplicationConfig</listener-class>
+		<listener-class>br.unb.cic.bionimbuz.configuration.ConfigurationRepository</listener-class>
 	</listener>
 
 	<!-- MIME type for .OTF Fonts -->

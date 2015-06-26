@@ -32,5 +32,6 @@
 
 .ui-ring-item {
 	width:  15em !important;
-	height: 7em !important;
+	height: 8em !important;
+	background-color: #5BAAF3 !important;
 }

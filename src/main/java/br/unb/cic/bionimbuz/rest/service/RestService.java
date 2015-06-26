@@ -9,10 +9,12 @@ import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.action.Login;
 import br.unb.cic.bionimbuz.rest.action.Logout;
 import br.unb.cic.bionimbuz.rest.action.Upload;
+import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
 import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
+import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
@@ -65,5 +67,12 @@ public class RestService {
 		UploadResponse resp = (UploadResponse) restCommunicator.sendRequest(new Upload(), uploadRequest);
 		
 		return resp.isUploaded();
+	}
+	
+	public boolean deleteFile(FileInfo fileInfo) {
+		RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
+		DeleteFileResponse response = restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
+		
+		return response.isDeleted();
 	}
 }

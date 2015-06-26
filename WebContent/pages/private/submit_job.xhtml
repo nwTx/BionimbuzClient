@@ -14,19 +14,19 @@
 				<p:tab id="workflow_1" title="Primeira Etapa">
 					<p:panel>
 						<p:panel header="Escolha o software">
-							<p:ring value="#{submitJobBean.list}" var="l"
-								easing="easeInOutBack">
-								<p:outputPanel id="job_pnl" style="text-align:center;"
-									layout="block">
+							<p:ring value="#{submitJobBean.programList}" var="l" easing="easeInOutBack">
+								<p:outputPanel id="job_pnl" style="text-align:center;" layout="block">
 									<br />
-									<p:commandButton id="choose_btn"
-										action="#{submitJobBean.choose(l)}" value="#{l}"
-										update=":form:panel1" />
-									<p:overlayPanel for="job_pnl" showEffect="fade"
-										hideEffect="fade">
-										<p:panel header="teste">
-												teste
-											</p:panel>
+									<p:commandButton id="choose_btn" value="#{l.name}"
+										 />
+										<!-- update=":form:panel1" -->
+									<br />
+									<p:commandButton id="info_btn" icon="ui-icon-circle-zoomin" />
+									<p:overlayPanel for="info_btn" showEffect="fade" hideEffect="fade" 
+										style="width: 200px !important">
+										<p:panel header="Descrição do Software">
+											<p:outputLabel value="teste #{l.description}" />
+										</p:panel>
 									</p:overlayPanel>
 								</p:outputPanel>
 							</p:ring>
@@ -35,9 +35,9 @@
 							</f:facet>
 						</p:panel>
 						<br />
-						<p:panel id="panel1" header="Descrição do Software">
-							<p:outputLabel value="#{submitJobBean.label}" />
-						</p:panel>
+						<!-- <p:panel id="panel1" header="Descrição do Software">
+							<p:outputLabel value="#{}" />
+						</p:panel> -->
 						<br />
 						<p:panel header="Lista de Arquivos de Entrada">
 							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
@@ -61,108 +61,6 @@
 
 							<f:facet name="footer">
 								<p:commandButton id="upload_btn" value="Realizar novo Upload" 
-									action="upload_file?faces-redirect=true" />
-							</f:facet>
-						</p:panel>
-					</p:panel>
-				</p:tab>
-
-				<p:tab id="workflow_2" title="Segunda Etapa">
-					<p:panel>
-						<p:panel header="Escolha o software">
-							<p:ring value="#{submitJobBean.list}" var="l"
-								easing="easeInOutBack">
-								<p:outputPanel style="text-align:center;" layout="block">
-									<p:column>
-										<p:outputLabel value="#{l}" />
-										<br />
-										<p:commandButton action="#{submitJobBean.choose(l)}"
-											value="Escolher" update=":form:panel2" />
-									</p:column>
-								</p:outputPanel>
-							</p:ring>
-							<f:facet name="footer">
-								<p:commandButton value="Inclusão de novo Software" />
-							</f:facet>
-						</p:panel>
-						<br />
-						<p:panel id="panel2" header="Descrição do Software">
-							<p:outputLabel value="#{submitJobBean.label}" />
-						</p:panel>
-						<br />
-						<p:panel header="Lista de Arquivos de Entrada">
-							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
-								<p:column headerText="Arquivo" width="200">
-									<h:outputText value="#{f.name}" />
-								</p:column>
-
-								<p:column headerText="Tamanho" width="200">
-									<h:outputText value="#{f.size}" />
-								</p:column>
-
-								<p:column headerText="Data e horário de Upload" width="200">
-									<h:outputText value="#{f.uploadTimestamp}" />
-								</p:column>
-
-								<p:column headerText="Escolher" width="70"
-									style="text-align: center">
-									<p:selectBooleanCheckbox required="true" />
-								</p:column>
-							</p:dataTable>
-
-							<f:facet name="footer">
-								<p:commandButton value="Realizar novo Upload"
-									action="upload_file?faces-redirect=true" />
-							</f:facet>
-						</p:panel>
-					</p:panel>
-				</p:tab>
-
-				<p:tab id="workflow_3" title="Terceira Etapa">
-					<p:panel>
-						<p:panel header="Escolha o software">
-							<p:ring value="#{submitJobBean.list}" var="l"
-								easing="easeInOutBack">
-								<p:outputPanel style="text-align:center;" layout="block">
-									<p:column>
-										<p:outputLabel value="#{l}" />
-										<br />
-										<p:commandButton action="#{submitJobBean.choose(l)}"
-											value="Escolher" update=":form:panel3" />
-									</p:column>
-								</p:outputPanel>
-							</p:ring>
-							<f:facet name="footer">
-								<p:commandButton value="Inclusão de novo Software" />
-							</f:facet>
-						</p:panel>
-						<br />
-						<p:panel id="panel3" header="Descrição do Software">
-							<p:outputLabel value="#{submitJobBean.label}" />
-						</p:panel>
-						<br />
-						<p:panel id="panel" header="Lista de Arquivos de Entrada">
-							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center">
-								<p:column headerText="Arquivo" width="300">
-									<h:outputText value="#{f.name}" />
-								</p:column>
-
-								<p:column headerText="Tamanho" width="150">
-									<h:outputText value="#{f.size}" />
-								</p:column>
-
-								<p:column headerText="Data e horário de Upload" width="150">
-									<h:outputText value="#{f.uploadTimestamp}" />
-								</p:column>
-
-								<p:column headerText="Escolher" width="70"
-									style="text-align: center">
-									<p:selectBooleanCheckbox required="true" />
-								</p:column>
-							</p:dataTable>
-
-							<f:facet name="footer">
-								<p:commandButton value="Realizar novo Upload"
 									action="upload_file?faces-redirect=true" />
 							</f:facet>
 						</p:panel>
