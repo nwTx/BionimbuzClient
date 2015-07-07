@@ -35,13 +35,11 @@ public class ConfigurationRepository implements ServletContextListener {
 		System.out.println("Initializing client application...");
 		System.out.println("Loading configurations...");
 
-		applicationConfiguration = ConfigurationLoader
-				.readConfiguration(
+		applicationConfiguration = ConfigurationLoader.readConfiguration(
 						"/Users/usuario/Documents/BioNimbuz/projetos/BionimbuzClient/conf/config.json",
 						ApplicationConfiguration.class);
 
-		programConfiguration = ConfigurationLoader
-				.readConfiguration(
+		programConfiguration = ConfigurationLoader.readConfiguration(
 						"/Users/usuario/Documents/BioNimbuz/projetos/BionimbuzClient/conf/programs.json",
 						ProgramConfiguration.class);
 

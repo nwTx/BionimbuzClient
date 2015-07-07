@@ -23,8 +23,18 @@
 		},
 		{
 			"id":1115, 
+			"name":"CoverageBed_new", 
+			"description":"Descrição do CoverageBed_new"
+		},
+		{
+			"id":1116, 
 			"name":"Bowtie2", 
 			"description":"Descrição do Bowtie2"
+		},
+		{
+			"id":1117, 
+			"name":"Outro Programa", 
+			"description":"Descrição do outro programa"
 		}
 	]
 }

@@ -31,7 +31,7 @@
 					<!-- Job's submenu -->
 					<p:submenu label="Tarefas">
 						<p:menuitem value="Submeter Tarefa" action="submit_job"/>
-						<p:menuitem value="Cancelar Tarefa" />
+						<p:menuitem value="Cancelar Tarefa" action="cancel_job"/>
 						<p:menuitem value="Visualizar Status de Tarefa" />
 						<p:menuitem value="Histórico de Tarefas" />
 					</p:submenu>
@@ -41,6 +41,11 @@
 						<p:menuitem value="Meus Arquivos" action="file_list?faces-redirect=true"/>
 						<p:menuitem value="Enviar Arquivo" action="upload_file?faces-redirect=true"/>
 						<p:menuitem value="Realizar Download" action="download_file?faces-redirect=true" />
+					</p:submenu>
+					
+					<!-- Statistics' Menu -->
+					<p:submenu label="Estatísticas">
+						<p:menuitem value="Estatísticas de Execução" />
 					</p:submenu>
 				</p:panelMenu>
 			</h:form>

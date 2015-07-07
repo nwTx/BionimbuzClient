@@ -6,6 +6,7 @@ import br.unb.cic.bionimbuz.communication.RestCommunicator;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.info.FileInfo;
 import br.unb.cic.bionimbuz.model.User;
+import br.unb.cic.bionimbuz.rest.action.DeleteFile;
 import br.unb.cic.bionimbuz.rest.action.Login;
 import br.unb.cic.bionimbuz.rest.action.Logout;
 import br.unb.cic.bionimbuz.rest.action.Upload;
@@ -69,9 +70,9 @@ public class RestService {
 		return resp.isUploaded();
 	}
 	
-	public boolean deleteFile(FileInfo fileInfo) {
+	public boolean deleteFile(FileInfo fileInfo) throws ServerNotReachableException {
 		RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
-		DeleteFileResponse response = restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
+		DeleteFileResponse response = (DeleteFileResponse) restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
 		
 		return response.isDeleted();
 	}

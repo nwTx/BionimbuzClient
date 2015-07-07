@@ -64,6 +64,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>cancel_job</from-outcome>
+			<to-view-id>/pages/private/cancel_job.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>download_file</from-outcome>
 			<to-view-id>/pages/private/download_file.xhtml</to-view-id>
 			<redirect />

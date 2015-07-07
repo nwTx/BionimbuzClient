@@ -31,11 +31,9 @@
    <PROCESS-ITEM-OUTPUT ID="file_list::#pages#private#file_list.xhtml"
     NAME="output4" PATH="/pages/private/file_list.xhtml"
     TARGET="rules:#pages#private#file_list.xhtml" TITLE="file_list" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT
-    ID="download_file::#pages#private#download_file.xhtml"
-    NAME="output5" PATH="/pages/private/download_file.xhtml"
-    TARGET="rules:#pages#private#download_file.xhtml"
-    TITLE="download_file" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="cancel_job::#pages#private#cancel_job.xhtml"
+    NAME="output5" PATH="/pages/private/cancel_job.xhtml"
+    TARGET="rules:#pages#private#cancel_job.xhtml" TITLE="cancel_job" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
     ID="edit_personal_data::#pages#private#edit_personal_data.xhtml"
     NAME="output6" PATH="/pages/private/edit_personal_data.xhtml"
@@ -75,4 +73,6 @@
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#pages#public#sign_in.xhtml"
   PATH="/pages/public/sign_in.xhtml" SHAPE="320,817,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#private#cancel_job.xhtml"
+  PATH="/pages/private/cancel_job.xhtml" SHAPE="320,817,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>
