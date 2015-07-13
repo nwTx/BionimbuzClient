@@ -70,6 +70,12 @@ public class RestService {
 		return resp.isUploaded();
 	}
 	
+	/**
+	 * Requests a file exclusion by the server
+	 * @param fileInfo
+	 * @return
+	 * @throws ServerNotReachableException
+	 */
 	public boolean deleteFile(FileInfo fileInfo) throws ServerNotReachableException {
 		RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
 		DeleteFileResponse response = (DeleteFileResponse) restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);

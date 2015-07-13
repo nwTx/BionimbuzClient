@@ -1,28 +1,38 @@
 package br.unb.cic.bionimbuz.rest.action;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 
+import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
-import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
+import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
 
 public class DeleteFile extends Action {
-
+	private static final String REST_DELETE_FILE_URL = "/rest/file/"; 
+	
 	@Override
 	public void setup(Client client, RequestInfo reqInfo) {
-		// TODO Auto-generated method stub
+		System.out.println("Login REST client initialized...");
 
+		this.target = client.target(appConfiguration.getBionimbuzAddress());
+		this.request = (DeleteFileRequest) reqInfo;
 	}
 
 	@Override
 	public void prepareTarget() {
-		// TODO Auto-generated method stub
-
+		target = target.path(REST_DELETE_FILE_URL);
+		
+		System.out.println("Dispatching request to URI (POST): " + target.getUri());
 	}
 
 	@Override
-	public ResponseInfo execute() {
-		// TODO Auto-generated method stub
-		return null;
+	public DeleteFileResponse execute() {
+		DeleteFileResponse response = target
+				.request(MediaType.APPLICATION_JSON)
+				.post(Entity.entity(request, MediaType.APPLICATION_JSON), DeleteFileResponse.class);
+		
+		return response;
 	}
 
 }

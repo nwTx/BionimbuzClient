@@ -16,7 +16,7 @@ import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 
 public class Upload extends Action {
-	private static final String REST_UPLOAD_URL = "/rest/upload";
+	private static final String REST_UPLOAD_URL = "/rest/file/upload";
 	
 	@Override
 	public void setup(Client client, RequestInfo requestInfo) {
