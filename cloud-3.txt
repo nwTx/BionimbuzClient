@@ -1,0 +1,17 @@
+o   Parte 1: Para cada modelo de serviço (IaaS, PaaS, SaaS):
+– Escolher um provedor,
+– Criar uma conta;
+– Disponibilizar um serviço/software.
+
+o   Parte 2: Descrever...
+– Os desafios;
+– As dificuldades;
+– As facilidades;
+– O tempo gasto para disponibilizar o serviço/software em 
+  cada um dos modelos de serviço.
+  
+Modelo Infrastructure-as-a-Service (IaaS): Amazon Web Services
+
+
+
+Modelo Platform-as-a-Service (PaaS): Heroku
