@@ -45,7 +45,7 @@ public class SessionBean implements Serializable {
 			return "server_offline";
 		}
 
-		// If user.cpf is not null, user sent to the server was found on database
+		// If user.cpf is not null, user sent to the server was found on database and had its data retrieved back to this client
 		if (responseUser.getCpf() != null) {
 			loggedUser = responseUser;
 

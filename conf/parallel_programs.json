@@ -1,0 +1,15 @@
+{
+	"programs":
+	[
+		{
+			"id":1211, 
+			"name":"Parallel_Bowtie", 
+			"description":"Descrição do Parallel Bowtie"
+		},
+		{
+			"id":1212, 
+			"name":"Parallel_Sam2Bed", 
+			"description":"Descrição do Parallel Sam2Bed"
+		}
+	]
+}

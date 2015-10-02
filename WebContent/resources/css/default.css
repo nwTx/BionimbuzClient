@@ -15,23 +15,64 @@
 	font-family: OpenSans;
 }
 
-/* .error-header {
-	font-family: OpenSans;
-	position: fixed;
-	top: 0%;
-	left: 0%;
-	heigth: 50px;
-	padding: 15px 0;
-	background: #4599d3;
-	width: 100%;
-	display: block;
-	color: white;
-	font-size: 22px;
-	box-shadow: 0px 0px 20px #0a0a0a;
-} */
+.workflow_btn {
+	border: 1px solid !important;
+	border-color: #4599d3 !important;
+	background: #ffffff !important;
+	color: #4599d3 !important;
+	line-height: 25px !important;
+	border-radius: 2px !important;
+	box-shadow: none !important;
+	transition: 0.5s !important;
+	display: block !important;
+	width: 200px !important;
+	margin: 0 auto !important;
+	margin-top: 8px !important;
+	margin-bottom: 8px !important;
+}
+
+.workflow_btn:hover {
+	background-color: #4599d3 !important;
+	color: #ffffff !important;
+}
+
+.controller_btn {
+	border: 1px solid !important;
+	border-color: #f77462 !important;
+	background: #ffffff !important;
+	color: #f77462 !important;
+	line-height: 25px !important;
+	border-radius: 2px !important;
+	box-shadow: none !important;
+	transition: 0.5s !important;
+	width: 200px !important;
+	margin: 0 auto !important;
+	margin-top: 8px !important;
+	margin-bottom: 8px !important;
+	margin-left: 8px !important;
+	margin-right: 8px !important;
+}
+
+.controller_btn:hover {
+	background-color: #f77462 !important;
+	color: #ffffff !important;
+}
 
 .ui-ring-item {
 	width:  15em !important;
 	height: 8em !important;
 	background-color: #5BAAF3 !important;
+}
+
+.diagram-column {
+	width: 100px;
+}
+
+/* ===== Diagram Element Style ===== */
+.ui-diagram-element {
+	border: 0.2em dotted #5BAAF3;
+	width: 10em;
+	height: 4em;
+	line-height: 4em;
+	text-align: center;
 }

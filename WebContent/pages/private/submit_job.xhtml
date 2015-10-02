@@ -10,62 +10,99 @@
 	<!-- Center Content -->
 	<ui:define name="conteudo_centro">
 		<h:form id="form">
+			<p:growl id="growl" autoUpdate="true" showDetail="true" showSummary="true"/>
+
 			<p:wizard nextLabel="Avançar" backLabel="Voltar">
-				<p:tab id="workflow_1" title="Primeira Etapa">
-					<p:panel>
-						<p:panel header="Escolha o software">
-							<p:ring value="#{submitJobBean.programList}" var="l" easing="easeInOutBack">
-								<p:outputPanel id="job_pnl" style="text-align:center;" layout="block">
-									<br />
-									<p:commandButton id="choose_btn" value="#{l.name}"
-										 />
-										<!-- update=":form:panel1" -->
-									<br />
-									<p:commandButton id="info_btn" icon="ui-icon-circle-zoomin" />
-									<p:overlayPanel for="info_btn" showEffect="fade" hideEffect="fade" 
-										style="width: 200px !important">
-										<p:panel header="Descrição do Software">
-											<p:outputLabel value="teste #{l.description}" />
+				<p:tab id="workflow_1" title="Workflow">
+					<p:panel id="workflow_pnl">   
+							<p:panelGrid style="width: 100%">
+								<p:row>
+									<!-- Workflow diagram -->
+									<p:column style="width: 60em; vertical-align: top">
+										<p:panel>
+											<p:panel id="controller_pnl" header="Controles">
+												<p:commandButton value="Desfazer" 
+													styleClass="controller_btn" 
+													action="#{submitJobBean.undoAddition()}" 
+													update="form:workflow_pnl" 
+													disabled="#{submitJobBean.workflowIndex le 0}"/>
+													
+												<p:commandButton value="Reiniciar" 
+													styleClass="controller_btn" 
+													action="#{submitJobBean.resetWorkflow()}" 
+													update="form:workflow_pnl" 
+													disabled="#{submitJobBean.workflowIndex == 0}" />
+											</p:panel>
+											
+											<p:diagram id="workflow_diagram" 
+												value="#{submitJobBean.workflowModel}" 
+												style="height:600px"/>
 										</p:panel>
-									</p:overlayPanel>
-								</p:outputPanel>
-							</p:ring>
-							<f:facet name="footer">
-								<p:commandButton value="Inclusão de novo Software" />
-							</f:facet>
-						</p:panel>
-						<br />
-						<!-- <p:panel id="panel1" header="Descrição do Software">
-							<p:outputLabel value="#{}" />
-						</p:panel> -->
-						<br />
-						<p:panel header="Lista de Arquivos de Entrada">
-							<p:dataTable value="#{sessionBean.loggedUser.files}" var="f">
-								<p:column headerText="Arquivo" width="200">
-									<h:outputText value="#{f.name}" />
-								</p:column>
+									</p:column>
+									
+									<!-- Action colum -->
+									<p:column style="width: 20em; vertical-align: top">
+										<p:panel>
+											<!-- Sequential element section -->
+											<p:dataTable value="#{submitJobBean.sequentialProgramList}" var="p">
+												<f:facet name="header">
+													Adicionar elemento sequencial
+													<p:commandButton id="info" value="Info"/>
+													
+													<p:overlayPanel for="info" 
+														showEvent="mouseover" showEffect="fade" appendToBody="true" 
+														hideEvent="mouseout" hideEffect="fade">
+														teste
+													</p:overlayPanel>
+													</f:facet>
+												
+												<p:column>
+													<p:commandButton id="bowtie" value="#{p.name}" 
+														action="#{submitJobBean.addSequentialElement(p.name)}" 
+														update="form:workflow_pnl" 
+														styleClass="workflow_btn" />
+												</p:column>
+											</p:dataTable>
+											
+											<br />
+											
+											<!-- Parallel element section -->
+											<p:dataTable id="parallel_datatable" value="#{submitJobBean.parallelProgramList}" var="p" >
+												<f:facet name="header">Adicionar elemento paralelo</f:facet>
+												
+												<p:column>
+													<p:commandButton id="program_btn" value="#{p.name}" 
+														styleClass="workflow_btn"
+														disabled="#{submitJobBean.parallelElementAdded}"/>
+													
+													<p:overlayPanel id="overlay" for="program_btn" 
+														at="bottom" showEffect="fade" hideEffect="fade" >
+														
+														<p:panel header="Adicionar instâncias">
+															Quantas instâncias você gostaria de adicionar paralelamente? <br /> <br />
+															<p:inputText id="instances" size="7" /> instâncias
 
-								<p:column headerText="Tamanho" width="200">
-									<h:outputText value="#{f.size}" />
-								</p:column>
-
-								<p:column headerText="Data e horário de Upload" width="200">
-									<h:outputText value="#{f.uploadTimestamp}" />
-								</p:column>
-
-								<p:column headerText="Escolher" width="70"
-									style="text-align: center">
-									<p:selectBooleanCheckbox required="true" />
-								</p:column>
-							</p:dataTable>
-
-							<f:facet name="footer">
-								<p:commandButton id="upload_btn" value="Realizar novo Upload" 
-									action="upload_file?faces-redirect=true" />
-							</f:facet>
-						</p:panel>
+															<p:commandButton value="Adicionar" 
+																actionListener="#{submitJobBean.addParallelElement(p.name)}" 
+																update="form:workflow_pnl"/>
+														</p:panel>
+													</p:overlayPanel>
+												</p:column>
+												
+											</p:dataTable>
+											
+										</p:panel>
+									</p:column>
+								</p:row>
+							</p:panelGrid>	
 					</p:panel>
 				</p:tab>
+				
+			 	<p:tab title="Arquivos">
+			 	</p:tab>
+
+			 	<p:tab title="Resumo">
+			 	</p:tab>
 			</p:wizard>
 		</h:form>
 	</ui:define>
