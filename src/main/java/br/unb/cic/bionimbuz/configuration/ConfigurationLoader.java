@@ -26,15 +26,12 @@ public class ConfigurationLoader {
 			config = mapper.readValue(new File(path), c);
 			
 		} catch (JsonParseException e) {
-			e.printStackTrace();
 			System.out.println("(JsonParseException) Error loading configuration: " + e.getMessage());
 			
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
 			System.out.println("(JsonMappingException) Error loading configuration: " + e.getMessage());
 			
 		} catch (IOException e) {
-			e.printStackTrace();
 			System.out.println("(IOException) Error loading configuration: " + e.getMessage());
 			
 		}
