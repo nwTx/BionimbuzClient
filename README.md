@@ -26,4 +26,4 @@ A interface será desenvolvida utilizando tecnologias web para prover acesso ao 
 * **PrettyFaces**: Framework para reescrever as URLs da aplicação
 
 #### Utilização (em construção)
-* Este projeto deve ser copiado para a pasta /<<home>>/<<usuario>>/BioNimbuz
+* Este projeto deve ser copiado para a pasta /pasta_home/nome_usuario/BioNimbuz
