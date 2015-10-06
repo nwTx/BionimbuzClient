@@ -25,3 +25,5 @@ A interface será desenvolvida utilizando tecnologias web para prover acesso ao 
 * **Spring Security**: para gerenciar a segurança da aplicação
 * **PrettyFaces**: Framework para reescrever as URLs da aplicação
 
+#### Utilização (em construção)
+* Este projeto deve ser copiado para a pasta /<home>/<usuario>/BioNimbuz
