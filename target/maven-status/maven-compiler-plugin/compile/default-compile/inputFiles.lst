@@ -1,3 +1,4 @@
+/Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/SignUp.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/LogoutRequest.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/info/FileInfo.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Logout.java
@@ -29,8 +30,11 @@
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/User.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/SessionBean.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/LoginResponse.java
+/Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/SignUpResponse.java
+/Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/SignUpRequest.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/service/RestService.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/test/JobStatusInfoTest.java
+/Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/SignUpBean.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Login.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/RequestInfo.java
 /Users/usuario/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/FileUploadBean.java
