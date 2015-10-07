@@ -3,6 +3,7 @@ package br.unb.cic.bionimbuz.configuration;
 import javax.inject.Named;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  * 	Class that acts as a repository for all client Configuration File
@@ -24,7 +25,7 @@ import javax.servlet.ServletContextListener;
  */
 @Named
 public class ConfigurationRepository implements ServletContextListener {
-	private static final String CONFIGURATION_FOLDER = "/Users/usuario/Documents/BioNimbuz/projetos/BionimbuzClient/conf/";
+	private static final String CONFIGURATION_FOLDER = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/conf/";
 	private static Configuration applicationConfiguration;
 	private static Configuration parallelProgramList;
 	private static Configuration sequentialProgramList;

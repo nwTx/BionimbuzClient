@@ -7,9 +7,19 @@
    <PROCESS-ITEM-OUTPUT ID="success::#pages#private#home.xhtml"
     NAME="output" PATH="/pages/private/home.xhtml"
     TARGET="rules:#pages#private#home.xhtml" TITLE="success" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="sign_in::#pages#public#sign_in.xhtml"
-    NAME="output1" PATH="/pages/public/sign_in.xhtml"
-    TARGET="rules:#pages#public#sign_in.xhtml" TITLE="sign_in" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="sign_up::#pages#public#sign_up.xhtml"
+    NAME="output1" PATH="/pages/public/sign_up.xhtml"
+    TARGET="rules:#pages#public#sign_up.xhtml" TITLE="sign_up" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="sign_up_success::#pages#public#sign_in_success.xhtml"
+    NAME="output2" PATH="/pages/public/sign_in_success.xhtml"
+    TARGET="rules:#pages#public#sign_in_success.xhtml"
+    TITLE="sign_up_success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="sign_up_error::#pages#public#sign_up_error.xhtml" NAME="output3"
+    PATH="/pages/public/sign_up_error.xhtml"
+    TARGET="rules:#pages#public#sign_up_error.xhtml"
+    TITLE="sign_up_error" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#pages#*" PATH="/pages/*" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
@@ -35,10 +45,10 @@
     NAME="output5" PATH="/pages/private/cancel_job.xhtml"
     TARGET="rules:#pages#private#cancel_job.xhtml" TITLE="cancel_job" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
-    ID="edit_personal_data::#pages#private#edit_personal_data.xhtml"
-    NAME="output6" PATH="/pages/private/edit_personal_data.xhtml"
-    TARGET="rules:#pages#private#edit_personal_data.xhtml"
-    TITLE="edit_personal_data" model-entity="JSFProcessItemOutput"/>
+    ID="download_file::#pages#private#download_file.xhtml"
+    NAME="output6" PATH="/pages/private/download_file.xhtml"
+    TARGET="rules:#pages#private#download_file.xhtml"
+    TITLE="download_file" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#*" PATH="/*" SHAPE="32,641,0,0" model-entity="JSFProcessGroup">
@@ -71,8 +81,12 @@
     TARGET="rules:#pages#public#login.xhtml" TITLE="login" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#pages#public#sign_in.xhtml"
-  PATH="/pages/public/sign_in.xhtml" SHAPE="320,817,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#pages#private#cancel_job.xhtml"
   PATH="/pages/private/cancel_job.xhtml" SHAPE="320,817,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#public#sign_up_error.xhtml"
+  PATH="/pages/public/sign_up_error.xhtml" SHAPE="320,1329,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#public#sign_in_success.xhtml"
+  PATH="/pages/public/sign_in_success.xhtml" SHAPE="320,881,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#public#sign_up.xhtml"
+  PATH="/pages/public/sign_up.xhtml" SHAPE="320,881,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

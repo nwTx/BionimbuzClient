@@ -10,13 +10,6 @@
 </h:head>
 
 <h:body>
-	
-	<h:panelGroup layout="block" styleClass="error-header" rendered="#{param.error}">
-		<center>
-			Usuário/Senha incorretos
-		</center>
-	</h:panelGroup>
-
 	<div class="centered">
 		<h:form>
 			<p:growl id="growl" autoUpdate="true" />
@@ -24,15 +17,7 @@
 				<center>
 					<br /> <br />
 					<h:graphicImage value="/resources/img/logo_bionimbuz.jpg" />
-					<br /> <br /> <br />
-					<h:panelGrid columns="2" cellpadding="4" >
-						<p:inputText placeholder="Login" value="#{sessionBean.user.login}" />
-						<br />
-						<p:password placeholder="Senha" value="#{sessionBean.user.password}" />
-					</h:panelGrid>
-					<br />
-					<h:commandButton value="Entrar" style="width: 200px" action="#{sessionBean.login()}" styleClass="btn" />
-					<br /> <br />
+					<br /> <br /> <br /> Não foi possível concluir o cadastro!
 				</center>
 			</p:panel>
 		</h:form>

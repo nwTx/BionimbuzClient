@@ -9,15 +9,18 @@ import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.action.DeleteFile;
 import br.unb.cic.bionimbuz.rest.action.Login;
 import br.unb.cic.bionimbuz.rest.action.Logout;
+import br.unb.cic.bionimbuz.rest.action.SignUp;
 import br.unb.cic.bionimbuz.rest.action.Upload;
 import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
 import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
+import br.unb.cic.bionimbuz.rest.request.SignUpRequest;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
+import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 
 public class RestService {
@@ -81,5 +84,18 @@ public class RestService {
 		DeleteFileResponse response = (DeleteFileResponse) restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
 		
 		return response.isDeleted();
+	}
+	
+	/**
+	 * Requests an user signup 
+	 * @param user
+	 * @return
+	 * @throws ServerNotReachableException
+	 */
+	public boolean signUp(User user) throws ServerNotReachableException {
+		RequestInfo signUpRequest = new SignUpRequest(user);
+		SignUpResponse response = (SignUpResponse) restCommunicator.sendRequest(new SignUp(), signUpRequest);
+		
+		return response.isAdded();
 	}
 }
