@@ -12,7 +12,12 @@
 		<h:form>
 			<p:panel>
 				<p:panel>
-					Visualize aqui sua lista de arquivos
+					<p:outputLabel value="Listagem de arquivos para deleção"/>
+
+					<f:facet name="footer">
+						<p:outputLabel value="Observação: " style="font-weight: bold; color: red; font-size: 11px"/>
+						<p:outputLabel value="Essa ação não pode ser desfeita!" style="font-size: 11px"/>
+					</f:facet>
 				</p:panel>
 				<br />
 				<p:panel>
@@ -29,11 +34,11 @@
 						<p:column headerText="Upload em" width="200">
 							<h:outputText value="#{f.uploadTimestamp}" />
 						</p:column>
+						
+						<p:column headerText="Excluir arquivo" width="100" style="text-align: center">
+							<p:commandButton id="delete_btn" icon="ui-icon-circle-close" action="#{deleteFileBean.deleteFile(f)}"/>
+						</p:column>
 					</p:dataTable>
-
-					<f:facet name="footer">
-						<p:commandButton value="Realizar novo Upload" action="upload_file?faces-redirect=true"/>
-					</f:facet>
 				</p:panel>
 			</p:panel>
 		</h:form>

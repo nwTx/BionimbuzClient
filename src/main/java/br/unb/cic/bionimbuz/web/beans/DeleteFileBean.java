@@ -8,11 +8,10 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 
 @Named
 @RequestScoped
-public class FileListBean {
-	private FileInfo fileInfo;
+public class DeleteFileBean {
 	private RestService restService;
 	
-	public FileListBean() {
+	public DeleteFileBean() {
 		restService = new RestService();
 	}
 	
@@ -21,8 +20,12 @@ public class FileListBean {
 	 * @param file
 	 */
 	public void deleteFile(FileInfo file) {
+		System.out.println(file.getName());
+		System.out.println(file.getSize());
+		System.out.println(file.getId());
+		
 		try {
-			restService.deleteFile(fileInfo);
+			restService.deleteFile(file);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

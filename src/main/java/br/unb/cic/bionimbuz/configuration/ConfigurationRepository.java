@@ -6,13 +6,13 @@ import javax.servlet.ServletContextListener;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * Class that acts as a repository for all client Configuration File
+ * Class that acts as a repository for all client Configuration File by using Dependency Injection
  * 
  * +---------------------------------------------------------------------+ |
- * Config File | Content |
+ * Config File 					| 	Content	 			|
  * +---------------------------------------------------------------------+ | |
- * Contains informations about: | | | - Uploaded files direcotory | |
- * applicationConfiguration | - Bionimbuz Server IP | | | - Application IP |
+ * Contains informations about: | 						|	 	| - Uploaded files direcotory | |
+ * applicationConfiguration 	| - Bionimbuz Server IP | | | - Application IP |
  * +---------------------------------------------------------------------+ | |
  * Contains informations about the | | programConfiguration | programs stored at
  * BioNimbuZ | | | server |
@@ -22,7 +22,8 @@ import javax.swing.filechooser.FileSystemView;
  */
 @Named
 public class ConfigurationRepository implements ServletContextListener {
-	private static final String CONFIGURATION_FOLDER = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/conf/";
+	public  static final String UPLOADED_FILES_DIRECTORY = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/uploaded-files/";
+	private static final String CONFIGURATION_FOLDER 	 = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/conf/";
 	private static Configuration applicationConfiguration;
 	private static Configuration parallelProgramList;
 	private static Configuration sequentialProgramList;

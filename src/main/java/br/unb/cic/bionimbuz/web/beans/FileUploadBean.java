@@ -25,13 +25,14 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 @SessionScoped
 public class FileUploadBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final String UPLOADED_FILES_DIRECTORY = ConfigurationRepository.getApplicationConfiguration().getUploadedFilesDirectory();  
 	private RestService restService;
+	private OutputStream outputStream;
 	
 	@Inject private SessionBean sessionBean;
 
 	public FileUploadBean() {
 		restService = new RestService();
+		outputStream = null;
 	}
 
 	/**
@@ -61,6 +62,13 @@ public class FileUploadBean implements Serializable {
 			e.printStackTrace();
 
 			return;
+		} finally {
+			try {
+				outputStream.flush();
+				outputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		// If file was uploaded with success, adds file on user file list
@@ -78,24 +86,21 @@ public class FileUploadBean implements Serializable {
 	 */
 	public void saveTempFile(String fileName, InputStream in) {
 		try {
-
 			// write the inputStream to a FileOutputStream
-			OutputStream out = new FileOutputStream(new File(UPLOADED_FILES_DIRECTORY + fileName));
+			outputStream = new FileOutputStream(new File(ConfigurationRepository.UPLOADED_FILES_DIRECTORY + fileName));
 
 			int read = 0;
 			byte[] bytes = new byte[1024];
 
 			while ((read = in.read(bytes)) != -1) {
-				out.write(bytes, 0, read);
+				outputStream.write(bytes, 0, read);
 			}
 
 			in.close();
-			out.flush();
-			out.close();
 
 			System.out.println("New file created!");
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
-		}
+		} 
 	}
 }

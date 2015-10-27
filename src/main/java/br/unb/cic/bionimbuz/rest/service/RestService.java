@@ -79,7 +79,7 @@ public class RestService {
 	 * @return
 	 * @throws ServerNotReachableException
 	 */
-	public boolean deleteFile(FileInfo fileInfo) throws ServerNotReachableException {
+	public boolean deleteFile(FileInfo fileInfo) throws Exception {
 		RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
 		DeleteFileResponse response = (DeleteFileResponse) restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
 		

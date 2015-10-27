@@ -17,7 +17,7 @@
 				<p:menubar>
 					<f:facet name="options">
 						<p:commandButton value="Home" action="home" icon="ui-icon-home" />
-						<p:commandButton value="Vinícius de A. Ramos" action="edit_personal_data" icon="ui-icon-person" />
+						<p:commandButton value="#{sessionBean.loggedUser.nome}" action="edit_personal_data" icon="ui-icon-person" />
 						<p:commandButton value="Logout" action="#{sessionBean.logout()}" icon="ui-icon-close" />
 					</f:facet>
 				</p:menubar>
@@ -40,6 +40,7 @@
 					<p:submenu label="Arquivos">
 						<p:menuitem value="Meus Arquivos" action="file_list?faces-redirect=true"/>
 						<p:menuitem value="Enviar Arquivo" action="upload_file?faces-redirect=true"/>
+						<p:menuitem value="Deletar Arquivo" action="delete_file?faces-redirect=true"/>
 						<p:menuitem value="Realizar Download" action="download_file?faces-redirect=true" />
 					</p:submenu>
 					
