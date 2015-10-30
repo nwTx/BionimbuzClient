@@ -84,8 +84,8 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>edit_personal_data</from-outcome>
-			<to-view-id>/pages/private/edit_personal_data.xhtml</to-view-id>
+			<from-outcome>edit_profile</from-outcome>
+			<to-view-id>/pages/private/profile/edit_profile.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

@@ -2,6 +2,10 @@ package br.unb.cic.bionimbuz.configuration;
 
 import javax.ejb.Singleton;
 
+/**
+ * It is the data contained in config.json 
+ * @author Vinicius
+ */
 @Singleton
 public class ApplicationConfiguration implements Configuration {
 	private String address;

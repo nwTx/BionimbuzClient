@@ -1,6 +1,8 @@
 package br.unb.cic.bionimbuz.web.beans;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import br.unb.cic.bionimbuz.info.FileInfo;
@@ -24,7 +26,11 @@ public class FileListBean {
 		try {
 			restService.deleteFile(fileInfo);
 		} catch (Exception e) {
+			FacesMessage message = new FacesMessage("Ocorreu um erro interno... Tente novamente mais tarde", "");
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			
 			e.printStackTrace();
+			return;
 		}
 	}
 }

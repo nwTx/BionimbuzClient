@@ -8,9 +8,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Loads any configuration file
+ * Loads configuration files
+ * 
  * @author Vinicius
- *
  */
 public class ConfigurationLoader {
 

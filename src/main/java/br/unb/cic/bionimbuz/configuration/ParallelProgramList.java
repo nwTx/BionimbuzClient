@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import br.unb.cic.bionimbuz.info.ProgramInfo;
 
+/**
+ * List of the programs which can be parallelized
+ *  
+ * @author Vinicius
+ */
 public class ParallelProgramList implements Configuration {
 	private ArrayList<ProgramInfo> programs = new ArrayList<ProgramInfo>();
 

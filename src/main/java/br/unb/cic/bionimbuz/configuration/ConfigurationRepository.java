@@ -6,17 +6,11 @@ import javax.servlet.ServletContextListener;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * Class that acts as a repository for all client Configuration File by using Dependency Injection
- * 
- * +---------------------------------------------------------------------+ |
- * Config File 					| 	Content	 			|
- * +---------------------------------------------------------------------+ | |
- * Contains informations about: | 						|	 	| - Uploaded files direcotory | |
- * applicationConfiguration 	| - Bionimbuz Server IP | | | - Application IP |
- * +---------------------------------------------------------------------+ | |
- * Contains informations about the | | programConfiguration | programs stored at
- * BioNimbuZ | | | server |
- * +---------------------------------------------------------------------+
+ * Class that acts as a repository for all Configuration Files
+ * Configuration Files:
+ * 		- config.json
+ * 		- parallel_programs.json
+ * 		- sequential_programs.json
  * 
  * @author Vinicius
  */

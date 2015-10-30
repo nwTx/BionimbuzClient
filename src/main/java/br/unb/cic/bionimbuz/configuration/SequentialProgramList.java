@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import br.unb.cic.bionimbuz.info.ProgramInfo;
 
+/**
+ * List of the programs that can't be parallalized
+ * 
+ * @author Vinicius
+ */
 public class SequentialProgramList implements Configuration {
 	private ArrayList<ProgramInfo> programs = new ArrayList<ProgramInfo>();
 
