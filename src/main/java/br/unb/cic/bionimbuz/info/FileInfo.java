@@ -2,9 +2,13 @@ package br.unb.cic.bionimbuz.info;
 
 public class FileInfo {
 	private Long id;
+	
 	private Long userId;
+	
 	private String name;
+	
 	private String uploadTimestamp;
+	
 	private long size;
 
 	public Long getId() {

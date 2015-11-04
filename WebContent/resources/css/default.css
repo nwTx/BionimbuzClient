@@ -5,6 +5,10 @@
 	src: url('#{resource['font/Exo.otf']}');
 }
 
+body {
+	font-size: 13px;
+}
+
 .ui-widget {
 	font-size: 95%;
 	font-family: OpenSans;

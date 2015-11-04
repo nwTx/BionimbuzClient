@@ -58,31 +58,54 @@
 			<to-view-id>/pages/error/server_offline.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+
+		<!-- Home -->
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/pages/private/home.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		
+		<!-- Workflow -->
 		<navigation-case>
-			<from-outcome>submit_job</from-outcome>
-			<to-view-id>/pages/private/submit_job.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>file_list</from-outcome>
-			<to-view-id>/pages/private/file_list.xhtml</to-view-id>
+			<from-outcome>pipeline_composer</from-outcome>
+			<to-view-id>/pages/private/workflows/pipeline_composer.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>cancel_job</from-outcome>
-			<to-view-id>/pages/private/cancel_job.xhtml</to-view-id>
+			<to-view-id>/pages/private/workflows/cancel_job.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>job_status</from-outcome>
+			<to-view-id>/pages/private/workflows/job_status.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>job_history</from-outcome>
+			<to-view-id>/pages/private/workflows/job_history.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		
+		<!-- Files -->
+		<navigation-case>
+			<from-outcome>file_list</from-outcome>
+			<to-view-id>/pages/private/files/file_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>upload_file</from-outcome>
+			<to-view-id>/pages/private/files/file_list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>download_file</from-outcome>
-			<to-view-id>/pages/private/download_file.xhtml</to-view-id>
+			<to-view-id>/pages/private/files/upload_file.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		
+		<!-- Edit Profile -->
 		<navigation-case>
 			<from-outcome>edit_profile</from-outcome>
 			<to-view-id>/pages/private/profile/edit_profile.xhtml</to-view-id>

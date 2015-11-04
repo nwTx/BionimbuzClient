@@ -30,18 +30,18 @@
 				<p:panelMenu>
 					<!-- Job's submenu -->
 					<p:submenu label="Tarefas">
-						<p:menuitem value="Submeter Tarefa" action="submit_job"/>
+						<p:menuitem value="Submeter Tarefa" action="pipeline_composer"/>
 						<p:menuitem value="Cancelar Tarefa" action="cancel_job"/>
-						<p:menuitem value="Visualizar Status de Tarefa" />
-						<p:menuitem value="Histórico de Tarefas" />
+						<p:menuitem value="Visualizar Status de Tarefa" action="job_status" />
+						<p:menuitem value="Histórico de Tarefas" action="job_history"/>
 					</p:submenu>
 					
 					<!-- File's submenu -->
 					<p:submenu label="Arquivos">
-						<p:menuitem value="Meus Arquivos" action="file_list?faces-redirect=true"/>
-						<p:menuitem value="Enviar Arquivo" action="upload_file?faces-redirect=true"/>
-						<p:menuitem value="Deletar Arquivo" action="delete_file?faces-redirect=true"/>
-						<p:menuitem value="Realizar Download" action="download_file?faces-redirect=true" />
+						<p:menuitem value="Meus Arquivos" action="file_list"/>
+						<p:menuitem value="Enviar Arquivo" action="upload_file"/>
+						<p:menuitem value="Deletar Arquivo" action="delete_file"/>
+						<p:menuitem value="Realizar Download" action="download_file" />
 					</p:submenu>
 					
 					<!-- Statistics' Menu -->
