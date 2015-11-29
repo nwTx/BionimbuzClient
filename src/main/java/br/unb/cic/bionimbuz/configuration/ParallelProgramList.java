@@ -2,7 +2,7 @@ package br.unb.cic.bionimbuz.configuration;
 
 import java.util.ArrayList;
 
-import br.unb.cic.bionimbuz.info.ProgramInfo;
+import br.unb.cic.bionimbuz.model.ProgramInfo;
 
 /**
  * List of the programs which can be parallelized

@@ -1,4 +1,4 @@
-package br.unb.cic.bionimbuz.util;
+package br.unb.cic.bionimbuz.model;
 
 public interface ServerStatus {
 	public static final boolean SERVER_ONLINE  = true;

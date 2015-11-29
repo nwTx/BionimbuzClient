@@ -1,14 +1,16 @@
-package br.unb.cic.bionimbuz.info;
+package br.unb.cic.bionimbuz.model;
 
 public class ProgramInfo {
-	private int id;
+	private long id;
+	
 	private String name;
+	
 	private String description;
 
 	public ProgramInfo() {
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 

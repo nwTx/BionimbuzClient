@@ -6,16 +6,14 @@
 }
 
 body {
-	font-size: 13px;
+	font-size: 10px;
 }
 
 .ui-widget {
-	font-size: 95%;
 	font-family: OpenSans;
 }
 
 .ui-widget .ui-widget {
-	font-size: 100%;
 	font-family: OpenSans;
 }
 
@@ -70,6 +68,10 @@ body {
 
 .diagram-column {
 	width: 100px;
+}
+
+.ui-wizard-step-title {
+	font-size:12px !important;
 }
 
 /* ===== Diagram Element Style ===== */

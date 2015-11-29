@@ -1,6 +1,7 @@
 package br.unb.cic.bionimbuz.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.primefaces.model.diagram.Connection;
@@ -12,22 +13,37 @@ import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointAnchor;
 
 public class WorkflowDiagram {
-	private static final int     INITIAL_X_POSITION   = 1;
-	private static final int     X_POSITION_INCREMENT = 15;
-	private static final String  Y_POSITION		      = "15em";
+	// Constants
+	private static final int    INITIAL_X_POSITION    = 1;
+	private static final int    X_POSITION_INCREMENT  = 15;
+	private static final String Y_POSITION		      = "15em";
 	
+	// Primefaces diagram model
 	private DefaultDiagramModel workflowModel;
+	
+	// Elements of the pipeline
 	private Element fromElement;
 	private Element toElement;
 	private StraightConnector connector;
+	
+	// X position of the element
 	private int elementXPosition = INITIAL_X_POSITION;
+	
+	// List to implement the 'undo' action
 	private List<Element> undoWorkflowList;
+	
+	// Index to point to the actual element 
 	private int workflowIndex = 0;
+	
+	// The Pipeline object
+	private Pipeline pipeline;
 	
 	/**
 	 * Calls the method that initializes everything...
 	 */
-	public WorkflowDiagram() {
+	public WorkflowDiagram(User user, String description) {
+		// Initializes Pipeline
+		this.pipeline = new Pipeline(user, description);
 		initialize();
 	}
 	
@@ -43,16 +59,14 @@ public class WorkflowDiagram {
 		undoWorkflowList = new ArrayList<Element>();
 		
 		// First element > "Início"
-		fromElement = new Element("Início", getElementXPosition(), Y_POSITION);
-		fromElement.addEndPoint(createEndPoint(EndPointAnchor.LEFT));
-		fromElement.addEndPoint(createEndPoint(EndPointAnchor.RIGHT));
+		fromElement = createNewElement("Início", getElementXPosition(), Y_POSITION);
 		
 		// Adds the 'from element' to the diagram 
 		workflowModel.addElement(fromElement);
 		
 		connector = new StraightConnector();
-		connector.setPaintStyle("{strokeStyle:'#404a4e', lineWidth:2}");
-		connector.setHoverPaintStyle("{strokeStyle:'#20282b'}");
+		connector.setPaintStyle(DiagramStyle.CONNECTOR_STYLE);
+		connector.setHoverPaintStyle(DiagramStyle.CONNECTOR_HOVER_STYLE);
 		
 		undoWorkflowList.add(fromElement);
 	}
@@ -61,11 +75,18 @@ public class WorkflowDiagram {
 	 * Adds a sequential program element to the workflow model
 	 * @param program
 	 */
-	public void addSequentialElement(String program) {
+	public void addSequentialElement(ProgramInfo program, UploadedFileInfo inputFile) {
+		// Creates the new Job
+		JobInfo newJob = new JobInfo();
+		newJob.setServiceId(program.getId());
+		newJob.setTimestamp(Calendar.getInstance().getTime().toString());
+		newJob.addInput(inputFile);
+		
+		// Adds it to the pipeline
+		pipeline.addJobToPipeline(newJob);
+		
 		// Create new element
-		toElement = new Element(program, getElementXPosition(), Y_POSITION);
-        toElement.addEndPoint(createEndPoint(EndPointAnchor.LEFT));
-        toElement.addEndPoint(createEndPoint(EndPointAnchor.RIGHT));
+		toElement = createNewElement(program.getName(), getElementXPosition(), Y_POSITION);
         
         // Adds workflow model to workflow list and update its index 
         undoWorkflowList.add(toElement);
@@ -87,13 +108,9 @@ public class WorkflowDiagram {
 		String xPosition = getElementXPosition();
 		
 		// Create new element
-		toElement = new Element(program, xPosition, Y_POSITION);
-        toElement.addEndPoint(createEndPoint(EndPointAnchor.LEFT));
-        toElement.addEndPoint(createEndPoint(EndPointAnchor.RIGHT));
+		toElement = createNewElement(program, xPosition, Y_POSITION);
         
-        Element sElement = new Element(program, xPosition, Y_POSITION);
-        sElement.addEndPoint(createEndPoint(EndPointAnchor.LEFT));
-        sElement.addEndPoint(createEndPoint(EndPointAnchor.RIGHT));
+        Element sElement = createNewElement(program, xPosition, Y_POSITION);
         
         // Adds workflow model to workflow list and update its index
         undoWorkflowList.add(toElement);
@@ -108,9 +125,7 @@ public class WorkflowDiagram {
 	
 	public void endWorkflow() {
 		// Create new element
-		toElement = new Element("Fim", getElementXPosition(), Y_POSITION);
-        toElement.addEndPoint(createEndPoint(EndPointAnchor.LEFT));
-        toElement.addEndPoint(createEndPoint(EndPointAnchor.RIGHT));
+		toElement = createNewElement("Fim", getElementXPosition(), Y_POSITION);
         
         // Adds workflow model to workflow list and update its index
         undoWorkflowList.add(toElement);
@@ -125,14 +140,28 @@ public class WorkflowDiagram {
 	}
 	
 	/**
+	 * Returns a new diagram element
+	 * @param text
+	 * @return
+	 */
+	private Element createNewElement(String text, String xPosition, String yPosition) {
+		// Create new element
+		Element newElement = new Element(text, xPosition, yPosition);
+		newElement.addEndPoint(createEndPoint(EndPointAnchor.LEFT));
+		newElement.addEndPoint(createEndPoint(EndPointAnchor.RIGHT));
+		
+		return newElement;
+	}
+	
+	/**
 	 * Create DotEndPoint to connect elements
 	 * @param anchor
 	 * @return
 	 */
 	private EndPoint createEndPoint(EndPointAnchor anchor) {
         DotEndPoint endPoint = new DotEndPoint(anchor);
-        endPoint.setStyle("{fillStyle:'#404a4e'}");
-        endPoint.setHoverStyle("{fillStyle:'#20282b'}");
+        endPoint.setStyle(DiagramStyle.DOT_STYLE);
+        endPoint.setHoverStyle(DiagramStyle.DOT_HOVER_STYLE);
         
         return endPoint;
     }
@@ -167,7 +196,7 @@ public class WorkflowDiagram {
 		elementXPosition = INITIAL_X_POSITION;
 		workflowIndex = 0;
 		
-		/* Reset variables */
+		// Reset variables
 		initialize();
 	}
 	

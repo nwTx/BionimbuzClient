@@ -18,7 +18,7 @@ import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
-import br.unb.cic.bionimbuz.info.FileInfo;
+import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 
 @Named
@@ -40,7 +40,7 @@ public class FileUploadBean implements Serializable {
 	 * @param event
 	 */
 	public void handleUploadedFile(FileUploadEvent event) {
-		FileInfo fileInfo = new FileInfo();
+		UploadedFileInfo fileInfo = new UploadedFileInfo();
 		
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		

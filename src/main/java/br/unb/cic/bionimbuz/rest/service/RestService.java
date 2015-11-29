@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import br.unb.cic.bionimbuz.communication.RestCommunicator;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
-import br.unb.cic.bionimbuz.info.FileInfo;
+import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.action.DeleteFile;
 import br.unb.cic.bionimbuz.rest.action.Login;
@@ -66,7 +66,7 @@ public class RestService {
 	 * @return
 	 * @throws IOException
 	 */
-	public boolean uploadFile(FileInfo fileInfo) throws Exception {
+	public boolean uploadFile(UploadedFileInfo fileInfo) throws Exception {
 		RequestInfo uploadRequest = new UploadRequest(fileInfo);
 		UploadResponse resp = (UploadResponse) restCommunicator.sendRequest(new Upload(), uploadRequest);
 		
@@ -79,7 +79,7 @@ public class RestService {
 	 * @return
 	 * @throws ServerNotReachableException
 	 */
-	public boolean deleteFile(FileInfo fileInfo) throws Exception {
+	public boolean deleteFile(UploadedFileInfo fileInfo) throws Exception {
 		RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
 		DeleteFileResponse response = (DeleteFileResponse) restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
 		

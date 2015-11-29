@@ -1,22 +1,22 @@
 package br.unb.cic.bionimbuz.rest.request;
 
-import br.unb.cic.bionimbuz.info.FileInfo;
+import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 
 public class UploadRequest implements RequestInfo {
-	private FileInfo fileInfo;
+	private UploadedFileInfo fileInfo;
 
 	public UploadRequest() {
 	}
 
-	public UploadRequest(FileInfo fileInfo) {
+	public UploadRequest(UploadedFileInfo fileInfo) {
 		this.fileInfo = fileInfo;
 	}
 
-	public FileInfo getFileInfo() {
+	public UploadedFileInfo getFileInfo() {
 		return fileInfo;
 	}
 
-	public void setFileInfo(FileInfo fileInfo) {
+	public void setFileInfo(UploadedFileInfo fileInfo) {
 		this.fileInfo = fileInfo;
 	}
 

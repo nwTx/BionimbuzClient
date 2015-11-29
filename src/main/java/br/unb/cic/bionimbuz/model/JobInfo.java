@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import br.unb.cic.bionimbuz.info.FileInfo;
-
 public class JobInfo {
 
 	private String id = UUID.randomUUID().toString();
@@ -16,18 +14,19 @@ public class JobInfo {
 
 	private String args = "";
 
-	private List<FileInfo> inputs = new ArrayList<FileInfo>();
+	private List<UploadedFileInfo> inputs;
 
 	private List<String> outputs = new ArrayList<String>();
 
-	private long timestamp;
+	private String timestamp;
+
+	public JobInfo() {
+		this.inputs = new ArrayList<UploadedFileInfo>();
+		this.outputs = new ArrayList<String>();
+	}
 
 	public String getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getLocalId() {
@@ -54,13 +53,13 @@ public class JobInfo {
 		this.args = args;
 	}
 
-	public List<FileInfo> getInputs() {
+	public List<UploadedFileInfo> getInputs() {
 		return inputs;
 	}
 
-	public void addInput(FileInfo fileInfo) {
+	public void addInput(UploadedFileInfo fileInfo) {
 		// Verify if it wasn't already added
-		for (FileInfo f : inputs) {
+		for (UploadedFileInfo f : inputs) {
 			if (f.getId().equals(fileInfo.getId())) {
 				return;
 			}
@@ -76,11 +75,11 @@ public class JobInfo {
 		this.outputs = outputs;
 	}
 
-	public long getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(long timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
 

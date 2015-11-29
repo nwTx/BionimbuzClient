@@ -5,13 +5,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import br.unb.cic.bionimbuz.info.FileInfo;
+import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 
 @Named
 @RequestScoped
 public class FileListBean {
-	private FileInfo fileInfo;
+	private UploadedFileInfo fileInfo;
 	private RestService restService;
 	
 	public FileListBean() {
@@ -22,7 +22,7 @@ public class FileListBean {
 	 * Handle file delete request by the user
 	 * @param file
 	 */
-	public void deleteFile(FileInfo file) {
+	public void deleteFile(UploadedFileInfo file) {
 		try {
 			restService.deleteFile(fileInfo);
 		} catch (Exception e) {

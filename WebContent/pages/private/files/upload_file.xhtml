@@ -28,7 +28,8 @@
 				</p:panel>
 				<br />
 				<p:panel id="panel">
-					<p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center">
+					<p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center"
+						rows="15" emptyMessage="Nenhum arquivo encontrado">
 						<f:facet name="header">Sua lista de arquivos</f:facet>
 						<p:column headerText="Nome" width="300">
 							<h:outputText value="#{f.name}" />

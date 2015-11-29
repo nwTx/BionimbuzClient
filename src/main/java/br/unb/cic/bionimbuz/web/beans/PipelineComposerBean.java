@@ -13,7 +13,8 @@ import javax.inject.Named;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
-import br.unb.cic.bionimbuz.info.ProgramInfo;
+import br.unb.cic.bionimbuz.model.UploadedFileInfo;
+import br.unb.cic.bionimbuz.model.ProgramInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.WorkflowDiagram;
 
@@ -34,26 +35,28 @@ public class PipelineComposerBean implements Serializable {
 	// Control attributes
 	private boolean parallelElementAdded = false;
 	private boolean workflowFinished = false;
+	private ProgramInfo program;
+	private String workflowDescription;
 	
 	// Logged user
 	private User loggedUser;
 	
 	@PostConstruct
 	public void init() {
-		this.workflowDiagram = new WorkflowDiagram();
 		this.loggedUser = sessionBean.getLoggedUser();
+		this.workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription);
 	}
 	
 	/**
 	 * Adds a sequential element to the workflow diagram
 	 */
-	public void addSequentialElement(String program) {
-		workflowDiagram.addSequentialElement(program);
+	public void addSequentialElement(UploadedFileInfo inputFile) {
+		workflowDiagram.addSequentialElement(this.program, inputFile);
 		
 		// Reset variable
         parallelElementAdded = false;
         
-        showMessage("Elemento " + program + " adicionado");
+        showMessage("Elemento " + program.getName() + " adicionado");
 	}
 	
 	/**
@@ -132,4 +135,17 @@ public class PipelineComposerBean implements Serializable {
 	public User getLoggedUser() {
 		return loggedUser;
 	}
+	
+	public void setProgram(ProgramInfo program){
+		this.program = program;
+	}
+
+	public String getWorkflowDescription() {
+		return workflowDescription;
+	}
+
+	public void setWorkflowDescription(String workflowDescription) {
+		this.workflowDescription = workflowDescription;
+	}
 }
+

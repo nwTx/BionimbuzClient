@@ -4,6 +4,7 @@
 	url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 
 body {
+	font-size: 12px;
 	background-image: url("/BionimbuzClient/resources/img/bground.jpg");
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
@@ -16,7 +17,6 @@ input {
 	font-family: 'Open Sans', sans-serif !important;
 	text-align: center;
 	border-radius: 0px !important;
-	font-size: 18px;
 	font-weight: 10;
 	padding: 10px 0 !important;
 	width: 250px;

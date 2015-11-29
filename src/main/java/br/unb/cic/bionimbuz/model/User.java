@@ -2,8 +2,6 @@ package br.unb.cic.bionimbuz.model;
 
 import java.util.List;
 
-import br.unb.cic.bionimbuz.info.FileInfo;
-
 public class User {
 	private Long id;
 
@@ -21,7 +19,7 @@ public class User {
 
 	private String securityToken;
 
-	private List<FileInfo> files;
+	private List<UploadedFileInfo> files;
 
 	public Long getId() {
 		return id;
@@ -87,11 +85,11 @@ public class User {
 		this.securityToken = securityToken;
 	}
 
-	public List<FileInfo> getFiles() {
+	public List<UploadedFileInfo> getFiles() {
 		return files;
 	}
 
-	public void setFiles(List<FileInfo> files) {
+	public void setFiles(List<UploadedFileInfo> files) {
 		this.files = files;
 	}
 

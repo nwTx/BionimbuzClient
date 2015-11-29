@@ -1,6 +1,6 @@
-package br.unb.cic.bionimbuz.info;
+package br.unb.cic.bionimbuz.model;
 
-public class FileInfo {
+public class UploadedFileInfo {
 	private Long id;
 	
 	private Long userId;
