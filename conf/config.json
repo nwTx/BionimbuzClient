@@ -1,5 +1,5 @@
 {
 	"address":"http://127.0.0.1:8080",
-	"bionimbuzAddress":"http://127.0.0.1:9090",
+	"bionimbuzAddress":"http://192.168.252.132:8080",
 	"uploadedFilesDirectory":"/Users/monstrim/upload-bionimbuz"
 }

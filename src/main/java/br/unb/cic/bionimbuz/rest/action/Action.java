@@ -15,8 +15,11 @@ import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 
 public abstract class Action {
 	private final String PING_URL = "/rest/ping";
+	
 	protected ApplicationConfiguration appConfiguration = ConfigurationRepository.getApplicationConfiguration();
+	
 	protected RequestInfo request;
+	
 	protected WebTarget target;
 	
 	public abstract void setup(Client client, RequestInfo reqInfo);
