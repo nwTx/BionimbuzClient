@@ -33,11 +33,11 @@ public class Upload extends Action {
 
     @Override
     public UploadResponse execute() {
-        logAction(REST_UPLOAD_URL);
+        logAction(REST_UPLOAD_URL, Upload.class);
         MultipartFormDataOutput multipart = new MultipartFormDataOutput();
 
         try {
-            multipart.addFormData("file", new FileInputStream(new File(ConfigurationRepository.UPLOADED_FILES_DIRECTORY
+            multipart.addFormData("file", new FileInputStream(new File(ConfigurationRepository.UPLOADED_FILES_PATH
                     + ((UploadRequest) request).getFileInfo().getName())), MediaType.MULTIPART_FORM_DATA_TYPE);
             multipart.addFormData("file_info", ((UploadRequest) request).getFileInfo(), MediaType.APPLICATION_JSON_TYPE);
         } catch (FileNotFoundException e) {

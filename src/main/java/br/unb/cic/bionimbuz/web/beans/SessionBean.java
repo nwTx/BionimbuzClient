@@ -6,13 +6,16 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.service.RestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named
 @SessionScoped
 public class SessionBean implements Serializable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionBean.class);
 
     private static final long serialVersionUID = 1L;
     private final RestService restService;
@@ -33,12 +36,11 @@ public class SessionBean implements Serializable {
     public String login() {
         User responseUser = null;
 
-        // ServerNotReachable Exception
         try {
             responseUser = restService.login(user);
-        
+
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Server is offline (or HTTP 500 - Internal error)");
 
             return "login?faces-redirect=true&internal_error=true";
         }

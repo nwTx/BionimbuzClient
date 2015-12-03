@@ -11,25 +11,27 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 @Named
 @RequestScoped
 public class DeleteFileBean {
-	private RestService restService;
-	
-	public DeleteFileBean() {
-		restService = new RestService();
-	}
-	
-	/**
-	 * Handle file delete request by the user
-	 * @param file
-	 */
-	public void deleteFile(UploadedFileInfo file) {
-		try {
-			restService.deleteFile(file);
-		} catch (Exception e) {
-			FacesMessage message = new FacesMessage("Ocorreu um erro interno... Tente novamente mais tarde", "");
-			FacesContext.getCurrentInstance().addMessage(null, message);
-			
-			e.printStackTrace();
-			return;
-		}
-	}
+
+    private RestService restService;
+
+    public DeleteFileBean() {
+        restService = new RestService();
+    }
+
+    /**
+     * Handle file delete request by the user
+     *
+     * @param file
+     */
+    public void deleteFile(UploadedFileInfo file) {
+        try {
+            restService.deleteFile(file);
+
+        } catch (Exception e) {
+            FacesMessage message = new FacesMessage("Ocorreu um erro interno... Tente novamente mais tarde", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+
+            return;
+        }
+    }
 }

@@ -65,12 +65,12 @@
                                                 </center>
                                             </f:facet>
 
-                                            <!-- Sequential element section -->
+                                            <!-- Add element section -->
                                             <p:dataTable
-                                                value="#{pipelineComposerBean.sequentialProgramList}" var="p"
+                                                value="#{pipelineComposerBean.programList}" var="p"
                                                 paginator="true" rows="5">
                                                 <f:facet name="header">
-                                                    Adicionar elemento sequencial
+                                                    Lista de programas disponiveis
                                                     <p:commandButton id="info" value="Info" />
 
                                                     <p:overlayPanel for="info" showEvent="mouseover"
@@ -84,34 +84,6 @@
                                                     <p:commandButton id="bowtie" value="#{p.name}" onclick="PF('file_dlg').show()"
                                                                      action="#{pipelineComposerBean.setProgram(p)}"
                                                                      update="form:workflow_diagram" styleClass="workflow_btn" />
-                                                </p:column>
-                                            </p:dataTable>
-
-                                            <br />
-
-                                            <!-- Parallel element section -->
-                                            <p:dataTable id="parallel_datatable" paginator="true" rows="5"
-                                                         value="#{pipelineComposerBean.parallelProgramList}" var="p">
-                                                <f:facet name="header">Adicionar elemento paralelo</f:facet>
-
-                                                <p:column>
-                                                    <p:commandButton id="program_btn" value="#{p.name}"
-                                                                     styleClass="workflow_btn"
-                                                                     disabled="#{pipelineComposerBean.parallelElementAdded || !pipelineComposerBean.workflowFinished} " />
-
-                                                    <p:overlayPanel id="overlay" for="program_btn" at="bottom"
-                                                                    showEffect="fade" hideEffect="fade">
-
-                                                        <p:panel header="Adicionar instâncias">
-                                                            Quantas instâncias você gostaria de adicionar paralelamente? <br />
-                                                            <br />
-                                                            <p:inputText id="instances" size="7" /> instâncias
-
-                                                            <p:commandButton value="Adicionar"
-                                                                             actionListener="#{pipelineComposerBean.addParallelElement(p.name)}"
-                                                                             update="form:workflow_pnl" />
-                                                        </p:panel>
-                                                    </p:overlayPanel>
                                                 </p:column>
                                             </p:dataTable>
                                             <br />
@@ -141,39 +113,50 @@
     </ui:decorate>
 
     <!-- File dialog -->
-    <p:dialog widgetVar="file_dlg" header="Escolha de Arquivo de Entrada" showEffect="fade" hideEffect="fade" modal="true" >
+    <p:dialog widgetVar="file_dlg" header="Escolha a entrada desse passo" showEffect="fade" hideEffect="fade" modal="true" >
         <p:panel>
-            <p:dataTable value="#{pipelineComposerBean.loggedUser.files}" var="f" style="width: 60em"
-                         paginator="true" rows="5" emptyMessage="Nenhum arquivo encontrado">
-                <f:facet name="header">Sua lista de arquivos</f:facet>
-                <p:column headerText="ID" width="5em" style="text-align: center">
-                    <p:outputLabel value="#{f.id}"/>
-                </p:column>
+            <p:tabView>
+                <p:tab title="Arquivos">
+                    <p:dataTable value="#{pipelineComposerBean.loggedUser.files}" var="f" style="width: 60em"
+                                 paginator="true" rows="5" emptyMessage="Nenhum arquivo encontrado">
+                        <f:facet name="header">Sua lista de arquivos</f:facet>
+                        <p:column headerText="ID" width="5em" style="text-align: center">
+                            <p:outputLabel value="#{f.id}"/>
+                        </p:column>
 
-                <p:column headerText="Nome" width="25em" style="text-align: center">
-                    <p:outputLabel value="#{f.name}"/>
-                </p:column>
+                        <p:column headerText="Nome" width="25em" style="text-align: center">
+                            <p:outputLabel value="#{f.name}"/>
+                        </p:column>
 
-                <p:column headerText="Upload em" width="25em" style="text-align: center">
-                    <p:outputLabel value="#{f.uploadTimestamp}"/>
-                </p:column>
+                        <p:column headerText="Upload em" width="25em" style="text-align: center">
+                            <p:outputLabel value="#{f.uploadTimestamp}"/>
+                        </p:column>
 
-                <p:column headerText="Tamanho" width="25em" style="text-align: center">
-                    <p:outputLabel value="#{f.size} Kb"/>
-                </p:column>
+                        <p:column headerText="Tamanho" width="25em" style="text-align: center">
+                            <p:outputLabel value="#{f.size} Kb"/>
+                        </p:column>
 
-                <p:column headerText="Escolher arquivo" width="25em" style="text-align: center">
-                    <p:commandButton icon="ui-icon-check" iconPos="center" 
-                                     action="#{pipelineComposerBean.addSequentialElement(f)}" 
-                                     update=":form:workflow_pnl"
-                                     onclick="PF('file_dlg').hide()"/>
-                </p:column>
-            </p:dataTable>
-        </p:panel>
-        <br />
-        <p:panel>
-            Caso não tenho realizado o upload dos arquivos necessários para essa execução, faça-o 
-            <p:commandLink value="aqui" action="upload_file"/>
+                        <p:column headerText="Escolher arquivo" width="25em" style="text-align: center">
+                            <p:commandButton icon="ui-icon-check" iconPos="center" 
+                                             action="#{pipelineComposerBean.addSequentialElement(f)}" 
+                                             update=":form:workflow_pnl"
+                                             onclick="PF('file_dlg').hide()"/>
+                        </p:column>
+                    </p:dataTable>
+                    <br />
+                    <p:panel>
+                        Caso não tenho realizado o upload dos arquivos necessários para essa execução, faça-o 
+                        <p:commandLink value="aqui" action="upload_file"/>
+                    </p:panel>
+                </p:tab>
+                <p:tab title="URL">
+                    Digite a URL de onde se encontra seu arquivo (site, URL, link do Dropbox, link do Google Drive, ...):
+                    <p:inputText style="width: 99%" placeholder="http://" />
+                    <br /> <br />
+                    <p:commandButton value="Ok"/>
+                </p:tab>
+            </p:tabView>
+
         </p:panel>
     </p:dialog>
 

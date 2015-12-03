@@ -21,131 +21,129 @@ import br.unb.cic.bionimbuz.model.WorkflowDiagram;
 @Named
 @SessionScoped
 public class PipelineComposerBean implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	@Inject SessionBean sessionBean;
-	
-	// List of programs
-	private List<ProgramInfo> sequentialProgramList = ConfigurationRepository.getSequentialProgramList().getPrograms();
-	private List<ProgramInfo> parallelProgramList = ConfigurationRepository.getParallelProgramList().getPrograms();
-	
-	// Workflow
-	private WorkflowDiagram workflowDiagram;
-	
-	// Control attributes
-	private boolean parallelElementAdded = false;
-	private boolean workflowFinished = false;
-	private ProgramInfo program;
-	private String workflowDescription;
-	
-	// Logged user
-	private User loggedUser;
-	
-	@PostConstruct
-	public void init() {
-		this.loggedUser = sessionBean.getLoggedUser();
-		this.workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription);
-	}
-	
-	/**
-	 * Adds a sequential element to the workflow diagram
-	 */
-	public void addSequentialElement(UploadedFileInfo inputFile) {
-		workflowDiagram.addSequentialElement(this.program, inputFile);
-		
-		// Reset variable
+
+    private static final long serialVersionUID = 1L;
+
+    @Inject
+    SessionBean sessionBean;
+
+    // List of programs
+    private List<ProgramInfo> programList = ConfigurationRepository.getProgramList().getPrograms();
+
+    // Workflow
+    private WorkflowDiagram workflowDiagram;
+
+    // Control attributes
+    private boolean parallelElementAdded = false;
+    private boolean workflowFinished = false;
+    private ProgramInfo program;
+    private String workflowDescription;
+
+    // Logged user
+    private User loggedUser;
+
+    @PostConstruct
+    public void init() {
+        this.loggedUser = sessionBean.getLoggedUser();
+        this.workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription);
+    }
+
+    /**
+     * Adds a sequential element to the workflow diagram
+     */
+    public void addSequentialElement(UploadedFileInfo inputFile) {
+        workflowDiagram.addSequentialElement(this.program, inputFile);
+
+        // Reset variable
         parallelElementAdded = false;
-        
+
         showMessage("Elemento " + program.getName() + " adicionado");
-	}
-	
-	/**
-	 * Add parallel element to the workflow diagram
-	 * @param program
-	 */
-	public void addParallelElement(String program) {
-		workflowDiagram.addParallelElement(program);
-	
-		// Tells that a parallel element was added 
-		parallelElementAdded = true;
-		
-		showMessage("Elemento " + program + " adicionado");
-	}
-	
-	/**
-	 * Resets current workflow
-	 */
-	public void resetWorkflow() {
-		workflowDiagram.resetWorkflow();
-		
-		showMessage("Workflow reiniciado");
-	}
-	
-	/**
-	 * Undo an element addition and updates the references
-	 */
-	public void undoAddition() {
-		workflowDiagram.undoAddition();
-		
-		showMessage("Ação desfeita");
-	}
-	
-	/**
-	 * Show message in growl component (View)
-	 * @param msg
-	 */
-	private void showMessage (String msg) {
-		FacesMessage message = new FacesMessage(msg, "");
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
-	
-	public void endWorkflow() {
-		workflowDiagram.endWorkflow();
-        
+    }
+
+    /**
+     * Add parallel element to the workflow diagram
+     *
+     * @param program
+     */
+    public void addParallelElement(String program) {
+        workflowDiagram.addParallelElement(program);
+
+        // Tells that a parallel element was added 
+        parallelElementAdded = true;
+
+        showMessage("Elemento " + program + " adicionado");
+    }
+
+    /**
+     * Resets current workflow
+     */
+    public void resetWorkflow() {
+        workflowDiagram.resetWorkflow();
+
+        showMessage("Workflow reiniciado");
+    }
+
+    /**
+     * Undo an element addition and updates the references
+     */
+    public void undoAddition() {
+        workflowDiagram.undoAddition();
+
+        showMessage("Ação desfeita");
+    }
+
+    /**
+     * Show message in growl component (View)
+     *
+     * @param msg
+     */
+    private void showMessage(String msg) {
+        FacesMessage message = new FacesMessage(msg, "");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void endWorkflow() {
+        workflowDiagram.endWorkflow();
+
         // Finish workflow
         workflowFinished = true;
-		
-        showMessage("Workflow finalizado");
-	}
-	
-	public DefaultDiagramModel getWorkflowModel() {
-		return workflowDiagram.getWorkflow();
-	}
 
-	public List<ProgramInfo> getSequentialProgramList() {
-		return sequentialProgramList;
-	}
+        showMessage("Workflow finalizado!");
+    }
 
-	public List<ProgramInfo> getParallelProgramList() {
-		return parallelProgramList;
-	}
+    public DefaultDiagramModel getWorkflowModel() {
+        return workflowDiagram.getWorkflow();
+    }
 
-	public int getWorkflowIndex() {
-		return workflowDiagram.getWorkflowIndex();
-	}
+    public List<ProgramInfo> getProgramList() {
+        return programList;
+    }
 
-	public boolean isParallelElementAdded() {
-		return parallelElementAdded;
-	}
-	
-	public boolean isWorkflowFinished() {
-		return workflowFinished;
-	}
+    public int getWorkflowIndex() {
+        return workflowDiagram.getWorkflowIndex();
+    }
 
-	public User getLoggedUser() {
-		return loggedUser;
-	}
-	
-	public void setProgram(ProgramInfo program){
-		this.program = program;
-	}
+    public boolean isParallelElementAdded() {
+        return parallelElementAdded;
+    }
 
-	public String getWorkflowDescription() {
-		return workflowDescription;
-	}
+    public boolean isWorkflowFinished() {
+        return workflowFinished;
+    }
 
-	public void setWorkflowDescription(String workflowDescription) {
-		this.workflowDescription = workflowDescription;
-	}
+    public User getLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setProgram(ProgramInfo program) {
+        this.program = program;
+    }
+
+    public String getWorkflowDescription() {
+        return workflowDescription;
+    }
+
+    public void setWorkflowDescription(String workflowDescription) {
+        this.workflowDescription = workflowDescription;
+    }
 }
-

@@ -24,78 +24,84 @@ import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 
 public class RestService {
-	private RestCommunicator restCommunicator;
 
-	/**
-	 * Constructor that initializes the REST Communicator
-	 */
-	public RestService() {
-		restCommunicator = new RestCommunicator();
-	}
+    private RestCommunicator restCommunicator;
 
-	/**
-	 * Fires a Login request to the server
-	 * @param login
-	 * @param password
-	 * @throws Exception 
-	 */
-	public User login(User user) throws ServerNotReachableException {
-		RequestInfo loginRequest = new LoginRequest(user);		
-		LoginResponse resp = (LoginResponse) restCommunicator.sendRequest(new Login(), loginRequest);
-		
-		return resp.getUser();
-	}
-	
-	/**
-	 * Communicates an user logout to the server
-	 * @param user
-	 * @return
-	 * @throws ServerNotReachableException 
-	 */
-	public boolean logout (User user) throws ServerNotReachableException {
-		RequestInfo logoutRequest = new LogoutRequest(user);
-		LogoutResponse resp = (LogoutResponse) restCommunicator.sendRequest(new Logout(), logoutRequest);
-		
-		return resp.isLogoutSuccess();
-	}
-	
-	/**
-	 * Fires an Upload request to the server
-	 * @param filename
-	 * @param filepath
-	 * @return
-	 * @throws IOException
-	 */
-	public boolean uploadFile(UploadedFileInfo fileInfo) throws Exception {
-		RequestInfo uploadRequest = new UploadRequest(fileInfo);
-		UploadResponse resp = (UploadResponse) restCommunicator.sendRequest(new Upload(), uploadRequest);
-		
-		return resp.isUploaded();
-	}
-	
-	/**
-	 * Requests a file exclusion by the server
-	 * @param fileInfo
-	 * @return
-	 * @throws ServerNotReachableException
-	 */
-	public boolean deleteFile(UploadedFileInfo fileInfo) throws Exception {
-		RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
-		DeleteFileResponse response = (DeleteFileResponse) restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
-		
-		return response.isDeleted();
-	}
-	
-	/**
-	 * Requests an user signup 
-	 * @param user
-	 * @return
-	 * @throws ServerNotReachableException
-	 */
-	public boolean signUp(User user) throws ServerNotReachableException {
-		RequestInfo signUpRequest = new SignUpRequest(user);
-		SignUpResponse response = (SignUpResponse) restCommunicator.sendRequest(new SignUp(), signUpRequest);
-		
-		return response.isAdded();
-	}
+    /**
+     * Constructor that initializes the REST Communicator
+     */
+    public RestService() {
+        restCommunicator = new RestCommunicator();
+    }
+
+    /**
+     * Fires a Login request to the server
+     *
+     * @param login
+     * @param password
+     * @throws Exception
+     */
+    public User login(User user) throws ServerNotReachableException {
+        RequestInfo loginRequest = new LoginRequest(user);
+        LoginResponse resp = (LoginResponse) restCommunicator.sendRequest(new Login(), loginRequest);
+
+        return resp.getUser();
+    }
+
+    /**
+     * Communicates an user logout to the server
+     *
+     * @param user
+     * @return
+     * @throws ServerNotReachableException
+     */
+    public boolean logout(User user) throws ServerNotReachableException {
+        RequestInfo logoutRequest = new LogoutRequest(user);
+        LogoutResponse resp = (LogoutResponse) restCommunicator.sendRequest(new Logout(), logoutRequest);
+
+        return resp.isLogoutSuccess();
+    }
+
+    /**
+     * Fires an Upload request to the server
+     *
+     * @param filename
+     * @param filepath
+     * @return
+     * @throws IOException
+     */
+    public boolean uploadFile(UploadedFileInfo fileInfo) throws Exception {
+        RequestInfo uploadRequest = new UploadRequest(fileInfo);
+        UploadResponse resp = (UploadResponse) restCommunicator.sendRequest(new Upload(), uploadRequest);
+
+        return resp.isUploaded();
+    }
+
+    /**
+     * Requests a file exclusion by the server
+     *
+     * @param fileInfo
+     * @return
+     * @throws ServerNotReachableException
+     */
+    public boolean deleteFile(UploadedFileInfo fileInfo) throws Exception {
+        RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
+        DeleteFileResponse response = (DeleteFileResponse) restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
+
+        return response.isDeleted();
+    }
+
+    /**
+     * Requests an user signup
+     *
+     * @param user
+     * @return
+     * @throws ServerNotReachableException
+     */
+    public boolean signUp(User user) throws ServerNotReachableException {
+        RequestInfo signUpRequest = new SignUpRequest(user);
+        SignUpResponse response = (SignUpResponse) restCommunicator.sendRequest(new SignUp(), signUpRequest);
+
+        return response.isAdded();
+    }
 }

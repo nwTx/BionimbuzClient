@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class Action {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Action.class);
 
     private final String PING_URL = "/rest/ping";
@@ -36,7 +37,6 @@ public abstract class Action {
      * Ping server
      *
      * @return
-     * @throws ServerNotReachableException
      */
     public boolean ping() {
 
@@ -55,30 +55,33 @@ public abstract class Action {
                     .get(Response.class);
 
         } catch (WebApplicationException w) {
-            w.printStackTrace();
-            System.out.println(w.getMessage());
+            LOGGER.error("[WebApplicationException] " + w.getMessage());
 
-        } catch (ProcessingException p) {            
-            p.printStackTrace();
-            System.out.println(p.getMessage());
+        } catch (ProcessingException p) {
+            LOGGER.error("[ProcessingException] " + p.getMessage());
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-            
+            LOGGER.error("[Exception] " + e.getMessage());
+
         }
 
         // If Response is not 200, throws an Exception
         if (response.getStatus() != 200) {
-            System.out.println("Resposta diferente de 200: " + response.getStatus());
-            System.out.println("StatusInfo: " + response.getStatusInfo());
+            LOGGER.warn("Response different from HTTP 200 (OK). Received [status=" + response.getStatus()
+                    + ", status-info=" + response.getStatusInfo() + "]");
         }
 
         client.close();
         return false;
     }
-    
-    protected void logAction(String path) {
-        LOGGER.info("Sending request to BioNimbuZ (path: " + path + ")");
+
+    /**
+     * Logs the request action
+     *
+     * @param path
+     * @param c
+     */
+    protected void logAction(String path, Class<? extends Action> c) {
+        LOGGER.info("[" + c.getSimpleName() + "] Sending request to BioNimbuZ (path: " + path + ")");
     }
 }

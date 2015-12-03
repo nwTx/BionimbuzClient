@@ -4,6 +4,8 @@ import javax.inject.Named;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.swing.filechooser.FileSystemView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class that acts as a repository for all Configuration Files Configuration
@@ -14,38 +16,28 @@ import javax.swing.filechooser.FileSystemView;
 @Named
 public class ConfigurationRepository implements ServletContextListener {
 
-    public static final String UPLOADED_FILES_DIRECTORY = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/uploaded-files/";
-    private static final String CONFIGURATION_FOLDER = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/conf/";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationRepository.class);
+
+    public static final String UPLOADED_FILES_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/uploaded-files/";
+    private static final String CONFIGURATION_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/conf/";
     private static Configuration applicationConfiguration;
-    private static Configuration parallelProgramList;
-    private static Configuration sequentialProgramList;
+    private static Configuration programList;
 
     /**
      * Called on Application Server start
      */
     @Override
     public void contextInitialized(ServletContextEvent servletContext) {
-        System.out.println("Initializing client application...");
-        System.out.println("Loading configurations...");
+        LOGGER.info("Initializing client application. Loading configurations...");
 
-        applicationConfiguration = ConfigurationLoader.readConfiguration(
-                CONFIGURATION_FOLDER + "config.json",
+        applicationConfiguration = ConfigurationLoader.readConfiguration(CONFIGURATION_PATH + "config.json",
                 ApplicationConfiguration.class);
 
-        sequentialProgramList = ConfigurationLoader.readConfiguration(
-                CONFIGURATION_FOLDER + "sequential_programs.json",
-                SequentialProgramList.class);
+        programList = ConfigurationLoader.readConfiguration(CONFIGURATION_PATH + "programs.json",
+                ProgramList.class);
 
-        parallelProgramList = ConfigurationLoader.readConfiguration(
-                CONFIGURATION_FOLDER + "parallel_programs.json",
-                ParallelProgramList.class);
-
-        System.out.println("Application Configuration loaded: "
-                + applicationConfiguration);
-        System.out.println("Sequential Programs loaded: "
-                + sequentialProgramList);
-        System.out.println("Parallel Programs loaded: " + parallelProgramList);
-
+        LOGGER.info("BioNimbuZ Client Application Configuration loaded: " + applicationConfiguration);
+        LOGGER.info("BioNimbuZ Programs loaded: " + programList);
     }
 
     /**
@@ -53,19 +45,15 @@ public class ConfigurationRepository implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent servletContext) {
-        System.out.println("Finishing client application...");
+        System.out.println("Destroying Client Application Context...");
     }
 
     public static ApplicationConfiguration getApplicationConfiguration() {
         return (ApplicationConfiguration) applicationConfiguration;
     }
 
-    public static ParallelProgramList getParallelProgramList() {
-        return (ParallelProgramList) parallelProgramList;
-    }
-
-    public static SequentialProgramList getSequentialProgramList() {
-        return (SequentialProgramList) sequentialProgramList;
+    public static ProgramList getProgramList() {
+        return (ProgramList) programList;
     }
 
 }

@@ -3,94 +3,95 @@ package br.unb.cic.bionimbuz.model;
 import java.util.List;
 
 public class User {
-	private Long id;
 
-	private String login;
+    private Long id;
 
-	private String password;
+    private String login;
 
-	private String nome;
+    private String password;
 
-	private String cpf;
+    private String nome;
 
-	private String email;
+    private String cpf;
 
-	private String celphone;
+    private String email;
 
-	private String securityToken;
+    private String celphone;
 
-	private List<UploadedFileInfo> files;
+    private String securityToken;
 
-	public Long getId() {
-		return id;
-	}
+    private List<UploadedFileInfo> files;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public String getCpf() {
-		return cpf;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+    public String getCpf() {
+        return cpf;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getCelphone() {
-		return celphone;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setCelphone(String celphone) {
-		this.celphone = celphone;
-	}
+    public String getCelphone() {
+        return celphone;
+    }
 
-	public String getSecurityToken() {
-		return securityToken;
-	}
+    public void setCelphone(String celphone) {
+        this.celphone = celphone;
+    }
 
-	public void setSecurityToken(String securityToken) {
-		this.securityToken = securityToken;
-	}
+    public String getSecurityToken() {
+        return securityToken;
+    }
 
-	public List<UploadedFileInfo> getFiles() {
-		return files;
-	}
+    public void setSecurityToken(String securityToken) {
+        this.securityToken = securityToken;
+    }
 
-	public void setFiles(List<UploadedFileInfo> files) {
-		this.files = files;
-	}
+    public List<UploadedFileInfo> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<UploadedFileInfo> files) {
+        this.files = files;
+    }
 
 }

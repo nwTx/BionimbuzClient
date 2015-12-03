@@ -9,29 +9,32 @@ import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 
 /**
- * Executes the REST action. Send the request to the server and wait for a response
+ * Executes the REST action. Send the request to the server and wait for a
+ * response
+ *
  * @author monstrim
  *
  */
 public class RestCommunicator {
 
-	/**
-	 * Send a request to the Bionimbuz main server to execute a requested operation and send back a ResponseInfo object
-	 * 
-	 * @param action
-	 * @param requestInfo
-	 * @return
-	 * @throws ServerNotReachableException
-	 */
-	public ResponseInfo sendRequest(Action action, RequestInfo requestInfo) throws ServerNotReachableException {
-		Client client = ClientBuilder.newClient();
+    /**
+     * Send a request to the Bionimbuz main server to execute a requested
+     * operation and send back a ResponseInfo object
+     *
+     * @param action
+     * @param requestInfo
+     * @return
+     * @throws ServerNotReachableException
+     */
+    public ResponseInfo sendRequest(Action action, RequestInfo requestInfo) throws ServerNotReachableException {
+        Client client = ClientBuilder.newClient();
 
-		action.setup(client, requestInfo);
-		action.prepareTarget();
-		action.ping();
-		ResponseInfo response = action.execute();
+        action.setup(client, requestInfo);
+        action.prepareTarget();
+        action.ping();
+        ResponseInfo response = action.execute();
 
-		return response;
-	}
+        return response;
+    }
 
 }

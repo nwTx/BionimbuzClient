@@ -25,12 +25,12 @@ public class Login extends Action {
 
     @Override
     public LoginResponse execute() {
-        logAction(REST_LOGIN_URL);
-        
+        logAction(REST_LOGIN_URL, Login.class);
+
         LoginResponse response = target
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(request, MediaType.APPLICATION_JSON), LoginResponse.class);
-       
+
         return response;
     }
 

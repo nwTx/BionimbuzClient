@@ -26,8 +26,8 @@ public class SignUp extends Action {
 
     @Override
     public ResponseInfo execute() {
-        logAction(SIGN_UP_URL);
-        
+        logAction(SIGN_UP_URL, SignUp.class);
+
         SignUpResponse response = target
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(request, MediaType.APPLICATION_JSON), SignUpResponse.class);

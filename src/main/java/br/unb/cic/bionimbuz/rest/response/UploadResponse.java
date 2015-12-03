@@ -1,43 +1,48 @@
 package br.unb.cic.bionimbuz.rest.response;
 
 public class UploadResponse implements ResponseInfo {
-	private boolean uploaded;
 
-	public UploadResponse() {
-	}
+    private boolean uploaded;
 
-	public UploadResponse(boolean uploaded) {
-		this.uploaded = uploaded;
-	}
+    public UploadResponse() {
+    }
 
-	public boolean isUploaded() {
-		return uploaded;
-	}
+    public UploadResponse(boolean uploaded) {
+        this.uploaded = uploaded;
+    }
 
-	public void setUploaded(boolean uploaded) {
-		this.uploaded = uploaded;
-	}
+    public boolean isUploaded() {
+        return uploaded;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (uploaded ? 1231 : 1237);
-		return result;
-	}
+    public void setUploaded(boolean uploaded) {
+        this.uploaded = uploaded;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UploadResponse other = (UploadResponse) obj;
-		if (uploaded != other.uploaded)
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (uploaded ? 1231 : 1237);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        UploadResponse other = (UploadResponse) obj;
+        if (uploaded != other.uploaded) {
+            return false;
+        }
+        return true;
+    }
 
 }

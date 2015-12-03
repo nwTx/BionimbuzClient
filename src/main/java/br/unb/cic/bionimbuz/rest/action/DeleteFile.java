@@ -23,19 +23,16 @@ public class DeleteFile extends Action {
     @Override
     public void prepareTarget() {
         // Path: /rest/file/{fileId}
-        System.out.println(this.fileId);
         target = target.path(REST_DELETE_FILE_URL + this.fileId);
     }
 
     @Override
     public DeleteFileResponse execute() {
-        logAction(REST_DELETE_FILE_URL);
-        
+        logAction(REST_DELETE_FILE_URL, DeleteFile.class);
+
         Response response = target
                 .request(MediaType.APPLICATION_JSON)
                 .delete();
-
-        System.out.println(response.getStatus());
 
         return null;
     }

@@ -18,7 +18,6 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/DeleteFile.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/SignUpRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/communication/RestCommunicator.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ParallelProgramList.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/SignUpBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Upload.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/exception/ServerNotReachableException.java
@@ -31,7 +30,6 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Pipeline.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ApplicationConfiguration.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ConfigurationRepository.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/SequentialProgramList.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/User.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/FileUploadBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/SignUp.java
@@ -39,6 +37,7 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/WorkflowDiagram.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Action.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Pair.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ProgramList.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Schedule.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/test/CancelJobBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/LogoutResponse.java

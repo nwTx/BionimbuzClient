@@ -7,57 +7,58 @@ import java.util.List;
 import java.util.UUID;
 
 public class Pipeline {
-	private String id = UUID.randomUUID().toString();
 
-	private User user;
+    private String id = UUID.randomUUID().toString();
 
-	private Date creationDatestamp;
+    private User user;
 
-	private String description;
+    private Date creationDatestamp;
 
-	private List<JobInfo> pipeline;
+    private String description;
 
-	public Pipeline(User user, String description) {
-		this.user = user;
-		this.creationDatestamp = Calendar.getInstance().getTime();
-		this.pipeline = new ArrayList<JobInfo>();
-		this.description = description;
-	}
-	
-	public String getId() {
-		return id;
-	}
+    private List<JobInfo> pipeline;
 
-	public User getUser() {
-		return user;
-	}
+    public Pipeline(User user, String description) {
+        this.user = user;
+        this.creationDatestamp = Calendar.getInstance().getTime();
+        this.pipeline = new ArrayList<JobInfo>();
+        this.description = description;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public Date getCreationDatestamp() {
-		return creationDatestamp;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setCreationDatestamp() {
-		this.creationDatestamp.setTime(Calendar.getInstance().getTime().getTime());
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public Date getCreationDatestamp() {
+        return creationDatestamp;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setCreationDatestamp() {
+        this.creationDatestamp.setTime(Calendar.getInstance().getTime().getTime());
+    }
 
-	public List<JobInfo> getPipeline() {
-		return pipeline;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void addJobToPipeline(JobInfo job) {
-		this.pipeline.add(job);
-	}
-	
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<JobInfo> getPipeline() {
+        return pipeline;
+    }
+
+    public void addJobToPipeline(JobInfo job) {
+        this.pipeline.add(job);
+    }
+
 }

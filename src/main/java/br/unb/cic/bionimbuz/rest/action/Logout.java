@@ -25,8 +25,8 @@ public class Logout extends Action {
 
     @Override
     public LogoutResponse execute() {
-        logAction(REST_LOGOUT_URL);
-        
+        logAction(REST_LOGOUT_URL, Logout.class);
+
         LogoutResponse response = target
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(request, MediaType.APPLICATION_JSON), LogoutResponse.class);
