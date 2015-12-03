@@ -13,94 +13,92 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 @Named
 @SessionScoped
 public class SessionBean implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private final RestService restService;
-	private User loggedUser = new User();
-	private boolean serverStatus;
 
-	private User user = new User();
+    private static final long serialVersionUID = 1L;
+    private final RestService restService;
+    private User loggedUser = new User();
+    private boolean serverStatus;
 
-	public SessionBean() {
-		restService = new RestService();
-	}
+    private User user = new User();
 
-	/**
-	 * Connect to the server to execute a Login request
-	 * @return redirectView
-	 */
-	public String login() {
-		User responseUser = null;
+    public SessionBean() {
+        restService = new RestService();
+    }
 
-		// ServerNotReachable Exception
-		try {
-			responseUser = restService.login(user);
-		} catch (ServerNotReachableException e) {
-			e.printStackTrace();
-			
-			return "server_offline";
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-			return "server_offline";
-		}
+    /**
+     * Connect to the server to execute a Login request
+     *
+     * @return redirectView
+     */
+    public String login() {
+        User responseUser = null;
 
-		// If user.cpf is not null, user sent to the server was found on database and had its data retrieved back to this client
-		if (responseUser.getCpf() != null) {
-			loggedUser = responseUser;
+        // ServerNotReachable Exception
+        try {
+            responseUser = restService.login(user);
+        
+        } catch (Exception e) {
+            e.printStackTrace();
 
-			return "success";
+            return "login?faces-redirect=true&internal_error=true";
+        }
 
-		// Login not found 
-		} else {
-			user = new User();
+        // If user.cpf is not null, user sent to the server was found on database and had its data retrieved back to this client
+        if (responseUser.getCpf() != null) {
+            loggedUser = responseUser;
 
-			return "login?faces-redirect=true&error=true";
-		}
+            return "success";
 
-	}
+            // Login not found 
+        } else {
+            user = new User();
 
-	/**
-	 * Invalidates user session and communicates to the server
-	 * 
-	 * @return
-	 */
-	public String logout() {
-		// Invalidates user session
-		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            return "login?faces-redirect=true&not_found=true";
+        }
 
-		// Send a logout message to the server
-		try {
-			restService.logout(loggedUser);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    }
 
-		return "logout";
-	}
+    /**
+     * Invalidates user session and communicates to the server
+     *
+     * @return
+     */
+    public String logout() {
+        // Invalidates user session
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 
-	public User getUser() {
-		return user;
-	}
+        // Send a logout message to the server
+        try {
+            restService.logout(loggedUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+        return "logout";
+    }
 
-	public User getLoggedUser() {
-		return loggedUser;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setLoggedUser(User loggedUser) {
-		this.loggedUser = loggedUser;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public boolean isServerStatus() {
-		return serverStatus;
-	}
+    public User getLoggedUser() {
+        return loggedUser;
+    }
 
-	public void setServerStatus(boolean serverStatus) {
-		this.serverStatus = serverStatus;
-	}
+    public void setLoggedUser(User loggedUser) {
+        this.loggedUser = loggedUser;
+    }
+
+    public boolean isServerStatus() {
+        return serverStatus;
+    }
+
+    public void setServerStatus(boolean serverStatus) {
+        this.serverStatus = serverStatus;
+    }
 
 }

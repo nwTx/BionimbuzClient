@@ -9,30 +9,29 @@ import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
 
 public class Login extends Action {
-	private static final String REST_LOGIN_URL = "/rest/login";
 
-	@Override
-	public void setup(Client client, RequestInfo reqInfo) {
-		System.out.println("Login REST client initialized...");
+    private static final String REST_LOGIN_URL = "/rest/login";
 
-		this.target = client.target(appConfiguration.getBionimbuzAddress());
-		this.request = (LoginRequest) reqInfo;
-	}
+    @Override
+    public void setup(Client client, RequestInfo reqInfo) {
+        this.target = client.target(appConfiguration.getBionimbuzAddress());
+        this.request = (LoginRequest) reqInfo;
+    }
 
-	@Override
-	public void prepareTarget() {
-		target = target.path(REST_LOGIN_URL);
-		
-		System.out.println("Dispatching request to URI (POST): " + target.getUri());
-	}
+    @Override
+    public void prepareTarget() {
+        target = target.path(REST_LOGIN_URL);
+    }
 
-	@Override
-	public LoginResponse execute() {
-		LoginResponse response = target
-				.request(MediaType.APPLICATION_JSON)
-				.post(Entity.entity(request, MediaType.APPLICATION_JSON), LoginResponse.class);
-		
-		return response;
-	}
+    @Override
+    public LoginResponse execute() {
+        logAction(REST_LOGIN_URL);
+        
+        LoginResponse response = target
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON), LoginResponse.class);
+       
+        return response;
+    }
 
 }

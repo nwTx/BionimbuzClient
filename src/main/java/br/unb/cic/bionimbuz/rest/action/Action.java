@@ -12,8 +12,11 @@ import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Action {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Action.class);
 
     private final String PING_URL = "/rest/ping";
 
@@ -73,5 +76,9 @@ public abstract class Action {
 
         client.close();
         return false;
+    }
+    
+    protected void logAction(String path) {
+        LOGGER.info("Sending request to BioNimbuZ (path: " + path + ")");
     }
 }

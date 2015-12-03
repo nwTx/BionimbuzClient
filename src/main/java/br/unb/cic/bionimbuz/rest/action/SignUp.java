@@ -10,30 +10,29 @@ import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
 
 public class SignUp extends Action {
-	private static final String SIGN_UP_URL = "/rest/signup";
-	
-	@Override
-	public void setup(Client client, RequestInfo reqInfo) {
-		System.out.println("Sign Up client initialized...");
 
-		this.target = client.target(appConfiguration.getBionimbuzAddress());
-		this.request = (SignUpRequest) reqInfo;
-	}
+    private static final String SIGN_UP_URL = "/rest/signup";
 
-	@Override
-	public void prepareTarget() {
-		target = target.path(SIGN_UP_URL);
-		
-		System.out.println("Dispatching request to URI (POST): " + target.getUri());		
-	}
+    @Override
+    public void setup(Client client, RequestInfo reqInfo) {
+        this.target = client.target(appConfiguration.getBionimbuzAddress());
+        this.request = (SignUpRequest) reqInfo;
+    }
 
-	@Override
-	public ResponseInfo execute() {
-		SignUpResponse response = target
-				.request(MediaType.APPLICATION_JSON)
-				.post(Entity.entity(request, MediaType.APPLICATION_JSON), SignUpResponse.class);
-		
-		return response;
-	}
+    @Override
+    public void prepareTarget() {
+        target = target.path(SIGN_UP_URL);
+    }
+
+    @Override
+    public ResponseInfo execute() {
+        logAction(SIGN_UP_URL);
+        
+        SignUpResponse response = target
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON), SignUpResponse.class);
+
+        return response;
+    }
 
 }

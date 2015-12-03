@@ -17,39 +17,38 @@ import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 
 public class Upload extends Action {
-	private static final String REST_UPLOAD_URL = "/rest/file/upload";
-	
-	@Override
-	public void setup(Client client, RequestInfo requestInfo) {
-		System.out.println("Upload REST client initialized...");
-		
-		this.target = client.target(appConfiguration.getBionimbuzAddress());
-		this.request = (UploadRequest) requestInfo;
-	}
 
-	@Override
-	public void prepareTarget() {
-		target = target.path(REST_UPLOAD_URL);
-			
-		System.out.println("Dispatching request to URI: " + target.getUri());
-	}
+    private static final String REST_UPLOAD_URL = "/rest/file/upload";
 
-	@Override
-	public UploadResponse execute() {		
-	    MultipartFormDataOutput multipart = new MultipartFormDataOutput();
-	    
-	    try {
-			multipart.addFormData("file", new FileInputStream(new File(ConfigurationRepository.UPLOADED_FILES_DIRECTORY 
-					+ ((UploadRequest) request).getFileInfo().getName())), MediaType.MULTIPART_FORM_DATA_TYPE);
-			multipart.addFormData("file_info", ((UploadRequest) request).getFileInfo(), MediaType.APPLICATION_JSON_TYPE);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+    @Override
+    public void setup(Client client, RequestInfo requestInfo) {
+        this.target = client.target(appConfiguration.getBionimbuzAddress());
+        this.request = (UploadRequest) requestInfo;
+    }
 
-	    GenericEntity<MultipartFormDataOutput> entity = new GenericEntity<MultipartFormDataOutput>(multipart) {};
+    @Override
+    public void prepareTarget() {
+        target = target.path(REST_UPLOAD_URL);
+    }
 
-	    UploadResponse response = target.request().post(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA), UploadResponse.class);
-	    
-	    return response;
-	}
+    @Override
+    public UploadResponse execute() {
+        logAction(REST_UPLOAD_URL);
+        MultipartFormDataOutput multipart = new MultipartFormDataOutput();
+
+        try {
+            multipart.addFormData("file", new FileInputStream(new File(ConfigurationRepository.UPLOADED_FILES_DIRECTORY
+                    + ((UploadRequest) request).getFileInfo().getName())), MediaType.MULTIPART_FORM_DATA_TYPE);
+            multipart.addFormData("file_info", ((UploadRequest) request).getFileInfo(), MediaType.APPLICATION_JSON_TYPE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        GenericEntity<MultipartFormDataOutput> entity = new GenericEntity<MultipartFormDataOutput>(multipart) {
+        };
+
+        UploadResponse response = target.request().post(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA), UploadResponse.class);
+
+        return response;
+    }
 }
