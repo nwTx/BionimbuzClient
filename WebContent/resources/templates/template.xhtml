@@ -1,62 +1,63 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<h:head>
-	<h:outputStylesheet library="css" name="default.css" />
-</h:head>
+    <h:head>
+        <h:outputStylesheet library="css" name="default.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico" />
+    </h:head>
 
-<h:body>
-	<p:layout fullPage="true">
-		<!-- Superior Menu -->
-		<p:layoutUnit position="north" size="65">
-			<h:form>
-				<p:menubar>
-					<f:facet name="options">
-						<p:commandButton value="Home" action="home" icon="ui-icon-home" />
-						<p:commandButton value="#{sessionBean.loggedUser.nome}" action="edit_profile" icon="ui-icon-person" />
-						<p:commandButton value="Logout" action="#{sessionBean.logout()}" icon="ui-icon-close" />
-					</f:facet>
-				</p:menubar>
-			</h:form>
-		</p:layoutUnit>
+    <h:body>
+        <p:layout fullPage="true">
+            <!-- Superior Menu -->
+            <p:layoutUnit position="north" size="65">
+                <h:form>
+                    <p:menubar>
+                        <f:facet name="options">
+                            <p:commandButton value="Home" action="home" icon="ui-icon-home" />
+                            <p:commandButton value="#{sessionBean.loggedUser.nome}" action="edit_profile" icon="ui-icon-person" />
+                            <p:commandButton value="Logout" action="#{sessionBean.logout()}" icon="ui-icon-close" />
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </p:layoutUnit>
 
-		<!-- West Menu Panel -->
-		<p:layoutUnit position="west" size="250">
-			<h:form>
-				<p:panelMenu>
-					<!-- Job's submenu -->
-					<p:submenu label="Tarefas">
-						<p:menuitem value="Submeter Tarefa" action="pipeline_composer"/>
-						<p:menuitem value="Cancelar Tarefa" action="cancel_job"/>
-						<p:menuitem value="Visualizar Status de Tarefa" action="job_status" />
-						<p:menuitem value="Histórico de Tarefas" action="job_history"/>
-					</p:submenu>
-					
-					<!-- File's submenu -->
-					<p:submenu label="Arquivos">
-						<p:menuitem value="Meus Arquivos" action="file_list"/>
-						<p:menuitem value="Enviar Arquivo" action="upload_file"/>
-						<p:menuitem value="Deletar Arquivo" action="delete_file"/>
-						<p:menuitem value="Realizar Download" action="download_file" />
-					</p:submenu>
-					
-					<!-- Statistics' Menu -->
-					<p:submenu label="Estatísticas">
-						<p:menuitem value="Estatísticas de Execução" />
-					</p:submenu>
-				</p:panelMenu>
-			</h:form>
-		</p:layoutUnit>
+            <!-- West Menu Panel -->
+            <p:layoutUnit position="west" size="250">
+                <h:form>
+                    <p:panelMenu>
+                        <!-- Job submenu -->
+                        <p:submenu label="Tarefas">
+                            <p:menuitem value="Submeter Tarefa" action="pipeline_composer"/>
+                            <p:menuitem value="Cancelar Tarefa" action="cancel_job"/>
+                            <p:menuitem value="Visualizar Status de Tarefa" action="job_status" />
+                            <p:menuitem value="Histórico de Tarefas" action="job_history"/>
+                        </p:submenu>
 
-		<p:layoutUnit position="center">
-			<ui:insert name="conteudo_centro">
+                        <!-- Storage submenu -->
+                        <p:submenu label="Armazenamento">
+                            <p:menuitem value="Meu Armazenamento" action="storage"/>
+                            <p:menuitem value="Enviar Arquivo" action="upload_file"/>
+                            <p:menuitem value="Deletar Arquivo" action="delete_file"/>
+                            <p:menuitem value="Realizar Download" action="download_file" />
+                        </p:submenu>
 
-			</ui:insert>
-		</p:layoutUnit>
-	</p:layout>
-</h:body>
+                        <!-- Statistics' Menu -->
+                        <p:submenu label="Estatísticas">
+                            <p:menuitem value="Estatísticas de Execução" />
+                        </p:submenu>
+                    </p:panelMenu>
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:insert name="conteudo_centro">
+
+                </ui:insert>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
 </html>

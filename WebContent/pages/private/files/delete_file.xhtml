@@ -10,7 +10,7 @@
         <!-- Center Content -->
         <ui:define name="conteudo_centro">
             <h:form>
-                <p:panel>
+                <p:panel header="Deletar Arquivos">
                     <p:panel>
                         <p:outputLabel value="Listagem de arquivos para deleção"/>
 
@@ -18,6 +18,11 @@
                             <p:outputLabel value="Observação: " style="font-weight: bold; color: red; font-size: 11px"/>
                             <p:outputLabel value="Essa ação não pode ser desfeita!" style="font-size: 11px"/>
                         </f:facet>
+                    </p:panel>
+                    <br />
+                    <p:panel header="Armazenamento">
+                        <p:outputLabel value="Seu armazenamento está em:"/> <br />
+                        <p:progressBar value="#{fileUploadBean.storageUsage}" labelTemplate="{value}%" displayOnly="true"/>
                     </p:panel>
                     <br />
                     <p:panel>
@@ -41,6 +46,7 @@
                         </p:dataTable>
                     </p:panel>
                 </p:panel>
+
             </h:form>
         </ui:define>
 

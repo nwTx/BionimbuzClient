@@ -15,8 +15,11 @@ import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Upload extends Action {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Upload.class);
 
     private static final String REST_UPLOAD_URL = "/rest/file/upload";
 
@@ -38,14 +41,15 @@ public class Upload extends Action {
 
         try {
             multipart.addFormData("file", new FileInputStream(new File(ConfigurationRepository.UPLOADED_FILES_PATH
-                    + ((UploadRequest) request).getFileInfo().getName())), MediaType.MULTIPART_FORM_DATA_TYPE);
-            multipart.addFormData("file_info", ((UploadRequest) request).getFileInfo(), MediaType.APPLICATION_JSON_TYPE);
+                    + ((UploadRequest) request).getUploadedFileInfo().getName())), MediaType.MULTIPART_FORM_DATA_TYPE);
+            multipart.addFormData("file_info", ((UploadRequest) request).getUploadedFileInfo(), MediaType.APPLICATION_JSON_TYPE);
+        
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error("[Exception - " + e.getMessage() + "]");
+            
         }
 
-        GenericEntity<MultipartFormDataOutput> entity = new GenericEntity<MultipartFormDataOutput>(multipart) {
-        };
+        GenericEntity<MultipartFormDataOutput> entity = new GenericEntity<MultipartFormDataOutput>(multipart) {};
 
         UploadResponse response = target.request().post(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA), UploadResponse.class);
 

@@ -9,7 +9,6 @@ import javax.ws.rs.core.Response;
 
 import br.unb.cic.bionimbuz.configuration.ApplicationConfiguration;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
-import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 import org.slf4j.Logger;

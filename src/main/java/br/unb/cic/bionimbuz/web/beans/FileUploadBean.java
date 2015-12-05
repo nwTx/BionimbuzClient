@@ -20,6 +20,7 @@ import org.primefaces.event.FileUploadEvent;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.rest.service.RestService;
+import javax.faces.application.FacesMessage.Severity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,11 +28,14 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class FileUploadBean implements Serializable {
 
+    private static final Long MAX_STORAGE_SIZE = 268435456L;    // 256 Mb
+
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadBean.class);
 
     private static final long serialVersionUID = 1L;
-    private RestService restService;
+    private final RestService restService;
     private OutputStream outputStream;
+    private int storageUsage;
 
     @Inject
     private SessionBean sessionBean;
@@ -47,11 +51,16 @@ public class FileUploadBean implements Serializable {
      * @param event
      */
     public void handleUploadedFile(FileUploadEvent event) {
+        // Verifies if the file doesn't overflow the user storage usage
+        if ((sessionBean.getLoggedUser().getStorageUsage() + event.getFile().getSize()) > MAX_STORAGE_SIZE) {
+            showFacesMessage(FacesMessage.SEVERITY_WARN, "Seu espaco de armazenamento ultrapassou 256 Mb!");
+        }
+
         UploadedFileInfo fileInfo = new UploadedFileInfo();
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        // Creates Information object about the file
+        // Set file information
         fileInfo.setName(event.getFile().getFileName());
         fileInfo.setSize(event.getFile().getSize());
         fileInfo.setUploadTimestamp(format.format(new Date()));
@@ -65,16 +74,15 @@ public class FileUploadBean implements Serializable {
             restService.uploadFile(fileInfo);
 
         } catch (Exception e) {
-            FacesMessage message = new FacesMessage("Erro interno", "Não foi possível enviar o arquivo");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            showFacesMessage(FacesMessage.SEVERITY_ERROR, "Erro Interno. Não foi possível enviar o arquivo");
 
             e.printStackTrace();
-
             return;
+
         } finally {
             try {
                 outputStream.flush();
-                outputStream.close();
+                //    outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,10 +90,11 @@ public class FileUploadBean implements Serializable {
 
         // If file was uploaded with success, adds file on user file list
         sessionBean.getLoggedUser().getFiles().add(fileInfo);
+        
+        // Adds the size of the uploaded file to the user storage usage
+        sessionBean.getLoggedUser().addStorageUsage(event.getFile().getSize());
 
-        FacesMessage message = new FacesMessage("Arquivo enviado com sucesso", "");
-        FacesContext.getCurrentInstance().addMessage(null, message);
-
+        showFacesMessage(FacesMessage.SEVERITY_INFO, "Arquivo enviado com sucesso!");
     }
 
     /**
@@ -106,8 +115,7 @@ public class FileUploadBean implements Serializable {
                 outputStream.write(bytes, 0, read);
             }
 
-            in.close();
-
+            // in.close();
             LOGGER.info("Temporary file created [path="
                     + ConfigurationRepository.UPLOADED_FILES_PATH
                     + fileName + "]");
@@ -116,4 +124,17 @@ public class FileUploadBean implements Serializable {
             System.out.println(e.getMessage());
         }
     }
+
+    // Shows JSF Faces Message to the user
+    private void showFacesMessage(Severity severity, String msg) {
+        FacesMessage message = new FacesMessage(severity, msg, "");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public int getStorageUsage() {
+        Long t = (sessionBean.getLoggedUser().getStorageUsage() / MAX_STORAGE_SIZE ) * 100;
+        
+        return t.intValue();
+    }
+
 }

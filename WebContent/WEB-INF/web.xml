@@ -10,7 +10,12 @@
         <welcome-file>/pages/public/login.xhtml</welcome-file>
     </welcome-file-list>
 
-    <!-- Primefaces -->
+    <!-- Session idle time in minutes -->
+    <session-config>
+        <session-timeout>5</session-timeout>
+    </session-config>
+
+    <!-- Primefaces theme-->
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>bootstrap</param-value>
@@ -39,7 +44,7 @@
     </context-param>
 
     <context-param>  
-        <param-name>facelets.REFRESH_PERIOD</param-name>  
+        <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>  
         <param-value>-1</param-value>  
     </context-param>  
 

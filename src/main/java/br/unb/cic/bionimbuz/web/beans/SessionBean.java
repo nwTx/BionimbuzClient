@@ -24,6 +24,7 @@ public class SessionBean implements Serializable {
 
     private User user = new User();
 
+    // Inicializes session
     public SessionBean() {
         restService = new RestService();
     }

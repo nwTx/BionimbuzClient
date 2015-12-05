@@ -20,6 +20,8 @@ public class User {
 
     private String securityToken;
 
+    private Long storageUsage;
+
     private List<UploadedFileInfo> files;
 
     public Long getId() {
@@ -84,6 +86,22 @@ public class User {
 
     public void setSecurityToken(String securityToken) {
         this.securityToken = securityToken;
+    }
+
+    public Long getStorageUsage() {
+        return storageUsage;
+    }
+
+    public void setStorageUsage(Long storageUsage) {
+        this.storageUsage = storageUsage;
+    }
+
+    public void addStorageUsage(Long usage) {
+        this.storageUsage += usage;
+    }
+
+    public void subtractStorageUsage(Long usage) {
+        this.storageUsage -= usage;
     }
 
     public List<UploadedFileInfo> getFiles() {
