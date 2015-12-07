@@ -1,27 +1,18 @@
 package br.unb.cic.bionimbuz.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import org.primefaces.event.diagram.ConnectEvent;
-import org.primefaces.event.diagram.ConnectionChangeEvent;
-import org.primefaces.event.diagram.DisconnectEvent;
-import org.primefaces.model.diagram.Connection;
 
+import org.primefaces.model.diagram.Connection;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.Element;
 import org.primefaces.model.diagram.connector.StraightConnector;
 import org.primefaces.model.diagram.endpoint.DotEndPoint;
 import org.primefaces.model.diagram.endpoint.EndPoint;
 import org.primefaces.model.diagram.endpoint.EndPointAnchor;
-import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
-import org.primefaces.model.diagram.overlay.ArrowOverlay;
 
-public class WorkflowDiagram {
-
+public class WorkflowDiagram_old {
     // Constants
     private static final int INITIAL_X_POSITION = 1;
     private static final int X_POSITION_INCREMENT = 15;
@@ -29,6 +20,8 @@ public class WorkflowDiagram {
 
     // Primefaces diagram model
     private DefaultDiagramModel workflowModel;
+    
+    private boolean suspendEvent;
 
     // Elements of the pipeline
     private Element fromElement;
@@ -50,7 +43,7 @@ public class WorkflowDiagram {
     /**
      * Calls the method that initializes everything...
      */
-    public WorkflowDiagram(User user, String description) {
+    public WorkflowDiagram_old(User user, String description) {
         // Initializes Pipeline
         this.pipeline = new Pipeline(user, description);
         initialize();
@@ -59,24 +52,25 @@ public class WorkflowDiagram {
     /**
      * Initializes variables, models, lists...
      */
-    private void initialize() {
+    public void initialize() {
         // Initializes Workflow Model
         workflowModel = new DefaultDiagramModel();
         workflowModel.setMaxConnections(-1);
-        workflowModel.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
 
         // Initializes workflow list
         undoWorkflowList = new ArrayList<Element>();
-        
-        // Creates the Connector type
-        StraightConnector connector = new StraightConnector();
+
+        // First element > "Início"
+        fromElement = createNewElement("Início", getElementXPosition(), Y_POSITION);
+
+        // Adds the 'from element' to the diagram 
+        workflowModel.addElement(fromElement);
+
+        connector = new StraightConnector();
         connector.setPaintStyle(DiagramStyle.CONNECTOR_STYLE);
         connector.setHoverPaintStyle(DiagramStyle.CONNECTOR_HOVER_STYLE);
-        workflowModel.setDefaultConnector(connector);
 
-        fromElement = createNewElement("Inicio", getElementXPosition(), Y_POSITION);
-
-        workflowModel.addElement(fromElement);
+        undoWorkflowList.add(fromElement);
     }
 
     /**
@@ -84,7 +78,7 @@ public class WorkflowDiagram {
      *
      * @param program
      */
-    public void addElement(ProgramInfo program, UploadedFileInfo inputFile) {
+    public void addSequentialElement(ProgramInfo program, UploadedFileInfo inputFile) {
         // Creates the new Job
         JobInfo newJob = new JobInfo();
         newJob.setServiceId(program.getId());
@@ -103,6 +97,47 @@ public class WorkflowDiagram {
 
         // Add it to the model and connects it 
         workflowModel.addElement(toElement);
+        workflowModel.connect(new Connection(fromElement.getEndPoints().get(1), toElement.getEndPoints().get(0), connector));
+
+        // Turn the new element the new FROM element
+        fromElement = toElement;
+    }
+
+    /**
+     * Add parallel element to the workflow diagram
+     *
+     * @param program
+     */
+    public void addParallelElement(String program) {
+        String xPosition = getElementXPosition();
+
+        // Create new element
+        toElement = createNewElement(program, xPosition, Y_POSITION);
+
+        Element sElement = createNewElement(program, xPosition, Y_POSITION);
+
+        // Adds workflow model to workflow list and update its index
+        undoWorkflowList.add(toElement);
+        workflowIndex++;
+
+        // Add it to the model and connects it
+        workflowModel.addElement(toElement);
+        workflowModel.addElement(sElement);
+        workflowModel.connect(new Connection(fromElement.getEndPoints().get(1), toElement.getEndPoints().get(0), connector));
+        workflowModel.connect(new Connection(fromElement.getEndPoints().get(1), sElement.getEndPoints().get(0), connector));
+    }
+
+    public void endWorkflow() {
+        // Create new element
+        toElement = createNewElement("Fim", getElementXPosition(), Y_POSITION);
+
+        // Adds workflow model to workflow list and update its index
+        undoWorkflowList.add(toElement);
+        workflowIndex++;
+
+        // Add it to the model and connects it
+        workflowModel.addElement(toElement);
+        workflowModel.connect(new Connection(fromElement.getEndPoints().get(1), toElement.getEndPoints().get(0), connector));
 
         // Turn the new element the new FROM element
         fromElement = toElement;
@@ -117,26 +152,24 @@ public class WorkflowDiagram {
     private Element createNewElement(String text, String xPosition, String yPosition) {
         // Create new element
         Element newElement = new Element(text, xPosition, yPosition);
-
-        // Creates Rectangle End Point
-        EndPoint rectEndPoint = new RectangleEndPoint(EndPointAnchor.RIGHT);
-        rectEndPoint.setSource(true);
-        rectEndPoint.setStyle(DiagramStyle.RECTANGLE_STYLE);
-        rectEndPoint.setHoverStyle(DiagramStyle.RECTANGLE_HOVER_STYLE);
-        rectEndPoint.setSource(true);
-
-        // Creates Dot End Point
-        DotEndPoint dotEndPoint = new DotEndPoint(EndPointAnchor.LEFT);
-        dotEndPoint.setTarget(true);
-        dotEndPoint.setStyle(DiagramStyle.DOT_STYLE);
-        dotEndPoint.setHoverStyle(DiagramStyle.DOT_HOVER_STYLE);
-        dotEndPoint.setTarget(true);
-
-        // Adds it to the new element
-        newElement.addEndPoint(rectEndPoint);
-        newElement.addEndPoint(dotEndPoint);
+        newElement.addEndPoint(createEndPoint(EndPointAnchor.LEFT));
+        newElement.addEndPoint(createEndPoint(EndPointAnchor.RIGHT));
 
         return newElement;
+    }
+
+    /**
+     * Create DotEndPoint to connect elements
+     *
+     * @param anchor
+     * @return
+     */
+    private EndPoint createEndPoint(EndPointAnchor anchor) {
+        DotEndPoint endPoint = new DotEndPoint(anchor);
+        endPoint.setStyle(DiagramStyle.DOT_STYLE);
+        endPoint.setHoverStyle(DiagramStyle.DOT_HOVER_STYLE);
+
+        return endPoint;
     }
 
     /**
@@ -163,21 +196,6 @@ public class WorkflowDiagram {
         elementXPosition -= X_POSITION_INCREMENT;
     }
 
-    public void endWorkflow() {
-        // Create new element
-        toElement = createNewElement("Fim", getElementXPosition(), Y_POSITION);
-
-        // Adds workflow model to workflow list and update its index
-        undoWorkflowList.add(toElement);
-        workflowIndex++;
-
-        // Add it to the model and connects it
-        workflowModel.addElement(toElement);
-
-        // Turn the new element the new FROM element
-        fromElement = toElement;
-    }
-
     /**
      * Resets current workflow
      */
@@ -189,46 +207,11 @@ public class WorkflowDiagram {
         initialize();
     }
 
-    public class NetworkElement implements Serializable {
-
-        private String name;
-        private String image;
-
-        public NetworkElement() {
-        }
-
-        public NetworkElement(String name, String image) {
-            this.name = name;
-            this.image = image;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
+    public DefaultDiagramModel getWorkflow() {
+        return this.workflowModel;
     }
 
     public int getWorkflowIndex() {
         return this.workflowIndex;
-    }
-
-    public DefaultDiagramModel getWorkflow() {
-        return this.workflowModel;
     }
 }

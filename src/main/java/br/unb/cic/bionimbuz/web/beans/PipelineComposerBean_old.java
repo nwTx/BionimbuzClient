@@ -17,13 +17,10 @@ import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.model.ProgramInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.WorkflowDiagram;
-import org.primefaces.event.diagram.ConnectEvent;
-import org.primefaces.event.diagram.ConnectionChangeEvent;
-import org.primefaces.event.diagram.DisconnectEvent;
 
 @Named
 @SessionScoped
-public class PipelineComposerBean implements Serializable {
+public class PipelineComposerBean_old implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -40,7 +37,6 @@ public class PipelineComposerBean implements Serializable {
     private boolean workflowFinished = false;
     private ProgramInfo program;
     private String workflowDescription;
-    private boolean suspendEvent;    
 
     // Logged user
     private User loggedUser;
@@ -54,17 +50,28 @@ public class PipelineComposerBean implements Serializable {
     /**
      * Adds a sequential element to the workflow diagram
      */
-    public void addElement(UploadedFileInfo inputFile) {
-        workflowDiagram.addElement(this.program, inputFile);
+    public void addSequentialElement(UploadedFileInfo inputFile) {
+//        workflowDiagram.addSequentialElement(this.program, inputFile);
 
         showMessage("Elemento " + program.getName() + " adicionado");
+    }
+
+    /**
+     * Add parallel element to the workflow diagram
+     *
+     * @param program
+     */
+    public void addParallelElement(String program) {
+//        workflowDiagram.addParallelElement(program);
+
+        showMessage("Elemento " + program + " adicionado");
     }
 
     /**
      * Resets current workflow
      */
     public void resetWorkflow() {
-        workflowDiagram.resetWorkflow();
+//        workflowDiagram.resetWorkflow();
 
         showMessage("Workflow reiniciado");
     }
@@ -73,7 +80,7 @@ public class PipelineComposerBean implements Serializable {
      * Undo an element addition and updates the references
      */
     public void undoAddition() {
-        workflowDiagram.undoAddition();
+//        workflowDiagram.undoAddition();
 
         showMessage("Ação desfeita");
     }
@@ -89,7 +96,7 @@ public class PipelineComposerBean implements Serializable {
     }
 
     public void endWorkflow() {
-        workflowDiagram.endWorkflow();
+//        workflowDiagram.endWorkflow();
 
         // Finish workflow
         workflowFinished = true;
@@ -97,38 +104,6 @@ public class PipelineComposerBean implements Serializable {
         showMessage("Workflow finalizado!");
     }
 
-    public void onConnect(ConnectEvent event) {
-        if (!suspendEvent) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Connected",
-                    "From " + event.getSourceElement().getData() + " To " + event.getTargetElement().getData());
-
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-
-        } else {
-            suspendEvent = false;
-        }
-    }
-
-    public void onDisconnect(DisconnectEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Disconnected",
-                "From " + event.getSourceElement().getData() + " To " + event.getTargetElement().getData());
-
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-
-    }
-
-    public void onConnectionChange(ConnectionChangeEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Connection Changed",
-                "Original Source:" + event.getOriginalSourceElement().getData()
-                + ", New Source: " + event.getNewSourceElement().getData()
-                + ", Original Target: " + event.getOriginalTargetElement().getData()
-                + ", New Target: " + event.getNewTargetElement().getData());
-
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-
-        suspendEvent = true;
-    }
-    
     public DefaultDiagramModel getWorkflowModel() {
         return workflowDiagram.getWorkflow();
     }
@@ -138,7 +113,8 @@ public class PipelineComposerBean implements Serializable {
     }
 
     public int getWorkflowIndex() {
-        return workflowDiagram.getWorkflowIndex();
+//        return workflowDiagram.getWorkflowIndex();
+        return 1;
     }
 
     public boolean isWorkflowFinished() {

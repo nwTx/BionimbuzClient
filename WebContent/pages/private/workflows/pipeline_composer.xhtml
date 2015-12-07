@@ -5,116 +5,130 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <ui:decorate template="/resources/templates/template.xhtml">
+    <h:head>
+        <h:outputStylesheet library="css" name="default.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico" />
+    </h:head>
 
-        <!-- Center Content -->
-        <ui:define name="conteudo_centro">
-            <h:form id="form">
-                <p:growl id="growl" autoUpdate="true" showDetail="true"
-                         showSummary="true" />
+    <h:body>
+        <p:layout fullPage="true">
+            <!-- Superior Menu -->
+            <p:layoutUnit position="north" size="57">
+                <h:form>
+                    <p:menubar>
+                        <f:facet name="options">
+                            <p:commandButton value="Home" action="home" icon="ui-icon-home" />
+                            <p:commandButton value="#{sessionBean.loggedUser.nome}" action="edit_profile" icon="ui-icon-person" />
+                            <p:commandButton value="Logout" action="#{sessionBean.logout()}" icon="ui-icon-close" />
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </p:layoutUnit>
 
-                <p:wizard nextLabel="Avançar" backLabel="Voltar">
-                    <p:tab id="workflow_1" title="Workflow">
-                        <p:panel header="Descrição">
-                            Dê uma breve descrição para esse workflow: <br /> <br />
-                            <p:inputText style="width: 99%" value="#{pipelineComposerBean.workflowDescription}"/>
-                        </p:panel>
+            <!-- West Menu Panel -->
+            <p:layoutUnit position="west" size="250">
+                <h:form>
+                    <p:panel>
+                        <p:fieldset legend="Lista de Programas">
+                            <!-- Add element section -->
+                            <p:dataTable
+                                value="#{pipelineComposerBean.programList}" var="p"
+                                paginator="true" rows="5">
+                                <p:column>
+                                    <p:commandButton id="workflow_btn" value="#{p.name}" onclick="PF('file_dlg').show()"
+                                                     action="#{pipelineComposerBean.setProgram(p)}"
+                                                     update="form:workflow_diagram" styleClass="workflow_btn" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset>
                         <br />
-                        <p:panel id="workflow_pnl">   
-                            <p:panelGrid style="width: 100%">
-                                <p:row>
-                                    <!-- Workflow diagram -->
-                                    <p:column style="width: 60em; vertical-align: top">
-                                        <!-- Controller panel -->
-                                        <p:panel id="controller_pnl">
-                                            <center>
-                                                <f:facet name="header">
-                                                    <center><br />Controles</center>
-                                                </f:facet>
-                                                <p:commandButton value="Desfazer" styleClass="controller_btn"
-                                                                 action="#{pipelineComposerBean.undoAddition()}"
-                                                                 update="form:workflow_pnl"
-                                                                 disabled="#{pipelineComposerBean.workflowIndex le 0}" />
-
-                                                <p:commandButton value="Reiniciar"
-                                                                 styleClass="controller_btn"
-                                                                 action="#{pipelineComposerBean.resetWorkflow()}"
-                                                                 update="form:workflow_pnl"
-                                                                 disabled="#{pipelineComposerBean.workflowIndex == 0}" />
-                                            </center>
-                                        </p:panel>
-                                        <br />
-
-                                        <!-- ======== Diagram ======== -->
-                                        <p:panel>
-                                            <f:facet name="header">
-                                                <center><br />Diagrama</center>
-                                            </f:facet>
-                                            <p:diagram id="workflow_diagram"
-                                                       value="#{pipelineComposerBean.workflowModel}"
-                                                       style="height:500px" />
-                                        </p:panel>
-                                    </p:column>
-
-                                    <!-- Pickup column -->
-                                    <p:column style="width: 20em; vertical-align: top">
-                                        <p:panel>
-                                            <f:facet name="header">
-                                                <center>
-                                                    Controle de Elementos
-                                                </center>
-                                            </f:facet>
-
-                                            <!-- Add element section -->
-                                            <p:dataTable
-                                                value="#{pipelineComposerBean.programList}" var="p"
-                                                paginator="true" rows="5">
-                                                <f:facet name="header">
-                                                    Lista de programas disponiveis
-                                                    <p:commandButton id="info" value="Info" />
-
-                                                    <p:overlayPanel for="info" showEvent="mouseover"
-                                                                    showEffect="fade" appendToBody="true" hideEvent="mouseout"
-                                                                    hideEffect="fade">
-                                                        teste
-                                                    </p:overlayPanel>
-                                                </f:facet>
-
-                                                <p:column>
-                                                    <p:commandButton id="bowtie" value="#{p.name}" onclick="PF('file_dlg').show()"
-                                                                     action="#{pipelineComposerBean.setProgram(p)}"
-                                                                     update="form:workflow_diagram" styleClass="workflow_btn" />
-                                                </p:column>
-                                            </p:dataTable>
-                                            <br />
-                                            <p:panel header="Finalizar workflow">
-                                                <center>
-                                                    <p:outputLabel value="Deseja finalizar este workflow?" />
-                                                    <br />
-                                                    <p:commandButton value="Finalizar"
-                                                                     onclick="PF('confirm_end').show();" />
-                                                </center>
-                                            </p:panel>
-                                        </p:panel>
-                                    </p:column>
-                                </p:row>
-                            </p:panelGrid>
+                        <p:panel header="Finalizar workflow">
+                            <center>
+                                <p:outputLabel value="Deseja finalizar este workflow?" />
+                                <br />
+                                <p:commandButton value="Finalizar"
+                                                 onclick="PF('confirm_end').show();" />
+                            </center>
                         </p:panel>
-                    </p:tab>
+                    </p:panel>
+                </h:form>
+            </p:layoutUnit>
 
-                    <p:tab title="Arquivos">
-                    </p:tab>
+            <!-- Center Content -->
+            <p:layoutUnit position="center">
+                <h:form id="form">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true"
+                             showSummary="true" />      
 
-                    <p:tab title="Resumo">
-                    </p:tab>
-                </p:wizard>
-            </h:form>
-        </ui:define>
-    </ui:decorate>
+                    <p:wizard nextLabel="Avançar" backLabel="Voltar">
+                        <p:tab id="workflow_1" title="Workflow">
+                            <p:panel header="Descrição">
+                                Dê uma breve descrição para esse workflow: <br /> <br />
+                                <p:inputText style="width: 99%" value="#{pipelineComposerBean.workflowDescription}"/>
+                            </p:panel>
+                            <br />
+                            <p:panel id="workflow_pnl">   
+                                <!-- Controller panel -->
+                                <p:panel id="controller_pnl">
+                                    <center>
+                                        <f:facet name="header">
+                                            <center>
+                                                <p:outputLabel value="Controles"/>
+                                            </center>
+                                        </f:facet>
+                                        <p:commandButton value="Desfazer" styleClass="controller_btn"
+                                                         action="#{pipelineComposerBean.undoAddition()}"
+                                                         update="form:workflow_pnl, form:growl"
+                                                         disabled="#{pipelineComposerBean.workflowIndex le 0}" />
 
-    <!-- File dialog -->
+                                        <p:commandButton value="Reiniciar"
+                                                         styleClass="controller_btn"
+                                                         action="#{pipelineComposerBean.resetWorkflow()}"
+                                                         update="form:workflow_pnl, form:growl"
+                                                         disabled="#{pipelineComposerBean.workflowIndex == 0}" />
+                                    </center>
+                                </p:panel>
+                                <br />
+
+                                <!-- ======== Diagram ======== -->
+                                <p:panel>
+                                    <f:facet name="header">
+                                        <center>
+                                            <p:outputLabel value="Diagrama" />
+                                        </center>
+                                    </f:facet>
+                                    <p:diagram id="workflow_diagram"
+                                               value="#{pipelineComposerBean.workflowModel}"
+                                               style="height:500px" >
+                                        <p:ajax event="connect" listener="#{pipelineComposerBean.onConnect}" />
+                                        <p:ajax event="disconnect" listener="#{pipelineComposerBean.onDisconnect}" />
+                                        <p:ajax event="connectionChange" listener="#{pipelineComposerBean.onConnectionChange}" />
+                                    </p:diagram>
+                                </p:panel>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab title="Arquivos">
+                        </p:tab>
+
+                        <p:tab title="Resumo">
+                        </p:tab>
+                    </p:wizard>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+    <!-- ***************************************************************************************************************** -->
+    <!--                                                        DIALOGS                                                    -->
+    <!-- ***************************************************************************************************************** -->
+
+    <!-- File Dialog: Used for the user to pick inputs -->
     <p:dialog widgetVar="file_dlg" header="Escolha a entrada desse passo" showEffect="fade" hideEffect="fade" modal="true" >
         <p:panel>
+            <p:panel>
+                Escolha se a entrada deste passo será um arquivo ou uma URL do arquivo
+            </p:panel>
+            <br />
             <p:tabView>
                 <p:tab title="Arquivos">
                     <p:dataTable value="#{pipelineComposerBean.loggedUser.files}" var="f" style="width: 60em"
@@ -138,8 +152,8 @@
 
                         <p:column headerText="Escolher arquivo" width="25em" style="text-align: center">
                             <p:commandButton icon="ui-icon-check" iconPos="center" 
-                                             action="#{pipelineComposerBean.addSequentialElement(f)}" 
-                                             update=":form:workflow_pnl"
+                                             action="#{pipelineComposerBean.addElement(f)}" 
+                                             update=":form:workflow_pnl, :form:growl"
                                              onclick="PF('file_dlg').hide()"/>
                         </p:column>
                     </p:dataTable>

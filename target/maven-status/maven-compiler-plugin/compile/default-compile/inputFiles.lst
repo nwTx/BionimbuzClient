@@ -1,3 +1,4 @@
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/PipelineComposerBean_old.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/DiagramStyle.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/SignUpResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/FileListBean.java
@@ -37,6 +38,7 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/WorkflowDiagram.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Action.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Pair.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/WorkflowDiagram_old.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ProgramList.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Schedule.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/test/CancelJobBean.java
