@@ -17,6 +17,7 @@ import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.model.ProgramInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.WorkflowDiagram;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
@@ -97,8 +98,11 @@ public class PipelineComposerBean implements Serializable {
         showMessage("Workflow finalizado!");
     }
 
-    public void onConnect(ConnectEvent event) {
+    public void onConnect(ConnectEvent event) { 
         if (!suspendEvent) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('file_dlg').show();");
+            
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Connected",
                     "From " + event.getSourceElement().getData() + " To " + event.getTargetElement().getData());
 
