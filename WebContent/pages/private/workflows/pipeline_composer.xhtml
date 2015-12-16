@@ -5,119 +5,93 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <h:head>
-        <h:outputStylesheet library="css" name="default.css" />
-        <link rel="shortcut icon" type="image/x-icon" href="/favicon/favicon.ico" />
-    </h:head>
+    <ui:decorate template="/resources/templates/template.xhtml">	
 
-    <h:body>
-        <p:layout fullPage="true">
-            <!-- Superior Menu -->
-            <p:layoutUnit position="north" size="57">
-                <h:form>
-                    <p:menubar>
-                        <f:facet name="options">
-                            <p:commandButton value="Home" action="home" icon="ui-icon-home" />
-                            <p:commandButton value="#{sessionBean.loggedUser.nome}" action="edit_profile" icon="ui-icon-person" />
-                            <p:commandButton value="Logout" action="#{sessionBean.logout()}" icon="ui-icon-close" />
-                        </f:facet>
-                    </p:menubar>
-                </h:form>
-            </p:layoutUnit>
+        <!-- Center Content -->
+        <ui:define name="conteudo_centro">
+            <h:form id="form">
+                <p:growl id="growl" autoUpdate="true" showDetail="true"
+                         showSummary="true" />      
 
-            <!-- West Menu Panel -->
-            <p:layoutUnit position="west" size="250">
-                <h:form>
-                    <p:panel>
-                        <p:fieldset legend="Lista de Programas">
-                            <!-- Add element section -->
-                            <p:dataTable
-                                value="#{pipelineComposerBean.programList}" var="p"
-                                paginator="true" rows="5">
-                                <p:column>
-                                    <p:commandButton id="workflow_btn" value="#{p.name}" onclick="PF('file_dlg').show()"
-                                                     action="#{pipelineComposerBean.setProgram(p)}"
-                                                     update="form:workflow_diagram" styleClass="workflow_btn" />
-                                </p:column>
-                            </p:dataTable>
-                        </p:fieldset>
-                        <br />
-                        <p:panel header="Finalizar workflow">
-                            <center>
-                                <p:outputLabel value="Deseja finalizar este workflow?" />
-                                <br />
-                                <p:commandButton value="Finalizar"
-                                                 onclick="PF('confirm_end').show();" />
-                            </center>
-                        </p:panel>
-                    </p:panel>
-                </h:form>
-            </p:layoutUnit>
-
-            <!-- Center Content -->
-            <p:layoutUnit position="center">
-                <h:form id="form">
-                    <p:growl id="growl" autoUpdate="true" showDetail="true"
-                             showSummary="true" />      
-
-                    <p:wizard nextLabel="Avançar" backLabel="Voltar">
-                        <p:tab id="workflow_1" title="Workflow">
-                            <p:panel header="Descrição">
-                                Dê uma breve descrição para esse workflow: <br /> <br />
-                                <p:inputText style="width: 99%" value="#{pipelineComposerBean.workflowDescription}"/>
-                            </p:panel>
+                <p:wizard nextLabel="Avançar" backLabel="Voltar" flowListener="#{pipelineComposerBean.flowController}">
+                    <!-- Element selection tab -->
+                    <p:tab id="element_selection" title="1. Seleção de Elementos">
+                        <p:panel header="Escolha os elementos deste Workflow">
+                            <p:panel style="border-color: #34495e">
+                                <p:outputLabel value="Escolha os elementos que irão compor este workflow." />
+                            </p:panel> 
                             <br />
-                            <p:panel id="workflow_pnl">   
-                                <!-- Controller panel -->
-                                <p:panel id="controller_pnl">
-                                    <center>
-                                        <f:facet name="header">
-                                            <center>
-                                                <p:outputLabel value="Controles"/>
-                                            </center>
+                            <p:fieldset legend="Elementos disponíveis" style="border-color: #16a085">
+                                <center>
+                                    <p:dataGrid var="p" value="#{pipelineComposerBean.programList}" columns="4" layout="grid"
+                                                id="elements" >
+                                        <f:facet name="header" >
+                                            Elementos
                                         </f:facet>
-                                        <p:commandButton value="Desfazer" styleClass="controller_btn"
-                                                         action="#{pipelineComposerBean.undoAddition()}"
-                                                         update="form:workflow_pnl, form:growl"
-                                                         disabled="#{pipelineComposerBean.workflowIndex le 0}" />
 
-                                        <p:commandButton value="Reiniciar"
-                                                         styleClass="controller_btn"
-                                                         action="#{pipelineComposerBean.resetWorkflow()}"
-                                                         update="form:workflow_pnl, form:growl"
-                                                         disabled="#{pipelineComposerBean.workflowIndex == 0}" />
+                                        <p:panel header="#{p.name}" style="text-align:center">
+                                            <h:panelGrid columns="1" style="width:100%">
+                                                <h:outputText value="#{p.description}" />
+                                                <hr style="color: #3498db"/>
+                                                <f:facet name="footer">
+                                                    <p:commandButton action="#{pipelineComposerBean.addElement(p)}"
+                                                                     value="Adicionar" icon="ui-icon-circle-plus" update=":form:chosen_elements, :form:growl"
+                                                                     iconPos="left" />
+                                                </f:facet>
+                                            </h:panelGrid>
+                                        </p:panel>
+
+                                    </p:dataGrid>
+                                </center>
+                            </p:fieldset>
+                            <br />
+                            <p:fieldset id="chosen_elements" legend="Elementos escolhidos" style="border-color: #f39c12">
+                                <center>
+                                    <p:dataTable value="#{pipelineComposerBean.chosenPrograms}" var="p" style="width: 400px"
+                                                 emptyMessage="Nenhum elemento adicionado" paginator="true" rows="8">
+                                        <p:column headerText="Elemento">
+                                            <p:outputLabel value="#{p.name}"/>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Excluir" style="text-align: center">
+                                            <p:commandButton icon="ui-icon-circle-close" action="#{pipelineComposerBean.removeElement(p)}" update=":form:chosen_elements"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </center>
+                            </p:fieldset>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab id="workflow_design" title="2. Desenho do Workflow">
+                        <p:panel header="Descrição">
+                            Dê uma breve descrição para esse workflow: <br /> <br />
+                            <p:inputText style="width: 99%" value="#{pipelineComposerBean.workflowDescription}"/>
+                        </p:panel>
+                        <br />
+
+                        <p:panel id="workflow_pnl">   
+                            <!-- ======== Diagram ======== -->
+                            <p:panel>
+                                <f:facet name="header">
+                                    <center>
+                                        <p:outputLabel value="Diagrama" />
                                     </center>
-                                </p:panel>
-                                <br />
-
-                                <!-- ======== Diagram ======== -->
-                                <p:panel>
-                                    <f:facet name="header">
-                                        <center>
-                                            <p:outputLabel value="Diagrama" />
-                                        </center>
-                                    </f:facet>
-                                    <p:diagram id="workflow_diagram"
-                                               value="#{pipelineComposerBean.workflowModel}"
-                                               style="height:500px" >
-                                        <p:ajax event="connect" listener="#{pipelineComposerBean.onConnect}" />
-                                        <p:ajax event="disconnect" listener="#{pipelineComposerBean.onDisconnect}" />
-                                        <p:ajax event="connectionChange" listener="#{pipelineComposerBean.onConnectionChange}" />
-                                    </p:diagram>
-                                </p:panel>
+                                </f:facet>
+                                <p:diagram id="workflow_diagram"
+                                           value="#{pipelineComposerBean.workflowModel}"
+                                           style="height:500px" >
+                                    <p:ajax event="connect" listener="#{pipelineComposerBean.onConnect}" />
+                                    <p:ajax event="disconnect" listener="#{pipelineComposerBean.onDisconnect}" />
+                                    <p:ajax event="connectionChange" listener="#{pipelineComposerBean.onConnectionChange}" />
+                                </p:diagram>
                             </p:panel>
-                        </p:tab>
+                        </p:panel>
+                    </p:tab>
+                </p:wizard>
+            </h:form>
+        </ui:define>
 
-                        <p:tab title="Arquivos">
-                        </p:tab>
-
-                        <p:tab title="Resumo">
-                        </p:tab>
-                    </p:wizard>
-                </h:form>
-            </p:layoutUnit>
-        </p:layout>
-    </h:body>
+    </ui:decorate>
     <!-- ***************************************************************************************************************** -->
     <!--                                                        DIALOGS                                                    -->
     <!-- ***************************************************************************************************************** -->

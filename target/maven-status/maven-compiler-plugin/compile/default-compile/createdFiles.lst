@@ -34,7 +34,6 @@ br/unb/cic/bionimbuz/rest/action/Login.class
 br/unb/cic/bionimbuz/rest/action/DeleteFile.class
 br/unb/cic/bionimbuz/model/ServerStatus.class
 br/unb/cic/bionimbuz/rest/request/SignUpRequest.class
-br/unb/cic/bionimbuz/model/WorkflowDiagram$NetworkElement.class
 br/unb/cic/bionimbuz/configuration/ProgramList.class
 br/unb/cic/bionimbuz/configuration/ConfigurationLoader.class
 br/unb/cic/bionimbuz/web/beans/DeleteFileBean.class

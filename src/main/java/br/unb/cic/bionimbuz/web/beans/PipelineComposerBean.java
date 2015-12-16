@@ -13,11 +13,12 @@ import javax.inject.Named;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
-import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.model.ProgramInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.WorkflowDiagram;
+import java.util.ArrayList;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
@@ -29,10 +30,11 @@ public class PipelineComposerBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    SessionBean sessionBean;
+    private SessionBean sessionBean;
 
     // List of programs
-    private List<ProgramInfo> programList = ConfigurationRepository.getProgramList().getPrograms();
+    private final List<ProgramInfo> programList = ConfigurationRepository.getProgramList().getPrograms();
+    private List<ProgramInfo> chosenPrograms = new ArrayList<>();
 
     // Workflow
     private WorkflowDiagram workflowDiagram;
@@ -41,7 +43,7 @@ public class PipelineComposerBean implements Serializable {
     private boolean workflowFinished = false;
     private ProgramInfo program;
     private String workflowDescription;
-    private boolean suspendEvent;    
+    private boolean suspendEvent;
 
     // Logged user
     private User loggedUser;
@@ -53,30 +55,26 @@ public class PipelineComposerBean implements Serializable {
     }
 
     /**
-     * Adds a sequential element to the workflow diagram
+     * Adds an element to the chosen programs list
+     *
+     * @param program
      */
-    public void addElement(UploadedFileInfo inputFile) {
-        workflowDiagram.addElement(this.program, inputFile);
+    public void addElement(ProgramInfo program) {
+        chosenPrograms.add(program);
+        workflowDiagram.addElement(program);
 
         showMessage("Elemento " + program.getName() + " adicionado");
     }
 
     /**
-     * Resets current workflow
+     * Removes an element from the chosen programs list
+     *
+     * @param p
      */
-    public void resetWorkflow() {
-        workflowDiagram.resetWorkflow();
+    public void removeElement(ProgramInfo p) {
+        chosenPrograms.remove(p);
 
-        showMessage("Workflow reiniciado");
-    }
-
-    /**
-     * Undo an element addition and updates the references
-     */
-    public void undoAddition() {
-        workflowDiagram.undoAddition();
-
-        showMessage("Ação desfeita");
+        showMessage("Elemento " + program.getName() + " removido");
     }
 
     /**
@@ -89,6 +87,32 @@ public class PipelineComposerBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    /**
+     * Controlls Wizard flow. It is linked with the HTML page that renders the
+     * diagram and contains Wizard PrimeFaces component.
+     *
+     * @param event
+     * @return
+     */
+    public String flowController(FlowEvent event) {
+        String currentStep = event.getOldStep();
+        String toGoStep = event.getNewStep();
+
+        // Resets Workflow
+        if (toGoStep.equals("element_selection")) {
+            workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription);
+
+        // 
+        } else if (toGoStep.equals("workflow_design")) {
+
+        }
+
+        System.out.println(currentStep);
+        System.out.println(toGoStep);
+
+        return toGoStep;
+    }
+
     public void endWorkflow() {
         workflowDiagram.endWorkflow();
 
@@ -98,11 +122,11 @@ public class PipelineComposerBean implements Serializable {
         showMessage("Workflow finalizado!");
     }
 
-    public void onConnect(ConnectEvent event) { 
+    public void onConnect(ConnectEvent event) {
         if (!suspendEvent) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('file_dlg').show();");
-            
+
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Connected",
                     "From " + event.getSourceElement().getData() + " To " + event.getTargetElement().getData());
 
@@ -132,17 +156,13 @@ public class PipelineComposerBean implements Serializable {
 
         suspendEvent = true;
     }
-    
+
     public DefaultDiagramModel getWorkflowModel() {
         return workflowDiagram.getWorkflow();
     }
 
     public List<ProgramInfo> getProgramList() {
         return programList;
-    }
-
-    public int getWorkflowIndex() {
-        return workflowDiagram.getWorkflowIndex();
     }
 
     public boolean isWorkflowFinished() {
@@ -164,4 +184,13 @@ public class PipelineComposerBean implements Serializable {
     public void setWorkflowDescription(String workflowDescription) {
         this.workflowDescription = workflowDescription;
     }
+
+    public List<ProgramInfo> getChosenPrograms() {
+        return chosenPrograms;
+    }
+
+    public void setChosenPrograms(List<ProgramInfo> chosenPrograms) {
+        this.chosenPrograms = chosenPrograms;
+    }
+
 }

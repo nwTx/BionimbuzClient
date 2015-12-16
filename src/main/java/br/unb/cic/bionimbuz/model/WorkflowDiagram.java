@@ -38,17 +38,14 @@ public class WorkflowDiagram {
     // X position of the element
     private int elementXPosition = INITIAL_X_POSITION;
 
-    // List to implement the 'undo' action
-    private List<Element> undoWorkflowList;
-
-    // Index to point to the actual element 
-    private int workflowIndex = 0;
-
     // The Pipeline object
     private Pipeline pipeline;
 
     /**
      * Calls the method that initializes everything...
+     *
+     * @param user
+     * @param description
      */
     public WorkflowDiagram(User user, String description) {
         // Initializes Pipeline
@@ -65,9 +62,6 @@ public class WorkflowDiagram {
         workflowModel.setMaxConnections(-1);
         workflowModel.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
 
-        // Initializes workflow list
-        undoWorkflowList = new ArrayList<Element>();
-        
         // Creates the Connector type
         StraightConnector connector = new StraightConnector();
         connector.setPaintStyle(DiagramStyle.CONNECTOR_STYLE);
@@ -84,22 +78,17 @@ public class WorkflowDiagram {
      *
      * @param program
      */
-    public void addElement(ProgramInfo program, UploadedFileInfo inputFile) {
+    public void addElement(ProgramInfo program) {
         // Creates the new Job
         JobInfo newJob = new JobInfo();
         newJob.setServiceId(program.getId());
         newJob.setTimestamp(Calendar.getInstance().getTime().toString());
-        newJob.addInput(inputFile);
 
         // Adds it to the pipeline
         pipeline.addJobToPipeline(newJob);
 
         // Create new element
         toElement = createNewElement(program.getName(), getElementXPosition(), Y_POSITION);
-
-        // Adds workflow model to workflow list and update its index 
-        undoWorkflowList.add(toElement);
-        workflowIndex++;
 
         // Add it to the model and connects it 
         workflowModel.addElement(toElement);
@@ -151,81 +140,15 @@ public class WorkflowDiagram {
         return (xPosition + "em");
     }
 
-    /**
-     * Undo an element addition and updates the references
-     */
-    public void undoAddition() {
-        workflowModel.removeElement(undoWorkflowList.get(workflowIndex));
-        fromElement = undoWorkflowList.get(workflowIndex - 1);
-        undoWorkflowList.remove(workflowIndex);
-        workflowIndex--;
-
-        elementXPosition -= X_POSITION_INCREMENT;
-    }
-
     public void endWorkflow() {
         // Create new element
         toElement = createNewElement("Fim", getElementXPosition(), Y_POSITION);
-
-        // Adds workflow model to workflow list and update its index
-        undoWorkflowList.add(toElement);
-        workflowIndex++;
 
         // Add it to the model and connects it
         workflowModel.addElement(toElement);
 
         // Turn the new element the new FROM element
         fromElement = toElement;
-    }
-
-    /**
-     * Resets current workflow
-     */
-    public void resetWorkflow() {
-        elementXPosition = INITIAL_X_POSITION;
-        workflowIndex = 0;
-
-        // Reset variables
-        initialize();
-    }
-
-    public class NetworkElement implements Serializable {
-
-        private String name;
-        private String image;
-
-        public NetworkElement() {
-        }
-
-        public NetworkElement(String name, String image) {
-            this.name = name;
-            this.image = image;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getImage() {
-            return image;
-        }
-
-        public void setImage(String image) {
-            this.image = image;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
-    public int getWorkflowIndex() {
-        return this.workflowIndex;
     }
 
     public DefaultDiagramModel getWorkflow() {
