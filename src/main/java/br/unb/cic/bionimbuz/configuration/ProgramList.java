@@ -11,7 +11,7 @@ import br.unb.cic.bionimbuz.model.ProgramInfo;
  */
 public class ProgramList implements Configuration {
 
-    private ArrayList<ProgramInfo> programs = new ArrayList<ProgramInfo>();
+    private ArrayList<ProgramInfo> programs = new ArrayList<>();
 
     public ArrayList<ProgramInfo> getPrograms() {
         return programs;

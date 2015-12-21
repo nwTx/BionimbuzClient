@@ -82,3 +82,8 @@ body {
     line-height: 4em;
     text-align: center;
 }
+
+.icon-plus {
+    border-radius: 0px !important;
+    background-image: url('#{resource['icon/custom-plus-icon-2.png']}') !important;
+}

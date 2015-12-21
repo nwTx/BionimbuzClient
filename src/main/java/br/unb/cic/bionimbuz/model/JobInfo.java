@@ -2,11 +2,10 @@ package br.unb.cic.bionimbuz.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class JobInfo {
 
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     private String localId;
 
@@ -14,15 +13,21 @@ public class JobInfo {
 
     private String args = "";
 
-    private List<UploadedFileInfo> inputs;
+    private List<InputData> inputs;
 
-    private List<String> outputs = new ArrayList<String>();
+    private List<String> outputs = new ArrayList<>();
 
     private String timestamp;
 
     public JobInfo() {
-        this.inputs = new ArrayList<UploadedFileInfo>();
-        this.outputs = new ArrayList<String>();
+        this.inputs = new ArrayList<>();
+        this.outputs = new ArrayList<>();
+    }
+
+    public JobInfo(String id) {
+        this.id = id;
+        this.inputs = new ArrayList<>();
+        this.outputs = new ArrayList<>();
     }
 
     public String getId() {
@@ -53,18 +58,16 @@ public class JobInfo {
         this.args = args;
     }
 
-    public List<UploadedFileInfo> getInputs() {
+    public List<InputData> getInputs() {
         return inputs;
     }
 
-    public void addInput(UploadedFileInfo fileInfo) {
-        // Verify if it wasn't already added
-        for (UploadedFileInfo f : inputs) {
-            if (f.getId().equals(fileInfo.getId())) {
-                return;
-            }
-        }
-        inputs.add(fileInfo);
+    public void setInputs(List<InputData> inputs) {
+        this.inputs = inputs;
+    }
+
+    public void addInput(InputData input) {
+        inputs.add(input);
     }
 
     public List<String> getOutputs() {

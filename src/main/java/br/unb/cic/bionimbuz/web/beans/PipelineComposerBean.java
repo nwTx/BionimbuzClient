@@ -13,8 +13,12 @@ import javax.inject.Named;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
+import br.unb.cic.bionimbuz.model.DiagramElement;
+import br.unb.cic.bionimbuz.model.InputData;
+import br.unb.cic.bionimbuz.model.JobInfo;
 import br.unb.cic.bionimbuz.model.ProgramInfo;
 import br.unb.cic.bionimbuz.model.User;
+import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.model.WorkflowDiagram;
 import java.util.ArrayList;
 import org.primefaces.context.RequestContext;
@@ -33,48 +37,53 @@ public class PipelineComposerBean implements Serializable {
     private SessionBean sessionBean;
 
     // List of programs
-    private final List<ProgramInfo> programList = ConfigurationRepository.getProgramList().getPrograms();
-    private List<ProgramInfo> chosenPrograms = new ArrayList<>();
+    private final List<ProgramInfo> programList;
+    private ArrayList<DiagramElement> elements;
 
     // Workflow
     private WorkflowDiagram workflowDiagram;
 
     // Control attributes
-    private boolean workflowFinished = false;
     private ProgramInfo program;
     private String workflowDescription;
     private boolean suspendEvent;
+    private String clickedElementId;
+    private String inputURL;
+    private ArrayList<InputData> inputList = new ArrayList<>();
 
     // Logged user
     private User loggedUser;
 
+    public PipelineComposerBean() {
+        this.elements = new ArrayList<>();
+        this.programList = ConfigurationRepository.getProgramList().getPrograms();
+    }
+
     @PostConstruct
     public void init() {
         this.loggedUser = sessionBean.getLoggedUser();
-        this.workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription);
     }
 
     /**
      * Adds an element to the chosen programs list
      *
-     * @param program
+     * @param info
      */
-    public void addElement(ProgramInfo program) {
-        chosenPrograms.add(program);
-        workflowDiagram.addElement(program);
+    public void addElement(ProgramInfo info) {
+        elements.add(new DiagramElement(info));
 
-        showMessage("Elemento " + program.getName() + " adicionado");
+        showMessage("Elemento " + info.getName() + " adicionado");
     }
 
     /**
      * Removes an element from the chosen programs list
      *
-     * @param p
+     * @param element
      */
-    public void removeElement(ProgramInfo p) {
-        chosenPrograms.remove(p);
+    public void removeElement(DiagramElement element) {
+        elements.remove(element);
 
-        showMessage("Elemento " + program.getName() + " removido");
+        showMessage("Elemento " + element.getName() + " removido");
     }
 
     /**
@@ -100,73 +109,99 @@ public class PipelineComposerBean implements Serializable {
 
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
-            workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription);
 
-        // 
+            // Verifies if the user is entering pipeline composer page
         } else if (toGoStep.equals("workflow_design")) {
+            if (elements.isEmpty()) {
+                showMessage("Workflow vazio! Favor selecionar elementos");
 
+                return currentStep;
+            }
+            // Creates workflow diagram
+            workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription, elements);
         }
-
-        System.out.println(currentStep);
-        System.out.println(toGoStep);
 
         return toGoStep;
     }
 
-    public void endWorkflow() {
-        workflowDiagram.endWorkflow();
-
-        // Finish workflow
-        workflowFinished = true;
-
-        showMessage("Workflow finalizado!");
-    }
-
+    /**
+     * Server side method called when an element is connected to another
+     *
+     * @param event
+     */
     public void onConnect(ConnectEvent event) {
-        if (!suspendEvent) {
+        DiagramElement clickedElement = ((DiagramElement) event.getTargetElement().getData());
+
+        if (!suspendEvent && (!clickedElement.getName().equals("Inicio")) && (!clickedElement.getName().equals("Fim"))) {
             RequestContext context = RequestContext.getCurrentInstance();
+
+            // Call input pick painel
             context.execute("PF('file_dlg').show();");
 
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Connected",
-                    "From " + event.getSourceElement().getData() + " To " + event.getTargetElement().getData());
-
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            // Sets clicked element id to be used to set element input file
+            clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
 
         } else {
             suspendEvent = false;
         }
     }
 
+    /**
+     * Server side method called when a connection is changed from an element to another
+     *
+     * @param event
+     */
     public void onDisconnect(DisconnectEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Disconnected",
-                "From " + event.getSourceElement().getData() + " To " + event.getTargetElement().getData());
+        DiagramElement clickedElement = ((DiagramElement) event.getTargetElement().getData());
 
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        if (!suspendEvent && (!clickedElement.getName().equals("Inicio")) && (!clickedElement.getName().equals("Fim"))) {
+            RequestContext context = RequestContext.getCurrentInstance();
 
+            // Call input pick painel
+            context.execute("PF('file_dlg').show();");
+
+            // Sets clicked element id to be used to set element input file
+            clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
+
+        } else {
+            suspendEvent = false;
+        }
     }
 
+    /**
+     * Server side method called when a connection is taken to another element
+     *
+     * @param event
+     */
     public void onConnectionChange(ConnectionChangeEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Connection Changed",
-                "Original Source:" + event.getOriginalSourceElement().getData()
-                + ", New Source: " + event.getNewSourceElement().getData()
-                + ", Original Target: " + event.getOriginalTargetElement().getData()
-                + ", New Target: " + event.getNewTargetElement().getData());
-
-        FacesContext.getCurrentInstance().addMessage(null, msg);
 
         suspendEvent = true;
     }
 
+    /**
+     * Sets an file input for a worflow step
+     */
+    public void setFileInput() {
+        System.out.println("Tamanho: " + inputList.size());
+
+        // Sets element input list
+        workflowDiagram.setInput(clickedElementId, inputList);
+
+        // Resets input list
+        inputList = new ArrayList<>();
+    }
+
+    public void setURL() {
+        System.out.println("Set URL \"" + inputURL + "\" as input for element " + clickedElementId);
+
+    }
+
     public DefaultDiagramModel getWorkflowModel() {
-        return workflowDiagram.getWorkflow();
+        return workflowDiagram.getWorkflowModel();
     }
 
     public List<ProgramInfo> getProgramList() {
         return programList;
-    }
-
-    public boolean isWorkflowFinished() {
-        return workflowFinished;
     }
 
     public User getLoggedUser() {
@@ -185,12 +220,35 @@ public class PipelineComposerBean implements Serializable {
         this.workflowDescription = workflowDescription;
     }
 
-    public List<ProgramInfo> getChosenPrograms() {
-        return chosenPrograms;
+    public List<DiagramElement> getElements() {
+        return elements;
     }
 
-    public void setChosenPrograms(List<ProgramInfo> chosenPrograms) {
-        this.chosenPrograms = chosenPrograms;
+    public void setElements(ArrayList<DiagramElement> elements) {
+        this.elements = elements;
     }
 
+    public String getInputURL() {
+        return inputURL;
+    }
+
+    public void setInputURL(String inputURL) {
+        this.inputURL = inputURL;
+    }
+
+    public void setInputList(ArrayList<InputData> inputList) {
+        this.inputList = inputList;
+    }
+
+    public ArrayList<InputData> getInputList() {
+        return inputList;
+    }
+
+    public ArrayList<JobInfo> getPipeline() {
+        return (ArrayList<JobInfo>) this.workflowDiagram.getWorkflow().getPipeline();
+    }
+
+    public Workflow getWorkflow() {
+        return this.workflowDiagram.getWorkflow();
+    }
 }

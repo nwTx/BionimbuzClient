@@ -15,13 +15,18 @@
 
                 <p:wizard nextLabel="Avançar" backLabel="Voltar" flowListener="#{pipelineComposerBean.flowController}">
                     <!-- Element selection tab -->
-                    <p:tab id="element_selection" title="1. Seleção de Elementos">
+                    <p:tab id="element_selection" title="Seleção de Elementos">
                         <p:panel header="Escolha os elementos deste Workflow">
-                            <p:panel style="border-color: #34495e">
-                                <p:outputLabel value="Escolha os elementos que irão compor este workflow." />
+                            <p:panel style="border-color: #2980b9">
+                                <p:outputLabel value="De uma breve descricao deste workflow" /> <br />
+                                <p:inputText value="#{pipelineComposerBean.workflowDescription}" style="width: 99%"/>
                             </p:panel> 
                             <br />
-                            <p:fieldset legend="Elementos disponíveis" style="border-color: #16a085">
+                            <p:fieldset legend="Elementos disponíveis" style="border-color: #2980b9">
+                                <p:panel style="border-color: #2980b9">
+                                    <p:outputLabel value="Escolha os elementos que irão compor este workflow." />
+                                </p:panel> 
+                                <br />
                                 <center>
                                     <p:dataGrid var="p" value="#{pipelineComposerBean.programList}" columns="4" layout="grid"
                                                 id="elements" >
@@ -32,10 +37,11 @@
                                         <p:panel header="#{p.name}" style="text-align:center">
                                             <h:panelGrid columns="1" style="width:100%">
                                                 <h:outputText value="#{p.description}" />
-                                                <hr style="color: #3498db"/>
+                                                <hr style="color: #2980b9"/>
                                                 <f:facet name="footer">
                                                     <p:commandButton action="#{pipelineComposerBean.addElement(p)}"
-                                                                     value="Adicionar" icon="ui-icon-circle-plus" update=":form:chosen_elements, :form:growl"
+                                                                     value="Adicionar" icon="ui-icon-check" 
+                                                                     update=":form:chosen_elements, :form:growl"
                                                                      iconPos="left" />
                                                 </f:facet>
                                             </h:panelGrid>
@@ -45,16 +51,16 @@
                                 </center>
                             </p:fieldset>
                             <br />
-                            <p:fieldset id="chosen_elements" legend="Elementos escolhidos" style="border-color: #f39c12">
+                            <p:fieldset id="chosen_elements" legend="Elementos escolhidos" style="border-color: #2980b9">
                                 <center>
-                                    <p:dataTable value="#{pipelineComposerBean.chosenPrograms}" var="p" style="width: 400px"
+                                    <p:dataTable value="#{pipelineComposerBean.elements}" var="e" style="width: 400px"
                                                  emptyMessage="Nenhum elemento adicionado" paginator="true" rows="8">
                                         <p:column headerText="Elemento">
-                                            <p:outputLabel value="#{p.name}"/>
+                                            <p:outputLabel value="#{e.name}"/>
                                         </p:column>
-                                        
+
                                         <p:column headerText="Excluir" style="text-align: center">
-                                            <p:commandButton icon="ui-icon-circle-close" action="#{pipelineComposerBean.removeElement(p)}" update=":form:chosen_elements"/>
+                                            <p:commandButton icon="ui-icon-circle-close" action="#{pipelineComposerBean.removeElement(e)}" update=":form:chosen_elements"/>
                                         </p:column>
                                     </p:dataTable>
                                 </center>
@@ -62,13 +68,7 @@
                         </p:panel>
                     </p:tab>
 
-                    <p:tab id="workflow_design" title="2. Desenho do Workflow">
-                        <p:panel header="Descrição">
-                            Dê uma breve descrição para esse workflow: <br /> <br />
-                            <p:inputText style="width: 99%" value="#{pipelineComposerBean.workflowDescription}"/>
-                        </p:panel>
-                        <br />
-
+                    <p:tab id="workflow_design" title="Desenho do Workflow">
                         <p:panel id="workflow_pnl">   
                             <!-- ======== Diagram ======== -->
                             <p:panel>
@@ -87,75 +87,115 @@
                             </p:panel>
                         </p:panel>
                     </p:tab>
+
+                    <p:tab id="workflow_summary" title="Resumo deste Workflow">
+                        <p:panel>
+                            <p:panel>
+                                Confira aqui o resumo desta execução. Ao clicar em "Confirmar Workflow" será iniciada sua execução.
+                            </p:panel>
+                            <br />
+                            <p:panel>
+                                <p:panelGrid columns="2" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Dados deste workflow" />
+                                    </f:facet>
+                                    <p:outputLabel value="Id" />
+                                    <p:outputLabel value="#{pipelineComposerBean.workflow.id}" />
+                                    <p:outputLabel value="Descricao" />
+                                    <p:outputLabel value="#{pipelineComposerBean.workflow.description} " />
+                                    <p:outputLabel value="Tamanho" />
+                                    <p:outputLabel value="#{pipelineComposerBean.workflow.pipeline.size()} " />
+                                    <p:outputLabel value="Criado em" />
+                                    <p:outputLabel value="#{pipelineComposerBean.workflow.creationDatestamp}" />
+                                </p:panelGrid>
+                            </p:panel>
+                            <br />
+                            <p:dataTable value="#{pipelineComposerBean.pipeline}" var="j" paginator="true" rows="10">
+                                <p:column headerText="Id">
+                                    <p:outputLabel value="#{j.id}" />
+                                </p:column>
+
+                                <p:column headerText="Service Id">
+                                    <p:outputLabel value="#{j.serviceId}" />
+                                </p:column>
+
+                                <p:column headerText="Input">
+                                    <p:outputLabel value="#{j.inputs.size()}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </p:tab>
                 </p:wizard>
             </h:form>
         </ui:define>
-
     </ui:decorate>
+
     <!-- ***************************************************************************************************************** -->
     <!--                                                        DIALOGS                                                    -->
     <!-- ***************************************************************************************************************** -->
-
     <!-- File Dialog: Used for the user to pick inputs -->
-    <p:dialog widgetVar="file_dlg" header="Escolha a entrada desse passo" showEffect="fade" hideEffect="fade" modal="true" >
-        <p:panel>
+    <p:dialog widgetVar="file_dlg" showEffect="fade" header="Entrada"
+              hideEffect="fade" modal="true" closable="false">
+        <h:form id="file_form">
+
             <p:panel>
                 Escolha se a entrada deste passo será um arquivo ou uma URL do arquivo
+                <f:facet name="footer">
+                    Para nao utilizar dados de entrada, clique em 'Pular'. Neste caso, a entrada deste passo sera apenas a saida do passo anterior. <br />
+                    <p:commandButton value="Pular" onclick="PF('file_dlg').hide()"/>
+                </f:facet>
             </p:panel>
             <br />
-            <p:tabView>
+            <p:accordionPanel>
+
                 <p:tab title="Arquivos">
-                    <p:dataTable value="#{pipelineComposerBean.loggedUser.files}" var="f" style="width: 60em"
-                                 paginator="true" rows="5" emptyMessage="Nenhum arquivo encontrado">
-                        <f:facet name="header">Sua lista de arquivos</f:facet>
-                        <p:column headerText="ID" width="5em" style="text-align: center">
-                            <p:outputLabel value="#{f.id}"/>
-                        </p:column>
+                    <p:fieldset id="file_list_dlg" legend="Lista de Arquivos">
+                        <p:panel>
+                            Caso não tenho realizado o upload dos arquivos necessários para essa execução, faça-o 
+                            <p:commandLink value="aqui" action="upload_file"/>
+                        </p:panel>
+                        <br />
+                        <p:dataTable value="#{pipelineComposerBean.loggedUser.files}" var="f" style="width: 60em"
+                                     paginator="true" rows="5" emptyMessage="Nenhum arquivo encontrado"
+                                     selection="#{pipelineComposerBean.inputList}" rowKey="#{f.id}" >
+                            <p:column headerText="ID" width="5em" style="text-align: center">
+                                <p:outputLabel value="#{f.id}"/>
+                            </p:column>
 
-                        <p:column headerText="Nome" width="25em" style="text-align: center">
-                            <p:outputLabel value="#{f.name}"/>
-                        </p:column>
+                            <p:column headerText="Nome" width="25em" style="text-align: center">
+                                <p:outputLabel value="#{f.name}"/>
+                            </p:column>
 
-                        <p:column headerText="Upload em" width="25em" style="text-align: center">
-                            <p:outputLabel value="#{f.uploadTimestamp}"/>
-                        </p:column>
+                            <p:column headerText="Upload em" width="25em" style="text-align: center">
+                                <p:outputLabel value="#{f.uploadTimestamp}"/>
+                            </p:column>
 
-                        <p:column headerText="Tamanho" width="25em" style="text-align: center">
-                            <p:outputLabel value="#{f.size} Kb"/>
-                        </p:column>
+                            <p:column headerText="Tamanho" width="25em" style="text-align: center">
+                                <p:outputLabel value="#{f.size} Kb"/>
+                            </p:column>
 
-                        <p:column headerText="Escolher arquivo" width="25em" style="text-align: center">
-                            <p:commandButton icon="ui-icon-check" iconPos="center" 
-                                             action="#{pipelineComposerBean.addElement(f)}" 
-                                             update=":form:workflow_pnl, :form:growl"
-                                             onclick="PF('file_dlg').hide()"/>
-                        </p:column>
-                    </p:dataTable>
-                    <br />
-                    <p:panel>
-                        Caso não tenho realizado o upload dos arquivos necessários para essa execução, faça-o 
-                        <p:commandLink value="aqui" action="upload_file"/>
-                    </p:panel>
+                            <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
+                        </p:dataTable>
+                    </p:fieldset>
                 </p:tab>
+
                 <p:tab title="URL">
-                    Digite a URL de onde se encontra seu arquivo (URL de um armazenamento, link do Dropbox, link do Google Drive, ...). <br />
-                    Apontar o caminho direto para o arquivo (nao apontar pastas, por exemplo):
-                    <p:inputText style="width: 99%" placeholder="http://" />
-                    <br /> <br />
-                    <p:commandButton value="Ok"/>
+                    <p:fieldset legend="URL">
+                        Digite a URL de onde se encontra seu arquivo (URL de um armazenamento, link do Dropbox, link do Google Drive, ...). <br />
+                        Apontar o caminho direto para o arquivo (não apontar pastas, por exemplo):
+                        <h:inputText id="url" style="width: 99%" value="#{pipelineComposerBean.inputURL}"/>
+                        <br /> <br />
+                        <p:commandButton value="Ok" actionListener="#{pipelineComposerBean.setURL()}" onclick="PF('file_dlg').hide()"/>
+                    </p:fieldset>
                 </p:tab>
-            </p:tabView>
 
-        </p:panel>
+            </p:accordionPanel>
+            <p:panel header="footer">
+                <p:commandButton value="Ok" action="#{pipelineComposerBean.setFileInput()}" 
+                                 update=":form:growl"
+                                 onclick="PF('file_dlg').hide()"/>
+            </p:panel>
+        </h:form>
     </p:dialog>
 
-    <!-- Final confirmation -->
-    <p:confirmDialog message="Você tem certeza que deseja finalizar este Workflow?"
-                     header="Finalizar workflow" severity="alert"
-                     widgetVar="confirm_end">
-        <center>
-            <p:commandButton value="Sim" onclick="PF('confirm_end').hide()" action="#{pipelineComposerBean.endWorkflow()}" update=":form:workflow_pnl"/>
-            <p:commandButton value="Não" onclick="PF('confirm_end').hide();" />
-        </center>
-    </p:confirmDialog>
 </html>

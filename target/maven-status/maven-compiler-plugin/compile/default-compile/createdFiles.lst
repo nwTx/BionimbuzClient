@@ -1,7 +1,6 @@
 br/unb/cic/bionimbuz/model/User.class
 br/unb/cic/bionimbuz/rest/response/DeleteFileResponse.class
 br/unb/cic/bionimbuz/model/DiagramStyle.class
-br/unb/cic/bionimbuz/web/beans/PipelineComposerBean.class
 br/unb/cic/bionimbuz/test/CancelJobBean.class
 br/unb/cic/bionimbuz/rest/service/RestService.class
 br/unb/cic/bionimbuz/security/SecurityToken.class
@@ -18,12 +17,10 @@ br/unb/cic/bionimbuz/model/JobInfo.class
 br/unb/cic/bionimbuz/rest/action/Upload.class
 br/unb/cic/bionimbuz/rest/request/LoginRequest.class
 br/unb/cic/bionimbuz/rest/request/DeleteFileRequest.class
-br/unb/cic/bionimbuz/web/beans/PipelineComposerBean_old.class
 br/unb/cic/bionimbuz/rest/response/SignUpResponse.class
 br/unb/cic/bionimbuz/rest/action/Upload$1.class
 br/unb/cic/bionimbuz/rest/action/Schedule.class
 br/unb/cic/bionimbuz/rest/action/Action.class
-br/unb/cic/bionimbuz/model/Pipeline.class
 br/unb/cic/bionimbuz/exception/ServerNotReachableException.class
 br/unb/cic/bionimbuz/configuration/ConfigurationRepository.class
 br/unb/cic/bionimbuz/rest/response/UploadResponse.class
@@ -38,7 +35,6 @@ br/unb/cic/bionimbuz/configuration/ProgramList.class
 br/unb/cic/bionimbuz/configuration/ConfigurationLoader.class
 br/unb/cic/bionimbuz/web/beans/DeleteFileBean.class
 br/unb/cic/bionimbuz/rest/response/LogoutResponse.class
-br/unb/cic/bionimbuz/model/WorkflowDiagram.class
 br/unb/cic/bionimbuz/configuration/Configuration.class
 br/unb/cic/bionimbuz/web/beans/SignUpBean.class
 br/unb/cic/bionimbuz/rest/request/LogoutRequest.class

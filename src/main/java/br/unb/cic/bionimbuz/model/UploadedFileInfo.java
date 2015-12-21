@@ -1,6 +1,6 @@
 package br.unb.cic.bionimbuz.model;
 
-public class UploadedFileInfo {
+public class UploadedFileInfo implements InputData {
 
     private Long id;
 

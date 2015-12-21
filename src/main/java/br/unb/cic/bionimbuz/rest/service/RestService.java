@@ -25,7 +25,7 @@ import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 
 public class RestService {
 
-    private RestCommunicator restCommunicator;
+    private final RestCommunicator restCommunicator;
 
     /**
      * Constructor that initializes the REST Communicator
@@ -37,9 +37,9 @@ public class RestService {
     /**
      * Fires a Login request to the server
      *
-     * @param login
-     * @param password
-     * @throws Exception
+     * @param user
+     * @return
+     * @throws ServerNotReachableException
      */
     public User login(User user) throws ServerNotReachableException {
         RequestInfo loginRequest = new LoginRequest(user);
@@ -65,8 +65,7 @@ public class RestService {
     /**
      * Fires an Upload request to the server
      *
-     * @param filename
-     * @param filepath
+     * @param fileInfo
      * @return
      * @throws IOException
      */

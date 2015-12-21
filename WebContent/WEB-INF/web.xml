@@ -12,7 +12,7 @@
 
     <!-- Session idle time in minutes -->
     <session-config>
-        <session-timeout>5</session-timeout>
+        <session-timeout>10</session-timeout>
     </session-config>
 
     <!-- Primefaces theme-->
@@ -84,11 +84,7 @@
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
         <init-param>
             <param-name>thresholdSize</param-name>
-            <param-value>51200</param-value>
-        </init-param>
-        <init-param>
-            <param-name>uploadDirectory</param-name>
-            <param-value>/Users/usuario/Documents/PrimefaceUploads</param-value>
+            <param-value>2097152</param-value>
         </init-param>
     </filter>
 

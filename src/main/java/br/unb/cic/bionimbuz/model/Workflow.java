@@ -6,22 +6,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Pipeline {
+public class Workflow {
 
-    private String id = UUID.randomUUID().toString();
+    private final String id = UUID.randomUUID().toString();
 
-    private User user;
+    private final List<JobInfo> pipeline;
 
-    private Date creationDatestamp;
+    private final Date creationDatestamp;
 
-    private String description;
+    private final User user;
 
-    private List<JobInfo> pipeline;
+    private final String description;
 
-    public Pipeline(User user, String description) {
+    public Workflow(User user, String description) {
         this.user = user;
         this.creationDatestamp = Calendar.getInstance().getTime();
-        this.pipeline = new ArrayList<JobInfo>();
+        this.pipeline = new ArrayList<>();
         this.description = description;
     }
 
@@ -33,24 +33,12 @@ public class Pipeline {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Date getCreationDatestamp() {
         return creationDatestamp;
     }
 
-    public void setCreationDatestamp() {
-        this.creationDatestamp.setTime(Calendar.getInstance().getTime().getTime());
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public List<JobInfo> getPipeline() {

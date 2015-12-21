@@ -25,6 +25,7 @@ public class ConfigurationRepository implements ServletContextListener {
 
     /**
      * Called on Application Server start
+     * @param servletContext
      */
     @Override
     public void contextInitialized(ServletContextEvent servletContext) {
@@ -42,6 +43,7 @@ public class ConfigurationRepository implements ServletContextListener {
 
     /**
      * Called on Application Server stop
+     * @param servletContext
      */
     @Override
     public void contextDestroyed(ServletContextEvent servletContext) {

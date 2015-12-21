@@ -1,15 +1,8 @@
 package br.unb.cic.bionimbuz.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import org.primefaces.event.diagram.ConnectEvent;
-import org.primefaces.event.diagram.ConnectionChangeEvent;
-import org.primefaces.event.diagram.DisconnectEvent;
-import org.primefaces.model.diagram.Connection;
+import java.util.UUID;
 
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -38,25 +31,26 @@ public class WorkflowDiagram {
     // X position of the element
     private int elementXPosition = INITIAL_X_POSITION;
 
-    // The Pipeline object
-    private Pipeline pipeline;
+    // The Workflow object
+    private final Workflow workflow;
 
     /**
      * Calls the method that initializes everything...
      *
      * @param user
      * @param description
+     * @param elements
      */
-    public WorkflowDiagram(User user, String description) {
-        // Initializes Pipeline
-        this.pipeline = new Pipeline(user, description);
-        initialize();
+    public WorkflowDiagram(User user, String description, ArrayList<DiagramElement> elements) {
+        // Initializes Workflow
+        this.workflow = new Workflow(user, description);
+        initialize(elements);
     }
 
     /**
      * Initializes variables, models, lists...
      */
-    private void initialize() {
+    private void initialize(ArrayList<DiagramElement> elements) {
         // Initializes Workflow Model
         workflowModel = new DefaultDiagramModel();
         workflowModel.setMaxConnections(-1);
@@ -68,33 +62,42 @@ public class WorkflowDiagram {
         connector.setHoverPaintStyle(DiagramStyle.CONNECTOR_HOVER_STYLE);
         workflowModel.setDefaultConnector(connector);
 
-        fromElement = createNewElement("Inicio", getElementXPosition(), Y_POSITION);
+        // ToDo: Verificar addElement(inicio)
+        fromElement = createNewElement(new DiagramElement("Inicio"), getElementXPosition(), Y_POSITION);
 
         workflowModel.addElement(fromElement);
+
+        for (DiagramElement d : elements) {
+            addElement(d);
+        }
+
+        // Finish the workflow putting a "Fim" element
+        endWorkflow();
     }
 
     /**
      * Adds a sequential program element to the workflow model
      *
-     * @param program
+     * @param element
      */
-    public void addElement(ProgramInfo program) {
-        // Creates the new Job
-        JobInfo newJob = new JobInfo();
-        newJob.setServiceId(program.getId());
-        newJob.setTimestamp(Calendar.getInstance().getTime().toString());
-
-        // Adds it to the pipeline
-        pipeline.addJobToPipeline(newJob);
-
+    public void addElement(DiagramElement element) {
         // Create new element
-        toElement = createNewElement(program.getName(), getElementXPosition(), Y_POSITION);
+        toElement = createNewElement(element, getElementXPosition(), Y_POSITION);
 
         // Add it to the model and connects it 
         workflowModel.addElement(toElement);
 
         // Turn the new element the new FROM element
         fromElement = toElement;
+
+        // Creates the new Job
+        JobInfo newJob = new JobInfo(element.getId());
+        newJob.setServiceId(element.getServiceId());
+        newJob.setTimestamp(Calendar.getInstance().getTime().toString());
+
+        // Adds it to the pipeline
+        workflow.addJobToPipeline(newJob);
+
     }
 
     /**
@@ -103,9 +106,14 @@ public class WorkflowDiagram {
      * @param text
      * @return
      */
-    private Element createNewElement(String text, String xPosition, String yPosition) {
+    private Element createNewElement(DiagramElement element, String xPosition, String yPosition) {
+        // Completes element data
+        element.setId(UUID.randomUUID().toString().substring(0, 8));
+        element.setxPosition(Integer.parseInt(xPosition.substring(0, (xPosition.length() - 2))));   // take out 'em' from 10em
+        element.setyPosition(Integer.parseInt(yPosition.substring(0, (xPosition.length() - 2))));
+        
         // Create new element
-        Element newElement = new Element(text, xPosition, yPosition);
+        Element newElement = new Element(element, xPosition, yPosition);
 
         // Creates Rectangle End Point
         EndPoint rectEndPoint = new RectangleEndPoint(EndPointAnchor.RIGHT);
@@ -140,9 +148,12 @@ public class WorkflowDiagram {
         return (xPosition + "em");
     }
 
+    /**
+     * Finishes workflow putting and "Fim" element at the end
+     */
     public void endWorkflow() {
         // Create new element
-        toElement = createNewElement("Fim", getElementXPosition(), Y_POSITION);
+        toElement = createNewElement(new DiagramElement("Fim"), getElementXPosition(), Y_POSITION);
 
         // Add it to the model and connects it
         workflowModel.addElement(toElement);
@@ -151,7 +162,39 @@ public class WorkflowDiagram {
         fromElement = toElement;
     }
 
-    public DefaultDiagramModel getWorkflow() {
+    /**
+     * Updates a JobInfo putting an input data at it
+     * @param id
+     * @param inputs 
+     */
+    public void setInput(String id, ArrayList<InputData> inputs) {
+        int cont = 0;
+        
+        // Iterates over the joblist
+        for (JobInfo j : (ArrayList<JobInfo>) workflow.getPipeline()) {
+            
+            if (j.getId().equals(id)) {
+                // Gets the right job
+                JobInfo job = workflow.getPipeline().get(cont);
+                
+                // Sets its input
+                job.setInputs(inputs);
+                
+                // When added, reinsert this job on the pipeline
+                workflow.getPipeline().set(cont, job);
+                
+                return;
+            }
+            
+            cont++;
+        }
+    }
+
+    public DefaultDiagramModel getWorkflowModel() {
         return this.workflowModel;
+    }
+    
+    public Workflow getWorkflow() {
+        return this.workflow;
     }
 }
