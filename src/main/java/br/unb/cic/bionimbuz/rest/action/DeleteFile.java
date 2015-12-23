@@ -11,7 +11,7 @@ import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
 public class DeleteFile extends Action {
 
     private static final String REST_DELETE_FILE_URL = "/rest/file/";
-    private Long fileId;
+    private String fileId;
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {

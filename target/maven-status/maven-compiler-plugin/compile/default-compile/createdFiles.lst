@@ -1,10 +1,11 @@
 br/unb/cic/bionimbuz/model/User.class
 br/unb/cic/bionimbuz/rest/response/DeleteFileResponse.class
 br/unb/cic/bionimbuz/model/DiagramStyle.class
+br/unb/cic/bionimbuz/web/beans/PipelineComposerBean.class
+br/unb/cic/bionimbuz/model/InputURL.class
 br/unb/cic/bionimbuz/test/CancelJobBean.class
 br/unb/cic/bionimbuz/rest/service/RestService.class
 br/unb/cic/bionimbuz/security/SecurityToken.class
-br/unb/cic/bionimbuz/model/WorkflowDiagram_old.class
 br/unb/cic/bionimbuz/web/beans/FileUploadBean.class
 br/unb/cic/bionimbuz/rest/action/SignUp.class
 br/unb/cic/bionimbuz/rest/request/UploadRequest.class
@@ -12,6 +13,7 @@ br/unb/cic/bionimbuz/rest/response/LoginResponse.class
 br/unb/cic/bionimbuz/model/Pair.class
 br/unb/cic/bionimbuz/web/beans/FileListBean.class
 br/unb/cic/bionimbuz/model/ProgramInfo.class
+br/unb/cic/bionimbuz/model/Workflow.class
 br/unb/cic/bionimbuz/web/beans/SessionBean.class
 br/unb/cic/bionimbuz/model/JobInfo.class
 br/unb/cic/bionimbuz/rest/action/Upload.class
@@ -27,6 +29,7 @@ br/unb/cic/bionimbuz/rest/response/UploadResponse.class
 br/unb/cic/bionimbuz/rest/response/ResponseInfo.class
 br/unb/cic/bionimbuz/rest/request/RequestInfo.class
 br/unb/cic/bionimbuz/communication/RestCommunicator.class
+br/unb/cic/bionimbuz/model/InputData.class
 br/unb/cic/bionimbuz/rest/action/Login.class
 br/unb/cic/bionimbuz/rest/action/DeleteFile.class
 br/unb/cic/bionimbuz/model/ServerStatus.class
@@ -35,11 +38,14 @@ br/unb/cic/bionimbuz/configuration/ProgramList.class
 br/unb/cic/bionimbuz/configuration/ConfigurationLoader.class
 br/unb/cic/bionimbuz/web/beans/DeleteFileBean.class
 br/unb/cic/bionimbuz/rest/response/LogoutResponse.class
+br/unb/cic/bionimbuz/model/WorkflowDiagram.class
 br/unb/cic/bionimbuz/configuration/Configuration.class
 br/unb/cic/bionimbuz/web/beans/SignUpBean.class
 br/unb/cic/bionimbuz/rest/request/LogoutRequest.class
 br/unb/cic/bionimbuz/model/UploadedFileInfo.class
+br/unb/cic/bionimbuz/model/DiagramElement.class
 br/unb/cic/bionimbuz/configuration/ApplicationConfiguration.class
 br/unb/cic/bionimbuz/test/JobStatusInfoTest.class
 br/unb/cic/bionimbuz/rest/request/BaseRequest.class
+br/unb/cic/bionimbuz/model/WorkflowStatus.class
 br/unb/cic/bionimbuz/rest/action/Logout.class

@@ -147,7 +147,8 @@ public class PipelineComposerBean implements Serializable {
     }
 
     /**
-     * Server side method called when a connection is changed from an element to another
+     * Server side method called when a connection is changed from an element to
+     * another
      *
      * @param event
      */
@@ -182,8 +183,6 @@ public class PipelineComposerBean implements Serializable {
      * Sets an file input for a worflow step
      */
     public void setFileInput() {
-        System.out.println("Tamanho: " + inputList.size());
-
         // Sets element input list
         workflowDiagram.setInput(clickedElementId, inputList);
 
@@ -191,9 +190,29 @@ public class PipelineComposerBean implements Serializable {
         inputList = new ArrayList<>();
     }
 
+    /**
+     * Sets an URL as a step input
+     */
     public void setURL() {
         System.out.println("Set URL \"" + inputURL + "\" as input for element " + clickedElementId);
 
+    }
+
+    /**
+     * Returns workflow status as a String
+     *
+     * @return
+     */
+    public String getWorkflowStatus() {
+        return this.workflowDiagram.getWorkflow().getStatus().toString();
+    }
+
+    /**
+     * Returns the color of the status
+     * @return 
+     */
+    public String getWorkflowColor() {
+        return this.workflowDiagram.getWorkflow().getStatus().getColor();
     }
 
     public DefaultDiagramModel getWorkflowModel() {

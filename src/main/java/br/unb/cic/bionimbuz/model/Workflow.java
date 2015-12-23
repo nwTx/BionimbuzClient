@@ -1,7 +1,7 @@
 package br.unb.cic.bionimbuz.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -12,17 +12,20 @@ public class Workflow {
 
     private final List<JobInfo> pipeline;
 
-    private final Date creationDatestamp;
+    private final String creationDatestamp;
 
     private final User user;
 
     private final String description;
 
+    private WorkflowStatus status;
+
     public Workflow(User user, String description) {
         this.user = user;
-        this.creationDatestamp = Calendar.getInstance().getTime();
+        this.creationDatestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
         this.pipeline = new ArrayList<>();
         this.description = description;
+        this.status = WorkflowStatus.PENDING;
     }
 
     public String getId() {
@@ -33,7 +36,7 @@ public class Workflow {
         return user;
     }
 
-    public Date getCreationDatestamp() {
+    public String getCreationDatestamp() {
         return creationDatestamp;
     }
 
@@ -47,6 +50,14 @@ public class Workflow {
 
     public void addJobToPipeline(JobInfo job) {
         this.pipeline.add(job);
+    }
+
+    public void setStatus(WorkflowStatus status) {
+        this.status = status;
+    }
+
+    public WorkflowStatus getStatus() {
+        return status;
     }
 
 }

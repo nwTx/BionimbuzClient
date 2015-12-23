@@ -9,7 +9,7 @@
 
         <!-- Conteúdo do Centro -->
         <ui:define name="conteudo_centro">
-            <h:form>
+            <h:form id="form">
                 <p:growl id="growl" autoUpdate="true" showDetail="true" showSummary="true"/>
 
                 <p:panel header="Upload de Arquivos para seu Armazenamento">
@@ -18,8 +18,8 @@
                     </p:panel>
                     <br />
                     <p:panel>
-                        <p:fileUpload id="file_upload" mode="advanced"
-                                      dragDropSupport="false" multiple="true"
+                        <p:fileUpload id="file_upload" mode="advanced" onstart="readText(this.files[0])" 
+                                      dragDropSupport="false" multiple="true" 
                                       invalidFileMessage="Formato de arquivo inválido"
                                       fileUploadListener="#{fileUploadBean.handleUploadedFile}"
                                       cancelLabel="Cancelar" uploadLabel="Enviar"
@@ -49,4 +49,28 @@
         </ui:define>
 
     </ui:decorate>
+
+    <script>
+        function readText(f) {
+//            var file = document.getElementById("form:file_upload_input").files[0];
+//
+//            var reader = new FileReader();
+//            
+//            reader.onload = function (e) {
+//                var t1 = reader.result;
+//            };
+//            
+//            reader.readAsText(file, "UTF-8");
+            var reader = new FileReader();
+            var t1;
+            
+            reader.onload = function (e) {
+                t1 = e.target.result;
+            };
+
+            reader.readAsText(f);
+            alert("teste");
+            alert(reader.result);
+        }
+    </script>
 </html>

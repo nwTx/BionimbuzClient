@@ -1,8 +1,10 @@
 package br.unb.cic.bionimbuz.model;
 
+import java.util.UUID;
+
 public class UploadedFileInfo implements InputData {
 
-    private Long id;
+    private String id = UUID.randomUUID().toString();;
 
     private Long userId;
 
@@ -12,11 +14,11 @@ public class UploadedFileInfo implements InputData {
 
     private long size;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

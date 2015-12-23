@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class FileUploadBean implements Serializable {
 
+    private static final String MAX_STORAGE = "256 Mb";
     private static final Long MAX_STORAGE_SIZE = 268435456l;    // 256 Mb
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadBean.class);
@@ -54,17 +55,26 @@ public class FileUploadBean implements Serializable {
     public void handleUploadedFile(FileUploadEvent event) {
         // Verifies if the file doesn't overflow the user storage usage
         if ((sessionBean.getLoggedUser().getStorageUsage() + event.getFile().getSize()) > MAX_STORAGE_SIZE) {
-            showFacesMessage(FacesMessage.SEVERITY_WARN, "Seu espaco de armazenamento ultrapassou 256 Mb!");
+            showFacesMessage(FacesMessage.SEVERITY_ERROR, "Seu espaco de armazenamento ultrapassou " + MAX_STORAGE + "!");
+
+            return;
         }
 
-        UploadedFileInfo fileInfo = new UploadedFileInfo();
+        // Verifies if it wasn't uploaded previously
+        for (UploadedFileInfo u : sessionBean.getLoggedUser().getFiles()) {
+            if (event.getFile().getFileName().equals(u.getName())) {
+                showFacesMessage(FacesMessage.SEVERITY_ERROR, "Arquivo existente!");
+                return;
+            }
+        }
 
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        // Creates a new FileInfo
+        UploadedFileInfo fileInfo = new UploadedFileInfo();
 
         // Set file information
         fileInfo.setName(event.getFile().getFileName());
         fileInfo.setSize(event.getFile().getSize());
-        fileInfo.setUploadTimestamp(format.format(new Date()));
+        fileInfo.setUploadTimestamp(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
         fileInfo.setUserId(sessionBean.getLoggedUser().getId());
 
         try {
@@ -74,11 +84,19 @@ public class FileUploadBean implements Serializable {
             // Calls RestService to upload file
             restService.uploadFile(fileInfo);
 
+            // If file was uploaded with success, adds file on user file list
+            sessionBean.getLoggedUser().getFiles().add(fileInfo);
+
+            // Adds the size of the uploaded file to the user storage usage
+            sessionBean.getLoggedUser().addStorageUsage(event.getFile().getSize());
+
+            // Shows message to the user
+            showFacesMessage(FacesMessage.SEVERITY_INFO, "Arquivo enviado com sucesso!");
+
         } catch (Exception e) {
             showFacesMessage(FacesMessage.SEVERITY_ERROR, "Erro Interno. Não foi possível enviar o arquivo");
 
             LOGGER.error("[Exception - " + e.getMessage() + "]");
-            return;
 
         } finally {
             try {
@@ -89,14 +107,6 @@ public class FileUploadBean implements Serializable {
             }
         }
 
-        // If file was uploaded with success, adds file on user file list
-        sessionBean.getLoggedUser().getFiles().add(fileInfo);
-
-        // Adds the size of the uploaded file to the user storage usage
-        sessionBean.getLoggedUser().addStorageUsage(event.getFile().getSize());
-
-        // Shows message to the user
-        showFacesMessage(FacesMessage.SEVERITY_INFO, "Arquivo enviado com sucesso!");
     }
 
     /**
