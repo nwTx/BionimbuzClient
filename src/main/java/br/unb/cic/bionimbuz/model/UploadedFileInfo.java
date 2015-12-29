@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class UploadedFileInfo implements InputData {
 
-    private String id = UUID.randomUUID().toString();;
+    private String id = UUID.randomUUID().toString();
 
     private Long userId;
 

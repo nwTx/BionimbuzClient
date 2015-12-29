@@ -77,6 +77,10 @@ public class SessionBean implements Serializable {
             e.printStackTrace();
         }
 
+        // Reset user variables
+        this.loggedUser = new User();
+        this.user = new User();
+        
         return "logout";
     }
 

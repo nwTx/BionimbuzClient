@@ -73,7 +73,11 @@ public class RestService {
         RequestInfo uploadRequest = new UploadRequest(fileInfo);
         UploadResponse resp = (UploadResponse) restCommunicator.sendRequest(new Upload(), uploadRequest);
 
-        return resp.isUploaded();
+        if (!resp.isUploaded()) {
+            throw new Exception("Failed to send file");
+        }
+        
+        return true;
     }
 
     /**
