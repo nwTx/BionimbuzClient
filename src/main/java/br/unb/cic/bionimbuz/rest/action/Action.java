@@ -42,17 +42,20 @@ public abstract class Action {
         // Creates client
         Client client = ClientBuilder.newClient();
 
-        WebTarget target = client.target(appConfiguration.getBionimbuzAddress());
-
-        Response response = null;
+        WebTarget pingTarget = client.target(appConfiguration.getBionimbuzAddress());
 
         try {
             // Fires a GET request
-            response = target
+            Response response = pingTarget
                     .path(PING_URL)
                     .request()
                     .get(Response.class);
 
+            // If Response is not 200, throws an Exception
+            if (response.getStatus() != 200) {
+                LOGGER.warn("Response different from HTTP 200 (OK). Received [status=" + response.getStatus()
+                        + ", status-info=" + response.getStatusInfo() + "]");
+            }
         } catch (WebApplicationException w) {
             LOGGER.error("[WebApplicationException] " + w.getMessage());
 
@@ -62,15 +65,10 @@ public abstract class Action {
         } catch (Exception e) {
             LOGGER.error("[Exception] " + e.getMessage());
 
+        } finally {
+            client.close();
         }
 
-        // If Response is not 200, throws an Exception
-        if (response.getStatus() != 200) {
-            LOGGER.warn("Response different from HTTP 200 (OK). Received [status=" + response.getStatus()
-                    + ", status-info=" + response.getStatusInfo() + "]");
-        }
-
-        client.close();
         return false;
     }
 

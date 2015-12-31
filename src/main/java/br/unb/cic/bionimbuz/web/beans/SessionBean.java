@@ -42,6 +42,7 @@ public class SessionBean implements Serializable {
 
         } catch (Exception e) {
             LOGGER.error("Server is offline (or HTTP 500 - Internal error)");
+            e.printStackTrace();
 
             return "login?faces-redirect=true&internal_error=true";
         }

@@ -1,6 +1,13 @@
 package br.unb.cic.bionimbuz.rest.response;
 
-public class DeleteFileResponse implements ResponseInfo {
+import org.jboss.resteasy.core.ServerResponse;
+
+/**
+ * Defines a REST response for a Delete File Action
+ *
+ * @author Vinicius
+ */
+public class DeleteFileResponse extends ServerResponse implements ResponseInfo {
 
     private boolean deleted;
 

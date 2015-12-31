@@ -1,5 +1,6 @@
 package br.unb.cic.bionimbuz.rest.action;
 
+import br.unb.cic.bionimbuz.model.User;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -7,6 +8,8 @@ import javax.ws.rs.core.MediaType;
 import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Response;
 
 public class Login extends Action {
 
@@ -27,11 +30,11 @@ public class Login extends Action {
     public LoginResponse execute() {
         logAction(REST_LOGIN_URL, Login.class);
 
-        LoginResponse response = target
+        Response response = target
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(request, MediaType.APPLICATION_JSON), LoginResponse.class);
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON), Response.class);
 
-        return response;
+        return new LoginResponse(response.readEntity(new GenericType<User>(){}));
     }
 
 }
