@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class Workflow {
 
-    private final String id = UUID.randomUUID().toString();
+    private final String id = "Workflow" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
 
     private final List<WorkflowJobInfo> pipeline;
 
