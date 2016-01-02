@@ -10,7 +10,7 @@ public class Workflow {
 
     private final String id = UUID.randomUUID().toString();
 
-    private final List<JobInfo> pipeline;
+    private final List<WorkflowJobInfo> pipeline;
 
     private final String creationDatestamp;
 
@@ -19,6 +19,13 @@ public class Workflow {
     private final String description;
 
     private WorkflowStatus status;
+
+    public Workflow() {
+        this.pipeline = null;
+        this.creationDatestamp = null;
+        this.user = null;
+        this.description = null;
+    }
 
     public Workflow(User user, String description) {
         this.user = user;
@@ -44,11 +51,11 @@ public class Workflow {
         return description;
     }
 
-    public List<JobInfo> getPipeline() {
+    public List<WorkflowJobInfo> getPipeline() {
         return pipeline;
     }
 
-    public void addJobToPipeline(JobInfo job) {
+    public void addJobToPipeline(WorkflowJobInfo job) {
         this.pipeline.add(job);
     }
 

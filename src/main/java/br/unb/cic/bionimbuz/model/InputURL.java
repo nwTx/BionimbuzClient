@@ -9,7 +9,7 @@ package br.unb.cic.bionimbuz.model;
  *
  * @author zoonimbus
  */
-public class InputURL implements InputData {
+public class InputURL implements Input {
 
     private String url;
 

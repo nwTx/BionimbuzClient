@@ -1,8 +1,11 @@
 package br.unb.cic.bionimbuz.model;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -14,7 +17,6 @@ import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.ArrowOverlay;
 
 public class WorkflowDiagram {
-
     // Constants
     private static final int INITIAL_X_POSITION = 1;
     private static final int X_POSITION_INCREMENT = 15;
@@ -40,8 +42,9 @@ public class WorkflowDiagram {
      * @param user
      * @param description
      * @param elements
+     * @throws java.net.MalformedURLException
      */
-    public WorkflowDiagram(User user, String description, ArrayList<DiagramElement> elements) {
+    public WorkflowDiagram(User user, String description, ArrayList<DiagramElement> elements) throws MalformedURLException {
         // Initializes Workflow
         this.workflow = new Workflow(user, description);
         initialize(elements);
@@ -50,7 +53,7 @@ public class WorkflowDiagram {
     /**
      * Initializes variables, models, lists...
      */
-    private void initialize(ArrayList<DiagramElement> elements) {
+    private void initialize(ArrayList<DiagramElement> elements) throws MalformedURLException {
         // Initializes Workflow Model
         workflowModel = new DefaultDiagramModel();
         workflowModel.setMaxConnections(-1);
@@ -91,12 +94,17 @@ public class WorkflowDiagram {
         fromElement = toElement;
 
         // Creates the new Job
-        JobInfo newJob = new JobInfo(element.getId());
-        newJob.setServiceId(element.getServiceId());
-        newJob.setTimestamp(Calendar.getInstance().getTime().toString());
+        WorkflowJobInfo newJob;
+        try {
+            newJob = new WorkflowJobInfo(element.getId());
+            newJob.setServiceId(element.getServiceId());
+            newJob.setTimestamp(Calendar.getInstance().getTime().toString());
 
-        // Adds it to the pipeline
-        workflow.addJobToPipeline(newJob);
+            // Adds it to the pipeline
+            workflow.addJobToPipeline(newJob);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(WorkflowDiagram.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -111,7 +119,7 @@ public class WorkflowDiagram {
         element.setId(UUID.randomUUID().toString().substring(0, 8));
         element.setxPosition(Integer.parseInt(xPosition.substring(0, (xPosition.length() - 2))));   // take out 'em' from 10em
         element.setyPosition(Integer.parseInt(yPosition.substring(0, (xPosition.length() - 2))));
-        
+
         // Create new element
         Element newElement = new Element(element, xPosition, yPosition);
 
@@ -163,29 +171,30 @@ public class WorkflowDiagram {
     }
 
     /**
-     * Updates a JobInfo putting an input data at it
+     * Updates a WorkflowJobInfo putting an input data at it
+     *
      * @param id
-     * @param inputs 
+     * @param inputs
      */
-    public void setInput(String id, ArrayList<InputData> inputs) {
+    public void setInputFile(String id, ArrayList<UploadedFileInfo> inputs) {
         int cont = 0;
-        
+
         // Iterates over the joblist
-        for (JobInfo j : (ArrayList<JobInfo>) workflow.getPipeline()) {
-            
+        for (WorkflowJobInfo j : (ArrayList<WorkflowJobInfo>) workflow.getPipeline()) {
+
             if (j.getId().equals(id)) {
                 // Gets the right job
-                JobInfo job = workflow.getPipeline().get(cont);
-                
+                WorkflowJobInfo job = workflow.getPipeline().get(cont);
+
                 // Sets its input
-                job.setInputs(inputs);
-                
+                job.setInputFiles(inputs);
+
                 // When added, reinsert this job on the pipeline
                 workflow.getPipeline().set(cont, job);
-                
+
                 return;
             }
-            
+
             cont++;
         }
     }
@@ -193,7 +202,7 @@ public class WorkflowDiagram {
     public DefaultDiagramModel getWorkflowModel() {
         return this.workflowModel;
     }
-    
+
     public Workflow getWorkflow() {
         return this.workflow;
     }

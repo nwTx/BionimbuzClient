@@ -13,25 +13,33 @@ import javax.inject.Named;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
+import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.DiagramElement;
-import br.unb.cic.bionimbuz.model.InputData;
-import br.unb.cic.bionimbuz.model.JobInfo;
+import br.unb.cic.bionimbuz.model.WorkflowJobInfo;
 import br.unb.cic.bionimbuz.model.ProgramInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.model.WorkflowDiagram;
+import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.util.ArrayList;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
+import br.unb.cic.bionimbuz.model.Input;
+import br.unb.cic.bionimbuz.model.UploadedFileInfo;
+import java.net.MalformedURLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named
 @SessionScoped
 public class PipelineComposerBean implements Serializable {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(PipelineComposerBean.class);
+    
     private static final long serialVersionUID = 1L;
+    private final RestService restService;
 
     @Inject
     private SessionBean sessionBean;
@@ -49,19 +57,20 @@ public class PipelineComposerBean implements Serializable {
     private boolean suspendEvent;
     private String clickedElementId;
     private String inputURL;
-    private ArrayList<InputData> inputList = new ArrayList<>();
+    private ArrayList<UploadedFileInfo> inputFiles = new ArrayList<>();
 
     // Logged user
     private User loggedUser;
 
     public PipelineComposerBean() {
-        this.elements = new ArrayList<>();
-        this.programList = ConfigurationRepository.getProgramList().getPrograms();
+        restService = new RestService();
+        elements = new ArrayList<>();
+        programList = ConfigurationRepository.getProgramList().getPrograms();
     }
 
     @PostConstruct
     public void init() {
-        this.loggedUser = sessionBean.getLoggedUser();
+        loggedUser = sessionBean.getLoggedUser();
     }
 
     /**
@@ -117,8 +126,13 @@ public class PipelineComposerBean implements Serializable {
 
                 return currentStep;
             }
-            // Creates workflow diagram
-            workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription, elements);
+            try {
+                // Creates workflow diagram
+                workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription, elements);
+                
+            } catch (MalformedURLException e) {
+                LOGGER.error("[MalformedURLException] " + e.getMessage());
+            }
         }
 
         return toGoStep;
@@ -182,12 +196,12 @@ public class PipelineComposerBean implements Serializable {
     /**
      * Sets an file input for a worflow step
      */
-    public void setFileInput() {
+    public void setInputFile() {
         // Sets element input list
-        workflowDiagram.setInput(clickedElementId, inputList);
+        workflowDiagram.setInputFile(clickedElementId, inputFiles);
 
         // Resets input list
-        inputList = new ArrayList<>();
+        inputFiles = new ArrayList<>();
     }
 
     /**
@@ -196,6 +210,15 @@ public class PipelineComposerBean implements Serializable {
     public void setURL() {
         System.out.println("Set URL \"" + inputURL + "\" as input for element " + clickedElementId);
 
+    }
+
+    /**
+     * Send out workflow to be processed by BioNimbuZ core
+     *
+     * @throws br.unb.cic.bionimbuz.exception.ServerNotReachableException
+     */
+    public void startWorkflow() throws ServerNotReachableException {
+        restService.startWorkflow(workflowDiagram.getWorkflow());
     }
 
     /**
@@ -209,7 +232,8 @@ public class PipelineComposerBean implements Serializable {
 
     /**
      * Returns the color of the status
-     * @return 
+     *
+     * @return
      */
     public String getWorkflowColor() {
         return this.workflowDiagram.getWorkflow().getStatus().getColor();
@@ -255,16 +279,16 @@ public class PipelineComposerBean implements Serializable {
         this.inputURL = inputURL;
     }
 
-    public void setInputList(ArrayList<InputData> inputList) {
-        this.inputList = inputList;
+    public void setInputFiles(ArrayList<UploadedFileInfo> inputFiles) {
+        this.inputFiles = inputFiles;
     }
 
-    public ArrayList<InputData> getInputList() {
-        return inputList;
+    public ArrayList<UploadedFileInfo> getInputFiles() {
+        return inputFiles;
     }
 
-    public ArrayList<JobInfo> getPipeline() {
-        return (ArrayList<JobInfo>) this.workflowDiagram.getWorkflow().getPipeline();
+    public ArrayList<WorkflowJobInfo> getPipeline() {
+        return (ArrayList<WorkflowJobInfo>) this.workflowDiagram.getWorkflow().getPipeline();
     }
 
     public Workflow getWorkflow() {

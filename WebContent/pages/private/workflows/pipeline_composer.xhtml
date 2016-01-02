@@ -126,13 +126,13 @@
                                 </p:column>
 
                                 <p:column headerText="Input">
-                                    <p:outputLabel value="#{j.inputs.size()}" />
+                                    <p:outputLabel value="#{j.inputFiles.size()}" />
                                 </p:column>
                             </p:dataTable>
                             <br />
                             <p:panel header="Iniciar Execução" style="text-align: center">
                                 <center>
-                                    <p:commandButton value="Confirmar Workflow" style="margin: 10px; border-color: #2980b9"/>
+                                    <p:commandButton action="#{pipelineComposerBean.startWorkflow()}" value="Confirmar Workflow" style="margin: 10px; border-color: #2980b9"/>
                                 </center>
                             </p:panel>
                         </p:panel>
@@ -169,7 +169,7 @@
                         <br />
                         <p:dataTable value="#{pipelineComposerBean.loggedUser.files}" var="f" style="width: 60em"
                                      paginator="true" rows="5" emptyMessage="Nenhum arquivo encontrado"
-                                     selection="#{pipelineComposerBean.inputList}" rowKey="#{f.name}" >
+                                     selection="#{pipelineComposerBean.inputFiles}" rowKey="#{f.name}" >
                             <p:column headerText="ID" width="5em" style="text-align: center">
                                 <p:outputLabel value="#{f.id}"/>
                             </p:column>
@@ -203,7 +203,7 @@
 
             </p:accordionPanel>
             <p:panel header="footer">
-                <p:commandButton value="Ok" action="#{pipelineComposerBean.setFileInput()}" 
+                <p:commandButton value="Ok" action="#{pipelineComposerBean.setInputFile()}" 
                                  update=":form:growl"
                                  onclick="PF('file_dlg').hide()"/>
             </p:panel>

@@ -2,7 +2,7 @@ package br.unb.cic.bionimbuz.model;
 
 import java.util.UUID;
 
-public class UploadedFileInfo implements InputData {
+public class UploadedFileInfo implements Input {
 
     private String id = UUID.randomUUID().toString();
 

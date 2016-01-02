@@ -1,9 +1,11 @@
 package br.unb.cic.bionimbuz.model;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobInfo {
+public class WorkflowJobInfo {
 
     private String id;
 
@@ -13,21 +15,25 @@ public class JobInfo {
 
     private String args = "";
 
-    private List<InputData> inputs;
+    private List<UploadedFileInfo> inputFiles;
 
-    private List<String> outputs = new ArrayList<>();
+    private List<URL> inputURL;
+
+    private List<String> outputs;
 
     private String timestamp;
 
-    public JobInfo() {
-        this.inputs = new ArrayList<>();
+    public WorkflowJobInfo() throws MalformedURLException {
+        this.inputFiles = new ArrayList<>();
         this.outputs = new ArrayList<>();
+        this.inputURL = new ArrayList<>();
     }
 
-    public JobInfo(String id) {
+    public WorkflowJobInfo(String id) throws MalformedURLException {
         this.id = id;
-        this.inputs = new ArrayList<>();
+        this.inputFiles = new ArrayList<>();
         this.outputs = new ArrayList<>();
+        this.inputURL = new ArrayList<>();
     }
 
     public String getId() {
@@ -58,16 +64,24 @@ public class JobInfo {
         this.args = args;
     }
 
-    public List<InputData> getInputs() {
-        return inputs;
+    public List<UploadedFileInfo> getInputFiles() {
+        return inputFiles;
     }
 
-    public void setInputs(List<InputData> inputs) {
-        this.inputs = inputs;
+    public void setInputFiles(List<UploadedFileInfo> inputFiles) {
+        this.inputFiles = inputFiles;
     }
 
-    public void addInput(InputData input) {
-        inputs.add(input);
+    public void addInputFile(UploadedFileInfo file) {
+        inputFiles.add(file);
+    }
+
+    public List<URL> getInputURL() {
+        return inputURL;
+    }
+
+    public void setInputURL(List<URL> inputURL) {
+        this.inputURL = inputURL;
     }
 
     public List<String> getOutputs() {

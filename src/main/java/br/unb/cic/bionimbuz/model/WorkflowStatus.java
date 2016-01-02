@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.unb.cic.bionimbuz.model;
 
 /**
@@ -20,6 +15,8 @@ public enum WorkflowStatus {
     STOPPED_WITH_ERROR("Workflow Parado com Erros", "#c0392b");
 
     private final String status;
+    
+    // Color is a web interface parameter (CSS color)
     private final String color;
 
     private WorkflowStatus(final String status, final String color) {
