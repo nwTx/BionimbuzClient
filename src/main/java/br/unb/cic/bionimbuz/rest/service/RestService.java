@@ -8,12 +8,14 @@ import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.rest.action.DeleteFile;
+import br.unb.cic.bionimbuz.rest.action.GetWorkflowStatus;
 import br.unb.cic.bionimbuz.rest.action.Login;
 import br.unb.cic.bionimbuz.rest.action.Logout;
 import br.unb.cic.bionimbuz.rest.action.SignUp;
 import br.unb.cic.bionimbuz.rest.action.StartWorkflow;
 import br.unb.cic.bionimbuz.rest.action.Upload;
 import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
+import br.unb.cic.bionimbuz.rest.request.GetWorkflowStatusRequest;
 import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
@@ -21,11 +23,13 @@ import br.unb.cic.bionimbuz.rest.request.SignUpRequest;
 import br.unb.cic.bionimbuz.rest.request.StartWorkflowRequest;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
+import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
 import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
 import br.unb.cic.bionimbuz.rest.response.StartWorkflowResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
+import java.util.List;
 
 public class RestService {
 
@@ -80,7 +84,7 @@ public class RestService {
         if (!resp.isUploaded()) {
             throw new Exception("Failed to send file");
         }
-        
+
         return true;
     }
 
@@ -111,11 +115,25 @@ public class RestService {
 
         return response.isAdded();
     }
-    
+
+    /**
+     * Sends an user workflow to the BioNimbuZ Core to be processed
+     *
+     * @param workflow
+     * @return
+     * @throws ServerNotReachableException
+     */
     public boolean startWorkflow(Workflow workflow) throws ServerNotReachableException {
         RequestInfo startWorkflowRequest = new StartWorkflowRequest(workflow);
         StartWorkflowResponse response = (StartWorkflowResponse) restCommunicator.sendRequest(new StartWorkflow(), startWorkflowRequest);
-        
+
         return response.isWorkflowProcessed();
+    }
+
+    public List<Workflow> getWorkflowStatus(User user) throws ServerNotReachableException {
+        RequestInfo request = new GetWorkflowStatusRequest(user.getId());
+        GetWorkflowStatusResponse response = (GetWorkflowStatusResponse) restCommunicator.sendRequest(new GetWorkflowStatus(), request);
+
+        return response.getUserWorkflows();
     }
 }

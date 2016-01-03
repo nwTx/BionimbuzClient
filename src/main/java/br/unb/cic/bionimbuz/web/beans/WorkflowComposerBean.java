@@ -32,6 +32,11 @@ import java.net.MalformedURLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Controls workflow_composer.xhtml page
+ *
+ * @author Vinicius
+ */
 @Named
 @SessionScoped
 public class WorkflowComposerBean implements Serializable {
@@ -219,10 +224,10 @@ public class WorkflowComposerBean implements Serializable {
         try {
             // Calls RestService to send the workflow to core
             restService.startWorkflow(workflowDiagram.getWorkflow());
-            
+
             // Updates user workflow list
             sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
-        } catch(ServerNotReachableException e) {
+        } catch (ServerNotReachableException e) {
             LOGGER.error("[ServerNotReachableException] " + e.getMessage());
         }
     }

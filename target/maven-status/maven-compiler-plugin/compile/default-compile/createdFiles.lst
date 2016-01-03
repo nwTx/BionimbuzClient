@@ -5,6 +5,7 @@ br/unb/cic/bionimbuz/model/InputURL.class
 br/unb/cic/bionimbuz/test/CancelJobBean.class
 br/unb/cic/bionimbuz/rest/service/RestService.class
 br/unb/cic/bionimbuz/security/SecurityToken.class
+br/unb/cic/bionimbuz/rest/response/GetWorkflowStatusResponse.class
 br/unb/cic/bionimbuz/web/beans/FileUploadBean.class
 br/unb/cic/bionimbuz/rest/action/SignUp.class
 br/unb/cic/bionimbuz/rest/request/UploadRequest.class
@@ -16,11 +17,13 @@ br/unb/cic/bionimbuz/model/ProgramInfo.class
 br/unb/cic/bionimbuz/model/Workflow.class
 br/unb/cic/bionimbuz/web/beans/SessionBean.class
 br/unb/cic/bionimbuz/rest/response/StartWorkflowResponse.class
+br/unb/cic/bionimbuz/web/beans/WorkflowComposerBean.class
 br/unb/cic/bionimbuz/rest/action/Upload.class
 br/unb/cic/bionimbuz/rest/request/LoginRequest.class
 br/unb/cic/bionimbuz/rest/request/DeleteFileRequest.class
 br/unb/cic/bionimbuz/rest/action/StartWorkflow.class
 br/unb/cic/bionimbuz/rest/response/SignUpResponse.class
+br/unb/cic/bionimbuz/web/beans/WorkflowStatusBean.class
 br/unb/cic/bionimbuz/rest/action/Upload$1.class
 br/unb/cic/bionimbuz/rest/action/Schedule.class
 br/unb/cic/bionimbuz/rest/action/Action.class
@@ -38,6 +41,7 @@ br/unb/cic/bionimbuz/model/Input.class
 br/unb/cic/bionimbuz/model/WorkflowJobInfo.class
 br/unb/cic/bionimbuz/rest/request/SignUpRequest.class
 br/unb/cic/bionimbuz/configuration/ProgramList.class
+br/unb/cic/bionimbuz/rest/request/GetWorkflowStatusRequest.class
 br/unb/cic/bionimbuz/configuration/ConfigurationLoader.class
 br/unb/cic/bionimbuz/web/beans/DeleteFileBean.class
 br/unb/cic/bionimbuz/rest/response/LogoutResponse.class
@@ -51,4 +55,5 @@ br/unb/cic/bionimbuz/configuration/ApplicationConfiguration.class
 br/unb/cic/bionimbuz/test/JobStatusInfoTest.class
 br/unb/cic/bionimbuz/rest/request/BaseRequest.class
 br/unb/cic/bionimbuz/model/WorkflowStatus.class
+br/unb/cic/bionimbuz/rest/action/GetWorkflowStatus.class
 br/unb/cic/bionimbuz/rest/action/Logout.class
