@@ -1,7 +1,6 @@
 br/unb/cic/bionimbuz/model/User.class
 br/unb/cic/bionimbuz/rest/response/DeleteFileResponse.class
 br/unb/cic/bionimbuz/model/DiagramStyle.class
-br/unb/cic/bionimbuz/web/beans/PipelineComposerBean.class
 br/unb/cic/bionimbuz/model/InputURL.class
 br/unb/cic/bionimbuz/test/CancelJobBean.class
 br/unb/cic/bionimbuz/rest/service/RestService.class

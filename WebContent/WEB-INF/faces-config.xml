@@ -68,8 +68,8 @@
 		
         <!-- Workflow -->
         <navigation-case>
-            <from-outcome>pipeline_composer</from-outcome>
-            <to-view-id>/pages/private/workflows/pipeline_composer.xhtml</to-view-id>
+            <from-outcome>workflow_composer</from-outcome>
+            <to-view-id>/pages/private/workflows/workflow_composer.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>

@@ -29,12 +29,12 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/LoginRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/ServerStatus.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/security/SecurityToken.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/WorkflowComposerBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/LogoutRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/DeleteFileResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/LoginResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Login.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Logout.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/PipelineComposerBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Upload.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/exception/ServerNotReachableException.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/test/JobStatusInfoTest.java

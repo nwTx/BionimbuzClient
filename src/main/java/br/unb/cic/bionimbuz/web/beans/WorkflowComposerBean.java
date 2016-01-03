@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
 
 @Named
 @SessionScoped
-public class PipelineComposerBean implements Serializable {
+public class WorkflowComposerBean implements Serializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PipelineComposerBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
 
     private static final long serialVersionUID = 1L;
     private final RestService restService;
@@ -62,7 +62,7 @@ public class PipelineComposerBean implements Serializable {
     // Logged user
     private User loggedUser;
 
-    public PipelineComposerBean() {
+    public WorkflowComposerBean() {
         restService = new RestService();
         elements = new ArrayList<>();
         programList = ConfigurationRepository.getProgramList().getPrograms();
