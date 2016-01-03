@@ -42,7 +42,7 @@ public class StartWorkflow extends Action {
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(request, MediaType.APPLICATION_JSON), Response.class);
 
-        return new StartWorkflowResponse(response.readEntity(new GenericType<Boolean>(){}));
+        return new StartWorkflowResponse(response.readEntity(boolean.class));
     }
 
 }

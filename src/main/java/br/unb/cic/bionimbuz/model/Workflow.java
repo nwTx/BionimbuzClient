@@ -14,7 +14,7 @@ public class Workflow {
 
     private final String creationDatestamp;
 
-    private final User user;
+    private final Long userId;
 
     private final String description;
 
@@ -23,12 +23,12 @@ public class Workflow {
     public Workflow() {
         this.pipeline = null;
         this.creationDatestamp = null;
-        this.user = null;
+        this.userId = null;
         this.description = null;
     }
 
-    public Workflow(User user, String description) {
-        this.user = user;
+    public Workflow(Long userId, String description) {
+        this.userId = userId;
         this.creationDatestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
         this.pipeline = new ArrayList<>();
         this.description = description;
@@ -39,8 +39,8 @@ public class Workflow {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
     public String getCreationDatestamp() {

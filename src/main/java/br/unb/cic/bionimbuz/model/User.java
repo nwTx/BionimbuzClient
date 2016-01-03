@@ -24,6 +24,8 @@ public class User {
 
     private List<UploadedFileInfo> files;
 
+    private List<Workflow> workflows;
+
     public Long getId() {
         return id;
     }
@@ -110,6 +112,14 @@ public class User {
 
     public void setFiles(List<UploadedFileInfo> files) {
         this.files = files;
+    }
+
+    public List<Workflow> getWorkflows() {
+        return workflows;
+    }
+
+    public void setWorkflows(List<Workflow> workflows) {
+        this.workflows = workflows;
     }
 
 }

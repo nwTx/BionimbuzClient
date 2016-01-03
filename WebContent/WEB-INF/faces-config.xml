@@ -73,18 +73,18 @@
             <redirect />
         </navigation-case>
         <navigation-case>
-            <from-outcome>cancel_job</from-outcome>
-            <to-view-id>/pages/private/workflows/cancel_job.xhtml</to-view-id>
+            <from-outcome>cancel_workflow</from-outcome>
+            <to-view-id>/pages/private/workflows/cancel.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
-            <from-outcome>job_status</from-outcome>
-            <to-view-id>/pages/private/workflows/job_status.xhtml</to-view-id>
+            <from-outcome>workflow_status</from-outcome>
+            <to-view-id>/pages/private/workflows/status.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
-            <from-outcome>job_history</from-outcome>
-            <to-view-id>/pages/private/workflows/job_history.xhtml</to-view-id>
+            <from-outcome>workflow_history</from-outcome>
+            <to-view-id>/pages/private/workflows/history.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 		

@@ -27,7 +27,6 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
-import br.unb.cic.bionimbuz.model.Input;
 import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import java.net.MalformedURLException;
 import org.slf4j.Logger;
@@ -36,8 +35,9 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class PipelineComposerBean implements Serializable {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PipelineComposerBean.class);
-    
+
     private static final long serialVersionUID = 1L;
     private final RestService restService;
 
@@ -128,8 +128,8 @@ public class PipelineComposerBean implements Serializable {
             }
             try {
                 // Creates workflow diagram
-                workflowDiagram = new WorkflowDiagram(loggedUser, workflowDescription, elements);
-                
+                workflowDiagram = new WorkflowDiagram(loggedUser.getId(), workflowDescription, elements);
+
             } catch (MalformedURLException e) {
                 LOGGER.error("[MalformedURLException] " + e.getMessage());
             }
@@ -214,11 +214,17 @@ public class PipelineComposerBean implements Serializable {
 
     /**
      * Send out workflow to be processed by BioNimbuZ core
-     *
-     * @throws br.unb.cic.bionimbuz.exception.ServerNotReachableException
      */
-    public void startWorkflow() throws ServerNotReachableException {
-        restService.startWorkflow(workflowDiagram.getWorkflow());
+    public void startWorkflow() {
+        try {
+            // Calls RestService to send the workflow to core
+            restService.startWorkflow(workflowDiagram.getWorkflow());
+            
+            // Updates user workflow list
+            sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
+        } catch(ServerNotReachableException e) {
+            LOGGER.error("[ServerNotReachableException] " + e.getMessage());
+        }
     }
 
     /**

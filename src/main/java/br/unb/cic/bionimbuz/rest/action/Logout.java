@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
+import javax.ws.rs.core.Response;
 
 public class Logout extends Action {
 
@@ -27,11 +28,11 @@ public class Logout extends Action {
     public LogoutResponse execute() {
         logAction(REST_LOGOUT_URL, Logout.class);
 
-        LogoutResponse response = target
+        Response response = target
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(request, MediaType.APPLICATION_JSON), LogoutResponse.class);
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON), Response.class);
 
-        return response;
+        return new LogoutResponse(response.readEntity(boolean.class));
     }
 
 }

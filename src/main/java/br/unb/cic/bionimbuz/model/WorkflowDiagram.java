@@ -39,14 +39,14 @@ public class WorkflowDiagram {
     /**
      * Calls the method that initializes everything...
      *
-     * @param user
+     * @param userId
      * @param description
      * @param elements
      * @throws java.net.MalformedURLException
      */
-    public WorkflowDiagram(User user, String description, ArrayList<DiagramElement> elements) throws MalformedURLException {
+    public WorkflowDiagram(Long userId, String description, ArrayList<DiagramElement> elements) throws MalformedURLException {
         // Initializes Workflow
-        this.workflow = new Workflow(user, description);
+        this.workflow = new Workflow(userId, description);
         initialize(elements);
     }
 
