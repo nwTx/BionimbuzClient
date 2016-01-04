@@ -97,10 +97,6 @@ public class SessionBean implements Serializable {
         return loggedUser;
     }
 
-    public void setLoggedUser(User loggedUser) {
-        this.loggedUser = loggedUser;
-    }
-
     public boolean isServerStatus() {
         return serverStatus;
     }

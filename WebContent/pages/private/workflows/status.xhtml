@@ -38,10 +38,6 @@
                                 <p:outputLabel value="#{workflowStatusBean.getStatusText(w.status)}" 
                                                style="color: #{workflowStatusBean.getStatusColor(w.status)}; font-weight: bold"/>
                             </p:column>
-
-                            <p:column headerText="Quantidade de Jobs">
-                                <p:outputLabel value="#{w.pipeline.size()}" />
-                            </p:column>
                         </p:dataTable>
                     </p:fieldset>
                     <br />

@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.unb.cic.bionimbuz.rest.action;
 
-import br.unb.cic.bionimbuz.model.WorkflowStatus;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.StartWorkflowRequest;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;

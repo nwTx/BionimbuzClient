@@ -31,6 +31,11 @@ import br.unb.cic.bionimbuz.rest.response.StartWorkflowResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 import java.util.List;
 
+/**
+ * This links the Web pages to the REST Comunicator
+ *
+ * @author Vinicius
+ */
 public class RestService {
 
     private final RestCommunicator restCommunicator;
@@ -130,6 +135,13 @@ public class RestService {
         return response.isWorkflowProcessed();
     }
 
+    /**
+     * Calls server to inform about the status of the user's workflow list
+     *
+     * @param user
+     * @return
+     * @throws ServerNotReachableException
+     */
     public List<Workflow> getWorkflowStatus(User user) throws ServerNotReachableException {
         RequestInfo request = new GetWorkflowStatusRequest(user.getId());
         GetWorkflowStatusResponse response = (GetWorkflowStatusResponse) restCommunicator.sendRequest(new GetWorkflowStatus(), request);

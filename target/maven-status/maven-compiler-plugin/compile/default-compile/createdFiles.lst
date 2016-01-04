@@ -25,7 +25,6 @@ br/unb/cic/bionimbuz/rest/action/StartWorkflow.class
 br/unb/cic/bionimbuz/rest/response/SignUpResponse.class
 br/unb/cic/bionimbuz/web/beans/WorkflowStatusBean.class
 br/unb/cic/bionimbuz/rest/action/Upload$1.class
-br/unb/cic/bionimbuz/rest/action/Schedule.class
 br/unb/cic/bionimbuz/rest/action/Action.class
 br/unb/cic/bionimbuz/exception/ServerNotReachableException.class
 br/unb/cic/bionimbuz/configuration/ConfigurationRepository.class

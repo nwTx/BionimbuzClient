@@ -12,7 +12,7 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 @RequestScoped
 public class DeleteFileBean {
 
-    private RestService restService;
+    private final RestService restService;
 
     public DeleteFileBean() {
         restService = new RestService();

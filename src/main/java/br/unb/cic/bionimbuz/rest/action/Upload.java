@@ -12,11 +12,9 @@ import javax.ws.rs.core.MediaType;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
-import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

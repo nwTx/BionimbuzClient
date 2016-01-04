@@ -15,7 +15,7 @@ import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
  * @author monstrim
  *
  */
-public class RestCommunicator {
+public class RestCommunicator implements Communicator {
 
     /**
      * Send a request to the Bionimbuz main server to execute a requested
@@ -26,6 +26,7 @@ public class RestCommunicator {
      * @return
      * @throws ServerNotReachableException
      */
+    @Override
     public ResponseInfo sendRequest(Action action, RequestInfo requestInfo) throws ServerNotReachableException {
         Client client = ClientBuilder.newClient();
 
