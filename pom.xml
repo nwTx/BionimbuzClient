@@ -44,6 +44,11 @@
             <artifactId>resteasy-jackson-provider</artifactId>
             <version>3.0.11.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>3.0.11.Final</version>
+        </dependency>
 
         <!-- Primefaces Dependency -->
         <dependency>

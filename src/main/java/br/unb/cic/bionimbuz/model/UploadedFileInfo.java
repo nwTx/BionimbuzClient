@@ -1,7 +1,10 @@
 package br.unb.cic.bionimbuz.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class UploadedFileInfo implements Input {
 
     private String id = UUID.randomUUID().toString();
@@ -13,6 +16,12 @@ public class UploadedFileInfo implements Input {
     private String uploadTimestamp;
 
     private long size;
+
+    @JsonProperty("payload")
+    private byte[] payload;
+
+    public UploadedFileInfo() {
+    }
 
     public String getId() {
         return id;
@@ -53,4 +62,13 @@ public class UploadedFileInfo implements Input {
     public void setSize(long size) {
         this.size = size;
     }
+
+    public byte[] getPayload() {
+        return payload;
+    }
+
+    public void setPayload(byte[] payload) {
+        this.payload = payload;
+    }
+
 }

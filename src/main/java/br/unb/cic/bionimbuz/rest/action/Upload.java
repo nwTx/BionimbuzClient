@@ -41,21 +41,14 @@ public class Upload extends Action {
         logAction(REST_UPLOAD_URL, Upload.class);
         MultipartFormDataOutput multipart = new MultipartFormDataOutput();
 
-        try {
-            multipart.addFormData("file", new FileInputStream(new File(ConfigurationRepository.UPLOADED_FILES_PATH
-                    + ((UploadRequest) request).getUploadedFileInfo().getName())), MediaType.MULTIPART_FORM_DATA_TYPE);
-            multipart.addFormData("file_info", ((UploadRequest) request).getUploadedFileInfo(), MediaType.APPLICATION_JSON_TYPE);
-
-        } catch (FileNotFoundException e) {
-            LOGGER.error("[Exception - " + e.getMessage() + "]");
-
-        }
+        multipart.addFormData("file", ((UploadRequest) request).getUploadedFileInfo().getPayload(), MediaType.MULTIPART_FORM_DATA_TYPE);
+        multipart.addFormData("file_info", ((UploadRequest) request).getUploadedFileInfo(), MediaType.APPLICATION_JSON_TYPE);
 
         GenericEntity<MultipartFormDataOutput> entity = new GenericEntity<MultipartFormDataOutput>(multipart) {};
 
         Response response = target
                 .request()
-                .post(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA), Response.class);
+                .post(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA_TYPE), Response.class);
 
         return new UploadResponse(response.readEntity(boolean.class));
     }

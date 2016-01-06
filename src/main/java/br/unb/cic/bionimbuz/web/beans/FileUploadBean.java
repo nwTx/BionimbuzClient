@@ -20,6 +20,8 @@ import org.primefaces.event.FileUploadEvent;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.model.UploadedFileInfo;
 import br.unb.cic.bionimbuz.rest.service.RestService;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import javax.faces.application.FacesMessage.Severity;
 import org.slf4j.Logger;
@@ -52,7 +54,7 @@ public class FileUploadBean implements Serializable {
      *
      * @param event
      */
-    public void handleUploadedFile(FileUploadEvent event) {
+    public void handleUploadedFile(FileUploadEvent event) throws IOException {
         // Verifies if the file doesn't overflow the user storage usage
         if ((sessionBean.getLoggedUser().getStorageUsage() + event.getFile().getSize()) > MAX_STORAGE_SIZE) {
             showFacesMessage(FacesMessage.SEVERITY_ERROR, "Seu espaco de armazenamento ultrapassou " + MAX_STORAGE + "!");
@@ -68,19 +70,32 @@ public class FileUploadBean implements Serializable {
             }
         }
 
-        // Creates a new FileInfo
-        UploadedFileInfo fileInfo = new UploadedFileInfo();
-
-        // Set file information
-        fileInfo.setName(event.getFile().getFileName());
-        fileInfo.setSize(event.getFile().getSize());
-        fileInfo.setUploadTimestamp(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-        fileInfo.setUserId(sessionBean.getLoggedUser().getId());
-
         try {
-            // Saves temporary file in disk
-            saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
+            // Creates a new FileInfo
+            UploadedFileInfo fileInfo = new UploadedFileInfo();
 
+            // Set file information
+            fileInfo.setName(event.getFile().getFileName());
+            fileInfo.setSize(event.getFile().getSize());
+            fileInfo.setUploadTimestamp(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+            fileInfo.setUserId(sessionBean.getLoggedUser().getId());
+
+            InputStreamReader isr = new InputStreamReader(event.getFile().getInputstream());
+            BufferedReader in = new BufferedReader(isr);
+
+            StringBuilder builder = new StringBuilder();
+
+//            String line = in.readLine();
+            String line;
+            while ((line = in.readLine()) != null) {
+                builder.append(line);
+                builder.append("\n");
+            }
+
+            fileInfo.setPayload(builder.toString().getBytes());
+
+            // Saves temporary file in disk
+            //saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
             // Calls RestService to upload file
             restService.uploadFile(fileInfo);
 
@@ -96,16 +111,18 @@ public class FileUploadBean implements Serializable {
         } catch (Exception e) {
             showFacesMessage(FacesMessage.SEVERITY_ERROR, "Erro Interno. Não foi possível enviar o arquivo");
 
+            e.printStackTrace();
             LOGGER.error("[Exception - " + e.getMessage() + "]");
 
-        } finally {
-            try {
-                outputStream.flush();
-                //    outputStream.close();
-            } catch (IOException e) {
-                LOGGER.error("[IOException - " + e.getMessage() + "]");
-            }
         }
+//        finally {
+//            try {
+//                outputStream.flush();
+//                //    outputStream.close();
+//            } catch (IOException e) {
+//                LOGGER.error("[IOException - " + e.getMessage() + "]");
+//            }
+//        }
 
     }
 
