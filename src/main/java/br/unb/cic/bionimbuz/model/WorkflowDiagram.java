@@ -4,8 +4,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.primefaces.model.diagram.DefaultDiagramModel;
 import org.primefaces.model.diagram.Element;
@@ -17,7 +15,9 @@ import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.ArrowOverlay;
 
 public class WorkflowDiagram {
+
     // Constants
+
     private static final int INITIAL_X_POSITION = 1;
     private static final int X_POSITION_INCREMENT = 15;
     private static final String Y_POSITION = "15em";
@@ -25,7 +25,7 @@ public class WorkflowDiagram {
     // Primefaces diagram model
     private DefaultDiagramModel workflowModel;
 
-    // Elements of the pipeline
+    // Elements of the workflow
     private Element fromElement;
     private Element toElement;
     private StraightConnector connector;
@@ -94,17 +94,13 @@ public class WorkflowDiagram {
         fromElement = toElement;
 
         // Creates the new Job
-        WorkflowJobInfo newJob;
-        try {
-            newJob = new WorkflowJobInfo(element.getId());
-            newJob.setServiceId(element.getServiceId());
-            newJob.setTimestamp(Calendar.getInstance().getTime().toString());
+        JobInfo newJob;
+        newJob = new JobInfo(element.getId());
+        newJob.setServiceId(element.getServiceId() + "");
+        newJob.setTimestamp(Calendar.getInstance().getTime().getTime());
 
-            // Adds it to the pipeline
-            workflow.addJobToPipeline(newJob);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(WorkflowDiagram.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // Adds it to the list of jobs
+        workflow.addJob(newJob);
 
     }
 
@@ -171,7 +167,7 @@ public class WorkflowDiagram {
     }
 
     /**
-     * Updates a WorkflowJobInfo putting an input data at it
+     * Updates a JobInfo putting an input data at it
      *
      * @param id
      * @param inputs
@@ -180,17 +176,17 @@ public class WorkflowDiagram {
         int cont = 0;
 
         // Iterates over the joblist
-        for (WorkflowJobInfo j : (ArrayList<WorkflowJobInfo>) workflow.getPipeline()) {
+        for (JobInfo j : (ArrayList<JobInfo>) workflow.getJobs()) {
 
             if (j.getId().equals(id)) {
                 // Gets the right job
-                WorkflowJobInfo job = workflow.getPipeline().get(cont);
+                JobInfo job = workflow.getJobs().get(cont);
 
                 // Sets its input
                 job.setInputFiles(inputs);
 
-                // When added, reinsert this job on the pipeline
-                workflow.getPipeline().set(cont, job);
+                // When added, reinsert this job on the list of jobs
+                workflow.getJobs().set(cont, job);
 
                 return;
             }

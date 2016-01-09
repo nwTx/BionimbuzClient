@@ -15,7 +15,6 @@ import org.primefaces.model.diagram.DefaultDiagramModel;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.DiagramElement;
-import br.unb.cic.bionimbuz.model.WorkflowJobInfo;
 import br.unb.cic.bionimbuz.model.ProgramInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
@@ -28,6 +27,7 @@ import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
 import br.unb.cic.bionimbuz.model.FileInfo;
+import br.unb.cic.bionimbuz.model.JobInfo;
 import java.net.MalformedURLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,7 +124,7 @@ public class WorkflowComposerBean implements Serializable {
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
 
-            // Verifies if the user is entering pipeline composer page
+        // Verifies if the user is entering workflow composer page
         } else if (toGoStep.equals("workflow_design")) {
             if (elements.isEmpty()) {
                 showMessage("Workflow vazio! Favor selecionar elementos");
@@ -298,8 +298,8 @@ public class WorkflowComposerBean implements Serializable {
         return inputFiles;
     }
 
-    public ArrayList<WorkflowJobInfo> getPipeline() {
-        return (ArrayList<WorkflowJobInfo>) this.workflowDiagram.getWorkflow().getPipeline();
+    public ArrayList<JobInfo> getJobs() {
+        return (ArrayList<JobInfo>) this.workflowDiagram.getWorkflow().getJobs();
     }
 
     public Workflow getWorkflow() {

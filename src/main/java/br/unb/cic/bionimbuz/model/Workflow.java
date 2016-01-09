@@ -10,7 +10,7 @@ public class Workflow {
 
     private final String id = "Workflow" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
 
-    private final List<WorkflowJobInfo> pipeline;
+    private final List<JobInfo> jobs;
 
     private final String creationDatestamp;
 
@@ -21,7 +21,7 @@ public class Workflow {
     private WorkflowStatus status;
 
     public Workflow() {
-        this.pipeline = null;
+        this.jobs = null;
         this.creationDatestamp = null;
         this.userId = null;
         this.description = null;
@@ -30,7 +30,7 @@ public class Workflow {
     public Workflow(Long userId, String description) {
         this.userId = userId;
         this.creationDatestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
-        this.pipeline = new ArrayList<>();
+        this.jobs = new ArrayList<>();
         this.description = description;
         this.status = WorkflowStatus.PENDING;
     }
@@ -51,12 +51,12 @@ public class Workflow {
         return description;
     }
 
-    public List<WorkflowJobInfo> getPipeline() {
-        return pipeline;
+    public List<JobInfo> getJobs() {
+        return jobs;
     }
 
-    public void addJobToPipeline(WorkflowJobInfo job) {
-        this.pipeline.add(job);
+    public void addJob(JobInfo job) {
+        this.jobs.add(job);
     }
 
     public void setStatus(WorkflowStatus status) {

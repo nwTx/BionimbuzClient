@@ -15,8 +15,6 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/UploadRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/service/RestService.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/Configuration.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/InputURL.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Input.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/FileUploadBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/User.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/SessionBean.java
@@ -32,6 +30,7 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/LoginRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/security/SecurityToken.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/ServerStatus.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/JobInfo.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/WorkflowComposerBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/LogoutRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/WorkflowStatusBean.java

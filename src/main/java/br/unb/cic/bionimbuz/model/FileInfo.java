@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class FileInfo implements Input {
+public class FileInfo {
 
     private String id = UUID.randomUUID().toString();
 
