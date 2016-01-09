@@ -18,7 +18,7 @@ import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
-import br.unb.cic.bionimbuz.model.UploadedFileInfo;
+import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -63,7 +63,7 @@ public class FileUploadBean implements Serializable {
         }
 
         // Verifies if it wasn't uploaded previously
-        for (UploadedFileInfo u : sessionBean.getLoggedUser().getFiles()) {
+        for (FileInfo u : sessionBean.getLoggedUser().getFiles()) {
             if (event.getFile().getFileName().equals(u.getName())) {
                 showFacesMessage(FacesMessage.SEVERITY_ERROR, "Arquivo existente!");
                 return;
@@ -72,7 +72,7 @@ public class FileUploadBean implements Serializable {
 
         try {
             // Creates a new FileInfo
-            UploadedFileInfo fileInfo = new UploadedFileInfo();
+            FileInfo fileInfo = new FileInfo();
 
             // Set file information
             fileInfo.setName(event.getFile().getFileName());

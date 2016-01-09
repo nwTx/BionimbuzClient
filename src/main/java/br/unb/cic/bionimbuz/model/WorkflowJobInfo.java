@@ -15,7 +15,7 @@ public class WorkflowJobInfo {
 
     private String args = "";
 
-    private List<UploadedFileInfo> inputFiles;
+    private List<FileInfo> inputFiles;
 
     private List<URL> inputURL;
 
@@ -64,15 +64,15 @@ public class WorkflowJobInfo {
         this.args = args;
     }
 
-    public List<UploadedFileInfo> getInputFiles() {
+    public List<FileInfo> getInputFiles() {
         return inputFiles;
     }
 
-    public void setInputFiles(List<UploadedFileInfo> inputFiles) {
+    public void setInputFiles(List<FileInfo> inputFiles) {
         this.inputFiles = inputFiles;
     }
 
-    public void addInputFile(UploadedFileInfo file) {
+    public void addInputFile(FileInfo file) {
         inputFiles.add(file);
     }
 

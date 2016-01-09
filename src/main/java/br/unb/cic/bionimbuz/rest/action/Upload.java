@@ -1,8 +1,5 @@
 package br.unb.cic.bionimbuz.rest.action;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -11,7 +8,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
-import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;

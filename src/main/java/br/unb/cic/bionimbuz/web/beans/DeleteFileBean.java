@@ -5,7 +5,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-import br.unb.cic.bionimbuz.model.UploadedFileInfo;
+import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 
 @Named
@@ -23,7 +23,7 @@ public class DeleteFileBean {
      *
      * @param file
      */
-    public void deleteFile(UploadedFileInfo file) {
+    public void deleteFile(FileInfo file) {
         try {
             restService.deleteFile(file);
 

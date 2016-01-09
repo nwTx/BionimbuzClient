@@ -2,12 +2,12 @@ package br.unb.cic.bionimbuz.test;
 
 import java.util.List;
 
-import br.unb.cic.bionimbuz.model.UploadedFileInfo;
+import br.unb.cic.bionimbuz.model.FileInfo;
 
 public class JobStatusInfoTest {
 
     private String idJob;
-    private List<UploadedFileInfo> fileList;
+    private List<FileInfo> fileList;
     private List<String> workflow;
 
     public JobStatusInfoTest() {
@@ -21,11 +21,11 @@ public class JobStatusInfoTest {
         this.idJob = idJob;
     }
 
-    public List<UploadedFileInfo> getFileList() {
+    public List<FileInfo> getFileList() {
         return fileList;
     }
 
-    public void setFileList(List<UploadedFileInfo> fileList) {
+    public void setFileList(List<FileInfo> fileList) {
         this.fileList = fileList;
     }
 

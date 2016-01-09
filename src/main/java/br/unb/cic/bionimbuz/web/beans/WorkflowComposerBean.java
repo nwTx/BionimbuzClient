@@ -27,7 +27,7 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
-import br.unb.cic.bionimbuz.model.UploadedFileInfo;
+import br.unb.cic.bionimbuz.model.FileInfo;
 import java.net.MalformedURLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +62,7 @@ public class WorkflowComposerBean implements Serializable {
     private boolean suspendEvent;
     private String clickedElementId;
     private String inputURL;
-    private ArrayList<UploadedFileInfo> inputFiles = new ArrayList<>();
+    private ArrayList<FileInfo> inputFiles = new ArrayList<>();
 
     // Logged user
     private User loggedUser;
@@ -290,11 +290,11 @@ public class WorkflowComposerBean implements Serializable {
         this.inputURL = inputURL;
     }
 
-    public void setInputFiles(ArrayList<UploadedFileInfo> inputFiles) {
+    public void setInputFiles(ArrayList<FileInfo> inputFiles) {
         this.inputFiles = inputFiles;
     }
 
-    public ArrayList<UploadedFileInfo> getInputFiles() {
+    public ArrayList<FileInfo> getInputFiles() {
         return inputFiles;
     }
 

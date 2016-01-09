@@ -1,12 +1,12 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/DiagramStyle.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/UploadResponse.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/FileInfo.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/GetWorkflowStatusRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/DeleteFileRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/StartWorkflowRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ConfigurationLoader.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/communication/Communicator.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Workflow.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/UploadedFileInfo.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/GetWorkflowStatusResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/DeleteFile.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/SignUpRequest.java

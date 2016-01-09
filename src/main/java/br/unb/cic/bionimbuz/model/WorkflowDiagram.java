@@ -176,7 +176,7 @@ public class WorkflowDiagram {
      * @param id
      * @param inputs
      */
-    public void setInputFile(String id, ArrayList<UploadedFileInfo> inputs) {
+    public void setInputFile(String id, ArrayList<FileInfo> inputs) {
         int cont = 0;
 
         // Iterates over the joblist

@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class UploadedFileInfo implements Input {
+public class FileInfo implements Input {
 
     private String id = UUID.randomUUID().toString();
-
-    private Long userId;
 
     private String name;
 
@@ -17,10 +15,14 @@ public class UploadedFileInfo implements Input {
 
     private long size;
 
+    private long userId;
+
+    private String hash;
+
     @JsonProperty("payload")
     private byte[] payload;
 
-    public UploadedFileInfo() {
+    public FileInfo() {
     }
 
     public String getId() {
@@ -61,6 +63,14 @@ public class UploadedFileInfo implements Input {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public byte[] getPayload() {

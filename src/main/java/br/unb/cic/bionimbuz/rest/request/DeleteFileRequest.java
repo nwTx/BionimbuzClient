@@ -1,20 +1,20 @@
 package br.unb.cic.bionimbuz.rest.request;
 
-import br.unb.cic.bionimbuz.model.UploadedFileInfo;
+import br.unb.cic.bionimbuz.model.FileInfo;
 
 public class DeleteFileRequest extends BaseRequest {
 
-    private UploadedFileInfo fileInfo;
+    private FileInfo fileInfo;
 
-    public DeleteFileRequest(UploadedFileInfo fileInfo) {
+    public DeleteFileRequest(FileInfo fileInfo) {
         this.fileInfo = fileInfo;
     }
 
-    public UploadedFileInfo getFileInfo() {
+    public FileInfo getFileInfo() {
         return fileInfo;
     }
 
-    public void setFileInfo(UploadedFileInfo fileInfo) {
+    public void setFileInfo(FileInfo fileInfo) {
         this.fileInfo = fileInfo;
     }
 

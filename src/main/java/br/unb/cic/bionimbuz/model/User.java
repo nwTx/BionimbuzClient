@@ -4,7 +4,7 @@ import java.util.List;
 
 public class User {
 
-    private Long id;
+    private long id;
 
     private String login;
 
@@ -22,15 +22,15 @@ public class User {
 
     private Long storageUsage;
 
-    private List<UploadedFileInfo> files;
+    private List<FileInfo> files;
 
     private List<Workflow> workflows;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -106,11 +106,11 @@ public class User {
         this.storageUsage -= usage;
     }
 
-    public List<UploadedFileInfo> getFiles() {
+    public List<FileInfo> getFiles() {
         return files;
     }
 
-    public void setFiles(List<UploadedFileInfo> files) {
+    public void setFiles(List<FileInfo> files) {
         this.files = files;
     }
 
