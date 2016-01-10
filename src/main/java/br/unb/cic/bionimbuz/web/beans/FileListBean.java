@@ -11,9 +11,11 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 @Named
 @RequestScoped
 public class FileListBean {
+    private static final long serialVersionUID = 1L;
 
     private FileInfo fileInfo;
-    private RestService restService;
+
+    private final RestService restService;
 
     public FileListBean() {
         restService = new RestService();

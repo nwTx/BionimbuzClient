@@ -152,14 +152,14 @@
 
             <p:panel>
                 Escolha se a entrada deste passo será um arquivo ou uma URL do arquivo
-                <f:facet name="footer">
-                    Para nao utilizar dados de entrada, clique em 'Pular'. Neste caso, a entrada deste passo sera apenas a saida do passo anterior. <br />
-                    <p:commandButton value="Pular" onclick="PF('file_dlg').hide()"/>
-                </f:facet>
             </p:panel>
             <br />
+            <p:fieldset legend="Argumentos de entrada">
+                Argumentos da linha de comando (ex: -X --cached -p 10)
+                <h:inputText id="args" style="width: 99%; margin: 3px" value="#{workflowComposerBean.arguments}"/>
+            </p:fieldset>
+            <br />
             <p:accordionPanel>
-
                 <p:tab title="Arquivos">
                     <p:fieldset id="file_list_dlg" legend="Lista de Arquivos">
                         <p:panel>
@@ -170,9 +170,6 @@
                         <p:dataTable value="#{workflowComposerBean.loggedUser.files}" var="f" style="width: 60em"
                                      paginator="true" rows="5" emptyMessage="Nenhum arquivo encontrado"
                                      selection="#{workflowComposerBean.inputFiles}" rowKey="#{f.name}" >
-                            <p:column headerText="ID" width="5em" style="text-align: center">
-                                <p:outputLabel value="#{f.id}"/>
-                            </p:column>
 
                             <p:column headerText="Nome" width="25em" style="text-align: center">
                                 <p:outputLabel value="#{f.name}"/>
@@ -195,16 +192,19 @@
                     <p:fieldset legend="URL">
                         Digite a URL de onde se encontra seu arquivo (URL de um armazenamento, link do Dropbox, link do Google Drive, ...). <br />
                         Apontar o caminho direto para o arquivo (não apontar pastas, por exemplo):
-                        <h:inputText id="url" style="width: 99%" value="#{workflowComposerBean.inputURL}"/>
-                        <br /> <br />
-                        <p:commandButton value="Ok" actionListener="#{workflowComposerBean.setURL()}" onclick="PF('file_dlg').hide()"/>
+                        <h:inputText id="url" style="width: 99%; margin: 3px" value="#{workflowComposerBean.inputURL}"/>
                     </p:fieldset>
                 </p:tab>
 
             </p:accordionPanel>
-            <p:panel header="footer">
-                <p:commandButton value="Ok" action="#{workflowComposerBean.setInputFile()}" 
-                                 update=":form:growl"
+            <br />
+            <p:panel>
+                Para nao utilizar dados de entrada, clique em 'Pular'. 
+                Neste caso, a entrada deste passo sera apenas a saida do passo anterior. <br />
+                <p:commandButton value="Confirmar" action="#{workflowComposerBean.setJobFields()}" 
+                                 update=":form:growl" style="margin: 5px"
+                                 onclick="PF('file_dlg').hide()"/>
+                <p:commandButton value="Pular" update=":form:growl" style="margin: 5px"
                                  onclick="PF('file_dlg').hide()"/>
             </p:panel>
         </h:form>

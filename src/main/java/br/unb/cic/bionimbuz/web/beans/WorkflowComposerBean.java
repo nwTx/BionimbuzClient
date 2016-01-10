@@ -27,7 +27,7 @@ import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
 import br.unb.cic.bionimbuz.model.FileInfo;
-import br.unb.cic.bionimbuz.model.JobInfo;
+import br.unb.cic.bionimbuz.model.Job;
 import java.net.MalformedURLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,27 +41,33 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class WorkflowComposerBean implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
 
-    private static final long serialVersionUID = 1L;
     private final RestService restService;
 
     @Inject
     private SessionBean sessionBean;
 
-    // List of programs
     private final List<ProgramInfo> programList;
+
     private ArrayList<DiagramElement> elements;
 
-    // Workflow
     private WorkflowDiagram workflowDiagram;
 
-    // Control attributes
     private ProgramInfo program;
+
     private String workflowDescription;
+
     private boolean suspendEvent;
+
     private String clickedElementId;
+
     private String inputURL;
+
+    private String arguments;
+
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
 
     // Logged user
@@ -124,7 +130,7 @@ public class WorkflowComposerBean implements Serializable {
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
 
-        // Verifies if the user is entering workflow composer page
+            // Verifies if the user is entering workflow composer page
         } else if (toGoStep.equals("workflow_design")) {
             if (elements.isEmpty()) {
                 showMessage("Workflow vazio! Favor selecionar elementos");
@@ -199,22 +205,14 @@ public class WorkflowComposerBean implements Serializable {
     }
 
     /**
-     * Sets an file input for a worflow step
+     * Sets the step fields (like, inputfiles, arguments, ...)
      */
-    public void setInputFile() {
+    public void setJobFields() {
         // Sets element input list
-        workflowDiagram.setInputFile(clickedElementId, inputFiles);
+        workflowDiagram.setJobFields(clickedElementId, inputFiles, arguments, inputURL);
 
         // Resets input list
         inputFiles = new ArrayList<>();
-    }
-
-    /**
-     * Sets an URL as a step input
-     */
-    public void setURL() {
-        System.out.println("Set URL \"" + inputURL + "\" as input for element " + clickedElementId);
-
     }
 
     /**
@@ -298,11 +296,20 @@ public class WorkflowComposerBean implements Serializable {
         return inputFiles;
     }
 
-    public ArrayList<JobInfo> getJobs() {
-        return (ArrayList<JobInfo>) this.workflowDiagram.getWorkflow().getJobs();
+    public ArrayList<Job> getJobs() {
+        return (ArrayList<Job>) this.workflowDiagram.getWorkflow().getJobs();
     }
 
     public Workflow getWorkflow() {
         return this.workflowDiagram.getWorkflow();
     }
+
+    public String getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(String arguments) {
+        this.arguments = arguments;
+    }
+
 }

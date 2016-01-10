@@ -10,7 +10,7 @@ public class Workflow {
 
     private final String id = "Workflow" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
 
-    private final List<JobInfo> jobs;
+    private final List<Job> jobs;
 
     private final String creationDatestamp;
 
@@ -51,11 +51,11 @@ public class Workflow {
         return description;
     }
 
-    public List<JobInfo> getJobs() {
+    public List<Job> getJobs() {
         return jobs;
     }
 
-    public void addJob(JobInfo job) {
+    public void addJob(Job job) {
         this.jobs.add(job);
     }
 

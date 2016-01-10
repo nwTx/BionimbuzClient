@@ -1,12 +1,10 @@
 package br.unb.cic.bionimbuz.web.beans;
 
-import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.model.WorkflowStatus;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,21 +24,9 @@ public class WorkflowStatusBean implements Serializable {
 
     @Inject
     private SessionBean sessionBean;
-
+    
     private List<Workflow> userWorkflows;
     private final RestService restService = new RestService();
-
-    public WorkflowStatusBean() {
-        try {
-            System.out.println("RestService: " + (restService == null));
-            System.out.println("User: " + (sessionBean == null));
-
-            userWorkflows = restService.getWorkflowStatus(sessionBean.getLoggedUser());
-        } catch (Exception e) {
-            LOGGER.error("[Exception] " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Returns the color of a Status

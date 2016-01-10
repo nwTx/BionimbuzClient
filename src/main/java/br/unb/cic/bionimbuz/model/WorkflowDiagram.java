@@ -94,8 +94,8 @@ public class WorkflowDiagram {
         fromElement = toElement;
 
         // Creates the new Job
-        JobInfo newJob;
-        newJob = new JobInfo(element.getId());
+        Job newJob;
+        newJob = new Job(element.getId());
         newJob.setServiceId(element.getServiceId() + "");
         newJob.setTimestamp(Calendar.getInstance().getTime().getTime());
 
@@ -167,24 +167,31 @@ public class WorkflowDiagram {
     }
 
     /**
-     * Updates a JobInfo putting an input data at it
+     * Updates a Job putting an input data at it
      *
      * @param id
      * @param inputs
+     * @param arguments
      */
-    public void setInputFile(String id, ArrayList<FileInfo> inputs) {
+    public void setJobFields(String id, ArrayList<FileInfo> inputs, String arguments, String url) {
         int cont = 0;
 
         // Iterates over the joblist
-        for (JobInfo j : (ArrayList<JobInfo>) workflow.getJobs()) {
+        for (Job j : (ArrayList<Job>) workflow.getJobs()) {
 
             if (j.getId().equals(id)) {
                 // Gets the right job
-                JobInfo job = workflow.getJobs().get(cont);
+                Job job = workflow.getJobs().get(cont);
 
                 // Sets its input
                 job.setInputFiles(inputs);
-
+                
+                // Sets its arguments
+                job.setArgs(arguments);
+                
+                // Sets its input url
+                job.setInputURL(url);
+                
                 // When added, reinsert this job on the list of jobs
                 workflow.getJobs().set(cont, job);
 

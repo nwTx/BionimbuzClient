@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  *
  * @author zoonimbus
  */
-public class JobInfo {
+public class Job {
    private String id;
 
     public long testId;
@@ -24,7 +24,7 @@ public class JobInfo {
 
     private List<FileInfo> inputFiles;
 
-    private List<String> inputURL;
+    private String inputURL;
 
     private List<String> outputs;
 
@@ -34,9 +34,8 @@ public class JobInfo {
 
     private final List<String> dependencies;
 
-    public JobInfo() {
+    public Job() {
         inputFiles = new ArrayList<>();
-        inputURL = new ArrayList<>();
         outputs = new ArrayList<>();
         dependencies = new ArrayList<>();
     }
@@ -46,10 +45,9 @@ public class JobInfo {
      *
      * @param id
      */
-    public JobInfo(String id) {
+    public Job(String id) {
         this.id = id;
         inputFiles = new ArrayList<>();
-        inputURL = new ArrayList<>();
         outputs = new ArrayList<>();
         dependencies = new ArrayList<>();
     }
@@ -59,10 +57,9 @@ public class JobInfo {
      *
      * @param worstExecution
      */
-    public JobInfo(double worstExecution) {
+    public Job(double worstExecution) {
         this.worstExecution = worstExecution;
         inputFiles = new ArrayList<>();
-        inputURL = new ArrayList<>();
         outputs = new ArrayList<>();
         dependencies = new ArrayList<>();
     }
@@ -146,10 +143,10 @@ public class JobInfo {
         return worstExecution;
     }
 
-//    /**
-//     * Add a dependency to be executed beforehand
-//     * @param id The unique id of a job
-//     */
+    /**
+     * Add a dependency to be executed beforehand
+     * @param id The unique id of a job
+     */
     public void addDependency(String id) {
         dependencies.add(id);
     }
@@ -158,11 +155,11 @@ public class JobInfo {
         return dependencies;
     }
 
-    public List<String> getInputURL() {
+    public String getInputURL() {
         return inputURL;
     }
 
-    public void setInputURL(List<String> inputURL) {
+    public void setInputURL(String inputURL) {
         this.inputURL = inputURL;
     }
 
@@ -171,7 +168,7 @@ public class JobInfo {
         try {
             return new ObjectMapper().writeValueAsString(this);
         } catch (IOException ex) {
-            Logger.getLogger(JobInfo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Job.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return null;

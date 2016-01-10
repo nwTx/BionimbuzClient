@@ -14,12 +14,14 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class SessionBean implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionBean.class);
 
-    private static final long serialVersionUID = 1L;
     private final RestService restService;
+
     private User loggedUser = new User();
+
     private boolean serverStatus;
 
     private User user = new User();

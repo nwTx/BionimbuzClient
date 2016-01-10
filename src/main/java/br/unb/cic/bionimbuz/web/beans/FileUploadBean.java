@@ -30,15 +30,18 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class FileUploadBean implements Serializable {
-
+    private static final long serialVersionUID = 1L;
+    
     private static final String MAX_STORAGE = "256 Mb";
+    
     private static final Long MAX_STORAGE_SIZE = 268435456l;    // 256 Mb
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadBean.class);
 
-    private static final long serialVersionUID = 1L;
     private final RestService restService;
+    
     private OutputStream outputStream;
+    
     private int storageUsage;
 
     @Inject
