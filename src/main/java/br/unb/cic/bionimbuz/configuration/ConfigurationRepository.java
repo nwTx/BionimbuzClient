@@ -1,5 +1,8 @@
 package br.unb.cic.bionimbuz.configuration;
 
+import br.unb.cic.bionimbuz.model.PluginService;
+import br.unb.cic.bionimbuz.rest.service.RestService;
+import java.util.ArrayList;
 import javax.inject.Named;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -8,8 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Class that acts as a repository for all Configuration Files Configuration
- * Files: - config.json - parallel_programs.json - sequential_programs.json
+ * Class that acts as a repository for all Configuration Files.
+ *
+ * Files: config.json and programs.json
  *
  * @author Vinicius
  */
@@ -21,28 +25,64 @@ public class ConfigurationRepository implements ServletContextListener {
     public static final String UPLOADED_FILES_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/uploaded-files/";
     private static final String CONFIGURATION_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/conf/";
     private static Configuration applicationConfiguration;
-    private static Configuration programList;
+    private static ArrayList<PluginService> supportedServices;
 
     /**
      * Called on Application Server start
+     *
      * @param servletContext
      */
     @Override
     public void contextInitialized(ServletContextEvent servletContext) {
-        LOGGER.info("Initializing client application. Loading configurations...");
+        boolean serverOnline = false;
+        int connectTries = 3;
+        RestService restService = new RestService();
+
+        LOGGER.info("Initializing client application...");
 
         applicationConfiguration = ConfigurationLoader.readConfiguration(CONFIGURATION_PATH + "config.json",
                 ApplicationConfiguration.class);
 
-        programList = ConfigurationLoader.readConfiguration(CONFIGURATION_PATH + "programs.json",
-                ProgramList.class);
+        LOGGER.info("BioNimbuZ Web Application Configuration loaded: " + applicationConfiguration);
+        LOGGER.info("Sending request to core to retrieve supported services...");
 
-        LOGGER.info("BioNimbuZ Client Application Configuration loaded: " + applicationConfiguration);
-        LOGGER.info("BioNimbuZ Programs loaded: " + programList);
+        // Send request to the server
+        while (serverOnline != true) {
+            try {
+                supportedServices = (ArrayList<PluginService>) restService.getServices();
+
+            } catch (Exception e) {
+                if (connectTries <= 0) {
+                    LOGGER.error("=====> Server Offline... Terminating Client <=====");
+                }
+
+                LOGGER.error("**** Server seems to be offline. " + connectTries-- + " more connect tries ****");
+                e.printStackTrace();
+
+                // Wait 5 seconds to try again
+                try {
+                    Thread.sleep(5000l);
+
+                } catch (InterruptedException ex) {
+                    LOGGER.error("[InterruptedException] " + ex.getMessage());
+                }
+            }
+
+            serverOnline = (supportedServices != null);
+        }
+
+        LOGGER.info(supportedServices.size() + " Supported Services");
+        LOGGER.info("Supported Services fetched from server: ");
+
+        for (PluginService p : supportedServices) {
+            LOGGER.info("\tProgram: " + p.getName());
+        }
+
     }
 
     /**
      * Called on Application Server stop
+     *
      * @param servletContext
      */
     @Override
@@ -54,8 +94,8 @@ public class ConfigurationRepository implements ServletContextListener {
         return (ApplicationConfiguration) applicationConfiguration;
     }
 
-    public static ProgramList getProgramList() {
-        return (ProgramList) programList;
+    public static ArrayList<PluginService> getSupportedServices() {
+        return supportedServices;
     }
 
 }

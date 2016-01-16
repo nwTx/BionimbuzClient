@@ -19,11 +19,11 @@
                     <br />
                     <p:panel>
                         <p:fileUpload id="file_upload" mode="advanced" onstart="readText(this.files[0])" 
-                                      dragDropSupport="false" multiple="true" 
+                                      dragDropSupport="false" multiple="false" 
                                       invalidFileMessage="Formato de arquivo inválido"
                                       fileUploadListener="#{fileUploadBean.handleUploadedFile}"
                                       cancelLabel="Cancelar" uploadLabel="Enviar"
-                                      allowTypes="/(\.|\/)(txt|swt|iso|gif|jpe?g|png)$/" label="Escolher Arquivo"
+                                      label="Escolher Arquivo"
                                       update="growl,panel" sizeLimit="268435456"/>
                     </p:panel>
                     <br />

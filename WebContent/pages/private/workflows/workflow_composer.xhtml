@@ -29,18 +29,18 @@
                                 </p:panel> 
                                 <br />
                                 <center>
-                                    <p:dataGrid var="p" value="#{workflowComposerBean.programList}" columns="4" layout="grid"
-                                                id="elements" >
+                                    <p:dataGrid var="s" value="#{workflowComposerBean.servicesList}" columns="4" layout="grid"
+                                                id="elements" paginator="true" rows="4">
                                         <f:facet name="header" >
                                             Elementos
                                         </f:facet>
 
-                                        <p:panel header="#{p.name}" style="text-align:center">
+                                        <p:panel header="#{s.name}" style="text-align:center">
                                             <h:panelGrid columns="1" style="width:100%">
-                                                <h:outputText value="#{p.description}" />
+                                                <h:outputText value="#{s.info}" />
                                                 <hr style="color: #2980b9"/>
                                                 <f:facet name="footer">
-                                                    <p:commandButton action="#{workflowComposerBean.addElement(p)}"
+                                                    <p:commandButton action="#{workflowComposerBean.addElement(s)}"
                                                                      value="Adicionar" icon="ui-icon-check" 
                                                                      update=":form:chosen_elements, :form:growl"
                                                                      iconPos="left" />

@@ -15,7 +15,6 @@ import org.primefaces.model.diagram.DefaultDiagramModel;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.DiagramElement;
-import br.unb.cic.bionimbuz.model.ProgramInfo;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.model.WorkflowDiagram;
@@ -28,6 +27,7 @@ import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
 import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Job;
+import br.unb.cic.bionimbuz.model.PluginService;
 import java.net.MalformedURLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,22 +41,23 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class WorkflowComposerBean implements Serializable {
 
+    @Inject
+    private SessionBean sessionBean;
+
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
 
     private final RestService restService;
 
-    @Inject
-    private SessionBean sessionBean;
-
-    private final List<ProgramInfo> programList;
+    private final List<PluginService> servicesList;
 
     private ArrayList<DiagramElement> elements;
 
     private WorkflowDiagram workflowDiagram;
 
-    private ProgramInfo program;
+//    private ProgramInfo program;
+    private PluginService service;
 
     private String workflowDescription;
 
@@ -68,6 +69,10 @@ public class WorkflowComposerBean implements Serializable {
 
     private String arguments;
 
+    private String dependency;
+
+    private int jobListSize = 0;
+
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
 
     // Logged user
@@ -76,7 +81,7 @@ public class WorkflowComposerBean implements Serializable {
     public WorkflowComposerBean() {
         restService = new RestService();
         elements = new ArrayList<>();
-        programList = ConfigurationRepository.getProgramList().getPrograms();
+        servicesList = ConfigurationRepository.getSupportedServices();
     }
 
     @PostConstruct
@@ -87,12 +92,12 @@ public class WorkflowComposerBean implements Serializable {
     /**
      * Adds an element to the chosen programs list
      *
-     * @param info
+     * @param service
      */
-    public void addElement(ProgramInfo info) {
-        elements.add(new DiagramElement(info));
+    public void addElement(PluginService service) {
+        elements.add(new DiagramElement(service));
 
-        showMessage("Elemento " + info.getName() + " adicionado");
+        showMessage("Elemento " + service.getName() + " adicionado");
     }
 
     /**
@@ -132,6 +137,8 @@ public class WorkflowComposerBean implements Serializable {
 
             // Verifies if the user is entering workflow composer page
         } else if (toGoStep.equals("workflow_design")) {
+            jobListSize = elements.size();
+
             if (elements.isEmpty()) {
                 showMessage("Workflow vazio! Favor selecionar elementos");
 
@@ -156,6 +163,14 @@ public class WorkflowComposerBean implements Serializable {
      */
     public void onConnect(ConnectEvent event) {
         DiagramElement clickedElement = ((DiagramElement) event.getTargetElement().getData());
+
+        // Add dependency
+        if (((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio")
+                || ((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
+            dependency = null;
+        } else {
+            dependency = ((DiagramElement) event.getSourceElement().getData()).getId();
+        }
 
         if (!suspendEvent && (!clickedElement.getName().equals("Inicio")) && (!clickedElement.getName().equals("Fim"))) {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -209,7 +224,7 @@ public class WorkflowComposerBean implements Serializable {
      */
     public void setJobFields() {
         // Sets element input list
-        workflowDiagram.setJobFields(clickedElementId, inputFiles, arguments, inputURL);
+        workflowDiagram.setJobFields(clickedElementId, inputFiles, arguments, inputURL, dependency);
 
         // Resets input list
         inputFiles = new ArrayList<>();
@@ -252,16 +267,16 @@ public class WorkflowComposerBean implements Serializable {
         return workflowDiagram.getWorkflowModel();
     }
 
-    public List<ProgramInfo> getProgramList() {
-        return programList;
+    public List<PluginService> getServicesList() {
+        return servicesList;
     }
 
     public User getLoggedUser() {
         return loggedUser;
     }
 
-    public void setProgram(ProgramInfo program) {
-        this.program = program;
+    public void setService(PluginService service) {
+        this.service = service;
     }
 
     public String getWorkflowDescription() {

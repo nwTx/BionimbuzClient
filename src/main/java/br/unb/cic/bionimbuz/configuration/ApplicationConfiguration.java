@@ -11,7 +11,9 @@ import javax.ejb.Singleton;
 public class ApplicationConfiguration implements Configuration {
 
     private String address;
+    
     private String bionimbuzAddress;
+    
     private String uploadedFilesDirectory;
 
     public String getAddress() {

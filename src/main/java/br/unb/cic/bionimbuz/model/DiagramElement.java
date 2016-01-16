@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.unb.cic.bionimbuz.model;
 
 /**
@@ -14,7 +9,7 @@ public class DiagramElement {
 
     private String id;
 
-    private long serviceId;
+    private String serviceId;
 
     private String description;
 
@@ -35,10 +30,10 @@ public class DiagramElement {
         this.name = name;
     }
 
-    public DiagramElement(ProgramInfo programInfo) {
-        this.name = programInfo.getName();
-        this.description = programInfo.getDescription();
-        this.serviceId = programInfo.getId();
+    public DiagramElement(PluginService pluginService) {
+        this.name = pluginService.getName();
+        this.description = pluginService.getInfo();
+        this.serviceId = pluginService.getId();
     }
 
     public String getId() {
@@ -49,11 +44,11 @@ public class DiagramElement {
         this.id = id;
     }
 
-    public long getServiceId() {
+    public String getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(long serviceId) {
+    public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
     }
 
