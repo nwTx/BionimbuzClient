@@ -32,6 +32,11 @@ public class Upload extends Action {
         target = target.path(REST_UPLOAD_URL);
     }
 
+    /**
+     * Bug on:
+     * https://issues.jboss.org/browse/RESTEASY-1201
+     */
+    
     @Override
     public UploadResponse execute() {
         logAction(REST_UPLOAD_URL, Upload.class);
