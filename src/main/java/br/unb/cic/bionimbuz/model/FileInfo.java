@@ -9,6 +9,9 @@ public class FileInfo {
 
     private String id = UUID.randomUUID().toString();
 
+    @JsonProperty("payload")
+    private byte[] payload;
+
     private String name;
 
     private String uploadTimestamp;
@@ -19,9 +22,6 @@ public class FileInfo {
 
     private String hash;
 
-    @JsonProperty("payload")
-    private byte[] payload;
-
     public FileInfo() {
     }
 
@@ -31,6 +31,14 @@ public class FileInfo {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public byte[] getPayload() {
+        return payload;
+    }
+
+    public void setPayload(byte[] payload) {
+        this.payload = payload;
     }
 
     public Long getUserId() {
@@ -71,14 +79,6 @@ public class FileInfo {
 
     public void setHash(String hash) {
         this.hash = hash;
-    }
-
-    public byte[] getPayload() {
-        return payload;
-    }
-
-    public void setPayload(byte[] payload) {
-        this.payload = payload;
     }
 
 }

@@ -14,11 +14,11 @@
 
                 <p:panel header="Upload de Arquivos para seu Armazenamento">
                     <p:panel>
-                        Página utilizada para realizar upload de arquivos.
+                        Página utilizada para realizar upload de arquivos para o servidor.
                     </p:panel>
                     <br />
                     <p:panel>
-                        <p:fileUpload id="file_upload" mode="advanced" onstart="readText(this.files[0])" 
+                        <p:fileUpload id="file_upload" mode="advanced" 
                                       dragDropSupport="false" multiple="false" 
                                       invalidFileMessage="Formato de arquivo inválido"
                                       fileUploadListener="#{fileUploadBean.handleUploadedFile}"
@@ -49,28 +49,33 @@
         </ui:define>
 
     </ui:decorate>
-
-    <script>
-        function readText(f) {
-//            var file = document.getElementById("form:file_upload_input").files[0];
-//
-//            var reader = new FileReader();
-//            
-//            reader.onload = function (e) {
-//                var t1 = reader.result;
-//            };
-//            
-//            reader.readAsText(file, "UTF-8");
-            var reader = new FileReader();
-            var t1;
-            
-            reader.onload = function (e) {
-                t1 = e.target.result;
-            };
-
-            reader.readAsText(f);
-            alert("teste");
-            alert(reader.result);
-        }
-    </script>
+    <!--
+        no fileUpload -> onstart="readText(this.files[0])" 
+        <script>
+            function readText(f) {
+    //            var file = document.getElementById("form:file_upload_input").files[0];
+    //
+    //            var reader = new FileReader();
+    //            
+    //            reader.onload = function (e) {
+    //                var t1 = reader.result;
+    //            };
+    //            
+    //            reader.readAsText(file, "UTF-8");
+                var reader = new FileReader();
+                var t1;
+    
+                reader.onload = function (e) {
+                    t1 = e.target.result;
+                };
+    
+                reader.readAsText(f);
+                alert("Aguardando...");            
+                alert("Conteúdo: " + reader.result);
+                alert("Tamanho: " + reader.length);
+                var hash = CryptoJS.SHA3(reader.result, {outputLength:256});
+                alert(hash);
+            }
+        </script>
+    -->
 </html>
