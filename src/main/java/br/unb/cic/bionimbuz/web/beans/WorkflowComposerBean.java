@@ -28,6 +28,7 @@ import org.primefaces.event.diagram.DisconnectEvent;
 import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
+import br.unb.cic.bionimbuz.model.WorkflowStatus;
 import java.net.MalformedURLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,6 @@ public class WorkflowComposerBean implements Serializable {
 
     private WorkflowDiagram workflowDiagram;
 
-//    private ProgramInfo program;
     private PluginService service;
 
     private String workflowDescription;
@@ -232,17 +232,25 @@ public class WorkflowComposerBean implements Serializable {
 
     /**
      * Send out workflow to be processed by BioNimbuZ core
+     *
+     * @return
      */
-    public void startWorkflow() {
+    public String startWorkflow() {
         try {
             // Calls RestService to send the workflow to core
-            restService.startWorkflow(workflowDiagram.getWorkflow());
+            if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
 
-            // Updates user workflow list
-            sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
+                // Updates user workflow list
+                workflowDiagram.getWorkflow().setStatus(WorkflowStatus.EXECUTING);
+                sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
+
+                return "start_success";
+            }
         } catch (ServerNotReachableException e) {
             LOGGER.error("[ServerNotReachableException] " + e.getMessage());
         }
+
+        return "start_error";
     }
 
     /**
