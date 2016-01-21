@@ -205,6 +205,7 @@
                                  update=":form:growl" style="margin: 5px"
                                  onclick="PF('file_dlg').hide()"/>
                 <p:commandButton value="Pular" update=":form:growl" style="margin: 5px"
+                                 action="#{workflowComposerBean.setJobFieldsWithOutput()}"
                                  onclick="PF('file_dlg').hide()"/>
             </p:panel>
         </h:form>

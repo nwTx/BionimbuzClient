@@ -67,9 +67,9 @@ public class WorkflowDiagram {
 
         // ToDo: Verificar addElement(inicio)
         fromElement = createNewElement(new DiagramElement("Inicio"), getElementXPosition(), Y_POSITION);
-        
+
         workflowModel.addElement(fromElement);
-        
+
         for (DiagramElement d : elements) {
             addElement(d);
         }
@@ -101,7 +101,7 @@ public class WorkflowDiagram {
 
         // Adds it to the list of jobs
         workflow.addJob(newJob);
-        
+
     }
 
     /**
@@ -136,7 +136,7 @@ public class WorkflowDiagram {
         // Adds it to the new element
         newElement.addEndPoint(rectEndPoint);
         newElement.addEndPoint(dotEndPoint);
-        
+
         return newElement;
     }
 
@@ -148,7 +148,7 @@ public class WorkflowDiagram {
     private String getElementXPosition() {
         String xPosition = Integer.toString(elementXPosition);
         elementXPosition += X_POSITION_INCREMENT;
-        
+
         return (xPosition + "em");
     }
 
@@ -167,20 +167,20 @@ public class WorkflowDiagram {
     }
 
     /**
-     * Updates a Job putting an input data at it
+     * Updates a Job finding it and setting its fields
      *
      * @param id
      * @param inputs
      * @param arguments
      * @param url
-     * @param dependencies
+     * @param dependency
      */
     public void setJobFields(String id, ArrayList<FileInfo> inputs, String arguments, String url, String dependency) {
         int cont = 0;
 
         // Iterates over the joblist
         for (Job j : (ArrayList<Job>) workflow.getJobs()) {
-            
+
             if (j.getId().equals(id)) {
                 // Gets the right job
                 Job job = workflow.getJobs().get(cont);
@@ -191,7 +191,7 @@ public class WorkflowDiagram {
                 // Creates arguments string
                 String args = "";
                 int index = 1;
-                
+
                 for (FileInfo file : inputs) {
                     args += "%I" + index + " ";
                 }
@@ -205,25 +205,25 @@ public class WorkflowDiagram {
                 // Adds job dependencies
                 if (dependency != null) {
                     job.addDependency(dependency);
-                } 
+                }
 
                 // Sets its input url
                 job.setInputURL(url);
 
                 // When added, reinsert this job on the list of jobs
                 workflow.getJobs().set(cont, job);
-                
+
                 return;
             }
-            
+
             cont++;
         }
     }
-    
+
     public DefaultDiagramModel getWorkflowModel() {
         return this.workflowModel;
     }
-    
+
     public Workflow getWorkflow() {
         return this.workflow;
     }

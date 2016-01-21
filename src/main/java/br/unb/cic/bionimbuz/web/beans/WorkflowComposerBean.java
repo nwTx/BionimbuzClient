@@ -73,6 +73,8 @@ public class WorkflowComposerBean implements Serializable {
 
     private int jobListSize = 0;
 
+    private String currentJobOutput = "";
+
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
 
     // Logged user
@@ -174,12 +176,12 @@ public class WorkflowComposerBean implements Serializable {
 
         if (!suspendEvent && (!clickedElement.getName().equals("Inicio")) && (!clickedElement.getName().equals("Fim"))) {
             RequestContext context = RequestContext.getCurrentInstance();
+            
+            // Sets clicked element id to be used to set element input file
+            clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
 
             // Call input pick painel
             context.execute("PF('file_dlg').show();");
-
-            // Sets clicked element id to be used to set element input file
-            clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
 
         } else {
             suspendEvent = false;
@@ -198,11 +200,11 @@ public class WorkflowComposerBean implements Serializable {
         if (!suspendEvent && (!clickedElement.getName().equals("Inicio")) && (!clickedElement.getName().equals("Fim"))) {
             RequestContext context = RequestContext.getCurrentInstance();
 
-            // Call input pick painel
-            context.execute("PF('file_dlg').show();");
-
             // Sets clicked element id to be used to set element input file
             clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
+
+            // Call input pick painel
+            context.execute("PF('file_dlg').show();");
 
         } else {
             suspendEvent = false;
@@ -226,8 +228,37 @@ public class WorkflowComposerBean implements Serializable {
         // Sets element input list
         workflowDiagram.setJobFields(clickedElementId, inputFiles, arguments, inputURL, dependency);
 
-        // Resets input list
+        // Saves current job output filename in case the next job uses it as input
+        currentJobOutput = "output_" + clickedElementId;
+
+        // Resets fields
         inputFiles = new ArrayList<>();
+        arguments = "";
+        inputURL = "";
+    }
+
+    /**
+     * Sets job fields when the "jump" button is pressed
+     */
+    public void setJobFieldsWithOutput() {
+        // Creates the input file as the output file from the last Job
+        FileInfo file = new FileInfo();
+        file.setName(currentJobOutput);
+
+        // Creates the input file list with the file info
+        ArrayList<FileInfo> inputs = new ArrayList<>();
+        inputs.add(file);
+
+        // Sets element input list
+        workflowDiagram.setJobFields(clickedElementId, inputs, arguments, inputURL, dependency);
+        
+        // Saves current job output filename in case the next job uses it as input
+        currentJobOutput = "output_" + clickedElementId;
+
+        // Resets fields
+        inputFiles = new ArrayList<>();
+        arguments = "";
+        inputURL = "";
     }
 
     /**
