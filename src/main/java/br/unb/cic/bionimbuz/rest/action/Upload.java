@@ -1,45 +1,126 @@
 package br.unb.cic.bionimbuz.rest.action;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
+import java.io.IOException;
+import java.util.logging.Level;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
-import javax.ws.rs.core.Response;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Since there is a bug in Resteasy upload method (documented here
+ * https://issues.jboss.org/browse/RESTEASY-1201), the implementation of this
+ * Action is made with Apache HttpClient.
+ *
+ * @author Vinicius (with Edrward's help)
+ */
 public class Upload extends Action {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Upload.class);
-
     private static final String REST_UPLOAD_URL = "/rest/file/upload";
+    private final String bionimbuzIP = appConfiguration.getBionimbuzAddress();
 
     @Override
     public void setup(Client client, RequestInfo requestInfo) {
-        this.target = client.target(appConfiguration.getBionimbuzAddress());
         this.request = (UploadRequest) requestInfo;
     }
 
     @Override
     public void prepareTarget() {
-        target = target.path(REST_UPLOAD_URL);
     }
 
-    /**
-     * Bug on:
-     * https://issues.jboss.org/browse/RESTEASY-1201
-     */
-    
     @Override
     public UploadResponse execute() {
-        logAction(REST_UPLOAD_URL, Upload.class);
+        boolean returnFromServer = false;
+
+        // Create HttpClient
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+
+        try {
+
+            // Creates HttpPost with server address
+            HttpPost httpPost = new HttpPost(bionimbuzIP + REST_UPLOAD_URL);
+            UploadRequest req = (UploadRequest) this.request;
+
+            // Add a part as the file (bute[])
+            ByteArrayBody file = new ByteArrayBody(req.getFileInfo().getPayload(), req.getFileInfo().getName());
+
+            // Set hash
+            req.getFileInfo().setHash(generateHash(req.getFileInfo().getPayload()));
+            
+            // Avoid the payload to be sent twice (because it was already set as ByteArrayBody part)
+            req.getFileInfo().setPayload(null);
+            
+            // Transforms the file metadata into JSON
+            String jsonFileInfo = new ObjectMapper().writeValueAsString(req.getFileInfo());
+
+            // Adds it as a part of the request
+            StringBody fileInfoBody = new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON);
+
+            // Create the request with the two parts: Metadata and the file as byte[]
+            HttpEntity reqEntity = MultipartEntityBuilder.create()
+                    .addPart("file", file)
+                    .addPart("file_info", fileInfoBody)
+                    .build();
+
+            // Adds it to the httpPost object
+            httpPost.setEntity(reqEntity);
+
+            LOGGER.info("Sending Upload request (fileId=" + req.getFileInfo().getSize() + ") to BioNimbuZ (path: " + REST_UPLOAD_URL);
+
+            // Creates the response and fires the post request
+            CloseableHttpResponse response = httpclient.execute(httpPost);
+
+            try {
+                HttpEntity resEntity = response.getEntity();
+
+                if (resEntity != null) {
+                    LOGGER.info("Upload request got " + response.getStatusLine() + " response");
+
+                    // Verifies response status code
+                    if (response.getStatusLine().getStatusCode() == 200) {
+                        returnFromServer = true;
+                    } else {
+                        returnFromServer = false;
+                    }
+                } else {
+                    LOGGER.error("Response from Server is null");
+                }
+
+                EntityUtils.consume(resEntity);
+            } finally {
+                response.close();
+            }
+        } catch (IOException ex) {
+            LOGGER.error("[IOException] " + ex.getMessage());
+
+            returnFromServer = false;
+        } finally {
+            try {
+                httpclient.close();
+            } catch (IOException ex) {
+                LOGGER.error("[IOException] " + ex.getMessage());
+
+                returnFromServer = false;
+            }
+        }
+
+        /*
         MultipartFormDataOutput multipart = new MultipartFormDataOutput();
 
         // Generate Hash
@@ -54,8 +135,10 @@ public class Upload extends Action {
         Response response = target
                 .request()
                 .post(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA_TYPE), Response.class);
-
+         
         return new UploadResponse(response.readEntity(boolean.class));
+         */
+        return new UploadResponse(returnFromServer);
     }
 
     /**

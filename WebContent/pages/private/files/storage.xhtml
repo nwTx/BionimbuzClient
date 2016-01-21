@@ -21,7 +21,8 @@
                     </p:panel>
                     <br />
                     <p:panel>
-                        <p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center">
+                        <p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center"
+                                     emptyMessage="Sem arquivos enviados">
                             <f:facet name="header">Sua lista de arquivos</f:facet>
                             <p:column headerText="Nome" width="300" >
                                 <h:outputText value="#{f.name}" />

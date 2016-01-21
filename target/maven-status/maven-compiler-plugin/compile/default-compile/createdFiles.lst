@@ -1,5 +1,5 @@
-br/unb/cic/bionimbuz/communication/Communicator.class
 br/unb/cic/bionimbuz/model/User.class
+br/unb/cic/bionimbuz/communication/Communicator.class
 br/unb/cic/bionimbuz/rest/response/DeleteFileResponse.class
 br/unb/cic/bionimbuz/model/DiagramStyle.class
 br/unb/cic/bionimbuz/test/CancelJobBean.class
@@ -26,7 +26,6 @@ br/unb/cic/bionimbuz/rest/request/DeleteFileRequest.class
 br/unb/cic/bionimbuz/rest/action/StartWorkflow.class
 br/unb/cic/bionimbuz/rest/response/SignUpResponse.class
 br/unb/cic/bionimbuz/web/beans/WorkflowStatusBean.class
-br/unb/cic/bionimbuz/rest/action/Upload$1.class
 br/unb/cic/bionimbuz/rest/action/Action.class
 br/unb/cic/bionimbuz/exception/ServerNotReachableException.class
 br/unb/cic/bionimbuz/configuration/ConfigurationRepository.class
@@ -49,8 +48,8 @@ br/unb/cic/bionimbuz/model/WorkflowDiagram.class
 br/unb/cic/bionimbuz/configuration/Configuration.class
 br/unb/cic/bionimbuz/web/beans/SignUpBean.class
 br/unb/cic/bionimbuz/rest/request/LogoutRequest.class
-br/unb/cic/bionimbuz/model/DiagramElement.class
 br/unb/cic/bionimbuz/model/FileInfo.class
+br/unb/cic/bionimbuz/model/DiagramElement.class
 br/unb/cic/bionimbuz/configuration/ApplicationConfiguration.class
 br/unb/cic/bionimbuz/model/PluginService.class
 br/unb/cic/bionimbuz/test/JobStatusInfoTest.class

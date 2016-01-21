@@ -4,21 +4,21 @@ import br.unb.cic.bionimbuz.model.FileInfo;
 
 public class UploadRequest implements RequestInfo {
 
-    private FileInfo uploadedFileInfo;
+    private FileInfo fileInfo;
 
     public UploadRequest() {
     }
 
     public UploadRequest(FileInfo fileInfo) {
-        this.uploadedFileInfo = fileInfo;
+        this.fileInfo = fileInfo;
     }
 
-    public FileInfo getUploadedFileInfo() {
-        return uploadedFileInfo;
+    public FileInfo getFileInfo() {
+        return fileInfo;
     }
 
-    public void setUploadedFileInfo(FileInfo uploadedFileInfo) {
-        this.uploadedFileInfo = uploadedFileInfo;
+    public void setFileInfo(FileInfo fileInfo) {
+        this.fileInfo = fileInfo;
     }
 
 }

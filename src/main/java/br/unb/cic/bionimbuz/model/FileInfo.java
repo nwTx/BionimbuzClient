@@ -9,20 +9,24 @@ public class FileInfo {
 
     private String id = UUID.randomUUID().toString();
 
-    @JsonProperty("payload")
-    private byte[] payload;
-
     private String name;
-
-    private String uploadTimestamp;
 
     private long size;
 
     private long userId;
 
+    private String uploadTimestamp;
+
     private String hash;
 
+    @JsonProperty("payload")
+    private byte[] payload;
+
     public FileInfo() {
+    }
+
+    public FileInfo(String id) {
+        this.id = id;
     }
 
     public String getId() {
@@ -33,22 +37,6 @@ public class FileInfo {
         this.id = id;
     }
 
-    public byte[] getPayload() {
-        return payload;
-    }
-
-    public void setPayload(byte[] payload) {
-        this.payload = payload;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public String getName() {
         return name;
     }
@@ -57,12 +45,12 @@ public class FileInfo {
         this.name = name;
     }
 
-    public String getUploadTimestamp() {
-        return uploadTimestamp;
+    public byte[] getPayload() {
+        return payload;
     }
 
-    public void setUploadTimestamp(String uploadTimestamp) {
-        this.uploadTimestamp = uploadTimestamp;
+    public void setPayload(byte[] payload) {
+        this.payload = payload;
     }
 
     public long getSize() {
@@ -71,6 +59,22 @@ public class FileInfo {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public String getUploadTimestamp() {
+        return uploadTimestamp;
+    }
+
+    public void setUploadTimestamp(String uploadedTimestamp) {
+        this.uploadTimestamp = uploadedTimestamp;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getHash() {
