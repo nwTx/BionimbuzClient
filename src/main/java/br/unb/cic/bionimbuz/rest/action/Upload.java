@@ -160,8 +160,6 @@ public class Upload extends Action {
             sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
         }
 
-        LOGGER.info("Generated Hash: " + sb.toString());
-
         return sb.toString();
     }
 }

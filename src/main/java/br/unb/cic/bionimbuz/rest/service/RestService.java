@@ -5,11 +5,13 @@ import java.io.IOException;
 import br.unb.cic.bionimbuz.communication.RestCommunicator;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.FileInfo;
+import br.unb.cic.bionimbuz.model.Log;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.rest.action.DeleteFile;
 import br.unb.cic.bionimbuz.rest.action.GetServices;
+import br.unb.cic.bionimbuz.rest.action.GetWorkflowHistory;
 import br.unb.cic.bionimbuz.rest.action.GetWorkflowStatus;
 import br.unb.cic.bionimbuz.rest.action.Login;
 import br.unb.cic.bionimbuz.rest.action.Logout;
@@ -18,6 +20,7 @@ import br.unb.cic.bionimbuz.rest.action.StartWorkflow;
 import br.unb.cic.bionimbuz.rest.action.Upload;
 import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
 import br.unb.cic.bionimbuz.rest.request.GetServicesRequest;
+import br.unb.cic.bionimbuz.rest.request.GetWorkflowHistoryRequest;
 import br.unb.cic.bionimbuz.rest.request.GetWorkflowStatusRequest;
 import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
@@ -27,6 +30,7 @@ import br.unb.cic.bionimbuz.rest.request.StartWorkflowRequest;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
 import br.unb.cic.bionimbuz.rest.response.GetServicesResponse;
+import br.unb.cic.bionimbuz.rest.response.GetWorkflowHistoryResponse;
 import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
@@ -163,5 +167,13 @@ public class RestService {
         GetServicesResponse response = (GetServicesResponse) restCommunicator.sendRequest(new GetServices(), new GetServicesRequest());
 
         return response.getServicesList();
+    }
+
+    public List<Log> getWorkflowHistory(String workflowId) throws Exception {
+        RequestInfo request = new GetWorkflowHistoryRequest(workflowId);
+        
+        GetWorkflowHistoryResponse response = (GetWorkflowHistoryResponse) restCommunicator.sendRequest(new GetWorkflowHistory(), request);
+       
+        return response.getHistory();
     }
 }

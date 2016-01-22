@@ -1,18 +1,44 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<ui:decorate template="/resources/templates/template.xhtml">	
+    <ui:decorate template="/resources/templates/template.xhtml">	
 
-	<!-- Center Content -->
-	<ui:define name="conteudo_centro">
-		<h:form>
-		
-		</h:form>
-	</ui:define>
-	
-</ui:decorate>
+        <!-- Center Content -->
+        <ui:define name="conteudo_centro">
+            <h:form>
+                <p:panel header="Histórico de Execução">
+                    <p:panel>
+                        <p:outputLabel />
+                        <p:panelGrid columns="3">
+                            <p:outputLabel value="Id do Workflow" />
+                            <p:outputLabel value="#{workflowHistoryBean.selectedWorkflow.id}"/>
+                            <p:outputLabel value="#{workflowHistoryBean.getStatusText()}" style="color: #{workflowHistoryBean.getStatusColor()}" />
+                        </p:panelGrid>
+                        <br />
+                        <p:panel>
+                            <p:dataTable value="#{workflowHistoryBean.history}" var="h" rows="20">
+                                <p:column headerText="Descrição">
+                                    <p:outputLabel value="#{h.text}" />
+                                </p:column>
+                                
+                                <p:column headerText="Data">
+                                    <p:outputLabel value="#{h.date}" />
+                                </p:column>
+                                
+                                <p:column headerText="Horário">
+                                    <p:outputLabel value="#{h.timestamp}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </p:panel>
+                    
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+    </ui:decorate>
 </html>
