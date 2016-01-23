@@ -12,30 +12,38 @@
             <h:form>
                 <p:panel header="Histórico de Execução">
                     <p:panel>
-                        <p:outputLabel />
-                        <p:panelGrid columns="3">
-                            <p:outputLabel value="Id do Workflow" />
-                            <p:outputLabel value="#{workflowHistoryBean.selectedWorkflow.id}"/>
-                            <p:outputLabel value="#{workflowHistoryBean.getStatusText()}" style="color: #{workflowHistoryBean.getStatusColor()}" />
-                        </p:panelGrid>
+                        <p:panel>
+                            Histórico de execução deste Workflow
+                        </p:panel>
                         <br />
                         <p:panel>
-                            <p:dataTable value="#{workflowHistoryBean.history}" var="h" rows="20">
-                                <p:column headerText="Descrição">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="#{workflowHistoryBean.selectedWorkflow.id}" style="font-weight: bold"/>
+                                <p:outputLabel value="#{workflowHistoryBean.getStatusText()}" style="color: #{workflowHistoryBean.getStatusColor()}; font-weight: bold" />
+                            </p:panelGrid>
+                            <br />
+                            <p:dataTable value="#{workflowHistoryBean.history}" var="h">
+                                <p:column headerText="Data" width="30" style="text-align: center">
+                                    <p:outputLabel value="#{h.date}" />
+                                </p:column>
+
+                                <p:column headerText="Horário" width="30" style="text-align: center">
+                                    <p:outputLabel value="#{h.timestamp}" />
+                                </p:column>
+
+                                <p:column headerText="Descrição" width="300">
                                     <p:outputLabel value="#{h.text}" />
                                 </p:column>
                                 
-                                <p:column headerText="Data">
-                                    <p:outputLabel value="#{h.date}" />
-                                </p:column>
-                                
-                                <p:column headerText="Horário">
-                                    <p:outputLabel value="#{h.timestamp}" />
+                                <p:column headerText="Nivel" width="50" style="text-align: center">
+                                    <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'INFO'}" style="color: #2980b9; font-weight: bold"/>
+                                    <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'WARN'}" style="color: #e67e22; font-weight: bold"/>
+                                    <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'ERROR'}" style="color: #c0392b; font-weight: bold"/>
                                 </p:column>
                             </p:dataTable>
                         </p:panel>
                     </p:panel>
-                    
+
                 </p:panel>
             </h:form>
         </ui:define>
