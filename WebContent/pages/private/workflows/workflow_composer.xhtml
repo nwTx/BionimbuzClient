@@ -3,8 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <ui:decorate template="/resources/templates/template.xhtml">	
 
@@ -21,38 +20,33 @@
                            <p:tab title="Detalhado">
                                 <h:panelGrid columns="2" cellpadding="10">
                                     <p:panel style="border-color: #2980b9">
-                                        <p:outputLabel value="Limitar a execuçao:" />
+                                        <p:outputLabel value="Limitar a execução:" />
                                         <p:selectOneRadio value="#{slaComposerBean.panel1}">
                                             <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
-                                            <f:selectItem itemLabel="Nao" itemValue="Hide-Panel1" />
+                                            <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
                                             <f:ajax render="select-type-limitation-panel" />
                                         </p:selectOneRadio>
 
                                         <h:panelGroup id="select-type-limitation-panel">
 
-                                           <p:fieldset legend="Limitaçao"
-                                            rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
-
-<!--                                                <p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
-                                                <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationTypeValue}" layout="custom">
-                                                    <f:selectItem itemLabel="Tempo de execuçao" itemValue="#{slaComposerBean.limitationTypeValue.first}" />
-                                                    <f:selectItem itemLabel="Custo de execuçao" itemValue="#{slaComposerBean.limitationTypeValue.second}" />
+                                                <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
+                                                <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}" layout="custom">
+                                                    <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationValue}" />
+                                                    <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationValue}" />
                                                 </p:selectOneRadio>
 
-                                                <h:panelGrid columns="3" cellpadding="5">
+                                                <h:panelGrid columns="3" cellpadding="5" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
                                                     <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
-                                                    <h:outputLabel for="opt1" value="Tempo de execuçao" />
-                                                    <pe:inputNumber id="opt1N" value="0.0"/>  
-                                                    
+                                                     <p:outputLabel for="opt1" value="Tempo de execução: " />
+                                                     <p:inputMask id="opt1N" value="#{slaComposerBean.limitationValue}" mask="00:00:00"/>
+  
 
                                                     <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
-                                                    <h:outputLabel for="opt2" value="Custo de execuçao" />
-                                                    <pe:inputNumber id="opt2N" value="0.0"/>  
+                                                    <h:outputLabel for="opt2" value="Custo de execução" />
+                                                    <p:inputMask id="opt2N" value="#{slaComposerBean.limitationValue}" mask="0,00"/>  
 
                                                 </h:panelGrid>
                                             <!--</p:outputPanel>-->
-
-                                           </p:fieldset>
 
                                         </h:panelGroup>
         
@@ -60,13 +54,13 @@
                                     </p:panel> 
                                      <p:panel style="border-color: #2980b9">
                                         <p:outputPanel id="instancies_types" style="margin-bottom:10px">
-                                            <p:outputLabel value="Tipos de instancias:" /> <br />
-                                          <!--  <p:selectManyCheckbox id="selected_instancies" value="#1" layout="responsive" columns="2">
-                                                <f:selectItems value="#1" var="city" itemLabel="#{city}" itemValue="#{city}" />
+                                            <p:outputLabel value="Tipos de instâncias:" /> <br />
+                                            <p:selectManyCheckbox id="selected_instancies" value="#{slaComposerBean.selectedInstancies}" layout="responsive" columns="2">
+                                                <f:selectItems value="#{slaComposerBean.instanciesTypeQtd.keySet}" var="instancyType" itemLabel="#{instancyType}" itemValue="#{instancyType}" />
                                             </p:selectManyCheckbox>
-                                            <ui:repeat value="Quantidade" var="#1" varStatus="loop">
-                                               <h:inputText value="#1" />
-                                            </ui:repeat>-->
+                                            <ui:repeat value="#{slaComposerBean.instanciesTypeQtd.values}" var="quantidade" varStatus="loop">
+                                                <h:inputText value="#{slaComposerBean.instanciesTypeQtd.replace(instancyType, quantidade, quantidade) }" />
+                                            </ui:repeat>
                                           
                                         </p:outputPanel>
                                     </p:panel> 
