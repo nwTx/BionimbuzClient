@@ -38,14 +38,16 @@ public class ConfigurationRepository implements ServletContextListener {
         int connectTries = 3;
         RestService restService = new RestService();
 
-        LOGGER.info("Initializing client application...");
+        LOGGER.info("========================================");
+        LOGGER.info("========> Starting client application...");
+        LOGGER.info("========================================");
 
         applicationConfiguration = ConfigurationLoader.readConfiguration(CONFIGURATION_PATH + "config.json",
                 ApplicationConfiguration.class);
 
-        LOGGER.info("BioNimbuZ Web Application Configuration loaded: " + applicationConfiguration);
-        LOGGER.info("Sending request to core to retrieve supported services...");
-
+        // Log configurations
+        ((ApplicationConfiguration) applicationConfiguration).log();
+        
         // Send request to the server
         while (serverOnline != true) {
             try {
@@ -75,7 +77,7 @@ public class ConfigurationRepository implements ServletContextListener {
         LOGGER.info("Supported Services fetched from server: ");
 
         for (PluginService p : supportedServices) {
-            LOGGER.info("\tProgram: " + p.getName());
+            LOGGER.info(" - Program: " + p.getName());
         }
 
     }
@@ -87,7 +89,9 @@ public class ConfigurationRepository implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent servletContext) {
-        System.out.println("Destroying Client Application Context...");
+        LOGGER.info("========================================");
+        LOGGER.info("========> Stopping client application...");
+        LOGGER.info("========================================");
     }
 
     public static ApplicationConfiguration getApplicationConfiguration() {

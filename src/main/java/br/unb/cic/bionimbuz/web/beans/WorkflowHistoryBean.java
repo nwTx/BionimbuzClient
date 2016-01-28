@@ -45,6 +45,12 @@ public class WorkflowHistoryBean implements Serializable {
         return this.selectedWorkflow.getStatus().toString();
     }
 
+    /**
+     * Calls server to retrieve workflow history log
+     *
+     * @param workflow
+     * @return
+     */
     public String selectWorkflow(Workflow workflow) {
         this.selectedWorkflow = workflow;
 
@@ -55,6 +61,19 @@ public class WorkflowHistoryBean implements Serializable {
         }
 
         return "workflow_history";
+    }
+
+    /**
+     * Calls server to refresh workflow history
+     *
+     * @param workflow
+     */
+    public void updateWorkflowHistory(Workflow workflow) {
+        try {
+            this.history = restService.getWorkflowHistory(workflow.getId());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public Workflow getSelectedWorkflow() {

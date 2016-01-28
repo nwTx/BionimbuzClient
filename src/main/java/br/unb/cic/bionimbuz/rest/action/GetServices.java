@@ -46,8 +46,6 @@ public class GetServices extends Action {
             
             List<PluginService> response = r.readEntity(new GenericType<List<PluginService>>() {});    
             
-            LOGGER.info("Received from server: " + response.size());
-            
             return new GetServicesResponse(response);
         } catch (Exception e) {
             LOGGER.error("[Exception] " + e.getMessage());

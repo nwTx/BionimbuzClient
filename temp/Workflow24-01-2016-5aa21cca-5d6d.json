@@ -1,0 +1,260 @@
+{
+  "workflowModel" : {
+    "elements" : [ {
+      "id" : "7811813c-ab35-4eb0-9735-bff024ddc452",
+      "data" : {
+        "id" : "49e57d3d",
+        "serviceId" : null,
+        "description" : null,
+        "name" : "Inicio",
+        "relativePosition" : 0,
+        "xPosition" : 1,
+        "yPosition" : 15,
+        "width" : 0
+      },
+      "styleClass" : null,
+      "x" : "1em",
+      "y" : "15em",
+      "endPoints" : [ {
+        "id" : "1326f747-5b52-43e2-8523-d875f317d3a4",
+        "anchor" : "RIGHT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{strokeStyle:'#5BAAF3'}",
+        "source" : true,
+        "target" : false,
+        "overlays" : [ ],
+        "scope" : null,
+        "width" : 20,
+        "height" : 20,
+        "type" : "Rectangle"
+      }, {
+        "id" : "08c0417b-b604-4059-b252-66518b4a5a3e",
+        "anchor" : "LEFT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{fillStyle:'#5BAAF3'}",
+        "source" : false,
+        "target" : true,
+        "overlays" : [ ],
+        "scope" : null,
+        "radius" : 10,
+        "type" : "Dot"
+      } ],
+      "draggable" : true
+    }, {
+      "id" : "f45e1a0b-aabf-40c2-9f47-2ece9f339a06",
+      "data" : {
+        "id" : "d7abb5d9",
+        "serviceId" : "1",
+        "description" : "MOCK",
+        "name" : "s1",
+        "relativePosition" : 0,
+        "xPosition" : 16,
+        "yPosition" : 15,
+        "width" : 0
+      },
+      "styleClass" : null,
+      "x" : "16em",
+      "y" : "15em",
+      "endPoints" : [ {
+        "id" : "b4a866d6-5c6d-46c4-968f-6db0c06744f0",
+        "anchor" : "RIGHT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{strokeStyle:'#5BAAF3'}",
+        "source" : true,
+        "target" : false,
+        "overlays" : [ ],
+        "scope" : null,
+        "width" : 20,
+        "height" : 20,
+        "type" : "Rectangle"
+      }, {
+        "id" : "5a5ceb5e-97d1-4e83-9775-4a7c77609e2a",
+        "anchor" : "LEFT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{fillStyle:'#5BAAF3'}",
+        "source" : false,
+        "target" : true,
+        "overlays" : [ ],
+        "scope" : null,
+        "radius" : 10,
+        "type" : "Dot"
+      } ],
+      "draggable" : true
+    }, {
+      "id" : "90d5419d-23e5-42ff-a3bc-e71b7bf07d46",
+      "data" : {
+        "id" : "87b5f2bc",
+        "serviceId" : null,
+        "description" : null,
+        "name" : "Fim",
+        "relativePosition" : 0,
+        "xPosition" : 31,
+        "yPosition" : 15,
+        "width" : 0
+      },
+      "styleClass" : null,
+      "x" : "31em",
+      "y" : "15em",
+      "endPoints" : [ {
+        "id" : "716b3231-1241-4a81-84fe-a421d65a5c0b",
+        "anchor" : "RIGHT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{strokeStyle:'#5BAAF3'}",
+        "source" : true,
+        "target" : false,
+        "overlays" : [ ],
+        "scope" : null,
+        "width" : 20,
+        "height" : 20,
+        "type" : "Rectangle"
+      }, {
+        "id" : "38a2c217-3398-4e85-995b-11a4f807a954",
+        "anchor" : "LEFT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{fillStyle:'#5BAAF3'}",
+        "source" : false,
+        "target" : true,
+        "overlays" : [ ],
+        "scope" : null,
+        "radius" : 10,
+        "type" : "Dot"
+      } ],
+      "draggable" : true
+    } ],
+    "connections" : [ {
+      "source" : {
+        "id" : "1326f747-5b52-43e2-8523-d875f317d3a4",
+        "anchor" : "RIGHT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{strokeStyle:'#5BAAF3'}",
+        "source" : true,
+        "target" : false,
+        "overlays" : [ ],
+        "scope" : null,
+        "width" : 20,
+        "height" : 20,
+        "type" : "Rectangle"
+      },
+      "target" : {
+        "id" : "5a5ceb5e-97d1-4e83-9775-4a7c77609e2a",
+        "anchor" : "LEFT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{fillStyle:'#5BAAF3'}",
+        "source" : false,
+        "target" : true,
+        "overlays" : [ ],
+        "scope" : null,
+        "radius" : 10,
+        "type" : "Dot"
+      },
+      "connector" : null,
+      "overlays" : [ ],
+      "detachable" : true
+    }, {
+      "source" : {
+        "id" : "b4a866d6-5c6d-46c4-968f-6db0c06744f0",
+        "anchor" : "RIGHT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{strokeStyle:'#5BAAF3'}",
+        "source" : true,
+        "target" : false,
+        "overlays" : [ ],
+        "scope" : null,
+        "width" : 20,
+        "height" : 20,
+        "type" : "Rectangle"
+      },
+      "target" : {
+        "id" : "38a2c217-3398-4e85-995b-11a4f807a954",
+        "anchor" : "LEFT",
+        "maxConnections" : 1,
+        "styleClass" : null,
+        "hoverStyleClass" : null,
+        "style" : "{fillStyle:'#376190'}",
+        "hoverStyle" : "{fillStyle:'#5BAAF3'}",
+        "source" : false,
+        "target" : true,
+        "overlays" : [ ],
+        "scope" : null,
+        "radius" : 10,
+        "type" : "Dot"
+      },
+      "connector" : null,
+      "overlays" : [ ],
+      "detachable" : true
+    } ],
+    "defaultConnector" : {
+      "paintStyle" : "{strokeStyle:'#376190', lineWidth:1}",
+      "hoverPaintStyle" : "{strokeStyle:'#5BAAF3'}",
+      "stub" : 0,
+      "gap" : 0,
+      "type" : "Straight"
+    },
+    "defaultConnectionOverlays" : [ {
+      "width" : 20,
+      "length" : 20,
+      "location" : 1.0,
+      "direction" : 1,
+      "foldback" : 0.623,
+      "paintStyle" : null,
+      "type" : "Arrow"
+    } ],
+    "connectionsDetachable" : true,
+    "maxConnections" : -1
+  },
+  "workflow" : {
+    "id" : "Workflow24-01-2016-5aa21cca-5d6d",
+    "jobs" : [ {
+      "id" : "d7abb5d9",
+      "testId" : 0,
+      "localId" : null,
+      "serviceId" : "1",
+      "args" : "%I1 %O1 ",
+      "inputFiles" : [ {
+        "id" : "fd1fcb90-ea29-4d3f-ba72-350ddafa1f38",
+        "name" : "inp0",
+        "size" : 7,
+        "userId" : 1,
+        "uploadTimestamp" : "23/01/2016 23:01:44",
+        "hash" : "20504565b8253aa5192439091b9bb78297b270286aa05b908c937ace93eb6beb",
+        "payload" : null
+      } ],
+      "inputURL" : "",
+      "outputs" : [ "output_d7abb5d9" ],
+      "timestamp" : 1453642252149,
+      "worstExecution" : null,
+      "dependencies" : [ ]
+    } ],
+    "creationDatestamp" : "24/01/2016 11:30:52",
+    "userId" : 1,
+    "description" : "asd",
+    "status" : "PENDING"
+  }
+}

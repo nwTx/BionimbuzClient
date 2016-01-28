@@ -29,7 +29,17 @@ import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.WorkflowStatus;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.logging.Level;
+import javax.servlet.ServletContext;
+import javax.swing.filechooser.FileSystemView;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +86,9 @@ public class WorkflowComposerBean implements Serializable {
     private String currentJobOutput = "";
 
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
+
+    // Used by the user to download a workflow
+    private StreamedContent workflowToDownload;
 
     // Logged user
     private User loggedUser;
@@ -176,7 +189,7 @@ public class WorkflowComposerBean implements Serializable {
 
         if (!suspendEvent && (!clickedElement.getName().equals("Inicio")) && (!clickedElement.getName().equals("Fim"))) {
             RequestContext context = RequestContext.getCurrentInstance();
-            
+
             // Sets clicked element id to be used to set element input file
             clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
 
@@ -251,7 +264,7 @@ public class WorkflowComposerBean implements Serializable {
 
         // Sets element input list
         workflowDiagram.setJobFields(clickedElementId, inputs, arguments, inputURL, dependency);
-        
+
         // Saves current job output filename in case the next job uses it as input
         currentJobOutput = "output_" + clickedElementId;
 
@@ -300,6 +313,32 @@ public class WorkflowComposerBean implements Serializable {
      */
     public String getWorkflowColor() {
         return this.workflowDiagram.getWorkflow().getStatus().getColor();
+    }
+
+    public StreamedContent downloadWorkflow() {
+        InputStream stream;
+        ObjectMapper mapper = new ObjectMapper();
+        DefaultStreamedContent content = null;
+        String path = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/temp/" + this.workflowDiagram.getWorkflow().getId() + ".json";
+        File jsonFile = null;
+
+        try {
+            jsonFile = new File(path);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, this.workflowDiagram);
+
+            FileInputStream is = new FileInputStream(jsonFile);
+            content = new DefaultStreamedContent(is, "application/json", this.workflowDiagram.getWorkflow().getId() + ".flow");
+        } catch (IOException ex) {
+            LOGGER.error("[IOException] - " + ex.getMessage());
+        } finally {
+            jsonFile.delete();
+        }
+
+        return content;
+    }
+
+    public StreamedContent getWorkflowToDownload() {
+        return workflowToDownload;
     }
 
     public DefaultDiagramModel getWorkflowModel() {

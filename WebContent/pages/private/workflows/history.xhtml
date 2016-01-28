@@ -34,13 +34,17 @@
                                 <p:column headerText="Descrição" width="300">
                                     <p:outputLabel value="#{h.text}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Nivel" width="50" style="text-align: center">
                                     <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'INFO'}" style="color: #2980b9; font-weight: bold"/>
                                     <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'WARN'}" style="color: #e67e22; font-weight: bold"/>
                                     <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'ERROR'}" style="color: #c0392b; font-weight: bold"/>
                                 </p:column>
                             </p:dataTable>
+                            
+                            <f:facet name="footer">
+                                <p:commandButton value="Atualizar" action="#{workflowHistoryBean}" />
+                            </f:facet>
                         </p:panel>
                     </p:panel>
 

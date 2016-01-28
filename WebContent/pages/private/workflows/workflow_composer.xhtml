@@ -96,7 +96,7 @@
                             </p:panel>
                             <br />
                             <p:panel>
-                                <p:panelGrid columns="2" >
+                                <p:panelGrid columns="2" style="width: 100%; margin: 15px">
                                     <f:facet name="header">
                                         <p:outputLabel value="Dados deste workflow" style="font-size: 120%; margin: 10px"/>
                                     </f:facet>
@@ -105,7 +105,7 @@
                                     <p:outputLabel value="Descrição" style="font-weight: bold"/>
                                     <p:outputLabel value="#{workflowComposerBean.workflow.description} " />
                                     <p:outputLabel value="Tamanho" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.workflow.jobs.size()} passo(s)" />
+                                    <p:outputLabel value="#{workflowComposerBean.workflow.jobs.size()} Job(s)" />
                                     <p:outputLabel value="Criado em" style="font-weight: bold"/>
                                     <p:outputLabel value="#{workflowComposerBean.workflow.creationDatestamp}" />
                                     <p:outputLabel value="Quantidade de inputs" style="font-weight: bold"/>
@@ -116,25 +116,26 @@
                                 </p:panelGrid>
                             </p:panel>
                             <br />
-                            <p:dataTable value="#{workflowComposerBean.jobs}" var="j" paginator="true" rows="10">
-                                <p:column headerText="Id">
-                                    <p:outputLabel value="#{j.id}" />
-                                </p:column>
-
-                                <p:column headerText="Service Id">
-                                    <p:outputLabel value="#{j.serviceId}" />
-                                </p:column>
-
-                                <p:column headerText="Input">
-                                    <p:outputLabel value="#{j.inputFiles.size()}" />
-                                </p:column>
-                            </p:dataTable>
-                            <br />
-                            <p:panel header="Iniciar Execução" style="text-align: center">
-                                <center>
-                                    <p:commandButton action="#{workflowComposerBean.startWorkflow()}" value="Confirmar Workflow" style="margin: 10px; border-color: #2980b9"/>
-                                </center>
-                            </p:panel>
+                            <center>
+                                <h:panelGrid columns="2" style="text-align: center">
+                                    <p:panel header="Executar Workflow" style="text-align: center; width: 400px">
+                                        <p:outputLabel value="Iniciar execução deste Workflow. Seu Workflow sera enviado ao Servidor do BioNimbuZ e voce podera acompnhar sua execucao" 
+                                                       style="margin: 10px" /> <br />
+                                        <center>
+                                            <p:commandButton action="#{workflowComposerBean.startWorkflow()}" value="Confirmar Workflow" style="margin: 10px; border-color: #2980b9"/>
+                                        </center>
+                                    </p:panel>
+                                    <p:panel header="Download" style="text-align: center; width: 400px">
+                                        <p:outputLabel value="Voce pode realizar o download deste Workflow para importa-lo posteriormente ou compartilhar com alguem" 
+                                                       style="margin: 10px" /> <br />
+                                        <center>
+                                            <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" style="margin: 10px; border-color: #2980b9" >
+                                                <p:fileDownload value="#{workflowComposerBean.downloadWorkflow()}" />
+                                            </p:commandButton>
+                                        </center>
+                                    </p:panel>
+                                </h:panelGrid>
+                            </center>
                         </p:panel>
                     </p:tab>
                 </p:wizard>
