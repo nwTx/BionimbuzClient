@@ -30,14 +30,17 @@ import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.WorkflowStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.util.logging.Level;
-import javax.servlet.ServletContext;
-import javax.swing.filechooser.FileSystemView;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
@@ -315,16 +318,21 @@ public class WorkflowComposerBean implements Serializable {
         return this.workflowDiagram.getWorkflow().getStatus().getColor();
     }
 
+    /**
+     * Method used for users to download a .json workflow representation
+     *
+     * @return
+     */
     public StreamedContent downloadWorkflow() {
         InputStream stream;
         ObjectMapper mapper = new ObjectMapper();
         DefaultStreamedContent content = null;
-        String path = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/temp/" + this.workflowDiagram.getWorkflow().getId() + ".json";
+        String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + this.workflowDiagram.getWorkflow().getId() + ".json";
         File jsonFile = null;
 
         try {
             jsonFile = new File(path);
-            mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, this.workflowDiagram);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, this.workflowDiagram.getWorkflow());
 
             FileInputStream is = new FileInputStream(jsonFile);
             content = new DefaultStreamedContent(is, "application/json", this.workflowDiagram.getWorkflow().getId() + ".flow");
@@ -335,6 +343,66 @@ public class WorkflowComposerBean implements Serializable {
         }
 
         return content;
+    }
+
+    /**
+     * Called when an user clicks to import a workflow file to application
+     *
+     * @param event
+     */
+    public void handleImportedWorkflow(FileUploadEvent event) {
+        try {
+            String path = saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
+
+            File workflowFile = new File(path);
+
+            BufferedReader br = new BufferedReader(new FileReader(workflowFile));
+
+            StringBuilder builder = new StringBuilder();
+            String line;
+            
+            while ((line = br.readLine()) != null) {
+                builder.append(line);
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            Workflow workflow = mapper.readValue(builder.toString(), Workflow.class);
+            
+            System.out.println("Tamanho: " + workflow.getJobs().size());
+            System.out.println("Descriçao: " + workflow.getDescription());
+            System.out.println("UserId: " + workflow.getUserId());
+            
+        } catch (Exception ex) {
+            LOGGER.error("[Exception] - " + ex.getMessage());
+        }
+
+    }
+
+    /**
+     * Saves temporary file in disk
+     *
+     * @param fileName
+     * @param in
+     * @return
+     */
+    public String saveTempFile(String fileName, InputStream in) throws FileNotFoundException, IOException {
+        String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + fileName;
+        // write the inputStream to a FileOutputStream
+        OutputStream outputStream = new FileOutputStream(new File(path));
+
+        int read = 0;
+        byte[] bytes = new byte[1024];
+
+        while ((read = in.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, read);
+        }
+
+        // in.close();
+        LOGGER.info("Temporary file created [path="
+                + ConfigurationRepository.UPLOADED_FILES_PATH
+                + fileName + "]");
+
+        return path;
     }
 
     public StreamedContent getWorkflowToDownload() {

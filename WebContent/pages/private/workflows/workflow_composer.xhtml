@@ -13,7 +13,31 @@
                 <p:growl id="growl" autoUpdate="true" showDetail="true"
                          showSummary="true" />      
 
-                <p:wizard nextLabel="Avançar" backLabel="Voltar" flowListener="#{workflowComposerBean.flowController}">
+                <p:wizard widgetVar="wizard" nextLabel="Avançar" backLabel="Voltar" flowListener="#{workflowComposerBean.flowController}">
+                    <p:tab id="initial" title="Início">
+                        <p:panel>
+                            <h:panelGrid columns="2" width="100%">
+                                <p:panel header="Importar Workflow" style="width: 400px; margin: 60px">
+                                    <center>
+                                        <p:fileUpload id="file_upload" mode="advanced" 
+                                                      dragDropSupport="false" multiple="false" 
+                                                      invalidFileMessage="Formato de arquivo inválido"
+                                                      fileUploadListener="#{workflowComposerBean.handleImportedWorkflow}"
+                                                      cancelLabel="Cancelar" uploadLabel="Enviar"
+                                                      label="Escolher Arquivo" allowTypes="/(\.|\/)(flow)$/"
+                                                      update="growl" sizeLimit="268435456"/>
+                                    </center>
+                                </p:panel>
+
+                                <p:panel header="Iniciar Workflow" style="width: 400px; margin: 60px">
+                                    <center>
+                                        <p:commandButton value="Começar Projeto" onclick="PF('wizard').next();"/>  
+                                    </center>
+                                </p:panel>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:tab>
+
                     <!-- Element selection tab -->
                     <p:tab id="element_selection" title="Seleção de Elementos">
                         <p:panel header="Escolha os elementos deste Workflow">
@@ -183,7 +207,7 @@
                             <p:column headerText="Tamanho" width="25em" style="text-align: center">
                                 <p:outputLabel value="#{f.size} Kb"/>
                             </p:column>
-
+                            
                             <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
                         </p:dataTable>
                     </p:fieldset>

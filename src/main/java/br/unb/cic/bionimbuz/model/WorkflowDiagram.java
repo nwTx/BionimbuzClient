@@ -3,7 +3,6 @@ package br.unb.cic.bionimbuz.model;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.UUID;
 
 import org.primefaces.model.diagram.DefaultDiagramModel;
@@ -34,7 +33,10 @@ public class WorkflowDiagram {
     private int elementXPosition = INITIAL_X_POSITION;
 
     // The Workflow object
-    private final Workflow workflow;
+    private Workflow workflow;
+
+    public WorkflowDiagram() {
+    }
 
     /**
      * Calls the method that initializes everything...

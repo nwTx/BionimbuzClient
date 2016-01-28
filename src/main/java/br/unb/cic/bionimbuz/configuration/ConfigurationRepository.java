@@ -21,9 +21,13 @@ import org.slf4j.LoggerFactory;
 public class ConfigurationRepository implements ServletContextListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationRepository.class);
-
-    public static final String UPLOADED_FILES_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/uploaded-files/";
-    private static final String CONFIGURATION_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/conf/";
+    
+    // File's path
+    private static final String ROOT_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/";    
+    public static final String TEMPORARY_WORKFLOW_PATH = ROOT_PATH + "BionimbuzClient/temp/";
+    public static final String UPLOADED_FILES_PATH = ROOT_PATH + "BionimbuzClient/uploaded-files/";
+    private static final String CONFIGURATION_PATH = ROOT_PATH + "BionimbuzClient/conf/";
+    
     private static Configuration applicationConfiguration;
     private static ArrayList<PluginService> supportedServices;
 
