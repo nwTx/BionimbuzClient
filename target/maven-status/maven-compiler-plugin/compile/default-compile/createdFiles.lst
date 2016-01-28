@@ -24,6 +24,7 @@ br/unb/cic/bionimbuz/rest/action/Upload.class
 br/unb/cic/bionimbuz/rest/request/LoginRequest.class
 br/unb/cic/bionimbuz/rest/action/StartWorkflow.class
 br/unb/cic/bionimbuz/rest/request/DeleteFileRequest.class
+br/unb/cic/bionimbuz/model/Instancy.class
 br/unb/cic/bionimbuz/rest/response/SignUpResponse.class
 br/unb/cic/bionimbuz/web/beans/WorkflowStatusBean.class
 br/unb/cic/bionimbuz/rest/action/Action.class

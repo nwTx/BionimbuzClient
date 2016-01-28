@@ -18,6 +18,7 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/GetServices.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/service/RestService.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/Configuration.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Instancy.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/User.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/FileUploadBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/SessionBean.java

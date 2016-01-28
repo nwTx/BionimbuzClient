@@ -31,8 +31,8 @@
 
                                                 <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
                                                 <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}" layout="custom">
-                                                    <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationValue}" />
-                                                    <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationValue}" />
+                                                    <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationType}" />
+                                                    <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationType}" />
                                                 </p:selectOneRadio>
 
                                                 <h:panelGrid columns="3" cellpadding="5" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
@@ -55,13 +55,23 @@
                                      <p:panel style="border-color: #2980b9">
                                         <p:outputPanel id="instancies_types" style="margin-bottom:10px">
                                             <p:outputLabel value="Tipos de instâncias:" /> <br />
-                                            <p:selectManyCheckbox id="selected_instancies" value="#{slaComposerBean.selectedInstancies}" layout="responsive" columns="2">
-                                                <f:selectItems value="#{slaComposerBean.instanciesTypeQtd.keySet}" var="instancyType" itemLabel="#{instancyType}" itemValue="#{instancyType}" />
-                                            </p:selectManyCheckbox>
-                                            <ui:repeat value="#{slaComposerBean.instanciesTypeQtd.values}" var="quantidade" varStatus="loop">
-                                                <h:inputText value="#{slaComposerBean.instanciesTypeQtd.replace(instancyType, quantidade, quantidade) }" />
-                                            </ui:repeat>
-                                          
+                                            <p:dataTable value="#{slaComposerBean.instancies}" var="instance" style="width: 60em"
+                                                        paginator="true" rows="5" emptyMessage="Quantidade de instância "
+                                                        selection="#{slaComposerBean.selectedInstancies}" rowKey="#{instance.type}" >
+
+                                               <p:column headerText="Tipo" width="25em" style="text-align: center">
+                                                   <p:outputLabel value="#{instance.type}"/>
+                                               </p:column>
+
+                                               <p:column headerText="Quantidade" width="25em" style="text-align: center">
+                                                   <p:cellEditor>
+                                                        <f:facet name="output"><h:outputLabel value="#{instance.quantity}"/></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{instance.quantity}" style="width:100%" label="Quantidade"/></f:facet>   
+                                                   </p:cellEditor>
+                                               </p:column>
+
+                                               <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
+                                           </p:dataTable>
                                         </p:outputPanel>
                                     </p:panel> 
                                 </h:panelGrid>

@@ -5,6 +5,7 @@
  */
 package br.unb.cic.bionimbuz.web.beans;
 
+import br.unb.cic.bionimbuz.model.Instancy;
 import br.unb.cic.bionimbuz.model.User;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -34,19 +36,23 @@ public class SlaComposerBean implements Serializable{
     private boolean limitation;
     private String limitationType;
     private String limitationValue;
-    private Map<String, Integer> instanciesTypeQtd;
+    private List<Instancy> instancies;
+    private List<Instancy> selectedInstancies;
 
-    private String[] selectedInstancies;
 // Logged user
     private User loggedUser;
     
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
-        setInstanciesTypeQtd(new ConcurrentHashMap<>());
-        getInstanciesTypeQtd().put("Micro",10);
-        getInstanciesTypeQtd().put("Macro",20);
-        getInstanciesTypeQtd().put("Large",30);
+        Instancy instancyMicro=new Instancy("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",20.0,"sata");
+        instancies= new ArrayList<>();
+        instancies.add(instancyMicro);
+        Instancy instancyMacro=new Instancy("Macro",0.24,5,"us-west",2.0,3.3,"Xeon",120.0,"sata");
+        instancies.add(instancyMacro);
+        Instancy instancyLarge=new Instancy("Large",0.41,3,"us-west",8.0,3.3,"Xeon",240.0,"sata");
+        instancies.add(instancyLarge);
+
     }
     public void setPanel1(String panel1){
     this.panel1 = panel1;
@@ -68,39 +74,6 @@ public class SlaComposerBean implements Serializable{
      */
     public void setLimitation(boolean limitation) {
         this.limitation = limitation;
-    }
-
-    /**
-     * @return the selectedInstancies
-     */
-    public String[] getSelectedInstancies() {
-        return selectedInstancies;
-    }
-
-    /**
-     * @param selectedInstancies the selectedInstancies to set
-     */
-    public void setSelectedInstancies(String[] selectedInstancies) {
-        this.selectedInstancies = selectedInstancies;
-    }
-
-
-    /**
-     * @return the instanciesTypeQtd
-     */
-    public Map<String, Integer> getInstanciesTypeQtd() {
-        return instanciesTypeQtd;
-    }
-
-    /**
-     * @param instanciesTypeQtd the instanciesTypeQtd to set
-     */
-    public void setInstanciesTypeQtd(Map<String, Integer> instanciesTypeQtd) {
-        this.instanciesTypeQtd = instanciesTypeQtd;
-    }
-
-    public List getkeyListInstancyType(){
-        return new ArrayList(instanciesTypeQtd.keySet());
     }
 
     /**
@@ -129,6 +102,34 @@ public class SlaComposerBean implements Serializable{
      */
     public void setLimitationValue(String limitationValue) {
         this.limitationValue = limitationValue;
+    }
+
+    /**
+     * @return the instancies
+     */
+    public List<Instancy> getInstancies() {
+        return instancies;
+    }
+
+    /**
+     * @param instancies the instancies to set
+     */
+    public void setInstancies(List<Instancy> instancies) {
+        this.instancies = instancies;
+    }
+
+    /**
+     * @return the selectedInstancies
+     */
+    public List<Instancy> getSelectedInstancies() {
+        return selectedInstancies;
+    }
+
+    /**
+     * @param selectedInstancies the selectedInstancies to set
+     */
+    public void setSelectedInstancies(List<Instancy> selectedInstancies) {
+        this.selectedInstancies = selectedInstancies;
     }
 
 }
