@@ -1,18 +1,56 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<ui:decorate template="/resources/templates/template.xhtml">	
+    <ui:decorate template="/resources/templates/template.xhtml">	
 
-	<!-- Center Content -->
-	<ui:define name="conteudo_centro">
-		<h:form>
-		
-		</h:form>
-	</ui:define>
-	
-</ui:decorate>
+        <!-- Center Content -->
+        <ui:define name="conteudo_centro">
+            <h:form>
+                <p:panel header="Histórico de Execução">
+                    <p:panel>
+                        <p:panel>
+                            Histórico de execução deste Workflow
+                        </p:panel>
+                        <br />
+                        <p:panel>
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="#{workflowHistoryBean.selectedWorkflow.id}" style="font-weight: bold"/>
+                                <p:outputLabel value="#{workflowHistoryBean.getStatusText()}" style="color: #{workflowHistoryBean.getStatusColor()}; font-weight: bold" />
+                            </p:panelGrid>
+                            <br />
+                            <p:dataTable value="#{workflowHistoryBean.history}" var="h">
+                                <p:column headerText="Data" width="30" style="text-align: center">
+                                    <p:outputLabel value="#{h.date}" />
+                                </p:column>
+
+                                <p:column headerText="Horário" width="30" style="text-align: center">
+                                    <p:outputLabel value="#{h.timestamp}" />
+                                </p:column>
+
+                                <p:column headerText="Descrição" width="300">
+                                    <p:outputLabel value="#{h.text}" />
+                                </p:column>
+
+                                <p:column headerText="Nivel" width="50" style="text-align: center">
+                                    <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'INFO'}" style="color: #2980b9; font-weight: bold"/>
+                                    <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'WARN'}" style="color: #e67e22; font-weight: bold"/>
+                                    <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'ERROR'}" style="color: #c0392b; font-weight: bold"/>
+                                </p:column>
+                            </p:dataTable>
+                            
+                            <f:facet name="footer">
+                                <p:commandButton value="Atualizar" action="#{workflowHistoryBean}" />
+                            </f:facet>
+                        </p:panel>
+                    </p:panel>
+
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+    </ui:decorate>
 </html>

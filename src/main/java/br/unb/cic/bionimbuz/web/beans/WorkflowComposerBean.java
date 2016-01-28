@@ -29,7 +29,20 @@ import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.WorkflowStatus;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,6 +89,9 @@ public class WorkflowComposerBean implements Serializable {
     private String currentJobOutput = "";
 
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
+
+    // Used by the user to download a workflow
+    private StreamedContent workflowToDownload;
 
     // Logged user
     private User loggedUser;
@@ -176,7 +192,7 @@ public class WorkflowComposerBean implements Serializable {
 
         if (!suspendEvent && (!clickedElement.getName().equals("Inicio")) && (!clickedElement.getName().equals("Fim"))) {
             RequestContext context = RequestContext.getCurrentInstance();
-            
+
             // Sets clicked element id to be used to set element input file
             clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
 
@@ -251,7 +267,7 @@ public class WorkflowComposerBean implements Serializable {
 
         // Sets element input list
         workflowDiagram.setJobFields(clickedElementId, inputs, arguments, inputURL, dependency);
-        
+
         // Saves current job output filename in case the next job uses it as input
         currentJobOutput = "output_" + clickedElementId;
 
@@ -300,6 +316,97 @@ public class WorkflowComposerBean implements Serializable {
      */
     public String getWorkflowColor() {
         return this.workflowDiagram.getWorkflow().getStatus().getColor();
+    }
+
+    /**
+     * Method used for users to download a .json workflow representation
+     *
+     * @return
+     */
+    public StreamedContent downloadWorkflow() {
+        InputStream stream;
+        ObjectMapper mapper = new ObjectMapper();
+        DefaultStreamedContent content = null;
+        String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + this.workflowDiagram.getWorkflow().getId() + ".json";
+        File jsonFile = null;
+
+        try {
+            jsonFile = new File(path);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, this.workflowDiagram.getWorkflow());
+
+            FileInputStream is = new FileInputStream(jsonFile);
+            content = new DefaultStreamedContent(is, "application/json", this.workflowDiagram.getWorkflow().getId() + ".flow");
+        } catch (IOException ex) {
+            LOGGER.error("[IOException] - " + ex.getMessage());
+        } finally {
+            jsonFile.delete();
+        }
+
+        return content;
+    }
+
+    /**
+     * Called when an user clicks to import a workflow file to application
+     *
+     * @param event
+     */
+    public void handleImportedWorkflow(FileUploadEvent event) {
+        try {
+            String path = saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
+
+            File workflowFile = new File(path);
+
+            BufferedReader br = new BufferedReader(new FileReader(workflowFile));
+
+            StringBuilder builder = new StringBuilder();
+            String line;
+            
+            while ((line = br.readLine()) != null) {
+                builder.append(line);
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            Workflow workflow = mapper.readValue(builder.toString(), Workflow.class);
+            
+            System.out.println("Tamanho: " + workflow.getJobs().size());
+            System.out.println("Descriçao: " + workflow.getDescription());
+            System.out.println("UserId: " + workflow.getUserId());
+            
+        } catch (Exception ex) {
+            LOGGER.error("[Exception] - " + ex.getMessage());
+        }
+
+    }
+
+    /**
+     * Saves temporary file in disk
+     *
+     * @param fileName
+     * @param in
+     * @return
+     */
+    public String saveTempFile(String fileName, InputStream in) throws FileNotFoundException, IOException {
+        String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + fileName;
+        // write the inputStream to a FileOutputStream
+        OutputStream outputStream = new FileOutputStream(new File(path));
+
+        int read = 0;
+        byte[] bytes = new byte[1024];
+
+        while ((read = in.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, read);
+        }
+
+        // in.close();
+        LOGGER.info("Temporary file created [path="
+                + ConfigurationRepository.UPLOADED_FILES_PATH
+                + fileName + "]");
+
+        return path;
+    }
+
+    public StreamedContent getWorkflowToDownload() {
+        return workflowToDownload;
     }
 
     public DefaultDiagramModel getWorkflowModel() {

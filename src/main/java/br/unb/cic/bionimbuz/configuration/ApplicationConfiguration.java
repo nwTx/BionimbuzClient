@@ -1,6 +1,8 @@
 package br.unb.cic.bionimbuz.configuration;
 
 import javax.ejb.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * It is the data contained in config.json
@@ -40,11 +42,15 @@ public class ApplicationConfiguration implements Configuration {
         this.uploadedFilesDirectory = uploadedFilesDirectory;
     }
 
-    @Override
-    public String toString() {
-        return "\n\taddress=" + address
-                + "\n\tbionimbuzAddress=" + bionimbuzAddress
-                + "\n\tuploadedFilesDirectory=" + uploadedFilesDirectory;
+    public void log() {
+        Logger LOGGER = LoggerFactory.getLogger(ApplicationConfiguration.class);
+        
+        LOGGER.info("Web Application configurations:");
+        LOGGER.info(" - address=" + address);
+        LOGGER.info(" - bionimbuzAddress=" + bionimbuzAddress);
+        LOGGER.info(" - uploadedFilesDirectory=" + uploadedFilesDirectory);
+        
+        LOGGER.info("========================================");
     }
 
 }

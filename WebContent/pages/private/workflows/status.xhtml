@@ -12,7 +12,7 @@
             <h:form>
                 <p:panel header="Status dos Workflows Em Execução/Finalizados">
                     <p:panel>
-                        Visualize aqui o status de seus workflows.
+                        Visualize o status de seus Workflows.
                     </p:panel>
                     <br />
                     <p:fieldset legend="Workflows">
@@ -34,9 +34,8 @@
                                 <p:outputLabel value="#{w.creationDatestamp}"/>
                             </p:column>
 
-                            <p:column headerText="Status">
-                                <p:outputLabel value="#{workflowStatusBean.getStatusText(w.status)}" 
-                                               style="color: #{workflowStatusBean.getStatusColor(w.status)}; font-weight: bold"/>
+                            <p:column headerText="Status" style="text-align: center">
+                                <p:commandButton icon="ui-icon-circle-zoomin" action="#{workflowHistoryBean.selectWorkflow(w)}" />
                             </p:column>
                         </p:dataTable>
                     </p:fieldset>
