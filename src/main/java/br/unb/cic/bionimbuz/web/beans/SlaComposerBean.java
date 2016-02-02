@@ -5,16 +5,16 @@
  */
 package br.unb.cic.bionimbuz.web.beans;
 
-import br.unb.cic.bionimbuz.model.Instancy;
+import br.unb.cic.bionimbuz.model.Instance;
 import br.unb.cic.bionimbuz.model.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Instance;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -36,8 +36,9 @@ public class SlaComposerBean implements Serializable{
     private boolean limitation;
     private String limitationType;
     private String limitationValue;
-    private List<Instancy> instancies;
-    private List<Instancy> selectedInstancies;
+    private List<Instance> instances;
+    private List<Instance> selectedInstances;
+    private Instance instance;
 
 // Logged user
     private User loggedUser;
@@ -45,13 +46,13 @@ public class SlaComposerBean implements Serializable{
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
-        Instancy instancyMicro=new Instancy("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",20.0,"sata");
-        instancies= new ArrayList<>();
-        instancies.add(instancyMicro);
-        Instancy instancyMacro=new Instancy("Macro",0.24,5,"us-west",2.0,3.3,"Xeon",120.0,"sata");
-        instancies.add(instancyMacro);
-        Instancy instancyLarge=new Instancy("Large",0.41,3,"us-west",8.0,3.3,"Xeon",240.0,"sata");
-        instancies.add(instancyLarge);
+        instance=new Instance("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",1,20.0,"sata");
+        instances= new ArrayList<>();
+        instances.add(instance);
+        instance=new Instance("Macro",0.24,5,"us-west",4.0,3.3,"Xeon",4,120.0,"sata");
+        instances.add(instance);
+        instance=new Instance("Large",0.41,3,"us-west",8.0,3.3,"Xeon",8,240.0,"sata");
+        instances.add(instance);
 
     }
     public void setPanel1(String panel1){
@@ -105,31 +106,69 @@ public class SlaComposerBean implements Serializable{
     }
 
     /**
-     * @return the instancies
+     * @return the instances
      */
-    public List<Instancy> getInstancies() {
-        return instancies;
+    public List<Instance> getInstancies() {
+        return instances;
     }
 
     /**
-     * @param instancies the instancies to set
+     * @param instancies the instances to set
      */
-    public void setInstancies(List<Instancy> instancies) {
-        this.instancies = instancies;
+    public void setInstancies(List<Instance> instancies) {
+        this.instances = instancies;
     }
 
     /**
-     * @return the selectedInstancies
+     * @return the selectedInstances
      */
-    public List<Instancy> getSelectedInstancies() {
-        return selectedInstancies;
+    public List<Instance> getSelectedInstancies() {
+        return selectedInstances;
     }
 
     /**
-     * @param selectedInstancies the selectedInstancies to set
+     * @param selectedInstancies the selectedInstances to set
      */
-    public void setSelectedInstancies(List<Instancy> selectedInstancies) {
-        this.selectedInstancies = selectedInstancies;
+    public void setSelectedInstancies(List<Instance> selectedInstancies) {
+        this.selectedInstances = selectedInstancies;
     }
+    
+    public List<String> getListInstancesString(){
+        List<String> instancesString=new ArrayList<>();
+        instances.stream().forEach((i) -> {
+            instancesString.add(i.toString());
+        });
+        
+        return instancesString;   
+    }
+        
+    public void addSelectedInstance(Instance i){
+        selectedInstances.add(i);
+        showMessage("Elemento " + i.getType() + " adicionado");
+    }
+    
+    /**
+     * Removes an element from the selected instances list
+     *
+     * @param element
+     */
+    public void removeElement(Instance element) {
+        selectedInstances.remove(element);
 
+        showMessage("Elemento " + element.getType() + " removido");
+    }
+     /**
+     * Show message in growl component (View)
+     *
+     * @param msg
+     */
+    private void showMessage(String msg) {
+        FacesMessage message = new FacesMessage(msg, "");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
+    public void addAction(ActionEvent actionEvent) {
+        instance = new Instance();
+        instances.add(instance);
+    }
 }

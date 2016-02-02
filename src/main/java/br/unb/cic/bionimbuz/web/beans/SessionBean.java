@@ -8,6 +8,7 @@ import javax.inject.Named;
 
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.service.RestService;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,13 @@ public class SessionBean implements Serializable {
      */
     public String login() {
         User responseUser = null;
-
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String ipAddres =request.getHeader("X-FORWARDED-FOR");
+    
+        if(ipAddres == null){
+            ipAddres=request.getRemoteAddr();
+        }
+        System.out.println("ip: "+ipAddres);
         try {
             responseUser = restService.login(user);
 

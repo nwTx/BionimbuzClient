@@ -5,11 +5,13 @@
  */
 package br.unb.cic.bionimbuz.model;
 
+import com.google.common.base.Objects;
+
 /**
- * Class that defines the Instancy
+ * Class that defines the Instance
  * @author brenokx
  */
-public class Instancy {
+public class Instance {
     private String type;
     private Double valueHour;
     private int quantity;
@@ -19,8 +21,10 @@ public class Instancy {
     private String cpuType;
     private Double hd;
     private String hdType;
+    private int quantityCPU;
+    private String description;
 
-    public Instancy(){
+    public Instance(){
         this.type = "vazia";
         this.valueHour = 0.0D;
         this.quantity = 0;
@@ -28,8 +32,9 @@ public class Instancy {
         this.memory = 0.0D;
         this.cpuHtz = 0.0D;
         this.cpuType = "vazia";
+        this.quantityCPU=0;
         this.hd = 0.0D;
-        this.hdType = "vazia";    
+        this.hdType = "vazia";
     }
     
     /**
@@ -41,10 +46,11 @@ public class Instancy {
      * @param memory 
      * @param cpuHtz 
      * @param cpuType 
+     * @param quantityCPU 
      * @param hd 
      * @param hdType 
      */
-    public Instancy(String type, Double valueHour, int quantity, String locality, Double memory, Double cpuHtz, String cpuType, Double hd, String hdType){
+    public Instance(String type, Double valueHour, int quantity, String locality, Double memory, Double cpuHtz, String cpuType, int quantityCPU, Double hd, String hdType){
         this.type = type;
         this.valueHour = valueHour;
         this.quantity = quantity;
@@ -52,6 +58,7 @@ public class Instancy {
         this.memory = memory;
         this.cpuHtz = cpuHtz;
         this.cpuType = cpuType;
+        this.quantityCPU=quantityCPU;
         this.hd = hd;
         this.hdType = hdType;
     }
@@ -181,4 +188,45 @@ public class Instancy {
         this.hdType = hdType;
     }
     
+     @Override
+    public String toString() {
+    return Objects.toStringHelper(this)
+                //                .add("id", id)
+                .add("type", type)
+                .add("CPU", getQuantityCPU())   
+                .add("GHZ", cpuHtz)
+                .add("CPUType", cpuType)        
+                .add("ram", memory)
+                .add("HD(Gb)", hd)
+                .add("cost_per_hour", valueHour)
+                .toString();
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Set the Description with tostring of class
+     */
+    public void setDescription() {
+        this.description = this.toString();
+    }
+
+    /**
+     * @return the quantityCPU
+     */
+    public int getQuantityCPU() {
+        return quantityCPU;
+    }
+
+    /**
+     * @param quantityCPU the quantityCPU to set
+     */
+    public void setQuantityCPU(int quantityCPU) {
+        this.quantityCPU = quantityCPU;
+    }
 }
