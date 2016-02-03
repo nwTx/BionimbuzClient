@@ -6,12 +6,14 @@
 package br.unb.cic.bionimbuz.model;
 
 import com.google.common.base.Objects;
+import java.util.UUID;
 
 /**
  * Class that defines the Instance
  * @author brenokx
  */
 public class Instance {
+    private String id = UUID.randomUUID().toString();
     private String type;
     private Double valueHour;
     private int quantity;
@@ -228,5 +230,12 @@ public class Instance {
      */
     public void setQuantityCPU(int quantityCPU) {
         this.quantityCPU = quantityCPU;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
     }
 }

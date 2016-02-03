@@ -5,11 +5,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    
+
     <script type="text/javascript">
-        function editLastDatatableRow(){
-            jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function(){
-            jQuery(this).click()
+        function editLastDatatableRow() {
+            jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function () {
+                jQuery(this).click()
             });
         }
     </script>
@@ -50,24 +50,25 @@
                         <p:tabView>
                             <p:tab title="Detalhado">
                                 <p:panel style="border-color: #2980b9">
-                                    <h:panelGrid columns="2" cellpadding="10">
-
+                                    
+                                    <h:panelGroup>
                                         <p:outputLabel value="Limitar a execução:" />
                                         <p:selectOneRadio value="#{slaComposerBean.panel1}">
                                             <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
                                             <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
                                             <f:ajax render="select-type-limitation-panel" />
                                         </p:selectOneRadio>
-
+                                    </h:panelGroup>
+                                    <p:panelGrid columns="2" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
                                         <h:panelGroup id="select-type-limitation-panel">
 
                                             <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
-                                            <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}" layout="custom">
+                                            <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}">
                                                 <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationType}" />
                                                 <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationType}" />
                                             </p:selectOneRadio>
 
-                                            <h:panelGrid columns="3" cellpadding="5" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
+                                            <h:panelGrid columns="3" cellpadding="5" >
                                                 <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
                                                 <p:outputLabel for="opt1" value="Tempo de execução: " />
                                                 <p:inputMask id="opt1N" value="#{slaComposerBean.limitationValue}" mask="00:00:00"/>
@@ -82,46 +83,63 @@
 
                                         </h:panelGroup>
 
-                                    </h:panelGrid>
+                                    </p:panelGrid>
                                     
-                                    <h:panelGrid columns="3" id="instances">
-                                        <p:column headerText="Instância" width="25em" style="text-align: center">
-                                            <p:selectOneMenu id="instance" value="#{instance.description}"  style="width:100%">
-                                                <f:selectItems value="#{slaComposerBean.instancies}" var="man" itemLabel="#{man.description}" itemValue="#{man.description}" />
+                                    <p:outputPanel id="instancies_types" style="margin-bottom:10px">
+                                        <p:outputLabel value="Tipos de instâncias:" /> <br />
+                                        <p:dataTable value="#{slaComposerBean.instancies}" var="instance" style="width: 60em"
+                                                     paginator="true" rows="5" emptyMessage="Quantidade de instância "
+                                                     selection="#{slaComposerBean.selectedInstancies}" rowKey="#{instance.type}" editable="true" editMode="cell">
+
+                                            <p:column headerText="Tipo" width="25em" style="text-align: center">
+                                                <p:outputLabel value="#{instance.type}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Quantidade" width="25em" style="text-align: center">
+                                                <p:cellEditor>
+                                                    <f:facet name="output"><h:outputLabel value="#{instance.quantity}"/></f:facet>
+                                                    <f:facet name="input"><pe:inputNumber value="#{instance.quantity}" style="width:100%" label="Quantidade" maxValue="100" maxlength="3"/></f:facet>   
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
+                                        </p:dataTable>
+                                    </p:outputPanel>
+<!--                                    <p:panelGrid columns="3" id="instances">
+                                        <p:column headerText="Instância" style="text-align: center">
+                                            <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:100%" required="true" requiredMessage="Campo instância obrigatório">
+                                                <f:selectItems value="#{slaComposerBean.instancies}" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
                                             </p:selectOneMenu>
                                         </p:column>
-                                        <p:column headerText="Quantidade" width="25em" style="text-align: center">
-                                                <h:outputText value="#{man.quantity}" />
-                                                <pe:inputNumber value="#{instance.quantity}" style="width:100%" label="Quantidade"  minValue="0" maxValue="100" maxlength="3" />
+                                        <p:column headerText="Quantidade" style="text-align: center">
+                                            <h:outputText value="#{man.quantity}" />
+                                            <pe:inputNumber value="#{man.quantity}" style="width:100%" label="Quantidade"  minValue="0" maxValue="100" maxlength="3" />
                                         </p:column>    
                                         <p:column>
-                                                <f:facet name="left">
-                                                    <p:commandButton action="#{slaComposerBean.addSelectedInstance(man)}"
-                                                                     value="+" icon="ui-icon-check" 
-                                                                     update=":form:selected_instances, :form:growl"
-                                                                     iconPos="left" />
-                                                </f:facet>
+                                                <p:commandButton action="#{slaComposerBean.addSelectedInstance()}"
+                                                                 icon="ui-icon-check" 
+                                                                 update="selected_instances, :form:growl"
+                                                                 iconPos="left" />
                                         </p:column>
-                                    </h:panelGrid>
+                                    </p:panelGrid>
                                     <p:outputPanel id="selected_instances" style="margin-bottom:10px">
-                                        <p:outputLabel value="Tipos de instâncias:" /> <br />
                                         <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instance" style="width: 60em"
-                                                     paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada"
+                                                     paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
                                                      id="instancesList">
-
+                                            <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
                                             <p:column headerText="Tipo" width="25em" style="text-align: center">
                                                 <p:outputLabel value="#{instance.description}"/>
                                             </p:column>
 
                                             <p:column headerText="Quantidade" width="25em" style="text-align: center">
-                                                    <f:facet name="output"><h:outputLabel value="#{instance.quantity}"/></f:facet>
+                                                <f:facet name="output"><h:outputLabel value="#{instance.quantity}"/></f:facet>
                                             </p:column>
 
                                             <p:column>
                                                 <p:commandButton icon="ui-icon-circle-close" action="#{slaComposerBean.removeElement(e)}" update=":form:selected_instances"/>
                                             </p:column>
                                         </p:dataTable>
-                                    </p:outputPanel>
+                                    </p:outputPanel>-->
                                 </p:panel> 
 
                             </p:tab>

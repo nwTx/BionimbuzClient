@@ -39,6 +39,7 @@ public class SlaComposerBean implements Serializable{
     private List<Instance> instances;
     private List<Instance> selectedInstances;
     private Instance instance;
+    private String chosenInstanceId;
 
 // Logged user
     private User loggedUser;
@@ -46,13 +47,13 @@ public class SlaComposerBean implements Serializable{
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
-        instance=new Instance("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",1,20.0,"sata");
+        setInstance(new Instance("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",1,20.0,"sata"));
         instances= new ArrayList<>();
-        instances.add(instance);
-        instance=new Instance("Macro",0.24,5,"us-west",4.0,3.3,"Xeon",4,120.0,"sata");
-        instances.add(instance);
-        instance=new Instance("Large",0.41,3,"us-west",8.0,3.3,"Xeon",8,240.0,"sata");
-        instances.add(instance);
+        instances.add(getInstance());
+        setInstance(new Instance("Macro",0.24,5,"us-west",4.0,3.3,"Xeon",4,120.0,"sata"));
+        instances.add(getInstance());
+        setInstance(new Instance("Large",0.41,3,"us-west",8.0,3.3,"Xeon",8,240.0,"sata"));
+        instances.add(getInstance());
 
     }
     public void setPanel1(String panel1){
@@ -142,9 +143,13 @@ public class SlaComposerBean implements Serializable{
         return instancesString;   
     }
         
-    public void addSelectedInstance(Instance i){
-        selectedInstances.add(i);
-        showMessage("Elemento " + i.getType() + " adicionado");
+    public void addSelectedInstance(){
+        for(Instance i : instances)
+            if(i.getId().equals(chosenInstanceId))
+                 selectedInstances.add(i);
+        System.out.println("Descrição: "+instance.getDescription()+" quantidade: "+instance.getQuantity());
+
+        showMessage("Elemento " + instance.getType() + " adicionado");
     }
     
     /**
@@ -168,7 +173,35 @@ public class SlaComposerBean implements Serializable{
     }
     
     public void addAction(ActionEvent actionEvent) {
-        instance = new Instance();
-        instances.add(instance);
+        setInstance(new Instance());
+        instances.add(getInstance());
+    }
+
+    /**
+     * @return the instance
+     */
+    public Instance getInstance() {
+        return instance;
+    }
+
+    /**
+     * @param instance the instance to set
+     */
+    public void setInstance(Instance instance) {
+        this.instance = instance;
+    }
+
+    /**
+     * @return the chosenInstanceId
+     */
+    public String getChosenInstanceId() {
+        return chosenInstanceId;
+    }
+
+    /**
+     * @param chosenInstanceId the chosenInstanceId to set
+     */
+    public void setChosenInstanceId(String chosenInstanceId) {
+        this.chosenInstanceId = chosenInstanceId;
     }
 }
