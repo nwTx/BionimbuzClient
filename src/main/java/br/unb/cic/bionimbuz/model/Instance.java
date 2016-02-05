@@ -5,7 +5,7 @@
  */
 package br.unb.cic.bionimbuz.model;
 
-import com.google.common.base.Objects;
+
 import java.util.UUID;
 
 /**
@@ -192,16 +192,13 @@ public class Instance {
     
      @Override
     public String toString() {
-    return Objects.toStringHelper(this)
-                //                .add("id", id)
-                .add("type", type)
-                .add("CPU", getQuantityCPU())   
-                .add("GHZ", cpuHtz)
-                .add("CPUType", cpuType)        
-                .add("ram", memory)
-                .add("HD(Gb)", hd)
-                .add("cost_per_hour", valueHour)
-                .toString();
+        
+        return "Type: "+ this.type +", "
+                + "CPU: "+ getQuantityCPU()+" "+ this.cpuHtz+"GHZ, "
+                + "CPUType: " + this.cpuType+", "
+                + "Ram:" + this.memory + "Gb, " 
+                + "HD: " + this.hd + "Gb, " 
+                + "Custo por hora : " + this.valueHour;
     }
 
     /**

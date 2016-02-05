@@ -58,16 +58,14 @@ public class ConfigurationRepository implements ServletContextListener {
                 supportedServices = (ArrayList<PluginService>) restService.getServices();
 
             } catch (Exception e) {
-                if (connectTries <= 0) {
-                    LOGGER.error("=====> Server Offline... Terminating Client <=====");
-                }
+                LOGGER.error("=====> Server Offline... Terminating Client <=====");
 
                 LOGGER.error("**** Server seems to be offline. " + connectTries-- + " more connect tries ****");
                 e.printStackTrace();
 
                 // Wait 5 seconds to try again
                 try {
-                    Thread.sleep(5000l);
+                    Thread.sleep(10000l);
 
                 } catch (InterruptedException ex) {
                     LOGGER.error("[InterruptedException] " + ex.getMessage());

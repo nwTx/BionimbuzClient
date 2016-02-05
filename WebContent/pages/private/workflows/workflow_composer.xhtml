@@ -87,22 +87,28 @@
                                     
                                     <p:outputPanel id="instancies_types" style="margin-bottom:10px">
                                         <p:outputLabel value="Tipos de instâncias:" /> <br />
-                                        <p:dataTable value="#{slaComposerBean.instancies}" var="instance" style="width: 60em"
-                                                     paginator="true" rows="5" emptyMessage="Quantidade de instância "
-                                                     selection="#{slaComposerBean.selectedInstancies}" rowKey="#{instance.type}" editable="true" editMode="cell">
+                                        <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instances" style="width: 60em"
+                                                     paginator="true" rows="5" emptyMessage="Quantidade de instância" editable="true" editMode="cell">
 
                                             <p:column headerText="Tipo" width="25em" style="text-align: center">
-                                                <p:outputLabel value="#{instance.type}"/>
+                                                <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:100%" required="true" requiredMessage="Campo instância obrigatório">
+                                                    <f:selectItems value="#{slaComposerBean.instancies}" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
+                                                </p:selectOneMenu>
                                             </p:column>
 
                                             <p:column headerText="Quantidade" width="25em" style="text-align: center">
                                                 <p:cellEditor>
-                                                    <f:facet name="output"><h:outputLabel value="#{instance.quantity}"/></f:facet>
-                                                    <f:facet name="input"><pe:inputNumber value="#{instance.quantity}" style="width:100%" label="Quantidade" maxValue="100" maxlength="3"/></f:facet>   
+                                                    <f:facet name="input"><pe:inputNumber value="#{slaComposerBean.quantity}" style="width:100%" label="Quantidade" maxValue="100" maxlength="3"/></f:facet>   
                                                 </p:cellEditor>
                                             </p:column>
-
-                                            <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
+                                             <p:column>
+                                                <p:commandButton action="#{slaComposerBean.addSelectedInstance()}"
+                                                                 icon="ui-icon-check" 
+                                                                 update="selected_instances, :form:growl"
+                                                                 iconPos="left" />
+                                                 <p:commandButton icon="ui-icon-circle-close" action="#{slaComposerBean.removeElement(e)}" update=":form:selected_instances"/>
+                                                </p:column>
+                                          
                                         </p:dataTable>
                                     </p:outputPanel>
 <!--                                    <p:panelGrid columns="3" id="instances">
