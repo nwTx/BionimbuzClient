@@ -1,9 +1,12 @@
 package br.unb.cic.bionimbuz.web.beans;
 
+import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
+import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Log;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -17,14 +20,19 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class WorkflowHistoryBean implements Serializable {
+    private static final String REST_PATH = "/rest/file/download";
+    private String downloadURL;
 
     private RestService restService;
     private Workflow selectedWorkflow;
     private List<Log> history;
+    private List<FileInfo> outputFiles;
 
     @PostConstruct
     private void initialize() {
+        downloadURL = ConfigurationRepository.getApplicationConfiguration().getBionimbuzAddress() + REST_PATH;
         restService = new RestService();
+        outputFiles = new ArrayList<>();
     }
 
     /**
@@ -66,11 +74,10 @@ public class WorkflowHistoryBean implements Serializable {
     /**
      * Calls server to refresh workflow history
      *
-     * @param workflow
      */
-    public void updateWorkflowHistory(Workflow workflow) {
+    public void updateWorkflowHistory() {
         try {
-            this.history = restService.getWorkflowHistory(workflow.getId());
+            this.history = restService.getWorkflowHistory(selectedWorkflow.getId());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -90,6 +97,22 @@ public class WorkflowHistoryBean implements Serializable {
 
     public void setHistory(List<Log> history) {
         this.history = history;
+    }
+
+    public List<FileInfo> getOutputFiles() {
+        return outputFiles;
+    }
+
+    public void setOutputFiles(List<FileInfo> outputFiles) {
+        this.outputFiles = outputFiles;
+    }
+
+    public String getDownloadURL() {
+        return downloadURL;
+    }
+
+    public void setDownloadURL(String downloadURL) {
+        this.downloadURL = downloadURL;
     }
 
 }

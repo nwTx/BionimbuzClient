@@ -4,6 +4,7 @@ import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.rest.request.GetServicesRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.GetServicesResponse;
+import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 import java.util.List;
 import javax.ws.rs.client.Client;
@@ -40,13 +41,16 @@ public class GetServices extends Action {
         logAction(REST_GET_SERVICES_URL, GetServices.class);
 
         try {
-            Response r = target
-                    .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.entity(request, MediaType.APPLICATION_JSON), Response.class);
+//            Response r = target
+//                    .request(MediaType.APPLICATION_JSON)
+//                    .post(Entity.entity(request, MediaType.APPLICATION_JSON), Response.class);
+//            
+//            List<PluginService> response = r.readEntity(new GenericType<List<PluginService>>() {}); 
+            GetServicesResponse response = target
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON), GetServicesResponse.class);
             
-            List<PluginService> response = r.readEntity(new GenericType<List<PluginService>>() {});    
-            
-            return new GetServicesResponse(response);
+            return response;
         } catch (Exception e) {
             LOGGER.error("[Exception] " + e.getMessage());
             e.printStackTrace();

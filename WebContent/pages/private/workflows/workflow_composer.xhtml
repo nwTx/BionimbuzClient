@@ -16,25 +16,42 @@
                 <p:wizard widgetVar="wizard" nextLabel="Avançar" backLabel="Voltar" flowListener="#{workflowComposerBean.flowController}">
                     <p:tab id="initial" title="Início">
                         <p:panel>
-                            <h:panelGrid columns="2" width="100%">
-                                <p:panel header="Importar Workflow" style="width: 400px; margin: 60px">
+                            <p:panel style="margin: 10px">
+                                <f:facet name="header">
                                     <center>
-                                        <p:fileUpload id="file_upload" mode="advanced" 
-                                                      dragDropSupport="false" multiple="false" 
-                                                      invalidFileMessage="Formato de arquivo inválido"
-                                                      fileUploadListener="#{workflowComposerBean.handleImportedWorkflow}"
-                                                      cancelLabel="Cancelar" uploadLabel="Enviar"
-                                                      label="Escolher Arquivo" allowTypes="/(\.|\/)(flow)$/"
-                                                      update="growl" sizeLimit="268435456"/>
+                                        <p:outputLabel value="Iniciar novo Workflow" />
                                     </center>
-                                </p:panel>
+                                </f:facet>
 
-                                <p:panel header="Iniciar Workflow" style="width: 400px; margin: 60px">
+                                <center>
+                                    <p:panel style="margin: 10px">
+                                        Clique aqui para começar um novo Workflow, sem importá-lo.
+                                    </p:panel>
+                                    <p:commandButton value="Começar Projeto" onclick="PF('wizard').next();"/>  
+                                </center>
+                            </p:panel>
+                            <br />
+                            <p:panel style="margin: 10px">
+                                <f:facet name="header">
                                     <center>
-                                        <p:commandButton value="Começar Projeto" onclick="PF('wizard').next();"/>  
+                                        <p:outputLabel value="Importar Workflow" />
                                     </center>
-                                </p:panel>
-                            </h:panelGrid>
+                                </f:facet>
+
+                                <center>
+                                    <p:panel style="margin: 10px">
+                                        Caso queira importar um Workflow, faça seu upload por aqui.
+                                    </p:panel>
+                                    <p:fileUpload id="file_upload" mode="advanced" 
+                                                  dragDropSupport="false" multiple="false" 
+                                                  invalidFileMessage="Formato de arquivo inválido. Apenas formato .flow é permitido"
+                                                  fileUploadListener="#{workflowComposerBean.handleImportedWorkflow}"
+                                                  cancelLabel="Cancelar" uploadLabel="Enviar"
+                                                  label="Escolher Workflow" allowTypes="/(\.|\/)(flow)$/"
+                                                  update="growl" sizeLimit="268435"/>
+                                </center>
+                            </p:panel>
+
                         </p:panel>
                     </p:tab>
 
@@ -179,10 +196,26 @@
                 Escolha se a entrada deste passo será um arquivo ou uma URL do arquivo
             </p:panel>
             <br />
-            <p:fieldset legend="Argumentos de entrada">
-                Argumentos da linha de comando (ex: -X --cached -p 10)
-                <h:inputText id="args" style="width: 99%; margin: 3px" value="#{workflowComposerBean.arguments}"/>
-            </p:fieldset>
+            <center>
+                <h:panelGrid columns="2" cellpadding="3" cellspacing="7">
+                    <p:fieldset legend="Argumentos de entrada">
+                        <center>
+                            <p:outputLabel value="Argumentos da linha de comando (ex: -X --cached -p 10)" /> <br />
+                            <h:inputText id="args" style="width: 100px; margin: 3px" value="#{workflowComposerBean.arguments}"/>
+                        </center>
+                    </p:fieldset>
+                    <p:fieldset legend="Arquivos de referência">
+                        <center>
+                            <p:outputLabel value="Referências disponíveis de entrada" /> <br />
+
+                            <p:selectOneMenu id="refs" value="#{workflowComposerBean.chosenReference}">
+                                <f:selectItem itemLabel="Selecione uma referência" itemValue="" />
+                                <f:selectItems value="#{workflowComposerBean.references}" />
+                            </p:selectOneMenu>
+                        </center>
+                    </p:fieldset>
+                </h:panelGrid>
+            </center>
             <br />
             <p:accordionPanel>
                 <p:tab title="Arquivos">
@@ -207,7 +240,7 @@
                             <p:column headerText="Tamanho" width="25em" style="text-align: center">
                                 <p:outputLabel value="#{f.size} Kb"/>
                             </p:column>
-                            
+
                             <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
                         </p:dataTable>
                     </p:fieldset>

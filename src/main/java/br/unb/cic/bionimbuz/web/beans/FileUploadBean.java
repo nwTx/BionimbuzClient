@@ -30,18 +30,19 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class FileUploadBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
-    private static final String MAX_STORAGE = "256 Mb";
-    
-    private static final Long MAX_STORAGE_SIZE = 268435456l;    // 256 Mb
-    
+
+    private static final String MAX_STORAGE = "512 Mb";
+
+    private static final Long MAX_STORAGE_SIZE = 536870912l;    // 512 Mb
+
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadBean.class);
 
     private final RestService restService;
-    
+
     private OutputStream outputStream;
-    
+
     private int storageUsage;
 
     @Inject
@@ -88,7 +89,6 @@ public class FileUploadBean implements Serializable {
 
             StringBuilder builder = new StringBuilder();
 
-//            String line = in.readLine();
             String line;
             while ((line = in.readLine()) != null) {
                 builder.append(line);
@@ -97,8 +97,6 @@ public class FileUploadBean implements Serializable {
 
             fileInfo.setPayload(builder.toString().getBytes());
 
-            // Saves temporary file in disk
-            //saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
             // Calls RestService to upload file
             restService.uploadFile(fileInfo);
 
@@ -118,14 +116,6 @@ public class FileUploadBean implements Serializable {
             LOGGER.error("[Exception - " + e.getMessage() + "]");
 
         }
-//        finally {
-//            try {
-//                outputStream.flush();
-//                //    outputStream.close();
-//            } catch (IOException e) {
-//                LOGGER.error("[IOException - " + e.getMessage() + "]");
-//            }
-//        }
 
     }
 
@@ -163,7 +153,11 @@ public class FileUploadBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    // Retrieves user's storage usage
+    /**
+     * Retrieves user's storage usage
+     *
+     * @return
+     */
     public int getStorageUsage() {
         // Gets user storage usage
         BigDecimal usage = new BigDecimal(sessionBean.getLoggedUser().getStorageUsage());

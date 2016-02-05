@@ -39,6 +39,7 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/WorkflowComposerBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/LogoutRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/GetServicesRequest.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/security/PBKDF2.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/WorkflowStatusBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/DeleteFileResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/LoginResponse.java

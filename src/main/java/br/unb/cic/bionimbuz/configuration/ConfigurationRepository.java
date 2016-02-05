@@ -1,6 +1,7 @@
 package br.unb.cic.bionimbuz.configuration;
 
 import br.unb.cic.bionimbuz.model.PluginService;
+import br.unb.cic.bionimbuz.rest.response.GetServicesResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.util.ArrayList;
 import javax.inject.Named;
@@ -21,15 +22,16 @@ import org.slf4j.LoggerFactory;
 public class ConfigurationRepository implements ServletContextListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationRepository.class);
-    
+
     // File's path
-    private static final String ROOT_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/";    
+    private static final String ROOT_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/";
     public static final String TEMPORARY_WORKFLOW_PATH = ROOT_PATH + "BionimbuzClient/temp/";
     public static final String UPLOADED_FILES_PATH = ROOT_PATH + "BionimbuzClient/uploaded-files/";
     private static final String CONFIGURATION_PATH = ROOT_PATH + "BionimbuzClient/conf/";
-    
+
     private static Configuration applicationConfiguration;
     private static ArrayList<PluginService> supportedServices;
+    private static ArrayList<String> references;
 
     /**
      * Called on Application Server start
@@ -51,11 +53,14 @@ public class ConfigurationRepository implements ServletContextListener {
 
         // Log configurations
         ((ApplicationConfiguration) applicationConfiguration).log();
-        
+
         // Send request to the server
         while (serverOnline != true) {
             try {
-                supportedServices = (ArrayList<PluginService>) restService.getServices();
+                GetServicesResponse response = restService.getServices();
+
+                references = (ArrayList<String>) response.getReferences();
+                supportedServices = (ArrayList<PluginService>) response.getServicesList();
 
             } catch (Exception e) {
                 if (connectTries <= 0) {
@@ -104,6 +109,10 @@ public class ConfigurationRepository implements ServletContextListener {
 
     public static ArrayList<PluginService> getSupportedServices() {
         return supportedServices;
+    }
+
+    public static ArrayList<String> getReferences() {
+        return references;
     }
 
 }
