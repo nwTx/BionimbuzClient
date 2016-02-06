@@ -11,6 +11,9 @@ public class SignUpRequest extends BaseRequest {
 
     private User user;
 
+    public SignUpRequest() {
+    }
+
     public SignUpRequest(User user) {
         this.user = user;
     }

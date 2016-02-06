@@ -12,7 +12,8 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author zoonimbus
  */
 public class Job {
-   private String id;
+
+    private String id;
 
     public long testId;
 
@@ -33,6 +34,8 @@ public class Job {
     private Double worstExecution = null;
 
     private final List<String> dependencies;
+
+    private String referenceFile;
 
     public Job() {
         inputFiles = new ArrayList<>();
@@ -145,6 +148,7 @@ public class Job {
 
     /**
      * Add a dependency to be executed beforehand
+     *
      * @param id The unique id of a job
      */
     public void addDependency(String id) {
@@ -163,6 +167,14 @@ public class Job {
         this.inputURL = inputURL;
     }
 
+    public String getReferenceFile() {
+        return referenceFile;
+    }
+
+    public void setReferenceFile(String referenceFile) {
+        this.referenceFile = referenceFile;
+    }
+
     @Override
     public String toString() {
         try {
@@ -172,5 +184,5 @@ public class Job {
         }
 
         return null;
-    } 
+    }
 }

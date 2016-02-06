@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.util.UUID;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -55,40 +56,28 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class WorkflowComposerBean implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
+
     @Inject
     private SessionBean sessionBean;
 
-    private static final long serialVersionUID = 1L;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
-
     private final RestService restService;
-
     private final List<PluginService> servicesList;
-
     private ArrayList<DiagramElement> elements;
-
     private WorkflowDiagram workflowDiagram;
-
     private PluginService service;
-
     private String workflowDescription;
-
     private boolean suspendEvent;
-
     private String clickedElementId;
-
     private String inputURL;
-
     private String arguments;
-
     private String dependency;
-
     private int jobListSize = 0;
-
     private String currentJobOutput = "";
-
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
+    private final ArrayList<String> references;
+    private String chosenReference = "";
 
     // Used by the user to download a workflow
     private StreamedContent workflowToDownload;
@@ -100,6 +89,7 @@ public class WorkflowComposerBean implements Serializable {
         restService = new RestService();
         elements = new ArrayList<>();
         servicesList = ConfigurationRepository.getSupportedServices();
+        references = ConfigurationRepository.getReferences();
     }
 
     @PostConstruct
@@ -242,7 +232,7 @@ public class WorkflowComposerBean implements Serializable {
      */
     public void setJobFields() {
         // Sets element input list
-        workflowDiagram.setJobFields(clickedElementId, inputFiles, arguments, inputURL, dependency);
+        workflowDiagram.setJobFields(clickedElementId, inputFiles, chosenReference, arguments, inputURL, dependency);
 
         // Saves current job output filename in case the next job uses it as input
         currentJobOutput = "output_" + clickedElementId;
@@ -257,16 +247,21 @@ public class WorkflowComposerBean implements Serializable {
      * Sets job fields when the "jump" button is pressed
      */
     public void setJobFieldsWithOutput() {
-        // Creates the input file as the output file from the last Job
+        // Creates the input file as the output file from the last Job. Need 
+        // fake values, because of "null of string" exception of Avro.
         FileInfo file = new FileInfo();
         file.setName(currentJobOutput);
+        file.setHash("");
+        file.setSize(0l);
+        file.setUploadTimestamp("");
+        file.setUserId(sessionBean.getLoggedUser().getId());
 
         // Creates the input file list with the file info
         ArrayList<FileInfo> inputs = new ArrayList<>();
         inputs.add(file);
 
         // Sets element input list
-        workflowDiagram.setJobFields(clickedElementId, inputs, arguments, inputURL, dependency);
+        workflowDiagram.setJobFields(clickedElementId, inputs, chosenReference, arguments, inputURL, dependency);
 
         // Saves current job output filename in case the next job uses it as input
         currentJobOutput = "output_" + clickedElementId;
@@ -360,18 +355,18 @@ public class WorkflowComposerBean implements Serializable {
 
             StringBuilder builder = new StringBuilder();
             String line;
-            
+
             while ((line = br.readLine()) != null) {
                 builder.append(line);
             }
 
             ObjectMapper mapper = new ObjectMapper();
             Workflow workflow = mapper.readValue(builder.toString(), Workflow.class);
-            
+
             System.out.println("Tamanho: " + workflow.getJobs().size());
             System.out.println("Descriçao: " + workflow.getDescription());
             System.out.println("UserId: " + workflow.getUserId());
-            
+
         } catch (Exception ex) {
             LOGGER.error("[Exception] - " + ex.getMessage());
         }
@@ -471,6 +466,18 @@ public class WorkflowComposerBean implements Serializable {
 
     public void setArguments(String arguments) {
         this.arguments = arguments;
+    }
+
+    public ArrayList<String> getReferences() {
+        return references;
+    }
+
+    public String getChosenReference() {
+        return chosenReference;
+    }
+
+    public void setChosenReference(String chosenReference) {
+        this.chosenReference = chosenReference;
     }
 
 }

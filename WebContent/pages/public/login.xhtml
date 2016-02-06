@@ -34,14 +34,14 @@
                         <h:graphicImage value="/resources/img/logo_bionimbuz.jpg" />
                         <br /> <br /> <br />
                         <h:panelGrid columns="2" cellpadding="4" >
-                            <p:inputText placeholder="Login" value="#{sessionBean.user.login}" />
+                            <p:inputText placeholder="Login" value="#{sessionBean.user.login}" required="true" requiredMessage="Login em branco"/>
                             <br />
-                            <p:password placeholder="Senha" value="#{sessionBean.user.password}" />
+                            <p:password placeholder="Senha" value="#{sessionBean.user.password}" required="true" requiredMessage="Senha em branco"/>
                         </h:panelGrid>
                         <br />
                         <h:commandButton value="Entrar" style="width: 200px" action="#{sessionBean.login()}" styleClass="btn" />
                         <br />
-                        <p:commandLink value="Inscreva-se aqui" action="sign_up?faces-redirect=true" style="color: gray; font-size: 80%"/>
+                        <p:commandLink value="Inscreva-se aqui" action="sign_up?faces-redirect=true" style="color: gray; font-size: 110%"/>
                         <br /> <br />
                     </center>
                 </p:panel>

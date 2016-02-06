@@ -24,94 +24,85 @@
                 <p:wizard widgetVar="wizard" nextLabel="Avançar" backLabel="Voltar" flowListener="#{workflowComposerBean.flowController}">
                     <p:tab id="initial" title="Início">
                         <p:panel>
-                            <h:panelGrid columns="2" width="100%">
-                                <p:panel header="Importar Workflow" style="width: 400px; margin: 60px">
+                            <p:panel style="margin: 10px">
+                                <f:facet name="header">
                                     <center>
-                                        <p:fileUpload id="file_upload" mode="advanced" 
-                                                      dragDropSupport="false" multiple="false" 
-                                                      invalidFileMessage="Formato de arquivo inválido"
-                                                      fileUploadListener="#{workflowComposerBean.handleImportedWorkflow}"
-                                                      cancelLabel="Cancelar" uploadLabel="Enviar"
-                                                      label="Escolher Arquivo" allowTypes="/(\.|\/)(flow)$/"
-                                                      update="growl" sizeLimit="268435456"/>
+                                        <p:outputLabel value="Iniciar novo Workflow" />
                                     </center>
-                                </p:panel>
+                                </f:facet>
 
-                                <p:panel header="Iniciar Workflow" style="width: 400px; margin: 60px">
+                                <center>
+                                    <p:panel style="margin: 10px">
+                                        Clique aqui para começar um novo Workflow, sem importá-lo.
+                                    </p:panel>
+                                    <p:commandButton value="Começar Projeto" onclick="PF('wizard').next();"/>  
+                                </center>
+                            </p:panel>
+                            <br />
+                            <p:panel style="margin: 10px">
+                                <f:facet name="header">
                                     <center>
-                                        <p:commandButton value="Começar Projeto" onclick="PF('wizard').next();"/>  
+                                        <p:outputLabel value="Importar Workflow" />
                                     </center>
-                                </p:panel>
-                            </h:panelGrid>
+                                </f:facet>
+
+                                <center>
+                                    <p:panel style="margin: 10px">
+                                        Caso queira importar um Workflow, faça seu upload por aqui.
+                                    </p:panel>
+                                    <p:fileUpload id="file_upload" mode="advanced" 
+                                                  dragDropSupport="false" multiple="false" 
+                                                  invalidFileMessage="Formato de arquivo inválido. Apenas formato .flow é permitido"
+                                                  fileUploadListener="#{workflowComposerBean.handleImportedWorkflow}"
+                                                  cancelLabel="Cancelar" uploadLabel="Enviar"
+                                                  label="Escolher Workflow" allowTypes="/(\.|\/)(flow)$/"
+                                                  update="growl" sizeLimit="268435"/>
+                                </center>
+                            </p:panel>
+
                         </p:panel>
                     </p:tab>
 
                     <p:tab id="sla_option" title="SLA">
                         <p:tabView>
-                            <p:tab title="Detalhado">
+                            <p:tab id="detalhado" title="Detalhado">
                                 <p:panel style="border-color: #2980b9">
                                     
-                                    <h:panelGroup>
-                                        <p:outputLabel value="Limitar a execução:" />
-                                        <p:selectOneRadio value="#{slaComposerBean.panel1}">
-                                            <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
-                                            <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
-                                            <f:ajax render="select-type-limitation-panel" />
-                                        </p:selectOneRadio>
-                                    </h:panelGroup>
-                                    <p:panelGrid columns="2" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
-                                        <h:panelGroup id="select-type-limitation-panel">
-
-                                            <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
-                                            <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}">
-                                                <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationType}" />
-                                                <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationType}" />
-                                            </p:selectOneRadio>
-
-                                            <h:panelGrid columns="3" cellpadding="5" >
-                                                <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
-                                                <p:outputLabel for="opt1" value="Tempo de execução: " />
-                                                <p:inputMask id="opt1N" value="#{slaComposerBean.limitationValue}" mask="00:00:00"/>
-
-
-                                                <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
-                                                <h:outputLabel for="opt2" value="Custo de execução" />
-                                                <p:inputMask id="opt2N" value="#{slaComposerBean.limitationValue}" mask="0,00"/>  
-
-                                            </h:panelGrid>
-                                            <!--</p:outputPanel>-->
-
-                                        </h:panelGroup>
-
-                                    </p:panelGrid>
-                                    
-                                    <p:outputPanel id="instancies_types" style="margin-bottom:10px">
-                                        <p:outputLabel value="Tipos de instâncias:" /> <br />
-                                        <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instances" style="width: 60em"
-                                                     paginator="true" rows="5" emptyMessage="Quantidade de instância" editable="true" editMode="cell">
-
-                                            <p:column headerText="Tipo" width="25em" style="text-align: center">
-                                                <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:100%" required="true" requiredMessage="Campo instância obrigatório">
-                                                    <f:selectItems value="#{slaComposerBean.instancies}" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
-                                                </p:selectOneMenu>
-                                            </p:column>
-
-                                            <p:column headerText="Quantidade" width="25em" style="text-align: center">
-                                                <p:cellEditor>
-                                                    <f:facet name="input"><pe:inputNumber value="#{slaComposerBean.quantity}" style="width:100%" label="Quantidade" maxValue="100" maxlength="3"/></f:facet>   
-                                                </p:cellEditor>
-                                            </p:column>
-                                             <p:column>
-                                                <p:commandButton action="#{slaComposerBean.addSelectedInstance()}"
-                                                                 icon="ui-icon-check" 
-                                                                 update="selected_instances, :form:growl"
-                                                                 iconPos="left" />
-                                                 <p:commandButton icon="ui-icon-circle-close" action="#{slaComposerBean.removeElement(e)}" update=":form:selected_instances"/>
-                                                </p:column>
-                                          
-                                        </p:dataTable>
-                                    </p:outputPanel>
-<!--                                    <p:panelGrid columns="3" id="instances">
+                                    <h:panelGrid columns="2" cellpadding="10">
+ 
+                                         <p:outputLabel value="Limitar a execução:" />
+                                         <p:selectOneRadio value="#{slaComposerBean.panel1}">
+                                             <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
+                                             <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
+                                             <f:ajax render="select-type-limitation-panel" />
+                                         </p:selectOneRadio>
+                                    </h:panelGrid>
+                                    <h:panelGrid>
+                                         <h:panelGroup id="select-type-limitation-panel">
+ 
+                                             <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
+                                             <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}" layout="custom">
+                                                 <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationType}" />
+                                                 <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationType}" />
+                                             </p:selectOneRadio>
+ 
+                                             <h:panelGrid columns="3" cellpadding="5" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
+                                                 <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
+                                                 <p:outputLabel for="opt1" value="Tempo de execução: " />
+                                                 <p:inputMask value="#{slaComposerBean.limitationValue}" mask="00/00/00"/>
+ 
+ 
+                                                 <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
+                                                 <h:outputLabel for="opt2" value="Custo de execução" />
+                                                 <p:inputMask value="#{slaComposerBean.limitationValue}" mask="0.00"/>  
+ 
+                                             </h:panelGrid>
+                                             <!--</p:outputPanel>-->
+ 
+                                          </h:panelGroup>
+                                    </h:panelGrid>     
+                                                   
+                                    <p:panelGrid columns="3" id="instances">
                                         <p:column headerText="Instância" style="text-align: center">
                                             <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:100%" required="true" requiredMessage="Campo instância obrigatório">
                                                 <f:selectItems value="#{slaComposerBean.instancies}" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
@@ -128,7 +119,7 @@
                                                                  iconPos="left" />
                                         </p:column>
                                     </p:panelGrid>
-                                    <p:outputPanel id="selected_instances" style="margin-bottom:10px">
+                                    <p:fieldset id="selected_instances" style="margin-bottom:10px">
                                         <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instance" style="width: 60em"
                                                      paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
                                                      id="instancesList">
@@ -145,7 +136,7 @@
                                                 <p:commandButton icon="ui-icon-circle-close" action="#{slaComposerBean.removeElement(e)}" update=":form:selected_instances"/>
                                             </p:column>
                                         </p:dataTable>
-                                    </p:outputPanel>-->
+                                    </p:fieldset>
                                 </p:panel> 
 
                             </p:tab>
@@ -302,10 +293,26 @@
                 Escolha se a entrada deste passo será um arquivo ou uma URL do arquivo
             </p:panel>
             <br />
-            <p:fieldset legend="Argumentos de entrada">
-                Argumentos da linha de comando (ex: -X --cached -p 10)
-                <h:inputText id="args" style="width: 99%; margin: 3px" value="#{workflowComposerBean.arguments}"/>
-            </p:fieldset>
+            <center>
+                <h:panelGrid columns="2" cellpadding="3" cellspacing="7">
+                    <p:fieldset legend="Argumentos de entrada">
+                        <center>
+                            <p:outputLabel value="Argumentos da linha de comando (ex: -X --cached -p 10)" /> <br />
+                            <h:inputText id="args" style="width: 100px; margin: 3px" value="#{workflowComposerBean.arguments}"/>
+                        </center>
+                    </p:fieldset>
+                    <p:fieldset legend="Arquivos de referência">
+                        <center>
+                            <p:outputLabel value="Referências disponíveis de entrada" /> <br />
+
+                            <p:selectOneMenu id="refs" value="#{workflowComposerBean.chosenReference}">
+                                <f:selectItem itemLabel="Selecione uma referência" itemValue="" />
+                                <f:selectItems value="#{workflowComposerBean.references}" />
+                            </p:selectOneMenu>
+                        </center>
+                    </p:fieldset>
+                </h:panelGrid>
+            </center>
             <br />
             <p:accordionPanel>
                 <p:tab title="Arquivos">

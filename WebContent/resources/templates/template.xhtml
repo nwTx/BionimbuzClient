@@ -32,11 +32,10 @@
                 <h:form>
                     <p:panelMenu>
                         <!-- Workflow submenu -->
-                        <p:submenu label="Tarefas">
-                            <p:menuitem value="Novo Workflow" action="workflow_composer"/>
-                            <p:menuitem value="Status dos Workflows" action="workflow_status" />
-                            <p:menuitem value="Cancelar Workflow" action="cancel_workflow"/>
-                            <p:menuitem value="Histórico de Workflow" action="workflow_history"/>
+                        <p:submenu label="Workflows">
+                            <p:menuitem value="Criar novo" action="workflow_composer"/>
+                            <p:menuitem value="Status" action="workflow_status" />
+                            <p:menuitem value="Cancelar" action="cancel_workflow"/>
                         </p:submenu>
 
                         <!-- Storage submenu -->
@@ -47,10 +46,10 @@
                             <p:menuitem value="Realizar Download" action="download_file" />
                         </p:submenu>
 
-                        <!-- Statistics' Menu -->
-                        <p:submenu label="Estatísticas">
+                        <!-- Statistics' Menu - NOT IMPLEMENTED --> 
+<!--                        <p:submenu label="Estatísticas">
                             <p:menuitem value="Estatísticas de Execução" />
-                        </p:submenu>
+                        </p:submenu>-->
                     </p:panelMenu>
                 </h:form>
             </p:layoutUnit>

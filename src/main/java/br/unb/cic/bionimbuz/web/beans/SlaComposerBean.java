@@ -48,9 +48,7 @@ public class SlaComposerBean implements Serializable{
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
         setInstance(new Instance("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",1,20.0,"sata"));
-        selectedInstances =new ArrayList<>();
         instances= new ArrayList<>();
-        selectedInstances.add(getInstance());
         instances.add(getInstance());
         setInstance(new Instance("Macro",0.24,5,"us-west",4.0,3.3,"Xeon",4,120.0,"sata"));
         instances.add(getInstance());
@@ -148,10 +146,10 @@ public class SlaComposerBean implements Serializable{
     public void addSelectedInstance(){
         for(Instance i : instances)
             if(i.getId().equals(chosenInstanceId)){
-                i.setQuantity(this.quantity);
                 selectedInstances.add(i);
-            
+                instances.remove(i);
             }
+       
         System.out.println("Descrição: "+instance.getDescription()+" quantidade: "+instance.getQuantity());
 
         showMessage("Elemento " + instance.getType() + " adicionado");

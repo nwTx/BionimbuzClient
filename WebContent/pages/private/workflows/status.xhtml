@@ -39,50 +39,6 @@
                             </p:column>
                         </p:dataTable>
                     </p:fieldset>
-                    <br />
-                    <p:panel>
-                        <center>
-                            <p:panelGrid columns="3" style="margin-top: 10px">
-                                <f:facet name="header">
-                                    <p:outputLabel value="Legenda de Status" style="color: #2980b9; font-weight: bold; font-size: 14px"/>
-                                </f:facet>
-
-                                <!-- Header -->
-                                <p:outputLabel value="Status" style="font-weight: bold; font-size: 14px"/>
-                                <p:outputLabel value="Nivel" style="font-weight: bold; font-size: 14px"/>
-                                <p:outputLabel value="Legenda" style="font-weight: bold; font-size: 14px"/>
-
-                                <!-- Elements -->
-                                <p:outputLabel value="Workflow Pausado" style="color: #7f8c8d; font-weight: bold"/>
-                                <p:outputLabel value="Informativo" style="font-weight: bold"/>
-                                <p:outputLabel value="Foi requisitada a pausa na execucao do Workflow" />
-
-                                <p:outputLabel value="Workflow Pendente" style="color: #2980b9; font-weight: bold"/>
-                                <p:outputLabel value="Informativo" style="font-weight: bold"/>
-                                <p:outputLabel value="Seu workflow esta agurdando execucao pelo BioNimbuZ" />
-
-                                <p:outputLabel value="Workflow em Execução" style="color: #2980b9; font-weight: bold"/>
-                                <p:outputLabel value="Informativo" style="font-weight: bold"/>
-                                <p:outputLabel value="O workflow esta em plena execucao" />
-
-                                <p:outputLabel value="Workflow Finalizado com Sucesso" style="color: #27ae60; font-weight: bold"/>
-                                <p:outputLabel value="Informativo" style="font-weight: bold"/>
-                                <p:outputLabel value="Seu workflow foi finalizado sem alertas e sem erros" />
-
-                                <p:outputLabel value="Workflow Finalizado com Alertas" style="color: #f39c12; font-weight: bold"/>
-                                <p:outputLabel value="Alerta" style="font-weight: bold"/>
-                                <p:outputLabel value="Alertas foram lancados durante a execucao deste workflow" />
-
-                                <p:outputLabel value="Workflow Finalizado com Erros" style="color: #c0392b; font-weight: bold"/>
-                                <p:outputLabel value="Erro" style="font-weight: bold"/>
-                                <p:outputLabel value="Erros nao permitiram que este workflow terminasse com sucesso" />
-
-                                <p:outputLabel value="Workflow Parado com Erros" style="color: #c0392b; font-weight: bold"/>
-                                <p:outputLabel value="Erro" style="font-weight: bold"/>
-                                <p:outputLabel value="Estado parcial com erros. Duas acoes podem ser tomadas: finalizar o workflow ou permitir que continue com erros." />
-                            </p:panelGrid>
-                        </center>
-                    </p:panel>
                 </p:panel>
             </h:form>
         </ui:define>

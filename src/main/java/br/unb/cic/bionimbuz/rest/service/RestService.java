@@ -163,10 +163,10 @@ public class RestService {
      * @return
      * @throws ServerNotReachableException
      */
-    public List<PluginService> getServices() throws Exception {
+    public GetServicesResponse getServices() throws Exception {
         GetServicesResponse response = (GetServicesResponse) restCommunicator.sendRequest(new GetServices(), new GetServicesRequest());
 
-        return response.getServicesList();
+        return response;
     }
 
     public List<Log> getWorkflowHistory(String workflowId) throws Exception {
