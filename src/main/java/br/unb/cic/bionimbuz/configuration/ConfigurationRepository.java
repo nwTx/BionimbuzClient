@@ -1,9 +1,10 @@
 package br.unb.cic.bionimbuz.configuration;
 
 import br.unb.cic.bionimbuz.model.PluginService;
-import br.unb.cic.bionimbuz.rest.response.GetServicesResponse;
+import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.inject.Named;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -32,6 +33,7 @@ public class ConfigurationRepository implements ServletContextListener {
     private static Configuration applicationConfiguration;
     private static ArrayList<PluginService> supportedServices;
     private static ArrayList<String> references;
+    private static ArrayList<String> supportedFormats;
 
     /**
      * Called on Application Server start
@@ -54,17 +56,25 @@ public class ConfigurationRepository implements ServletContextListener {
         ((ApplicationConfiguration) applicationConfiguration).log();
 
         // Send request to the server
-        while (serverOnline != true) {
-            try {
-                GetServicesResponse response = restService.getServices();
+        do {
+            if (restService.ping(((ApplicationConfiguration) applicationConfiguration).getBionimbuzAddress())) {
+                GetConfigurationsResponse response;
 
-                references = (ArrayList<String>) response.getReferences();
-                supportedServices = (ArrayList<PluginService>) response.getServicesList();
+                try {
+                    response = restService.getServices();
 
-            } catch (Exception e) {
+                    references = (ArrayList<String>) response.getReferences();
+                    supportedServices = (ArrayList<PluginService>) response.getServicesList();
+                    supportedFormats = (ArrayList<String>) response.getSupportedFormats();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            } else {
+
                 LOGGER.error("===> BioNimbuZ Core Offline... Trying reconnection <===");
 
-                // Wait 5 seconds to try again
+                // Wait 10 seconds to try again
                 try {
                     Thread.sleep(10000l);
 
@@ -74,7 +84,7 @@ public class ConfigurationRepository implements ServletContextListener {
             }
 
             serverOnline = (supportedServices != null);
-        }
+        } while (!serverOnline);
 
         LOGGER.info(supportedServices.size() + " Supported Services");
         LOGGER.info("Supported Services fetched from server: ");
@@ -107,6 +117,10 @@ public class ConfigurationRepository implements ServletContextListener {
 
     public static ArrayList<String> getReferences() {
         return references;
+    }
+
+    public static ArrayList<String> getSupportedFormats() {
+        return supportedFormats;
     }
 
 }

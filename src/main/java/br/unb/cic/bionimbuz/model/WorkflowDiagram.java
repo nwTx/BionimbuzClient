@@ -178,7 +178,7 @@ public class WorkflowDiagram {
      * @param url
      * @param dependency
      */
-    public void setJobFields(String id, ArrayList<FileInfo> inputs, String referenceFile, String arguments, String url, String dependency) {
+    public void setJobFields(String id, ArrayList<FileInfo> inputs, String referenceFile, String arguments, String url, String dependency, String outputName) {
         int cont = 0;
 
         // Iterates over the joblist
@@ -206,7 +206,7 @@ public class WorkflowDiagram {
                 job.setArgs(args + "%O1 " + arguments);
 
                 // Sets its outputs 
-                job.addOutput("output_" + id);
+                job.addOutput(outputName + "_output_" + id);
 
                 // Adds job dependencies
                 if (dependency != null) {

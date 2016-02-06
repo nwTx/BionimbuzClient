@@ -5,6 +5,11 @@
     src: url('#{resource['font/Exo.otf']}');
 }
 
+@font-face {
+    font-family: 'Consola';
+    src: url('#{resource['font/consola.ttf']}');
+}
+
 body {
     font-size: 11px;
 }
@@ -86,4 +91,8 @@ body {
 .icon-plus {
     border-radius: 0px !important;
     background-image: url('#{resource['icon/custom-plus-icon-2.png']}') !important;
+}
+
+.font-courier {
+    font-family: Consola !important; 
 }

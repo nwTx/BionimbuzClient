@@ -23,6 +23,7 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import javax.faces.application.FacesMessage.Severity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,12 +46,25 @@ public class FileUploadBean implements Serializable {
 
     private int storageUsage;
 
+    private String allowedTypes;
+
     @Inject
     private SessionBean sessionBean;
 
     public FileUploadBean() {
         restService = new RestService();
         outputStream = null;
+
+        allowedTypes = "/(\\.|\\/)(";
+
+        // Concatenate allowed types to form primefaces attribute
+        for (String allowed : ConfigurationRepository.getSupportedFormats()) {
+            allowedTypes += allowed.replace(".", "") + "|";
+        }
+        
+        allowedTypes += ")$/";
+        
+        LOGGER.info("Types: " + allowedTypes);
     }
 
     /**
@@ -167,6 +181,14 @@ public class FileUploadBean implements Serializable {
          * because PrimeFaces component accepts only int value from 0 to 100
          */
         return usage.divide(new BigDecimal(MAX_STORAGE_SIZE)).multiply(new BigDecimal(100)).intValue();
+    }
+
+    public String getAllowedTypes() {
+        return allowedTypes;
+    }
+
+    public void setAllowedTypes(String allowedTypes) {
+        this.allowedTypes = allowedTypes;
     }
 
 }

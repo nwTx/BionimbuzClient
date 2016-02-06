@@ -10,6 +10,7 @@
         <!-- Center Content -->
         <ui:define name="conteudo_centro">
             <h:form>
+                <p:growl id="growl" autoUpdate="true" showDetail="true" showSummary="true" />  
                 <p:panel id="history_panel" header="Histórico de Execução">
                     <p:panel>
                         <p:panel>
@@ -25,7 +26,8 @@
                                 <p:commandButton id="label" icon="ui-icon-newwin" value="Legenda de Status" onclick="PF('label_dlg').show()"/>
                             </h:panelGrid>
                             <br />
-                            <p:dataTable value="#{workflowHistoryBean.history}" var="h" paginator="true" rows="15">
+                            <p:dataTable value="#{workflowHistoryBean.history}" var="h" paginator="true" rows="15"
+                                         emptyMessage="Sem histórico de execução ainda. Clique em atualizar para verificar se há progresso.">
                                 <p:column headerText="Data" width="30" style="text-align: center">
                                     <p:outputLabel value="#{h.date}" />
                                 </p:column>
@@ -35,7 +37,7 @@
                                 </p:column>
 
                                 <p:column headerText="Descrição" width="300">
-                                    <p:outputLabel value="#{h.text}" />
+                                    <p:outputLabel value="#{h.text}" styleClass="font-courier"/>
                                 </p:column>
 
                                 <p:column headerText="Nivel" width="50" style="text-align: center">
@@ -58,13 +60,13 @@
                                 </p:column>
 
                                 <p:column headerText="Download teste" width="30" style="text-align: center">
-                                    <a href="#{workflowHistoryBean.downloadURL}/#{w.id}">Download</a>
+                                    <a href="#{workflowHistoryBean.downloadURL.concat(out.name)}">Download</a>
                                 </p:column>
                             </p:dataTable>
                         </p:panel>
 
                         <f:facet name="footer">
-                            <p:commandButton value="Atualizar" action="#{workflowHistoryBean.updateWorkflowHistory()}" update="history_panel"/>
+                            <p:commandButton value="Atualizar" action="#{workflowHistoryBean.updateWorkflowHistory()}" update="history_panel" icon="ui-icon-arrowrefresh-1-w"/>
                         </f:facet>
                     </p:panel>
                 </p:panel>

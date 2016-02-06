@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.util.UUID;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -78,6 +77,9 @@ public class WorkflowComposerBean implements Serializable {
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
     private final ArrayList<String> references;
     private String chosenReference = "";
+    private DiagramElement clickedElement;
+    private final List<String> supportedFormats;
+    private String fileFormat;
 
     // Used by the user to download a workflow
     private StreamedContent workflowToDownload;
@@ -90,6 +92,7 @@ public class WorkflowComposerBean implements Serializable {
         elements = new ArrayList<>();
         servicesList = ConfigurationRepository.getSupportedServices();
         references = ConfigurationRepository.getReferences();
+        supportedFormats = ConfigurationRepository.getSupportedFormats();
     }
 
     @PostConstruct
@@ -185,6 +188,7 @@ public class WorkflowComposerBean implements Serializable {
 
             // Sets clicked element id to be used to set element input file
             clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
+            this.clickedElement = (DiagramElement) event.getTargetElement().getData();
 
             // Call input pick painel
             context.execute("PF('file_dlg').show();");
@@ -231,16 +235,18 @@ public class WorkflowComposerBean implements Serializable {
      * Sets the step fields (like, inputfiles, arguments, ...)
      */
     public void setJobFields() {
+
         // Sets element input list
-        workflowDiagram.setJobFields(clickedElementId, inputFiles, chosenReference, arguments, inputURL, dependency);
+        workflowDiagram.setJobFields(clickedElementId, inputFiles, chosenReference, arguments, inputURL, dependency, clickedElement.getName());
 
         // Saves current job output filename in case the next job uses it as input
-        currentJobOutput = "output_" + clickedElementId;
+        currentJobOutput = clickedElement.getName() + "_output_" + clickedElementId + fileFormat;
 
         // Resets fields
         inputFiles = new ArrayList<>();
         arguments = "";
         inputURL = "";
+        fileFormat = "";        
     }
 
     /**
@@ -261,15 +267,16 @@ public class WorkflowComposerBean implements Serializable {
         inputs.add(file);
 
         // Sets element input list
-        workflowDiagram.setJobFields(clickedElementId, inputs, chosenReference, arguments, inputURL, dependency);
+        workflowDiagram.setJobFields(clickedElementId, inputs, chosenReference, arguments, inputURL, dependency, clickedElement.getName());
 
         // Saves current job output filename in case the next job uses it as input
-        currentJobOutput = "output_" + clickedElementId;
+        currentJobOutput = clickedElement.getName() + "_output_" + clickedElementId + fileFormat;
 
         // Resets fields
         inputFiles = new ArrayList<>();
         arguments = "";
         inputURL = "";
+        fileFormat = "";
     }
 
     /**
@@ -478,6 +485,18 @@ public class WorkflowComposerBean implements Serializable {
 
     public void setChosenReference(String chosenReference) {
         this.chosenReference = chosenReference;
+    }
+
+    public List<String> getSupportedFormats() {
+        return supportedFormats;
+    }
+
+    public String getFileFormat() {
+        return fileFormat;
+    }
+
+    public void setFileFormat(String fileFormat) {
+        this.fileFormat = fileFormat;
     }
 
 }

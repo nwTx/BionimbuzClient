@@ -7,18 +7,21 @@ import java.util.List;
  *
  * @author Vinicius
  */
-public class GetServicesResponse implements ResponseInfo {
+public class GetConfigurationsResponse implements ResponseInfo {
 
     private List<PluginService> servicesList;
 
     private List<String> references;
 
-    public GetServicesResponse() {
+    private List<String> supportedFormats;
+
+    public GetConfigurationsResponse() {
     }
 
-    public GetServicesResponse(List<PluginService> servicesList, List<String> references) {
+    public GetConfigurationsResponse(List<PluginService> servicesList, List<String> references, List<String> supportedFormats) {
         this.servicesList = servicesList;
         this.references = references;
+        this.supportedFormats = supportedFormats;
     }
 
     public List<PluginService> getServicesList() {
@@ -35,6 +38,14 @@ public class GetServicesResponse implements ResponseInfo {
 
     public void setReferences(List<String> references) {
         this.references = references;
+    }
+
+    public List<String> getSupportedFormats() {
+        return supportedFormats;
+    }
+
+    public void setSupportedFormats(List<String> supportedFormats) {
+        this.supportedFormats = supportedFormats;
     }
 
 }
