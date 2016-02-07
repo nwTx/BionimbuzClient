@@ -57,6 +57,7 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/LogSeverity.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/compactor/GZipCompactor.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/WorkflowHistoryBean.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/WorkflowOutputFile.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/GetConfigurationsRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/StartWorkflowResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/SignUp.java

@@ -23,7 +23,6 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import javax.faces.application.FacesMessage.Severity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +33,9 @@ public class FileUploadBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String MAX_STORAGE = "512 Mb";
+    private static final String MAX_STORAGE = "1024 Mb";
 
-    private static final Long MAX_STORAGE_SIZE = 536870912l;    // 512 Mb
+    private static final Long MAX_STORAGE_SIZE = 1073741824l;    // 1024 Mb
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadBean.class);
 
@@ -64,7 +63,6 @@ public class FileUploadBean implements Serializable {
         
         allowedTypes += ")$/";
         
-        LOGGER.info("Types: " + allowedTypes);
     }
 
     /**
@@ -180,6 +178,8 @@ public class FileUploadBean implements Serializable {
          * Returns the user storage usage in percentual. returns int value
          * because PrimeFaces component accepts only int value from 0 to 100
          */
+        int x = usage.divide(new BigDecimal(MAX_STORAGE_SIZE)).multiply(new BigDecimal(100)).intValue();
+        
         return usage.divide(new BigDecimal(MAX_STORAGE_SIZE)).multiply(new BigDecimal(100)).intValue();
     }
 

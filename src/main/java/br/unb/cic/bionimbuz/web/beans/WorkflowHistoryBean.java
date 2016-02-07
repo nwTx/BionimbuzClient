@@ -4,6 +4,7 @@ import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Log;
 import br.unb.cic.bionimbuz.model.Workflow;
+import br.unb.cic.bionimbuz.model.WorkflowOutputFile;
 import br.unb.cic.bionimbuz.rest.response.GetWorkflowHistoryResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.Serializable;
@@ -31,13 +32,13 @@ public class WorkflowHistoryBean implements Serializable {
     private RestService restService;
     private Workflow selectedWorkflow;
     private List<Log> history;
-    private List<FileInfo> outputFiles;
+    private List<WorkflowOutputFile> workflowOutputFiles;
 
     @PostConstruct
     private void initialize() {
         restPath = ConfigurationRepository.getApplicationConfiguration().getBionimbuzAddress() + REST_PATH;
         restService = new RestService();
-        outputFiles = new ArrayList<>();
+        workflowOutputFiles = new ArrayList<>();
     }
 
     /**
@@ -76,7 +77,7 @@ public class WorkflowHistoryBean implements Serializable {
 
             // Set result
             this.history = response.getHistory();
-            this.outputFiles = response.getOutputFiles();
+            this.workflowOutputFiles = response.getWorkflowOutputFiles();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -93,7 +94,7 @@ public class WorkflowHistoryBean implements Serializable {
             GetWorkflowHistoryResponse response = restService.getWorkflowHistory(selectedWorkflow.getId());
 
             this.history = response.getHistory();
-            this.outputFiles = response.getOutputFiles();
+            this.workflowOutputFiles = response.getWorkflowOutputFiles();
 
             showMessage("Histórico de execução atualizado");
         } catch (Exception ex) {
@@ -129,12 +130,8 @@ public class WorkflowHistoryBean implements Serializable {
         this.history = history;
     }
 
-    public List<FileInfo> getOutputFiles() {
-        return outputFiles;
-    }
-
-    public void setOutputFiles(List<FileInfo> outputFiles) {
-        this.outputFiles = outputFiles;
+    public List<WorkflowOutputFile> getWorkflowOutputFiles() {
+        return workflowOutputFiles;
     }
 
     public String getDownloadURL() {

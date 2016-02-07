@@ -38,6 +38,7 @@ br/unb/cic/bionimbuz/rest/response/ResponseInfo.class
 br/unb/cic/bionimbuz/rest/request/RequestInfo.class
 br/unb/cic/bionimbuz/compactor/GZipCompactor.class
 br/unb/cic/bionimbuz/communication/RestCommunicator.class
+br/unb/cic/bionimbuz/model/WorkflowOutputFile.class
 br/unb/cic/bionimbuz/rest/request/StartWorkflowRequest.class
 br/unb/cic/bionimbuz/rest/action/Login.class
 br/unb/cic/bionimbuz/rest/action/DeleteFile.class

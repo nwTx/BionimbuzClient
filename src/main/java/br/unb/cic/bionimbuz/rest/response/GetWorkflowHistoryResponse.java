@@ -1,7 +1,7 @@
 package br.unb.cic.bionimbuz.rest.response;
 
-import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Log;
+import br.unb.cic.bionimbuz.model.WorkflowOutputFile;
 import java.util.List;
 
 /**
@@ -13,14 +13,14 @@ public class GetWorkflowHistoryResponse implements ResponseInfo {
     private List<Log> history;
 
     // List with output files for the given workflow
-    private List<FileInfo> outputFiles;
+    private List<WorkflowOutputFile> workflowOutputFiles;
 
     public GetWorkflowHistoryResponse() {
     }
 
-    public GetWorkflowHistoryResponse(List<Log> history, List<FileInfo> outputFiles) {
+    public GetWorkflowHistoryResponse(List<Log> history, List<WorkflowOutputFile> workflowOutputFiles) {
         this.history = history;
-        this.outputFiles = outputFiles;
+        this.workflowOutputFiles = workflowOutputFiles;
     }
 
     public List<Log> getHistory() {
@@ -31,12 +31,12 @@ public class GetWorkflowHistoryResponse implements ResponseInfo {
         this.history = history;
     }
 
-    public List<FileInfo> getOutputFiles() {
-        return outputFiles;
+    public List<WorkflowOutputFile> getWorkflowOutputFiles() {
+        return workflowOutputFiles;
     }
 
-    public void setOutputFiles(List<FileInfo> outputFiles) {
-        this.outputFiles = outputFiles;
+    public void setWorkflowOutputFiles(List<WorkflowOutputFile> workflowOutputFiles) {
+        this.workflowOutputFiles = workflowOutputFiles;
     }
 
 }

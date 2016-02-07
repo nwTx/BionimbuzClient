@@ -20,17 +20,17 @@
                     <p:menubar style="margin: 5px">
                         <f:facet name="options">
                             <p:commandButton action="home" icon="ui-icon-home" title="Página Inicial" style="margin: 2px"/>
-                            <p:commandButton id="edit_profile" icon="ui-icon-person" style="margin: 2px" onmouseover="PF.show('overlay');"/>
-                            <p:overlayPanel id="overlay" for="edit_profile"  
+                            <p:commandButton id="edit_profile" icon="ui-icon-person" style="margin: 2px" />
+                            <p:overlayPanel id="overlay" for="edit_profile" showEvent="mouseover" 
                                             appendToBody="true" at="bottom" 
                                             dismissable="true" hideEffect="fade" 
                                             showEffect="fade" >
                                 <center>
                                     <h:graphicImage value="/resources/img/profile_img.png" width="130px"/> <br />
                                     <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold; font-size: 115%"/>
-                                    
+
                                     <hr style="color: #2980b9"/>
-                                    
+
                                     <p:outputLabel value="#{sessionBean.loggedUser.login}" style="font-style: italic; font-weight: bold; margin: 3px"/> <br />
                                     <p:outputLabel value="#{sessionBean.loggedUser.email}" style="font-style: italic; margin: 3px"/> <br />
                                     <p:commandButton value="Editar perfil" icon="ui-icon-gear" action="edit_profile" style="margin: 3px"/>
@@ -48,9 +48,8 @@
                     <p:panelMenu>
                         <!-- Workflow submenu -->
                         <p:submenu label="Workflows">
-                            <p:menuitem value="Criar novo" action="workflow_composer"/>
-                            <p:menuitem value="Status" action="workflow_status" />
-                            <p:menuitem value="Cancelar" action="cancel_workflow"/>
+                            <p:menuitem value="Criar novo Workflow" action="workflow_composer"/>
+                            <p:menuitem value="Status de seus Workflows" action="workflow_status" />
                         </p:submenu>
 
                         <!-- Storage submenu -->

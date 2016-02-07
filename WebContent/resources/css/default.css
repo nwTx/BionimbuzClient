@@ -81,7 +81,7 @@ body {
 
 /* ===== Diagram Element Style ===== */
 .ui-diagram-element {
-    border: 0.2em dotted #5BAAF3;
+    border: 0.2em solid #5BAAF3;
     width: 10em;
     height: 4em;
     line-height: 4em;

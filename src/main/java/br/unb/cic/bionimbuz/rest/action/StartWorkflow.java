@@ -32,8 +32,6 @@ public class StartWorkflow extends Action {
     public ResponseInfo execute() {
         logAction(REST_START_WORKFLOW_URL, StartWorkflow.class);
 
-        System.out.println("reference file: " + ((StartWorkflowRequest) request).getWorkflow().getJobs().get(0).getReferenceFile());
-        
         Response response = target
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(request, MediaType.APPLICATION_JSON), Response.class);

@@ -237,7 +237,7 @@ public class WorkflowComposerBean implements Serializable {
     public void setJobFields() {
 
         // Sets element input list
-        workflowDiagram.setJobFields(clickedElementId, inputFiles, chosenReference, arguments, inputURL, dependency, clickedElement.getName());
+        workflowDiagram.setJobFields(clickedElementId, inputFiles, chosenReference, arguments, inputURL, dependency, clickedElement.getName(), fileFormat);
 
         // Saves current job output filename in case the next job uses it as input
         currentJobOutput = clickedElement.getName() + "_output_" + clickedElementId + fileFormat;
@@ -267,7 +267,7 @@ public class WorkflowComposerBean implements Serializable {
         inputs.add(file);
 
         // Sets element input list
-        workflowDiagram.setJobFields(clickedElementId, inputs, chosenReference, arguments, inputURL, dependency, clickedElement.getName());
+        workflowDiagram.setJobFields(clickedElementId, inputs, chosenReference, arguments, inputURL, dependency, clickedElement.getName(), fileFormat);
 
         // Saves current job output filename in case the next job uses it as input
         currentJobOutput = clickedElement.getName() + "_output_" + clickedElementId + fileFormat;

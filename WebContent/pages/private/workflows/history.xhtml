@@ -37,10 +37,10 @@
                                 </p:column>
 
                                 <p:column headerText="Descrição" width="300">
-                                    <p:outputLabel value="#{h.text}" styleClass="font-courier"/>
+                                    <h:outputLabel value="#{h.text}" styleClass="font-courier" escape="false"/>
                                 </p:column>
 
-                                <p:column headerText="Nivel" width="50" style="text-align: center">
+                                <p:column headerText="Nivel" width="37" style="text-align: center">
                                     <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'INFO'}" style="color: #2980b9; font-weight: bold"/>
                                     <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'WARN'}" style="color: #e67e22; font-weight: bold"/>
                                     <p:outputLabel value="#{h.severity.getText()}" rendered="#{h.severity == 'ERROR'}" style="color: #c0392b; font-weight: bold"/>
@@ -50,19 +50,18 @@
                         </p:panel>  
                         <br />
                         <p:panel header="Arquivos de Saída">
-                            <p:dataTable value="#{workflowHistoryBean.outputFiles}" var="out" emptyMessage="Sem arquivos para mostrar">
-                                <p:column headerText="Nome" width="100" style="font-weight: bold">
-                                    <p:outputLabel value="#{out.name}" />
-                                </p:column>
+                            <center>
+                                <p:dataTable value="#{workflowHistoryBean.workflowOutputFiles}" style="width: 500px"
+                                             var="out" emptyMessage="Sem arquivos para mostrar">
+                                    <p:column headerText="Nome" width="100" style="font-weight: bold">
+                                        <p:outputLabel value="#{out.outputFilename}" />
+                                    </p:column>
 
-                                <p:column headerText="Tamanho" width="30" style="text-align: center">
-                                    <p:outputLabel value="#{out.size}" />
-                                </p:column>
-
-                                <p:column headerText="Download teste" width="30" style="text-align: center">
-                                    <a href="#{workflowHistoryBean.downloadURL.concat(out.name)}">Download</a>
-                                </p:column>
-                            </p:dataTable>
+                                    <p:column headerText="Download" width="30" style="text-align: center">
+                                        <a href="#{workflowHistoryBean.downloadURL.concat(out.outputFilename)}">Download</a>
+                                    </p:column>
+                                </p:dataTable>
+                            </center>
                         </p:panel>
 
                         <f:facet name="footer">

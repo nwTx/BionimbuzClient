@@ -160,14 +160,14 @@
                             <center>
                                 <h:panelGrid columns="2" style="text-align: center">
                                     <p:panel header="Executar Workflow" style="text-align: center; width: 400px">
-                                        <p:outputLabel value="Iniciar execução deste Workflow. Seu Workflow sera enviado ao Servidor do BioNimbuZ e voce podera acompnhar sua execucao" 
+                                        <p:outputLabel value="Iniciar execução deste Workflow. Seu Workflow será enviado ao BioNimbuZ e você poderá acompanhar sua execução" 
                                                        style="margin: 10px" /> <br />
                                         <center>
                                             <p:commandButton action="#{workflowComposerBean.startWorkflow()}" value="Confirmar Workflow" style="margin: 10px; border-color: #2980b9"/>
                                         </center>
                                     </p:panel>
                                     <p:panel header="Download" style="text-align: center; width: 400px">
-                                        <p:outputLabel value="Voce pode realizar o download deste Workflow para importa-lo posteriormente ou compartilhar com alguem" 
+                                        <p:outputLabel value="Você pode realizar o download deste Workflow e importá-lo posteriormente ou compartilhá-lo" 
                                                        style="margin: 10px" /> <br />
                                         <center>
                                             <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s" style="margin: 10px; border-color: #2980b9" >
@@ -193,7 +193,7 @@
         <h:form id="file_form">
 
             <p:panel>
-                Escolha se a entrada deste passo será um arquivo ou uma URL do arquivo
+                Escolha a o arquivo de entrada deste passo e seus parâmetros.
             </p:panel>
             <br />
             <p:accordionPanel>
@@ -227,13 +227,13 @@
                     </p:fieldset>
                 </p:tab>
 
-                <p:tab title="URL">
+<!--                <p:tab title="URL">
                     <p:fieldset legend="URL">
                         Digite a URL de onde se encontra seu arquivo (URL de um armazenamento, link do Dropbox, link do Google Drive, ...). <br />
                         Apontar o caminho direto para o arquivo (não apontar pastas, por exemplo):
                         <h:inputText id="url" style="width: 99%; margin: 3px" value="#{workflowComposerBean.inputURL}"/>
                     </p:fieldset>
-                </p:tab>
+                </p:tab>-->
 
             </p:accordionPanel>
             <br />
