@@ -4,12 +4,16 @@ import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Log;
 import br.unb.cic.bionimbuz.model.Workflow;
+import br.unb.cic.bionimbuz.model.WorkflowOutputFile;
+import br.unb.cic.bionimbuz.rest.response.GetWorkflowHistoryResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -20,19 +24,21 @@ import javax.inject.Named;
 @Named
 @SessionScoped
 public class WorkflowHistoryBean implements Serializable {
-    private static final String REST_PATH = "/rest/file/download";
+
+    private static final String REST_PATH = "/rest/file/download/";
     private String downloadURL;
+    private String restPath;
 
     private RestService restService;
     private Workflow selectedWorkflow;
     private List<Log> history;
-    private List<FileInfo> outputFiles;
+    private List<WorkflowOutputFile> workflowOutputFiles;
 
     @PostConstruct
     private void initialize() {
-        downloadURL = ConfigurationRepository.getApplicationConfiguration().getBionimbuzAddress() + REST_PATH;
+        restPath = ConfigurationRepository.getApplicationConfiguration().getBionimbuzAddress() + REST_PATH;
         restService = new RestService();
-        outputFiles = new ArrayList<>();
+        workflowOutputFiles = new ArrayList<>();
     }
 
     /**
@@ -62,8 +68,16 @@ public class WorkflowHistoryBean implements Serializable {
     public String selectWorkflow(Workflow workflow) {
         this.selectedWorkflow = workflow;
 
+        // Updates rest resource path
+        downloadURL = restPath + workflow.getId() + "/";
+
         try {
-            this.history = restService.getWorkflowHistory(workflow.getId());
+            // Fires request
+            GetWorkflowHistoryResponse response = restService.getWorkflowHistory(selectedWorkflow.getId());
+
+            // Set result
+            this.history = response.getHistory();
+            this.workflowOutputFiles = response.getWorkflowOutputFiles();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -72,15 +86,32 @@ public class WorkflowHistoryBean implements Serializable {
     }
 
     /**
-     * Calls server to refresh workflow history
+     * Calls server to refresh workflow history.
      *
      */
     public void updateWorkflowHistory() {
         try {
-            this.history = restService.getWorkflowHistory(selectedWorkflow.getId());
+            GetWorkflowHistoryResponse response = restService.getWorkflowHistory(selectedWorkflow.getId());
+
+            this.history = response.getHistory();
+            this.workflowOutputFiles = response.getWorkflowOutputFiles();
+
+            showMessage("Histórico de execução atualizado");
         } catch (Exception ex) {
             ex.printStackTrace();
+
+            showMessage("Erro no processamento. Favor tente mais tarde");
         }
+    }
+
+    /**
+     * Show message in growl component (View)
+     *
+     * @param msg
+     */
+    private void showMessage(String msg) {
+        FacesMessage message = new FacesMessage(msg, "");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public Workflow getSelectedWorkflow() {
@@ -99,12 +130,8 @@ public class WorkflowHistoryBean implements Serializable {
         this.history = history;
     }
 
-    public List<FileInfo> getOutputFiles() {
-        return outputFiles;
-    }
-
-    public void setOutputFiles(List<FileInfo> outputFiles) {
-        this.outputFiles = outputFiles;
+    public List<WorkflowOutputFile> getWorkflowOutputFiles() {
+        return workflowOutputFiles;
     }
 
     public String getDownloadURL() {

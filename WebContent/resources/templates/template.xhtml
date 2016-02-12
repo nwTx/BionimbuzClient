@@ -8,20 +8,35 @@
     <h:head>
         <h:outputStylesheet library="css" name="default.css" />
         <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
-        <h:outputScript library="primefaes" name="jquery/jquery.js"/>
-        <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js"></script>
+        <!--<h:outputScript library="primefaes" name="jquery/jquery.js"/>-->
+        <!--<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js"></script>-->
     </h:head>
 
     <h:body>
         <p:layout fullPage="true">
             <!-- Superior Menu -->
-            <p:layoutUnit position="north" size="62">
+            <p:layoutUnit position="north" size="65">
                 <h:form>
                     <p:menubar style="margin: 5px">
                         <f:facet name="options">
-                            <p:commandButton value="Home" action="home" icon="ui-icon-home" />
-                            <p:commandButton value="#{sessionBean.loggedUser.nome}" action="edit_profile" icon="ui-icon-person" />
-                            <p:commandButton value="Logout" action="#{sessionBean.logout()}" icon="ui-icon-close" />
+                            <p:commandButton action="home" icon="ui-icon-home" title="Página Inicial" style="margin: 2px"/>
+                            <p:commandButton id="edit_profile" icon="ui-icon-person" style="margin: 2px" />
+                            <p:overlayPanel id="overlay" for="edit_profile" showEvent="mouseover" 
+                                            appendToBody="true" at="bottom" 
+                                            dismissable="true" hideEffect="fade" 
+                                            showEffect="fade" >
+                                <center>
+                                    <h:graphicImage value="/resources/img/profile_img.png" width="130px"/> <br />
+                                    <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold; font-size: 115%"/>
+
+                                    <hr style="color: #2980b9"/>
+
+                                    <p:outputLabel value="#{sessionBean.loggedUser.login}" style="font-style: italic; font-weight: bold; margin: 3px"/> <br />
+                                    <p:outputLabel value="#{sessionBean.loggedUser.email}" style="font-style: italic; margin: 3px"/> <br />
+                                    <p:commandButton value="Editar perfil" icon="ui-icon-gear" action="edit_profile" style="margin: 3px"/>
+                                </center>
+                            </p:overlayPanel>
+                            <p:commandButton action="#{sessionBean.logout()}" icon="ui-icon-power" style="margin: 2px"/>
                         </f:facet>
                     </p:menubar>
                 </h:form>
@@ -33,9 +48,8 @@
                     <p:panelMenu>
                         <!-- Workflow submenu -->
                         <p:submenu label="Workflows">
-                            <p:menuitem value="Criar novo" action="workflow_composer"/>
-                            <p:menuitem value="Status" action="workflow_status" />
-                            <p:menuitem value="Cancelar" action="cancel_workflow"/>
+                            <p:menuitem value="Criar novo Workflow" action="workflow_composer"/>
+                            <p:menuitem value="Status de seus Workflows" action="workflow_status" />
                         </p:submenu>
 
                         <!-- Storage submenu -->
@@ -47,9 +61,9 @@
                         </p:submenu>
 
                         <!-- Statistics' Menu - NOT IMPLEMENTED --> 
-<!--                        <p:submenu label="Estatísticas">
-                            <p:menuitem value="Estatísticas de Execução" />
-                        </p:submenu>-->
+                        <!--                        <p:submenu label="Estatísticas">
+                                                    <p:menuitem value="Estatísticas de Execução" />
+                                                </p:submenu>-->
                     </p:panelMenu>
                 </h:form>
             </p:layoutUnit>

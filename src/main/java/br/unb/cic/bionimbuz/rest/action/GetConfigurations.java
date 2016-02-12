@@ -1,9 +1,9 @@
 package br.unb.cic.bionimbuz.rest.action;
 
 import br.unb.cic.bionimbuz.model.PluginService;
-import br.unb.cic.bionimbuz.rest.request.GetServicesRequest;
+import br.unb.cic.bionimbuz.rest.request.GetConfigurationsRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
-import br.unb.cic.bionimbuz.rest.response.GetServicesResponse;
+import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
 import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 import java.util.List;
@@ -20,15 +20,15 @@ import org.slf4j.LoggerFactory;
  *
  * @author Vinicius
  */
-public class GetServices extends Action {
+public class GetConfigurations extends Action {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetServices.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetConfigurations.class);
     private static final String REST_GET_SERVICES_URL = "/rest/services";
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {
         this.target = client.target(appConfiguration.getBionimbuzAddress());
-        this.request = (GetServicesRequest) reqInfo;
+        this.request = (GetConfigurationsRequest) reqInfo;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class GetServices extends Action {
 
     @Override
     public ResponseInfo execute() {
-        logAction(REST_GET_SERVICES_URL, GetServices.class);
+        logAction(REST_GET_SERVICES_URL, GetConfigurations.class);
 
         try {
 //            Response r = target
@@ -46,9 +46,9 @@ public class GetServices extends Action {
 //                    .post(Entity.entity(request, MediaType.APPLICATION_JSON), Response.class);
 //            
 //            List<PluginService> response = r.readEntity(new GenericType<List<PluginService>>() {}); 
-            GetServicesResponse response = target
+            GetConfigurationsResponse response = target
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(request, MediaType.APPLICATION_JSON), GetServicesResponse.class);
+                .post(Entity.entity(request, MediaType.APPLICATION_JSON), GetConfigurationsResponse.class);
             
             return response;
         } catch (Exception e) {

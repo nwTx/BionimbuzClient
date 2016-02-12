@@ -177,8 +177,9 @@ public class WorkflowDiagram {
      * @param arguments
      * @param url
      * @param dependency
+     * @param outputName
      */
-    public void setJobFields(String id, ArrayList<FileInfo> inputs, String referenceFile, String arguments, String url, String dependency) {
+    public void setJobFields(String id, ArrayList<FileInfo> inputs, String referenceFile, String arguments, String url, String dependency, String outputName, String outputFormat) {
         int cont = 0;
 
         // Iterates over the joblist
@@ -196,7 +197,7 @@ public class WorkflowDiagram {
                 int index = 1;
 
                 for (FileInfo file : inputs) {
-                    args += "%I" + (index++) + " ";
+                    args += "%I" + (index++);
                 }
 
                 // Sets its reference file
@@ -205,8 +206,8 @@ public class WorkflowDiagram {
                 // Sets its arguments
                 job.setArgs(args + "%O1 " + arguments);
 
-                // Sets its outputs 
-                job.addOutput("output_" + id);
+                // Sets its outputs (verify if it is null)
+                job.addOutput(outputName + "_output_" + id + ((outputFormat==null) ? "" : outputFormat));
 
                 // Adds job dependencies
                 if (dependency != null) {

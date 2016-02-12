@@ -164,7 +164,11 @@ public class Job {
     }
 
     public void setInputURL(String inputURL) {
-        this.inputURL = inputURL;
+        if (inputURL == null) {
+            this.inputURL = " ";
+        } else {
+            this.inputURL = inputURL;
+        }
     }
 
     public String getReferenceFile() {
@@ -172,7 +176,11 @@ public class Job {
     }
 
     public void setReferenceFile(String referenceFile) {
-        this.referenceFile = referenceFile;
+        if (referenceFile == null) {
+            this.referenceFile = " ";
+        } else {
+            this.referenceFile = referenceFile;
+        }
     }
 
     @Override

@@ -23,7 +23,7 @@
                                       invalidFileMessage="Formato de arquivo inválido"
                                       fileUploadListener="#{fileUploadBean.handleUploadedFile}"
                                       cancelLabel="Cancelar" uploadLabel="Enviar"
-                                      label="Escolher Arquivo"
+                                      label="Escolher Arquivo" allowTypes="#{fileUploadBean.allowedTypes}"
                                       update="growl,panel" sizeLimit="268435456"/>
                     </p:panel>
                     <br />

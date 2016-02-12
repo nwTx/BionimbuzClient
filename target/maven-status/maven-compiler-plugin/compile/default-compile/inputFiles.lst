@@ -4,6 +4,7 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/FileInfo.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/StartWorkflowRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/DeleteFileRequest.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/GetConfigurations.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ConfigurationLoader.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/communication/Communicator.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Workflow.java
@@ -16,16 +17,15 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Job.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/GetWorkflowHistoryResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/UploadRequest.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/GetServices.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/service/RestService.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/Configuration.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/User.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/FileUploadBean.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/GetConfigurationsResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/SessionBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/WorkflowStatus.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/WorkflowDiagram.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/StartWorkflow.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/GetServicesResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ProgramList.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/LogoutResponse.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/DeleteFileBean.java
@@ -37,7 +37,6 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/security/SecurityToken.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/GetWorkflowHistory.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/LogoutRequest.java
-/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/GetServicesRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/WorkflowComposerBean.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/security/PBKDF2.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/DeleteFileResponse.java
@@ -46,6 +45,7 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Login.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Logout.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Upload.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/compactor/Compactor.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/Instance.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/exception/ServerNotReachableException.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/GetWorkflowStatus.java
@@ -56,8 +56,11 @@
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ConfigurationRepository.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/configuration/ApplicationConfiguration.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/LogSeverity.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/compactor/GZipCompactor.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/WorkflowHistoryBean.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/model/WorkflowOutputFile.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/response/StartWorkflowResponse.java
+/home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/request/GetConfigurationsRequest.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/SignUp.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/rest/action/Action.java
 /home/zoonimbus/BionimbuzClient/src/main/java/br/unb/cic/bionimbuz/web/beans/SlaComposerBean.java

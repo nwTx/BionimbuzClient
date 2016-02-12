@@ -4,14 +4,14 @@ package br.unb.cic.bionimbuz.rest.request;
  *
  * @author Vinicius
  */
-public class GetServicesRequest implements RequestInfo {
+public class GetConfigurationsRequest implements RequestInfo {
 
     private boolean request;
 
-    public GetServicesRequest() {
+    public GetConfigurationsRequest() {
     }
 
-    public GetServicesRequest(boolean request) {
+    public GetConfigurationsRequest(boolean request) {
         this.request = request;
     }
 

@@ -5,12 +5,10 @@ import java.io.IOException;
 import br.unb.cic.bionimbuz.communication.RestCommunicator;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.FileInfo;
-import br.unb.cic.bionimbuz.model.Log;
-import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.rest.action.DeleteFile;
-import br.unb.cic.bionimbuz.rest.action.GetServices;
+import br.unb.cic.bionimbuz.rest.action.GetConfigurations;
 import br.unb.cic.bionimbuz.rest.action.GetWorkflowHistory;
 import br.unb.cic.bionimbuz.rest.action.GetWorkflowStatus;
 import br.unb.cic.bionimbuz.rest.action.Login;
@@ -19,7 +17,7 @@ import br.unb.cic.bionimbuz.rest.action.SignUp;
 import br.unb.cic.bionimbuz.rest.action.StartWorkflow;
 import br.unb.cic.bionimbuz.rest.action.Upload;
 import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
-import br.unb.cic.bionimbuz.rest.request.GetServicesRequest;
+import br.unb.cic.bionimbuz.rest.request.GetConfigurationsRequest;
 import br.unb.cic.bionimbuz.rest.request.GetWorkflowHistoryRequest;
 import br.unb.cic.bionimbuz.rest.request.GetWorkflowStatusRequest;
 import br.unb.cic.bionimbuz.rest.request.LoginRequest;
@@ -29,7 +27,7 @@ import br.unb.cic.bionimbuz.rest.request.SignUpRequest;
 import br.unb.cic.bionimbuz.rest.request.StartWorkflowRequest;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
-import br.unb.cic.bionimbuz.rest.response.GetServicesResponse;
+import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
 import br.unb.cic.bionimbuz.rest.response.GetWorkflowHistoryResponse;
 import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
@@ -163,17 +161,41 @@ public class RestService {
      * @return
      * @throws ServerNotReachableException
      */
-    public GetServicesResponse getServices() throws Exception {
-        GetServicesResponse response = (GetServicesResponse) restCommunicator.sendRequest(new GetServices(), new GetServicesRequest());
+    public GetConfigurationsResponse getServices() throws Exception {
+        GetConfigurationsResponse response = (GetConfigurationsResponse) restCommunicator.sendRequest(new GetConfigurations(), new GetConfigurationsRequest());
 
         return response;
     }
 
-    public List<Log> getWorkflowHistory(String workflowId) throws Exception {
+    /**
+     * Send a request to the server to get workflow history.
+     *
+     * @param workflowId
+     * @return
+     * @throws Exception
+     */
+    public GetWorkflowHistoryResponse getWorkflowHistory(String workflowId) throws Exception {
         RequestInfo request = new GetWorkflowHistoryRequest(workflowId);
-        
+
         GetWorkflowHistoryResponse response = (GetWorkflowHistoryResponse) restCommunicator.sendRequest(new GetWorkflowHistory(), request);
-       
-        return response.getHistory();
+
+        return response;
+    }
+
+    /**
+     * Pings BioNimbuZ core.
+     *
+     * @param address
+     * @return
+     */
+    public boolean ping(String address) {
+        try {
+            return restCommunicator.ping(address);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return false;
+        }
+
     }
 }
