@@ -25,9 +25,9 @@ public class ConfigurationRepository implements ServletContextListener {
 
     // File's path
     private static final String ROOT_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/";
+    private static final String CONFIGURATION_PATH = ROOT_PATH + "BionimbuzClient/conf/";
     public static final String TEMPORARY_WORKFLOW_PATH = ROOT_PATH + "BionimbuzClient/temp/";
     public static final String UPLOADED_FILES_PATH = ROOT_PATH + "BionimbuzClient/uploaded-files/";
-    private static final String CONFIGURATION_PATH = ROOT_PATH + "BionimbuzClient/conf/";
 
     private static Configuration applicationConfiguration;
     private static ArrayList<PluginService> supportedServices;
@@ -41,7 +41,6 @@ public class ConfigurationRepository implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContext) {
         boolean serverOnline = false;
-        int connectTries = 3;
         RestService restService = new RestService();
 
         LOGGER.info("========================================");
@@ -63,10 +62,8 @@ public class ConfigurationRepository implements ServletContextListener {
                 supportedServices = (ArrayList<PluginService>) response.getServicesList();
 
             } catch (Exception e) {
-                LOGGER.error("=====> Server Offline... Terminating Client <=====");
 
-                LOGGER.error("**** Server seems to be offline. " + connectTries-- + " more connect tries ****");
-                e.printStackTrace();
+                LOGGER.error("===> BioNimbuZ Core Offline... Trying reconnection <===");
 
                 // Wait 5 seconds to try again
                 try {
