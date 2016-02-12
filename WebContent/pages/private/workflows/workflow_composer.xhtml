@@ -109,8 +109,8 @@
                                             </p:selectOneMenu>
                                         </p:column>
                                         <p:column headerText="Quantidade" style="text-align: center">
-                                            <h:outputText value="#{man.quantity}" />
-                                            <pe:inputNumber value="#{man.quantity}" style="width:100%" label="Quantidade"  minValue="0" maxValue="100" maxlength="3" />
+                                            <h:outputText value="#{slaComposerBean.quantity}" />
+                                            <pe:inputNumber value="#{slaComposerBean.quantity}" style="width:100%" label="Quantidade"  minValue="0" maxValue="100" maxlength="3" />
                                         </p:column>    
                                         <p:column>
                                                 <p:commandButton action="#{slaComposerBean.addSelectedInstance()}"
