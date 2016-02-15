@@ -4,15 +4,11 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-    <script type="text/javascript">
-        function editLastDatatableRow() {
-            jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function () {
-                jQuery(this).click()
-            });
-        }
-    </script>
+
+
     <ui:decorate template="/resources/templates/template.xhtml">	
 
         <!-- Center Content -->
@@ -67,9 +63,8 @@
                         <p:tabView>
                             <p:tab id="detalhado" title="Detalhado">
                                 <p:panel style="border-color: #2980b9">
-                                    
                                     <h:panelGrid columns="2" cellpadding="10">
- 
+                                        
                                          <p:outputLabel value="Limitar a execução:" />
                                          <p:selectOneRadio value="#{slaComposerBean.panel1}">
                                              <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
@@ -89,36 +84,47 @@
                                              <h:panelGrid columns="3" cellpadding="5" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
                                                  <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
                                                  <p:outputLabel for="opt1" value="Tempo de execução: " />
-                                                 <p:inputMask value="#{slaComposerBean.limitationValue}" mask="00/00/00"/>
+                                                 <p:inputText value="#{slaComposerBean.limitationValue}"/>
  
  
                                                  <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
                                                  <h:outputLabel for="opt2" value="Custo de execução" />
-                                                 <p:inputMask value="#{slaComposerBean.limitationValue}" mask="0.00"/>  
+                                                 <p:inputText value="#{slaComposerBean.limitationValue}" />  
  
                                              </h:panelGrid>
                                              <!--</p:outputPanel>-->
  
                                           </h:panelGroup>
                                     </h:panelGrid>     
-                                                   
-                                    <p:panelGrid columns="3" id="instances">
-                                        <p:column headerText="Instância" style="text-align: center">
-                                            <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:100%" required="true" requiredMessage="Campo instância obrigatório">
-                                                <f:selectItems value="#{slaComposerBean.instancies}" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
-                                            </p:selectOneMenu>
-                                        </p:column>
-                                        <p:column headerText="Quantidade" style="text-align: center">
-                                            <h:outputText value="#{slaComposerBean.quantity}" />
-                                            <pe:inputNumber value="#{slaComposerBean.quantity}" style="width:100%" label="Quantidade"  minValue="0" maxValue="100" maxlength="3" />
-                                        </p:column>    
-                                        <p:column>
-                                                <p:commandButton action="#{slaComposerBean.addSelectedInstance()}"
-                                                                 icon="ui-icon-check" 
-                                                                 update="selected_instances, :form:growl"
-                                                                 iconPos="left" />
-                                        </p:column>
-                                    </p:panelGrid>
+                                    <br></br> 
+                                    <p:fieldset id="add_instances" style="margin-bottom:10px">
+                                        <p:panelGrid id="instances">
+                                            <f:facet name="header">
+                                                <p:row>
+                                                  <p:column >Instância</p:column>
+                                                  <p:column>Quantidade</p:column>
+                                                  <p:column>Adicionar</p:column>
+                                                </p:row>
+                                              </f:facet>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:60em" required="true" requiredMessage="Campo instância obrigatório" title="Instância">
+                                                        <f:selectItems value="#{slaComposerBean.instancies}" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
+                                                    </p:selectOneMenu>
+                                                </p:column>
+                                                <p:column >
+                                                    <pe:inputNumber value="#{slaComposerBean.quantity}" style="width:60em" label="Quantidade"  minValue="0" maxValue="100" maxlength="3" />
+                                                </p:column>    
+                                                <p:column>
+                                                    <p:commandButton  actionListener="#{slaComposerBean.adSelectedInstance}"
+                                                                         icon="ui-icon-check" 
+                                                                         update="selected_instances, :form:growl"
+                                                                         iconPos="left" />
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                    <br></br>
                                     <p:fieldset id="selected_instances" style="margin-bottom:10px">
                                         <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instance" style="width: 60em"
                                                      paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
@@ -129,11 +135,11 @@
                                             </p:column>
 
                                             <p:column headerText="Quantidade" width="25em" style="text-align: center">
-                                                <f:facet name="output"><h:outputLabel value="#{instance.quantity}"/></f:facet>
+                                               <h:outputLabel value="#{instance.quantity}"/>
                                             </p:column>
 
                                             <p:column>
-                                                <p:commandButton icon="ui-icon-circle-close" action="#{slaComposerBean.removeElement(e)}" update=":form:selected_instances"/>
+                                                <p:commandButton icon="ui-icon-circle-close" action="#{slaComposerBean.removeElement(e)}" update="selected_instances, add_instances"/>
                                             </p:column>
                                         </p:dataTable>
                                     </p:fieldset>

@@ -143,16 +143,30 @@ public class SlaComposerBean implements Serializable{
         return instancesString;   
     }
         
-    public void addSelectedInstance(){
+    public void adSelectedInstance(ActionEvent actionEvent){
+        System.out.println("instances "+instances.toString() );
+        System.out.println("Instances is null: "+instances.isEmpty());
+        int aux=0;
         for(Instance i : instances)
-            if(i.getId().equals(chosenInstanceId)){
-                selectedInstances.add(i);
-                instances.remove(i);
+        {
+            System.out.println("id: "+i.getId());
+            System.out.println("chosenInstancedId "+chosenInstanceId);
+            System.out.println("aux: "+aux);
+            System.out.println(i.getId().equals(chosenInstanceId));
+            aux++;
+            if(i.getId().equals(chosenInstanceId)&&!instances.isEmpty()){
+                    selectedInstances.add(i);
+                    instances.remove(i);
+                    System.out.println("Descrição: "+instance.getDescription()+" quantidade: "+instance.getQuantity());
+                    showMessage("Elemento " + instance.getType() + " adicionado");
+                    System.out.println("teste: "+i.getType()); 
+                    break;
+            }else{
+                System.out.println("Not found!!");
             }
+            
+        }
        
-        System.out.println("Descrição: "+instance.getDescription()+" quantidade: "+instance.getQuantity());
-
-        showMessage("Elemento " + instance.getType() + " adicionado");
     }
     
     /**
