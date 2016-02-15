@@ -37,6 +37,7 @@ public class Instance {
         this.quantityCPU=0;
         this.hd = 0.0D;
         this.hdType = "vazia";
+        setDescription();
     }
     
     /**
@@ -63,6 +64,7 @@ public class Instance {
         this.quantityCPU=quantityCPU;
         this.hd = hd;
         this.hdType = hdType;
+        setDescription();
     }
     /**
      * @return the type

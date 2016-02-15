@@ -47,6 +47,7 @@ public class SlaComposerBean implements Serializable{
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
+        selectedInstances=new ArrayList<>();
         setInstance(new Instance("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",1,20.0,"sata"));
         instances= new ArrayList<>();
         instances.add(getInstance());
@@ -144,22 +145,14 @@ public class SlaComposerBean implements Serializable{
     }
         
     public void adSelectedInstance(ActionEvent actionEvent){
-        System.out.println("instances "+instances.toString() );
-        System.out.println("Instances is null: "+instances.isEmpty());
-        int aux=0;
         for(Instance i : instances)
         {
-            System.out.println("id: "+i.getId());
-            System.out.println("chosenInstancedId "+chosenInstanceId);
-            System.out.println("aux: "+aux);
-            System.out.println(i.getId().equals(chosenInstanceId));
-            aux++;
+            
             if(i.getId().equals(chosenInstanceId)&&!instances.isEmpty()){
                     selectedInstances.add(i);
                     instances.remove(i);
-                    System.out.println("Descrição: "+instance.getDescription()+" quantidade: "+instance.getQuantity());
-                    showMessage("Elemento " + instance.getType() + " adicionado");
-                    System.out.println("teste: "+i.getType()); 
+                    System.out.println("Descrição: "+i.getDescription()+" quantidade: "+i.getQuantity());
+                    showMessage("Elemento " + i.getType() + " adicionado");
                     break;
             }else{
                 System.out.println("Not found!!");

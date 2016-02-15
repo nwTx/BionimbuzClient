@@ -97,8 +97,8 @@
                                           </h:panelGroup>
                                     </h:panelGrid>     
                                     <br></br> 
-                                    <p:fieldset id="add_instances" style="margin-bottom:10px">
-                                        <p:panelGrid id="instances">
+                                   
+                                        <p:panelGrid id="instancesA">
                                             <f:facet name="header">
                                                 <p:row>
                                                   <p:column >Instância</p:column>
@@ -118,31 +118,32 @@
                                                 <p:column>
                                                     <p:commandButton  actionListener="#{slaComposerBean.adSelectedInstance}"
                                                                          icon="ui-icon-check" 
-                                                                         update="selected_instances, :form:growl"
-                                                                         iconPos="left" />
+                                                                         update="instancesList, instancesA ,:form:growl"/>
                                                 </p:column>
                                             </p:row>
                                         </p:panelGrid>
-                                    </p:fieldset>
+                      
                                     <br></br>
-                                    <p:fieldset id="selected_instances" style="margin-bottom:10px">
+                       
                                         <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instance" style="width: 60em"
                                                      paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
                                                      id="instancesList">
                                             <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
-                                            <p:column headerText="Tipo" width="25em" style="text-align: center">
+                                            <p:column headerText="Descrição" width="25em" style="text-align: center">
                                                 <p:outputLabel value="#{instance.description}"/>
                                             </p:column>
-
+                                            <p:column headerText="Tipo" width="25em" style="text-align: center">
+                                                <p:outputLabel value="#{instance.type}"/>
+                                            </p:column>
                                             <p:column headerText="Quantidade" width="25em" style="text-align: center">
                                                <h:outputLabel value="#{instance.quantity}"/>
                                             </p:column>
 
                                             <p:column>
-                                                <p:commandButton icon="ui-icon-circle-close" action="#{slaComposerBean.removeElement(e)}" update="selected_instances, add_instances"/>
+                                                <p:commandButton actionListener="#{slaComposerBean.removeElement(e)}" icon="ui-icon-trash"  update="instancesList, instancesA, :form:growl"/>
                                             </p:column>
                                         </p:dataTable>
-                                    </p:fieldset>
+  
                                 </p:panel> 
 
                             </p:tab>
