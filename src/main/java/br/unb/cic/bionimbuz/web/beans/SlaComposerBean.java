@@ -149,6 +149,7 @@ public class SlaComposerBean implements Serializable{
         {
             
             if(i.getId().equals(chosenInstanceId)&&!instances.isEmpty()){
+                    i.setQuantity(quantity);
                     selectedInstances.add(i);
                     instances.remove(i);
                     System.out.println("Descrição: "+i.getDescription()+" quantidade: "+i.getQuantity());
@@ -168,9 +169,14 @@ public class SlaComposerBean implements Serializable{
      * @param element
      */
     public void removeElement(Instance element) {
-        selectedInstances.remove(element);
-
-        showMessage("Elemento " + element.getType() + " removido");
+        if(!selectedInstances.isEmpty()){
+            selectedInstances.remove(element);
+            instances.add(element);
+            showMessage("Elemento " + element.getType() + " removido");
+        }
+        else{
+            showMessage("Não existem elementos para ser removidos!");
+        }
     }
      /**
      * Show message in growl component (View)
