@@ -7,7 +7,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import br.unb.cic.bionimbuz.configuration.ApplicationConfiguration;
+import br.unb.cic.bionimbuz.configuration.BionimbuzClientConfig;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
@@ -20,8 +20,8 @@ public abstract class Action {
 
     private final String PING_URL = "/rest/ping";
 
-    protected ApplicationConfiguration appConfiguration = ConfigurationRepository.getApplicationConfiguration();
-
+    protected BionimbuzClientConfig config = ConfigurationRepository.getConfig();
+    
     protected RequestInfo request;
 
     protected WebTarget target;
@@ -42,7 +42,7 @@ public abstract class Action {
         // Creates client
         Client client = ClientBuilder.newClient();
 
-        WebTarget pingTarget = client.target(appConfiguration.getBionimbuzAddress());
+        WebTarget pingTarget = client.target(config.getBionimbuzAddress());
 
         try {
             // Fires a GET request

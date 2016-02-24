@@ -1,6 +1,6 @@
 br/unb/cic/bionimbuz/model/Log.class
-br/unb/cic/bionimbuz/communication/Communicator.class
 br/unb/cic/bionimbuz/model/User.class
+br/unb/cic/bionimbuz/communication/Communicator.class
 br/unb/cic/bionimbuz/rest/response/DeleteFileResponse.class
 br/unb/cic/bionimbuz/model/DiagramStyle.class
 br/unb/cic/bionimbuz/test/CancelJobBean.class
@@ -32,8 +32,8 @@ br/unb/cic/bionimbuz/security/PBKDF2.class
 br/unb/cic/bionimbuz/rest/request/GetConfigurationsRequest.class
 br/unb/cic/bionimbuz/rest/action/Action.class
 br/unb/cic/bionimbuz/exception/ServerNotReachableException.class
-br/unb/cic/bionimbuz/configuration/ConfigurationRepository.class
 br/unb/cic/bionimbuz/rest/response/UploadResponse.class
+br/unb/cic/bionimbuz/configuration/ConfigurationRepository.class
 br/unb/cic/bionimbuz/rest/response/ResponseInfo.class
 br/unb/cic/bionimbuz/rest/request/RequestInfo.class
 br/unb/cic/bionimbuz/compactor/GZipCompactor.class
@@ -46,8 +46,8 @@ br/unb/cic/bionimbuz/model/Job.class
 br/unb/cic/bionimbuz/model/ServerStatus.class
 br/unb/cic/bionimbuz/model/LogSeverity.class
 br/unb/cic/bionimbuz/rest/request/SignUpRequest.class
-br/unb/cic/bionimbuz/configuration/ProgramList.class
 br/unb/cic/bionimbuz/rest/request/GetWorkflowHistoryRequest.class
+br/unb/cic/bionimbuz/configuration/ProgramList.class
 br/unb/cic/bionimbuz/compactor/Compactor.class
 br/unb/cic/bionimbuz/rest/request/GetWorkflowStatusRequest.class
 br/unb/cic/bionimbuz/configuration/ConfigurationLoader.class
@@ -58,13 +58,14 @@ br/unb/cic/bionimbuz/configuration/Configuration.class
 br/unb/cic/bionimbuz/web/beans/WorkflowHistoryBean.class
 br/unb/cic/bionimbuz/web/beans/SignUpBean.class
 br/unb/cic/bionimbuz/rest/request/LogoutRequest.class
-br/unb/cic/bionimbuz/model/DiagramElement.class
 br/unb/cic/bionimbuz/model/FileInfo.class
+br/unb/cic/bionimbuz/model/DiagramElement.class
 br/unb/cic/bionimbuz/rest/action/GetConfigurations.class
 br/unb/cic/bionimbuz/configuration/ApplicationConfiguration.class
 br/unb/cic/bionimbuz/model/PluginService.class
 br/unb/cic/bionimbuz/test/JobStatusInfoTest.class
 br/unb/cic/bionimbuz/rest/request/BaseRequest.class
+br/unb/cic/bionimbuz/configuration/BionimbuzClientConfig.class
 br/unb/cic/bionimbuz/model/WorkflowStatus.class
 br/unb/cic/bionimbuz/rest/action/GetWorkflowStatus.class
 br/unb/cic/bionimbuz/rest/action/Logout.class

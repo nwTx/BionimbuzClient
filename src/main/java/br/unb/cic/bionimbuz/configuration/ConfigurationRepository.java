@@ -3,8 +3,11 @@ package br.unb.cic.bionimbuz.configuration;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import javax.inject.Named;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -24,15 +27,20 @@ public class ConfigurationRepository implements ServletContextListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationRepository.class);
 
-    // File's path
-    private static final String ROOT_PATH = FileSystemView.getFileSystemView().getHomeDirectory() + "/";
-    private static final String CONFIGURATION_PATH = ROOT_PATH + "BionimbuzClient/conf/";
-    public static final String TEMPORARY_WORKFLOW_PATH = ROOT_PATH + "BionimbuzClient/temp/";
-    public static final String UPLOADED_FILES_PATH = ROOT_PATH + "BionimbuzClient/uploaded-files/";
+    private static final BionimbuzClientConfig config = loadConfiguration("conf.yaml");
 
-    private static Configuration applicationConfiguration;
+    public static final String ROOT_PATH = config.getRootPath();
+
+    public static final String TEMPORARY_WORKFLOW_PATH = config.getTemporaryWorkflowFolder();
+
+    public static final String ADDRESS = config.getAddress();
+
+    public static final String BIONIMBUZ_ADDRESS = config.getBionimbuzAddress();
+
     private static ArrayList<PluginService> supportedServices;
+
     private static ArrayList<String> references;
+
     private static ArrayList<String> supportedFormats;
 
     /**
@@ -49,15 +57,12 @@ public class ConfigurationRepository implements ServletContextListener {
         LOGGER.info("========> Starting client application...");
         LOGGER.info("========================================");
 
-        applicationConfiguration = ConfigurationLoader.readConfiguration(CONFIGURATION_PATH + "config.json",
-                ApplicationConfiguration.class);
-
         // Log configurations
-        ((ApplicationConfiguration) applicationConfiguration).log();
+        config.log();
 
         // Send request to the server
         do {
-            if (restService.ping(((ApplicationConfiguration) applicationConfiguration).getBionimbuzAddress())) {
+            if (restService.ping(config.getBionimbuzAddress())) {
                 GetConfigurationsResponse response;
 
                 try {
@@ -107,10 +112,6 @@ public class ConfigurationRepository implements ServletContextListener {
         LOGGER.info("========================================");
     }
 
-    public static ApplicationConfiguration getApplicationConfiguration() {
-        return (ApplicationConfiguration) applicationConfiguration;
-    }
-
     public static ArrayList<PluginService> getSupportedServices() {
         return supportedServices;
     }
@@ -121,6 +122,31 @@ public class ConfigurationRepository implements ServletContextListener {
 
     public static ArrayList<String> getSupportedFormats() {
         return supportedFormats;
+    }
+
+    public static BionimbuzClientConfig getConfig() {
+        return config;
+    }
+
+    /**
+     * Loads web application configuration.
+     *
+     * @param filename
+     * @return
+     * @throws IOException
+     */
+    private static BionimbuzClientConfig loadConfiguration(final String filename) {
+
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        BionimbuzClientConfig config = null;
+
+        try {
+            config = mapper.readValue(new File(FileSystemView.getFileSystemView().getHomeDirectory() + "/BionimbuzClient/conf/conf.yaml"), BionimbuzClientConfig.class);
+        } catch (IOException ex) {
+            LOGGER.error("[IOExceptin] - " + ex.getMessage());
+        }
+
+        return config;
     }
 
 }

@@ -1,17 +1,12 @@
 package br.unb.cic.bionimbuz.rest.action;
 
-import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.rest.request.GetConfigurationsRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
-import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
-import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +22,7 @@ public class GetConfigurations extends Action {
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {
-        this.target = client.target(appConfiguration.getBionimbuzAddress());
+        this.target = client.target(config.getBionimbuzAddress());
         this.request = (GetConfigurationsRequest) reqInfo;
     }
 

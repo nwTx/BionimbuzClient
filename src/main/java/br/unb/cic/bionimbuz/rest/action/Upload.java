@@ -6,7 +6,6 @@ import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 import java.io.IOException;
-import java.util.logging.Level;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
@@ -33,7 +32,7 @@ public class Upload extends Action {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Upload.class);
     private static final String REST_UPLOAD_URL = "/rest/file/upload";
-    private final String bionimbuzIP = appConfiguration.getBionimbuzAddress();
+    private final String bionimbuzIP = config.getBionimbuzAddress();
 
     @Override
     public void setup(Client client, RequestInfo requestInfo) {

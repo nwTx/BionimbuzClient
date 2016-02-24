@@ -354,7 +354,7 @@ public class WorkflowComposerBean implements Serializable {
      */
     public void handleImportedWorkflow(FileUploadEvent event) {
         try {
-            String path = saveTempFile(event.getFile().getFileName(), event.getFile().getInputstream());
+            String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + event.getFile().getFileName();
 
             File workflowFile = new File(path);
 
@@ -380,13 +380,12 @@ public class WorkflowComposerBean implements Serializable {
 
     }
 
-    /**
+    /** COMMENTED BECAUSE IT IS BEEN PASSED DIRECTLY TO THE SERVER (WITHOUT SAVE IN DISK)
      * Saves temporary file in disk
      *
      * @param fileName
      * @param in
      * @return
-     */
     public String saveTempFile(String fileName, InputStream in) throws FileNotFoundException, IOException {
         String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + fileName;
         // write the inputStream to a FileOutputStream
@@ -406,6 +405,7 @@ public class WorkflowComposerBean implements Serializable {
 
         return path;
     }
+    */
 
     public StreamedContent getWorkflowToDownload() {
         return workflowToDownload;
