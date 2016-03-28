@@ -156,7 +156,7 @@ public class RestService {
     }
 
     /**
-     * Send a request to the server to get the supported services list
+     * Send a request to the server to get the supported services list, instances list, references and supported format list
      *
      * @return
      * @throws ServerNotReachableException

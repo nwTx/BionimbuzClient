@@ -5,8 +5,10 @@
  */
 package br.unb.cic.bionimbuz.web.beans;
 
+import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.model.Instance;
 import br.unb.cic.bionimbuz.model.User;
+import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,8 @@ public class SlaComposerBean implements Serializable{
     
     @Inject
     private SessionBean sessionBean;
+    
+    private final RestService restService;
     private String panel1 = "Hide-Panel1";
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
     private boolean limitation;
@@ -41,11 +45,18 @@ public class SlaComposerBean implements Serializable{
     private Instance instance;
     private String chosenInstanceId;
     private int quantity;
+    private int objective;
 // Logged user
     private User loggedUser;
     
+     public SlaComposerBean() {
+        restService = new RestService();
+        instances = new ArrayList<>();
+//        instances = ConfigurationRepository.getInstanceList();
+    }
     @PostConstruct
     public void init() {
+        
         loggedUser = sessionBean.getLoggedUser();
         selectedInstances=new ArrayList<>();
         setInstance(new Instance("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",1,20.0,"sata"));
@@ -233,5 +244,19 @@ public class SlaComposerBean implements Serializable{
      */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    /**
+     * @return the objective
+     */
+    public int getObjective() {
+        return objective;
+    }
+
+    /**
+     * @param objective the objective to set
+     */
+    public void setObjective(int objective) {
+        this.objective = objective;
     }
 }

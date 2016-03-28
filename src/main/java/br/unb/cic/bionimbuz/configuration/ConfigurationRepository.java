@@ -1,5 +1,6 @@
 package br.unb.cic.bionimbuz.configuration;
 
+import br.unb.cic.bionimbuz.model.Instance;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
@@ -34,6 +35,8 @@ public class ConfigurationRepository implements ServletContextListener {
     private static ArrayList<PluginService> supportedServices;
     private static ArrayList<String> references;
     private static ArrayList<String> supportedFormats;
+    
+//    private static ArrayList<Instance> instanceList;
 
     /**
      * Called on Application Server start
@@ -66,6 +69,7 @@ public class ConfigurationRepository implements ServletContextListener {
                     references = (ArrayList<String>) response.getReferences();
                     supportedServices = (ArrayList<PluginService>) response.getServicesList();
                     supportedFormats = (ArrayList<String>) response.getSupportedFormats();
+//                    instanceList= (ArrayList<Instance>) response.getInstancesList();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -122,5 +126,8 @@ public class ConfigurationRepository implements ServletContextListener {
     public static ArrayList<String> getSupportedFormats() {
         return supportedFormats;
     }
+//    public static ArrayList<Instance> getInstanceList(){
+//        return instanceList;
+//    }
 
 }

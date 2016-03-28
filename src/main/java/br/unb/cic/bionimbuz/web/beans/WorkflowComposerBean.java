@@ -33,12 +33,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -141,8 +138,13 @@ public class WorkflowComposerBean implements Serializable {
      */
     public String flowController(FlowEvent event) {
         String currentStep = event.getOldStep();
+       
         String toGoStep = event.getNewStep();
-
+//
+//        if(toGoStep.equals("template"))
+//        {
+//        
+//        }
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
 

@@ -58,102 +58,6 @@
                         </p:panel>
                     </p:tab>
 
-                    <p:tab id="sla_option" title="SLA">
-                        <p:tabView id="slaopt">
-                            <p:tab id="detalhado" title="Detalhado">
-                                <p:panel id="detalhes" style="border-color: #2980b9">
-                                    <h:panelGrid columns="2" cellpadding="10">
-
-                                        <p:outputLabel value="Limitar a execução:" />
-                                        <p:selectOneRadio value="#{slaComposerBean.panel1}">
-                                            <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
-                                            <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
-                                            <f:ajax render="select-type-limitation-panel" />
-                                        </p:selectOneRadio>
-                                    </h:panelGrid>
-                                    <h:panelGrid>
-                                        <h:panelGroup id="select-type-limitation-panel">
-
-                                            <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
-                                            <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}" layout="custom">
-                                                <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationType}" />
-                                                <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationType}" />
-                                            </p:selectOneRadio>
-
-                                            <h:panelGrid columns="3" cellpadding="5" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
-                                                <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
-                                                <p:outputLabel for="opt1" value="Tempo de execução: " />
-                                                <p:inputText value="#{slaComposerBean.limitationValue}"/>
-
-
-                                                <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
-                                                <h:outputLabel for="opt2" value="Custo de execução" />
-                                                <p:inputText value="#{slaComposerBean.limitationValue}" />  
-
-                                            </h:panelGrid>
-                                            <!--</p:outputPanel>-->
-
-                                        </h:panelGroup>
-                                    </h:panelGrid>     
-                                    <p:panelGrid  id="instancesB">
-                                            <f:facet name="header">
-                                                <p:row>
-                                                    <p:column >Instância</p:column>
-                                                    <p:column>Quantidade</p:column>
-                                                    <p:column>Adicionar</p:column>
-                                                </p:row>
-                                            </f:facet>
-                                        <p:row >
-                                                <p:column>
-                                                    <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:60em">
-                                                        <f:selectItems value="#{slaComposerBean.instancies}" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
-                                                    </p:selectOneMenu>
-                                                </p:column>
-                                                <p:column >
-                                                    <pe:inputNumber id="number" value="#{slaComposerBean.quantity}" minValue="0" maxValue="100" maxlength="3" required="true" requiredMessage="Campo quantidade obrigatório"/>
-                                                </p:column>    
-                                                <p:column>
-                                                    <p:commandButton  actionListener="#{slaComposerBean.adSelectedInstance}"
-                                                                      icon="ui-icon-check" 
-                                                                      update="instancesList, instancesB, :form:growl"/>
-                                                </p:column>
-                                            </p:row>
-                                    </p:panelGrid>
-
-                                    <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instance" style="width: 83.5em"   
-                                                 paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
-                                                 id="instancesList">
-                                        <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
-                                        <p:column headerText="Descrição" width="25em" style="text-align: center">
-                                            <p:outputLabel value="#{instance.description}"/>
-                                        </p:column>
-                                        <p:column headerText="Tipo" width="25em" style="text-align: center">
-                                            <p:outputLabel value="#{instance.type}"/>
-                                        </p:column>
-                                        <p:column headerText="Quantidade" width="25em" style="text-align: center">
-                                            <h:outputLabel value="#{instance.quantity}"/>
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:commandButton actionListener="#{slaComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:slaopt:instancesB, :form:growl"/>
-                                        </p:column>
-                                    </p:dataTable>
-
-                                </p:panel> 
-
-                            </p:tab>
-                            <p:tab title="Padrao">
-                                <h:panelGrid columns="2" cellpadding="10">
-                                    <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-                                    <h:outputText value="Francis Ford Coppola's legendary..." />
-                                </h:panelGrid>
-                            </p:tab>
-                        </p:tabView>
-                        <!--</p:panel>-->
-                    </p:tab>
-
-
-
                     <!-- Element selection tab -->
                     <p:tab id="element_selection" title="Seleção de Elementos">
                         <p:panel header="Escolha os elementos deste Workflow">
@@ -228,7 +132,127 @@
                             </p:panel>
                         </p:panel>
                     </p:tab>
+                    
+                    <!-- Sla Part-->
+                    <p:tab id="sla_option" title="SLA">
+                        <p:tabView id="slaopt">
+                            <p:tab id="detalhado" title="Detalhado">
+                                <p:panel id="detalhes" style="border-color: #2980b9">
+                                    <p:fieldset id="limitation" legend="Limitar" style="border-color: #2980b9">
+                                        <h:panelGrid columns="2" cellpadding="10">
 
+                                            <p:outputLabel value="Limitar a execução:" />
+                                            <p:selectOneRadio value="#{slaComposerBean.panel1}">
+                                                <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
+                                                <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
+                                                <f:ajax render="select-type-limitation-panel" />
+                                            </p:selectOneRadio>
+                                        </h:panelGrid>
+                                        <h:panelGrid>
+                                            <h:panelGroup id="select-type-limitation-panel">
+
+                                                <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
+                                                <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}" layout="custom">
+                                                    <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationType}" />
+                                                    <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationType}" />
+                                                </p:selectOneRadio>
+
+                                                <h:panelGrid columns="3" cellpadding="5" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
+                                                    <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
+                                                    <p:outputLabel for="opt1" value="Tempo de execução: " />
+                                                    <p:inputText value="#{slaComposerBean.limitationValue}"/>
+
+
+                                                    <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
+                                                    <h:outputLabel for="opt2" value="Custo de execução" />
+                                                    <p:inputText value="#{slaComposerBean.limitationValue}" />  
+
+                                                </h:panelGrid>
+                                                <!--</p:outputPanel>-->
+
+                                            </h:panelGroup>
+                                        </h:panelGrid>     
+                                    </p:fieldset>  
+                                    
+                                    <p:fieldset id="instancesAvaible" legend="Instâncias Disponíveis" style="border-color: #2980b9">
+                                        <p:panelGrid  id="instancesB">
+                                                <f:facet name="header">
+                                                    <p:row>
+                                                        <p:column >Instância</p:column>
+                                                        <p:column>Quantidade</p:column>
+                                                        <p:column>Adicionar</p:column>
+                                                    </p:row>
+                                                </f:facet>
+                                            <p:row >
+                                                    <p:column>
+                                                        <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:60em">
+                                                            <f:selectItems value="#{slaComposerBean.instancies}" itemDescription="Selecione" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
+                                                        </p:selectOneMenu>
+                                                    </p:column>
+                                                    <p:column >
+                                                        <pe:inputNumber id="number" value="#{slaComposerBean.quantity}" minValue="0" maxValue="100" maxlength="3" required="true" requiredMessage="Campo quantidade obrigatório"/>
+                                                    </p:column>    
+                                                    <p:column>
+                                                        <p:commandButton  actionListener="#{slaComposerBean.adSelectedInstance}"
+                                                                          icon="ui-icon-check" 
+                                                                          update="instancesList, instancesB, :form:growl"/>
+                                                    </p:column>
+                                                </p:row>
+                                        </p:panelGrid>
+                                    </p:fieldset>    
+                                    
+                                    <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
+                                        <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instance" style="width: 87.5em"   
+                                                     paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
+                                                     id="instancesList">
+                                            <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
+                                            <p:column headerText="Descrição" width="25em" style="text-align: center">
+                                                <p:outputLabel value="#{instance.description}"/>
+                                            </p:column>
+                                            <p:column headerText="Tipo" width="25em" style="text-align: center">
+                                                <p:outputLabel value="#{instance.type}"/>
+                                            </p:column>
+                                            <p:column headerText="Quantidade" width="25em" style="text-align: center">
+                                                <h:outputLabel value="#{instance.quantity}"/>
+                                            </p:column>
+
+                                            <p:column>
+                                                <p:commandButton actionListener="#{slaComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:slaopt:instancesB, :form:growl"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:fieldset>
+                                    
+                                    <p:fieldset id="objective" legend="Objetivo do SLA" style="border-color: #2980b9">
+                                        <h:panelGrid id="sla_objective" columns="2" style="margin-bottom:10px" cellpadding="5">
+                                            <p:outputLabel for="slaobjective" value="Foco da Execução:" />
+                                            <p:selectOneRadio id="slaobjective" value="#{slaComposerBean.objective}">
+                                                <f:selectItem itemLabel="Maior Desempenho" itemValue="1" />
+                                                <f:selectItem itemLabel="Menor Custo" itemValue="2" />
+                                                <f:selectItem itemLabel="Melhor Custo/Beneficio" itemValue="3" />
+                                            </p:selectOneRadio>
+                                        </h:panelGrid>
+                                    </p:fieldset>
+                                </p:panel> 
+
+                            </p:tab>
+                            <p:tab title="Padrao">
+                                <h:panelGrid columns="2" cellpadding="10">
+                                    <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
+                                    <h:outputText value="Francis Ford Coppola's legendary..." />
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:tabView>
+                        <!--</p:panel>-->
+                    </p:tab>
+<!--                     <p:tab id="template" title="Contrato do SLA">
+                        <p:panel id="template_sla">   
+                             ======== Contrato ======== 
+                            <p:panel>
+
+                            </p:panel>
+                        </p:panel>
+                    </p:tab>-->
+                    <!--Resumo do workflow-->
                     <p:tab id="workflow_summary" title="Resumo deste Workflow">
                         <p:panel>
                             <p:panel>
