@@ -13,7 +13,7 @@ import java.util.UUID;
  * @author brenokx
  */
 public class Instance {
-    private String id = UUID.randomUUID().toString();
+    private final String id ;
     private String type;
     private Double valueHour;
     private int quantity;
@@ -27,6 +27,7 @@ public class Instance {
     private String description;
 
     public Instance(){
+        this.id= UUID.randomUUID().toString();
         this.type = "vazia";
         this.valueHour = 0.0D;
         this.quantity = 0;
@@ -54,6 +55,7 @@ public class Instance {
      * @param hdType 
      */
     public Instance(String type, Double valueHour, int quantity, String locality, Double memory, Double cpuHtz, String cpuType, int quantityCPU, Double hd, String hdType){
+        this.id= UUID.randomUUID().toString();
         this.type = type;
         this.valueHour = valueHour;
         this.quantity = quantity;
@@ -213,7 +215,7 @@ public class Instance {
     /**
      * Set the Description with tostring of class
      */
-    public void setDescription() {
+    public final void setDescription() {
         this.description = this.toString();
     }
 

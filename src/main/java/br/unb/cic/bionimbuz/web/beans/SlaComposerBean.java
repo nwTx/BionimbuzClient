@@ -197,12 +197,7 @@ public class SlaComposerBean implements Serializable{
     private void showMessage(String msg) {
         FacesMessage message = new FacesMessage(msg, "");
         FacesContext.getCurrentInstance().addMessage(null, message);
-    }
-    
-    public void addAction(ActionEvent actionEvent) {
-        setInstance(new Instance());
-        instances.add(getInstance());
-    }
+    } 
 
     /**
      * @return the instance

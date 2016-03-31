@@ -5,6 +5,7 @@ import java.io.IOException;
 import br.unb.cic.bionimbuz.communication.RestCommunicator;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.FileInfo;
+import br.unb.cic.bionimbuz.model.SLA;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.rest.action.DeleteFile;
@@ -35,6 +36,7 @@ import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
 import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
 import br.unb.cic.bionimbuz.rest.response.StartWorkflowResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
+import br.unb.cic.bionimbuz.web.beans.SlaComposerBean;
 import java.util.List;
 
 /**
@@ -141,6 +143,20 @@ public class RestService {
         return response.isWorkflowProcessed();
     }
 
+    /**
+     * Sends an user SLA QOS to the BioNimbuZ Core to be processed and returns the SLA template
+     *
+     * @param workflow
+     * @return
+     * @throws ServerNotReachableException
+     */
+    public SLA startSla(SLA sla) throws ServerNotReachableException {
+      //  RequestInfo startSlaRequest = new StartSlaRequest(sla);
+    //    StartWorkflowResponse response = (StartSlaResponse) restCommunicator.sendRequest(new StartSla(), startSlaRequest);
+
+        return null;
+    }
+    
     /**
      * Calls server to inform about the status of the user's workflow list
      *
