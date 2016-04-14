@@ -15,6 +15,7 @@ import br.unb.cic.bionimbuz.rest.action.GetWorkflowStatus;
 import br.unb.cic.bionimbuz.rest.action.Login;
 import br.unb.cic.bionimbuz.rest.action.Logout;
 import br.unb.cic.bionimbuz.rest.action.SignUp;
+import br.unb.cic.bionimbuz.rest.action.StartSla;
 import br.unb.cic.bionimbuz.rest.action.StartWorkflow;
 import br.unb.cic.bionimbuz.rest.action.Upload;
 import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
@@ -25,6 +26,7 @@ import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.SignUpRequest;
+import br.unb.cic.bionimbuz.rest.request.StartSlaRequest;
 import br.unb.cic.bionimbuz.rest.request.StartWorkflowRequest;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
@@ -34,6 +36,7 @@ import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
 import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
+import br.unb.cic.bionimbuz.rest.response.StartSlaResponse;
 import br.unb.cic.bionimbuz.rest.response.StartWorkflowResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 import br.unb.cic.bionimbuz.web.beans.SlaComposerBean;
@@ -146,13 +149,14 @@ public class RestService {
     /**
      * Sends an user SLA QOS to the BioNimbuZ Core to be processed and returns the SLA template
      *
+     * @param sla
      * @param workflow
      * @return
      * @throws ServerNotReachableException
      */
-    public SLA startSla(SLA sla) throws ServerNotReachableException {
-      //  RequestInfo startSlaRequest = new StartSlaRequest(sla);
-    //    StartWorkflowResponse response = (StartSlaResponse) restCommunicator.sendRequest(new StartSla(), startSlaRequest);
+    public SLA startSla(SLA sla, Workflow workflow) throws ServerNotReachableException {
+       RequestInfo startSlaRequest = new StartSlaRequest(sla, workflow);
+       StartSlaResponse response = (StartSlaResponse) restCommunicator.sendRequest(new StartSla(), startSlaRequest);
 
         return null;
     }

@@ -5,11 +5,13 @@
  */
 package br.unb.cic.bionimbuz.model;
 
+import br.unb.cic.bionimbuz.web.beans.SlaComposerBean;
+import java.util.Date;
 import java.util.List;
 
 /**
  *
- * @author Breno Rodri
+ * @author Breno Rodrigues
  */
 public class SLA {
     private User user;
@@ -18,7 +20,42 @@ public class SLA {
     private Long period;
     private List <PluginService> services;
     private List<Instance> instances;
-
+    private Double value;
+    private Date time;
+    
+            
+    public SLA(){
+        this.user=null;
+        this.provider=null;
+        this.objective= 0;
+        this.period = 0l;
+        this.instances=null;
+        this.services=null;
+        this.time=null;
+        this.time=new Date();
+        
+    }
+    
+    public SLA(SlaComposerBean slacomp,User user, User provider, List<PluginService> services){
+        this.user=user;
+        this.provider=provider;
+        this.objective= slacomp.getObjective();
+        this.period = Long.parseLong(slacomp.getLimitationValue());
+        this.instances=slacomp.getSelectedInstancies();
+        this.services= services;
+    }
+    
+    public SLA(SlaComposerBean slacomp,User user, User provider, List<PluginService> service,Date time, Double value){
+        this.user=user;
+        this.provider=provider;
+        this.objective= slacomp.getObjective();
+        this.period = Long.parseLong(slacomp.getLimitationValue());
+        this.instances=slacomp.getSelectedInstancies();
+        this.services=service;
+        this.time= time;
+        this.value=value;
+    }
+    
     /**
      * @return the user
      */
@@ -101,6 +138,34 @@ public class SLA {
      */
     public void setInstances(List<Instance> instances) {
         this.instances = instances;
+    }
+
+    /**
+     * @return the value
+     */
+    public Double getValue() {
+        return value;
+    }
+
+    /**
+     * @param value the value to set
+     */
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    /**
+     * @return the time
+     */
+    public Date getTime() {
+        return time;
+    }
+
+    /**
+     * @param time the time to set
+     */
+    public void setTime(Date time) {
+        this.time = time;
     }
     
 }

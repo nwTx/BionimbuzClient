@@ -36,7 +36,7 @@ public class SlaComposerBean implements Serializable{
     
     private final RestService restService;
     private String panel1 = "Hide-Panel1";
-    private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SlaComposerBean.class);
     private boolean limitation;
     private String limitationType;
     private String limitationValue;

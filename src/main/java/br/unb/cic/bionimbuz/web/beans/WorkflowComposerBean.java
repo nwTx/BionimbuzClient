@@ -28,6 +28,7 @@ import org.primefaces.event.diagram.DisconnectEvent;
 import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
+import br.unb.cic.bionimbuz.model.SLA;
 import br.unb.cic.bionimbuz.model.WorkflowStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
@@ -40,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.util.logging.Level;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -60,7 +62,10 @@ public class WorkflowComposerBean implements Serializable {
 
     @Inject
     private SessionBean sessionBean;
-
+    
+    @Inject
+    private SlaComposerBean slacomp;
+    
     private final RestService restService;
     private final List<PluginService> servicesList;
     private ArrayList<DiagramElement> elements;
@@ -80,6 +85,7 @@ public class WorkflowComposerBean implements Serializable {
     private DiagramElement clickedElement;
     private final List<String> supportedFormats;
     private String fileFormat;
+    private SLA sla;
 
     // Used by the user to download a workflow
     private StreamedContent workflowToDownload;
@@ -146,7 +152,15 @@ public class WorkflowComposerBean implements Serializable {
 //
         if(toGoStep.equals("template"))
         {
+            
             System.out.println("peguei");
+            sla= new SLA(slacomp,loggedUser,loggedUser,this.getServicesList());
+            
+            try {
+                restService.startSla(sla,workflowDiagram.getWorkflow());
+            } catch (ServerNotReachableException ex) {
+                java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
