@@ -1,10 +1,16 @@
 package br.unb.cic.bionimbuz.rest.action;
 
+import br.unb.bionimbuz.storage.BioBucket;
+import br.unb.bionimbuz.storage.CloudStorageMethods;
+import br.unb.bionimbuz.storage.CloudStorageMethodsV1;
+import br.unb.bionimbuz.storage.PeriodicChecker;
 import javax.ws.rs.client.Client;
 
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -50,73 +56,106 @@ public class Upload extends Action {
         // Create HttpClient
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
-        try {
-
-            // Creates HttpPost with server address
-            HttpPost httpPost = new HttpPost(bionimbuzIP + REST_UPLOAD_URL);
+        if (true) { //TODO
+            
             UploadRequest req = (UploadRequest) this.request;
-
-            // Add a part as the file (bute[])
-            ByteArrayBody file = new ByteArrayBody(req.getFileInfo().getPayload(), req.getFileInfo().getName());
-
-            // Set hash
-            req.getFileInfo().setHash(generateHash(req.getFileInfo().getPayload()));
-
-            // Avoid the payload to be sent twice (because it was already set as ByteArrayBody part)
-            req.getFileInfo().setPayload(null);
-
-            // Transforms the file metadata into JSON
-            String jsonFileInfo = new ObjectMapper().writeValueAsString(req.getFileInfo());
-
-            // Adds it as a part of the request
-            StringBody fileInfoBody = new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON);
-
-            // Create the request with the two parts: Metadata and the file as byte[]
-            HttpEntity reqEntity = MultipartEntityBuilder.create()
-                    .addPart("file", file)
-                    .addPart("file_info", fileInfoBody)
-                    .build();
-
-            // Adds it to the httpPost object
-            httpPost.setEntity(reqEntity);
-
-            LOGGER.info("Sending Upload request (fileId=" + req.getFileInfo().getSize() + ") to BioNimbuZ (path: " + REST_UPLOAD_URL);
-
-            // Creates the response and fires the post request
-            CloseableHttpResponse response = httpclient.execute(httpPost);
-
+            
             try {
-                HttpEntity resEntity = response.getEntity();
-
-                if (resEntity != null) {
-                    LOGGER.info("Upload request got " + response.getStatusLine() + " response");
-
-                    // Verifies response status code
-                    if (response.getStatusLine().getStatusCode() == 200) {
-                        returnFromServer = true;
-                    } else {
-                        LOGGER.error("Response code from server is different of HTTP 200");
-                        returnFromServer = false;
-                    }
-                } else {
-                    LOGGER.error("Response from Server is null");
-                }
-
-                EntityUtils.consume(resEntity);
-            } finally {
-                response.close();
+                
+                FileOutputStream fos = new FileOutputStream(config.getBucketsFolder() + "/tmp/" + req.getFileInfo().getName());
+                fos.write(req.getFileInfo().getPayload());
+                fos.close();
+                
+                BioBucket dest = PeriodicChecker.GetBestBucket();
+                
+                LOGGER.info("Uploading file to bucket: " + dest.getName());
+                
+                CloudStorageMethods methodsInstance = new CloudStorageMethodsV1();
+                
+                methodsInstance.StorageAuth(dest.getProvider());
+                methodsInstance.StorageUploadFile(dest, "/data-folder", config.getBucketsFolder() + "/tmp", req.getFileInfo().getName());
+                
+                File aux = new File (config.getBucketsFolder() + "/tmp/" + req.getFileInfo().getName());
+                aux.delete();
+                
+                returnFromServer = true;
+                
+            } catch (Throwable t) {
+                LOGGER.error("Exception caught: " + t.getMessage());
+                t.printStackTrace();
             }
-        } catch (IOException ex) {
-            LOGGER.error("[IOException] " + ex.getMessage());
-
-            returnFromServer = false;
-        } finally {
+            
+            
+            
+        } else {
             try {
-                httpclient.close();
+
+                // Creates HttpPost with server address
+                HttpPost httpPost = new HttpPost(bionimbuzIP + REST_UPLOAD_URL);
+                UploadRequest req = (UploadRequest) this.request;
+
+                // Add a part as the file (bute[])
+                ByteArrayBody file = new ByteArrayBody(req.getFileInfo().getPayload(), req.getFileInfo().getName());
+
+                // Set hash
+                req.getFileInfo().setHash(generateHash(req.getFileInfo().getPayload()));
+
+                // Avoid the payload to be sent twice (because it was already set as ByteArrayBody part)
+                req.getFileInfo().setPayload(null);
+
+                // Transforms the file metadata into JSON
+                String jsonFileInfo = new ObjectMapper().writeValueAsString(req.getFileInfo());
+
+                // Adds it as a part of the request
+                StringBody fileInfoBody = new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON);
+
+                // Create the request with the two parts: Metadata and the file as byte[]
+                HttpEntity reqEntity = MultipartEntityBuilder.create()
+                        .addPart("file", file)
+                        .addPart("file_info", fileInfoBody)
+                        .build();
+
+                // Adds it to the httpPost object
+                httpPost.setEntity(reqEntity);
+
+                LOGGER.info("Sending Upload request (fileId=" + req.getFileInfo().getSize() + ") to BioNimbuZ (path: " + REST_UPLOAD_URL);
+
+                // Creates the response and fires the post request
+                CloseableHttpResponse response = httpclient.execute(httpPost);
+
+                try {
+                    HttpEntity resEntity = response.getEntity();
+
+                    if (resEntity != null) {
+                        LOGGER.info("Upload request got " + response.getStatusLine() + " response");
+
+                        // Verifies response status code
+                        if (response.getStatusLine().getStatusCode() == 200) {
+                            returnFromServer = true;
+                        } else {
+                            LOGGER.error("Response code from server is different of HTTP 200");
+                            returnFromServer = false;
+                        }
+                    } else {
+                        LOGGER.error("Response from Server is null");
+                    }
+
+                    EntityUtils.consume(resEntity);
+                } finally {
+                    response.close();
+                }
             } catch (IOException ex) {
                 LOGGER.error("[IOException] " + ex.getMessage());
 
                 returnFromServer = false;
+            } finally {
+                try {
+                    httpclient.close();
+                } catch (IOException ex) {
+                    LOGGER.error("[IOException] " + ex.getMessage());
+
+                    returnFromServer = false;
+                }
             }
         }
 
