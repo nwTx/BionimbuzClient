@@ -5,6 +5,9 @@
  */
 package br.unb.cic.bionimbuz.rest.response;
 
+import br.unb.cic.bionimbuz.model.SLA;
+import br.unb.cic.bionimbuz.rest.action.StartSla;
+
 /**
  *
  * @author biolabid2
@@ -12,11 +15,15 @@ package br.unb.cic.bionimbuz.rest.response;
 public class StartSlaResponse implements ResponseInfo {
     
     private boolean SlaDone;
-
+    private SLA sla;
     public StartSlaResponse() {
     
     }
-
+    
+    public StartSlaResponse(SLA sla){
+        this.sla=sla;
+    }
+    
     public StartSlaResponse(boolean SlaDone) {
         this.SlaDone = SlaDone;
     }
@@ -33,6 +40,20 @@ public class StartSlaResponse implements ResponseInfo {
      */
     public void setSlaDone(boolean SlaDone) {
         this.SlaDone = SlaDone;
+    }
+
+    /**
+     * @return the sla
+     */
+    public SLA getSla() {
+        return sla;
+    }
+
+    /**
+     * @param sla the sla to set
+     */
+    public void setSla(SLA sla) {
+        this.sla = sla;
     }
     
 }

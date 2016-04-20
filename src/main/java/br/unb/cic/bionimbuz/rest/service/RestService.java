@@ -158,7 +158,7 @@ public class RestService {
        RequestInfo startSlaRequest = new StartSlaRequest(sla, workflow);
        StartSlaResponse response = (StartSlaResponse) restCommunicator.sendRequest(new StartSla(), startSlaRequest);
 
-        return null;
+        return response.getSla();
     }
     
     /**

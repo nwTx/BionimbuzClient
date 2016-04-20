@@ -6,14 +6,18 @@
 package br.unb.cic.bionimbuz.model;
 
 import br.unb.cic.bionimbuz.web.beans.SlaComposerBean;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
  * @author Breno Rodrigues
  */
 public class SLA {
+    
+    private String id="SLA" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);;
     private User user;
     private User provider;
     private int objective;
@@ -25,6 +29,7 @@ public class SLA {
     
             
     public SLA(){
+        
         this.user=null;
         this.provider=null;
         this.objective= 0;
@@ -37,6 +42,7 @@ public class SLA {
     }
     
     public SLA(SlaComposerBean slacomp,User user, User provider, List<PluginService> services){
+        
         this.user=user;
         this.provider=provider;
         this.objective= slacomp.getObjective();
@@ -46,6 +52,7 @@ public class SLA {
     }
     
     public SLA(SlaComposerBean slacomp,User user, User provider, List<PluginService> service,Date time, Double value){
+     
         this.user=user;
         this.provider=provider;
         this.objective= slacomp.getObjective();
@@ -166,6 +173,20 @@ public class SLA {
      */
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
     
 }
