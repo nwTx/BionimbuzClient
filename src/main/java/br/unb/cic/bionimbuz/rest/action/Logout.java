@@ -15,7 +15,7 @@ public class Logout extends Action {
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {
-        this.target = client.target(appConfiguration.getBionimbuzAddress());
+        this.target = client.target(config.getBionimbuzAddress());
         this.request = (LogoutRequest) reqInfo;
     }
 

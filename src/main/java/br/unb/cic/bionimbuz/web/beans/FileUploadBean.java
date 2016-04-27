@@ -60,9 +60,9 @@ public class FileUploadBean implements Serializable {
         for (String allowed : ConfigurationRepository.getSupportedFormats()) {
             allowedTypes += allowed.replace(".", "") + "|";
         }
-        
+
         allowedTypes += ")$/";
-        
+
     }
 
     /**
@@ -136,29 +136,23 @@ public class FileUploadBean implements Serializable {
      *
      * @param fileName
      * @param in
+     *
+     * public void saveTempFile(String fileName, InputStream in) { try { //
+     * write the inputStream to a FileOutputStream outputStream = new
+     * FileOutputStream(new File(ConfigurationRepository. + fileName));
+     *
+     * int read = 0; byte[] bytes = new byte[1024];
+     *
+     * while ((read = in.read(bytes)) != -1) { outputStream.write(bytes, 0,
+     * read); }
+     *
+     * // in.close(); LOGGER.info("Temporary file created [path=" +
+     * ConfigurationRepository.UPLOADED_FILES_PATH + fileName + "]");
+     *
+     * } catch (IOException e) { LOGGER.error("[IOException - " + e.getMessage()
+     * + "]"); } }
      */
-    public void saveTempFile(String fileName, InputStream in) {
-        try {
-            // write the inputStream to a FileOutputStream
-            outputStream = new FileOutputStream(new File(ConfigurationRepository.UPLOADED_FILES_PATH + fileName));
-
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = in.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-
-            // in.close();
-            LOGGER.info("Temporary file created [path="
-                    + ConfigurationRepository.UPLOADED_FILES_PATH
-                    + fileName + "]");
-
-        } catch (IOException e) {
-            LOGGER.error("[IOException - " + e.getMessage() + "]");
-        }
-    }
-
+    
     // Shows JSF Faces Message to the user
     private void showFacesMessage(Severity severity, String msg) {
         FacesMessage message = new FacesMessage(severity, msg, "");
@@ -179,7 +173,7 @@ public class FileUploadBean implements Serializable {
          * because PrimeFaces component accepts only int value from 0 to 100
          */
         int x = usage.divide(new BigDecimal(MAX_STORAGE_SIZE)).multiply(new BigDecimal(100)).intValue();
-        
+
         return usage.divide(new BigDecimal(MAX_STORAGE_SIZE)).multiply(new BigDecimal(100)).intValue();
     }
 

@@ -1,7 +1,6 @@
 package br.unb.cic.bionimbuz.web.beans;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
-import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.Log;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.model.WorkflowOutputFile;
@@ -36,7 +35,7 @@ public class WorkflowHistoryBean implements Serializable {
 
     @PostConstruct
     private void initialize() {
-        restPath = ConfigurationRepository.getApplicationConfiguration().getBionimbuzAddress() + REST_PATH;
+        restPath = ConfigurationRepository.BIONIMBUZ_ADDRESS + REST_PATH;
         restService = new RestService();
         workflowOutputFiles = new ArrayList<>();
     }
