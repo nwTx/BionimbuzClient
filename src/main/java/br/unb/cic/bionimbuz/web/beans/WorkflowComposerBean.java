@@ -153,7 +153,7 @@ public class WorkflowComposerBean implements Serializable {
         if(toGoStep.equals("template"))
         {
             
-            System.out.println("peguei: "+slacomp.getSelectedInstancies().get(1).toString());
+            System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
             sla= new SLA(slacomp,loggedUser,loggedUser,this.getServicesList());
             System.out.println(sla.getId());
             

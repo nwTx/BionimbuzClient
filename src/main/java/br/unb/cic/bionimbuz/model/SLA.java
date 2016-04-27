@@ -46,6 +46,7 @@ public class SLA {
         this.user=user;
         this.provider=provider;
         this.objective= slacomp.getObjective();
+        System.out.println("objective constructor:"+slacomp.getObjective()+slacomp.getLimitationValue());
         this.period = Long.parseLong(slacomp.getLimitationValue());
         this.instances=slacomp.getSelectedInstancies();
         this.services= services;
