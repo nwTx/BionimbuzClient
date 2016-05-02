@@ -4,6 +4,7 @@ import br.unb.bionimbuz.storage.BioBucket;
 import br.unb.bionimbuz.storage.CloudStorageMethods;
 import br.unb.bionimbuz.storage.CloudStorageMethodsV1;
 import br.unb.bionimbuz.storage.PeriodicChecker;
+import br.unb.cic.bionimbuz.model.FileInfo;
 import javax.ws.rs.client.Client;
 
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
@@ -77,8 +78,62 @@ public class Upload extends Action {
                 
                 File aux = new File (config.getBucketsFolder() + "/tmp/" + req.getFileInfo().getName());
                 aux.delete();
+
                 
-                returnFromServer = true;
+                // Creates HttpPost with server address
+                HttpPost httpPost = new HttpPost(bionimbuzIP + REST_UPLOAD_URL);
+
+                // Set bucket
+                
+                req.getFileInfo().setBucket(dest.getName());
+                
+                // Set hash
+                req.getFileInfo().setHash(generateHash(req.getFileInfo().getPayload()));
+
+                // Avoid the payload to be sent twice (because it was already set as ByteArrayBody part)
+                req.getFileInfo().setPayload(null);
+
+                // Transforms the file metadata into JSON
+                String jsonFileInfo = new ObjectMapper().writeValueAsString(req.getFileInfo());
+
+                // Adds it as a part of the request
+                StringBody fileInfoBody = new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON);
+
+                // Create the request with the two parts: Metadata and the file as byte[]
+                HttpEntity reqEntity = MultipartEntityBuilder.create()
+                        .addPart("file_info", fileInfoBody)
+                        .build();
+
+                // Adds it to the httpPost object
+                httpPost.setEntity(reqEntity);
+
+                LOGGER.info("Sending Upload request (fileId=" + req.getFileInfo().getId() + ") to BioNimbuZ (path: " + REST_UPLOAD_URL);
+
+                // Creates the response and fires the post request
+                CloseableHttpResponse response = httpclient.execute(httpPost);
+
+                try {
+                    HttpEntity resEntity = response.getEntity();
+
+                    if (resEntity != null) {
+                        LOGGER.info("Upload request got " + response.getStatusLine() + " response");
+
+                        // Verifies response status code
+                        if (response.getStatusLine().getStatusCode() == 200) {
+                            returnFromServer = true;
+                        } else {
+                            LOGGER.error("Response code from server is different of HTTP 200");
+                            returnFromServer = false;
+                        }
+                    } else {
+                        LOGGER.error("Response from Server is null");
+                    }
+
+                    EntityUtils.consume(resEntity);
+                } finally {
+                    response.close();
+                }
+
                 
             } catch (Throwable t) {
                 LOGGER.error("Exception caught: " + t.getMessage());

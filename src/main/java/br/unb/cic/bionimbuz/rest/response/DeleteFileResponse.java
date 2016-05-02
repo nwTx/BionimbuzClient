@@ -10,6 +10,10 @@ import org.jboss.resteasy.core.ServerResponse;
 public class DeleteFileResponse extends ServerResponse implements ResponseInfo {
 
     private boolean deleted;
+    
+    public DeleteFileResponse(boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public boolean isDeleted() {
         return deleted;
