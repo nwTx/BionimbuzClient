@@ -40,7 +40,7 @@ Servidor de aplicação web, utilizado no projeto.
 
 1.3 Configure o arquivo /pasta_home/nome_usuario/wildfly/standalone/configuration/standalone-full-ha.xml
 
-1.4 Altere as linhas, para a utilização da porta 8888 no wildflye e para as tranferências de arquivos maiores: 
+1.4 Altere as linhas, para a utilização da porta 8888 no wildfly e para as tranferências de arquivos maiores: 
 
 socket-binding name="http" port="${jboss.http.port:8080}" para 
 socket-binding name="http" port="${jboss.http.port:888}"
@@ -52,8 +52,10 @@ http-listener name="default" socket-binding="http" redirect-socket="https" max-p
 
 1.6 Configure o arquivo /pasta_home/nome_usuario/wildfly/bin/standalone.conf
 
-1.7 Altere as linhas, para as tranferências de arquivos maiores: 
+1.7 Altere as linhas, para as tranferências de arquivos maiores:
+
 JAVA_OPTS="-Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true" para 
+
 JAVA_OPTS="-Xms1024m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true"
 
 1.8 Salve e feche o arquivo
