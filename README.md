@@ -67,10 +67,12 @@ JAVA_OPTS="-Xms1024m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -
 1.10 Pronto! O servidor wildfly está executando, mais detalhes na documentação:
 
  https://docs.jboss.org/author/display/WFLY10/Documentation
+ 
 ----------------------------------------------------------------------------------------------------------------------
-
 ##### Executando o BioNimbuZClient
+
 Para iniciar a execução o servidor wildfly deve ser iniciado.
+
 -------------------------------------------------------------------------------------------------------------
 1 - Alterar conf/node.yaml com as configurações de ip do servidor , ip e os caminhos das pastas 
     necessárias para a execução, etc..
