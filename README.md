@@ -64,7 +64,9 @@ JAVA_OPTS="-Xms1024m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -
 
 1.9 Inicie o wildfly com o comando sudo /pasta_home/nome_usuario/wildfly/bin/./standalone.sh
 
-1.10 Pronto! O servidor wildfly está executando, mais detalhes na documentação: https://docs.jboss.org/author/display/WFLY10/Documentation
+1.10 Pronto! O servidor wildfly está executando, mais detalhes na documentação:
+
+ https://docs.jboss.org/author/display/WFLY10/Documentation
 ----------------------------------------------------------------------------------------------------------------------
 
 ##### Executando o BioNimbuZClient
