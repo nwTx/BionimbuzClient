@@ -41,9 +41,10 @@ public class PeriodicChecker implements Runnable {
                 methodsInstance.CheckStorageLatency(aux);
                 LOGGER.info("[PeriodicChecker] Latency for bucket " + aux.getName() + ": " + aux.getLatency());
 
-                LOGGER.info("[PeriodicChecker] Checking Bandwith for bucket " + aux.getName());
+                LOGGER.info("[BandwithChecker] Checking Bandwith for bucket " + aux.getName());
                 methodsInstance.CheckStorageBandwith(aux);
-                LOGGER.info("[PeriodicChecker] Bandwith for bucket " + aux.getName() + ": " + aux.getBandwith());
+                LOGGER.debug("[BandwithChecker] Upload for bucket " + aux.getName() + ": " + (aux.getUpBandwith()/1024)/1024 + " MB/s" );
+                LOGGER.debug("[BandwithChecker] Download for bucket " + aux.getName() + ": " + (aux.getDlBandwith()/1024)/1024 + " MB/s" );
             }
         } catch (Throwable t) {
             LOGGER.error("[PeriodicChecker] Exception: " + t.getMessage());
@@ -127,12 +128,12 @@ public class PeriodicChecker implements Runnable {
 
     }   
     
-    public static BioBucket GetBestBucket () {
+    public static BioBucket getBestBucket () {
         BioBucket best = null;
         
         for (BioBucket aux : bucketList) {
             
-            if (best == null || (aux.getBandwith() > best.getBandwith())) 
+            if (best == null || (aux.getAvgBandwith() > best.getAvgBandwith())) 
                 best = aux;
             
         }

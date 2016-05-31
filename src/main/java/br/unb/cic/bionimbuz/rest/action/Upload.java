@@ -67,14 +67,14 @@ public class Upload extends Action {
                 fos.write(req.getFileInfo().getPayload());
                 fos.close();
                 
-                BioBucket dest = PeriodicChecker.GetBestBucket();
+                BioBucket dest = PeriodicChecker.getBestBucket();
                 
                 LOGGER.info("Uploading file to bucket: " + dest.getName());
                 
                 CloudStorageMethods methodsInstance = new CloudStorageMethodsV1();
                 
                 methodsInstance.StorageAuth(dest.getProvider());
-                methodsInstance.StorageUploadFile(dest, "/data-folder", config.getBucketsFolder() + "/tmp", req.getFileInfo().getName());
+                methodsInstance.StorageUploadFile(dest, "/data-folder/", config.getBucketsFolder() + "/tmp/", req.getFileInfo().getName());
                 
                 File aux = new File (config.getBucketsFolder() + "/tmp/" + req.getFileInfo().getName());
                 aux.delete();
