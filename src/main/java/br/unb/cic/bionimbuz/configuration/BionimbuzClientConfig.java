@@ -31,6 +31,9 @@ public class BionimbuzClientConfig {
     
     @JsonProperty("gcloud-folder")
     private String gcloudFolder;
+    
+    @JsonProperty("storage-mode")
+    private String storageMode;
 
     public String getRootPath() {
         return rootPath;
@@ -88,6 +91,14 @@ public class BionimbuzClientConfig {
         this.gcloudFolder = gcloudFolder;
     }
 
+    public String getStorageMode() {
+        return storageMode;
+    }
+
+    public void setStorageMode(String storageMode) {
+        this.storageMode = storageMode;
+    }
+    
     public void log() {
         Logger LOGGER = LoggerFactory.getLogger(ApplicationConfiguration.class);
 

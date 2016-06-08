@@ -57,7 +57,7 @@ public class Upload extends Action {
         // Create HttpClient
         CloseableHttpClient httpclient = HttpClients.createDefault();
 
-        if (true) { //TODO
+        if (config.getStorageMode().equalsIgnoreCase("1")) { // Cloud Storage
             
             UploadRequest req = (UploadRequest) this.request;
             
@@ -67,7 +67,7 @@ public class Upload extends Action {
                 fos.write(req.getFileInfo().getPayload());
                 fos.close();
                 
-                BioBucket dest = PeriodicChecker.getBestBucket();
+                BioBucket dest = PeriodicChecker.getBestBucket(PeriodicChecker.getBucketList());
                 
                 LOGGER.info("Uploading file to bucket: " + dest.getName());
                 
@@ -142,7 +142,7 @@ public class Upload extends Action {
             
             
             
-        } else {
+        } else { // Old Storage 
             try {
 
                 // Creates HttpPost with server address

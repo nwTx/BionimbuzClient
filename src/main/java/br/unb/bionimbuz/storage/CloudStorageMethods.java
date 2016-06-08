@@ -70,6 +70,10 @@ public abstract class CloudStorageMethods {
     public static void setMyId(String myId) {
         CloudStorageMethods.myId = myId;
     }
+
+    public static AmazonS3 getS3client() {
+        return s3client;
+    }
     
     public abstract void StorageAuth(StorageProvider sp) throws Exception;
     public abstract void StorageUploadFile(BioBucket bucket, String bucketPath, String localPath, String fileName) throws Exception;

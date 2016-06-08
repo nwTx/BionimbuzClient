@@ -8,6 +8,7 @@ package br.unb.bionimbuz.storage;
 import br.unb.bionimbuz.storage.CloudStorageMethods.*;
 import br.unb.cic.bionimbuz.configuration.BionimbuzClientConfig;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -41,16 +42,16 @@ public class PeriodicChecker implements Runnable {
                 methodsInstance.CheckStorageLatency(aux);
                 LOGGER.info("[PeriodicChecker] Latency for bucket " + aux.getName() + ": " + aux.getLatency());
 
-                LOGGER.info("[BandwithChecker] Checking Bandwith for bucket " + aux.getName());
+                LOGGER.info("[PeriodicChecker] Checking Bandwith for bucket " + aux.getName());
                 methodsInstance.CheckStorageBandwith(aux);
-                LOGGER.debug("[BandwithChecker] Upload for bucket " + aux.getName() + ": " + (aux.getUpBandwith()/1024)/1024 + " MB/s" );
-                LOGGER.debug("[BandwithChecker] Download for bucket " + aux.getName() + ": " + (aux.getDlBandwith()/1024)/1024 + " MB/s" );
+                LOGGER.info("[PeriodicChecker] Upload for bucket " + aux.getName() + ": " + (aux.getUpBandwith()/1024)/1024 + " MB/s" );
+                LOGGER.info("[PeriodicChecker] Download for bucket " + aux.getName() + ": " + (aux.getDlBandwith()/1024)/1024 + " MB/s" );
             }
         } catch (Throwable t) {
             LOGGER.error("[PeriodicChecker] Exception: " + t.getMessage());
             t.printStackTrace();
         }
-        LOGGER.info("[BandwithChecker] Finishing Latency/Bandiwth check on buckets ");        
+        LOGGER.info("[PeriodicChecker] Finishing Latency/Bandiwth check on buckets ");        
     }
     
     public void start () {
@@ -128,10 +129,10 @@ public class PeriodicChecker implements Runnable {
 
     }   
     
-    public static BioBucket getBestBucket () {
+    public static BioBucket getBestBucket (List<BioBucket> buckets) {
         BioBucket best = null;
         
-        for (BioBucket aux : bucketList) {
+        for (BioBucket aux : buckets) {
             
             if (best == null || (aux.getAvgBandwith() > best.getAvgBandwith())) 
                 best = aux;
@@ -140,4 +141,33 @@ public class PeriodicChecker implements Runnable {
         
         return best;
     }
+    
+    static public BioBucket findFile (String fileName) {
+        
+        
+        List<BioBucket> buckets = new ArrayList<>();
+        
+        for (BioBucket bucket : bucketList) {
+
+            File dataFolder = new File (bucket.getMountPoint() + "/data-folder/");
+
+            for (File file : dataFolder.listFiles()) {
+                if (fileName.equals(file.getName()))
+                    buckets.add(bucket);
+            }
+        }
+
+        if (buckets.isEmpty())
+        {
+            return null;
+        }
+        
+        return getBestBucket(buckets);
+    }
+
+    public static List<BioBucket> getBucketList() {
+        return bucketList;
+    }
+    
+    
 }
