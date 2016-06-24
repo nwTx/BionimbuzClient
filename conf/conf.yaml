@@ -20,3 +20,6 @@ buckets-auth-folder: /*/*/*/Auth/
 
  # Path to de binary of gcloud/gsutil line-command
 gcloud-folder: /home/*/google-cloud-sdk/bin/
+
+ # Storage mode (0 - old/vm, 1 - cloud)
+storage-mode: 0
