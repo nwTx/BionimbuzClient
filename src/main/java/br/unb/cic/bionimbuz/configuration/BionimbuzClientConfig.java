@@ -110,7 +110,9 @@ public class BionimbuzClientConfig {
 
         LOGGER.info("========================================");
         
-        PeriodicChecker checker = new PeriodicChecker();
-        checker.start();
+        if (getStorageMode().equalsIgnoreCase("1")) {
+            PeriodicChecker checker = new PeriodicChecker();
+            checker.start();
+        } 
     }
 }

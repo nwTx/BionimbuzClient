@@ -63,7 +63,7 @@ public class Upload extends Action {
             
             try {
                 
-                FileOutputStream fos = new FileOutputStream(config.getBucketsFolder() + "/tmp/" + req.getFileInfo().getName());
+                FileOutputStream fos = new FileOutputStream(config.getTemporaryWorkflowFolder() + "/" + req.getFileInfo().getName());
                 fos.write(req.getFileInfo().getPayload());
                 fos.close();
                 
@@ -74,9 +74,9 @@ public class Upload extends Action {
                 CloudStorageMethods methodsInstance = new CloudStorageMethodsV1();
                 
                 methodsInstance.StorageAuth(dest.getProvider());
-                methodsInstance.StorageUploadFile(dest, "/data-folder/", config.getBucketsFolder() + "/tmp/", req.getFileInfo().getName());
+                methodsInstance.StorageUploadFile(dest, "/data-folder/", config.getTemporaryWorkflowFolder() + "/", req.getFileInfo().getName());
                 
-                File aux = new File (config.getBucketsFolder() + "/tmp/" + req.getFileInfo().getName());
+                File aux = new File (config.getTemporaryWorkflowFolder() + "/" + req.getFileInfo().getName());
                 aux.delete();
 
                 

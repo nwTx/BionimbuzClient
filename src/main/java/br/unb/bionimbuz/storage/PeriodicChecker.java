@@ -124,8 +124,8 @@ public class PeriodicChecker implements Runnable {
         bucketList.add(aux);
 
         //EU
-        aux = new BioBucket(StorageProvider.GOOGLE, "bionimbuz-g-eu", (bucketsFolder + "bionimbuz-g-eu"));
-        bucketList.add(aux);
+//        aux = new BioBucket(StorageProvider.GOOGLE, "bionimbuz-g-eu", (bucketsFolder + "bionimbuz-g-eu"));
+//        bucketList.add(aux);
 
     }   
     
