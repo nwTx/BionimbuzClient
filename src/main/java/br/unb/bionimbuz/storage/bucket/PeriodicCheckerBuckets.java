@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.unb.bionimbuz.storage;
+package br.unb.bionimbuz.storage.bucket;
 
-import br.unb.bionimbuz.storage.CloudStorageMethods.*;
+import br.unb.bionimbuz.storage.bucket.methods.CloudMethodsAmazonGoogle;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods.*;
 import br.unb.cic.bionimbuz.configuration.BionimbuzClientConfig;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import java.io.File;
@@ -21,9 +22,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Lucas
  */
-public class PeriodicChecker implements Runnable {
+public class PeriodicCheckerBuckets implements Runnable {
     
-    Logger LOGGER = LoggerFactory.getLogger(PeriodicChecker.class);
+    Logger LOGGER = LoggerFactory.getLogger(PeriodicCheckerBuckets.class);
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     static private List<BioBucket> bucketList = new ArrayList<>();
     
@@ -57,7 +58,7 @@ public class PeriodicChecker implements Runnable {
     public void start () {
         LOGGER.info("[PeriodicChecker] Starting");
         //Instance methods object
-        methodsInstance = new CloudStorageMethodsV1();
+        methodsInstance = new CloudMethodsAmazonGoogle();
         
         //Getting parameters from config file
         bucketsFolder = config.getBucketsFolder();

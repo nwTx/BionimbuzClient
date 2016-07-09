@@ -1,6 +1,6 @@
 package br.unb.cic.bionimbuz.model;
 
-import br.unb.bionimbuz.storage.BioBucket;
+import br.unb.bionimbuz.storage.bucket.BioBucket;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;

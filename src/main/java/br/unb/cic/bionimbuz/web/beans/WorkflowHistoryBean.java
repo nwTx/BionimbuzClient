@@ -1,8 +1,8 @@
 package br.unb.cic.bionimbuz.web.beans;
 
-import br.unb.bionimbuz.storage.BioBucket;
-import br.unb.bionimbuz.storage.CloudStorageMethods;
-import br.unb.bionimbuz.storage.PeriodicChecker;
+import br.unb.bionimbuz.storage.bucket.BioBucket;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
+import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
 import br.unb.cic.bionimbuz.configuration.BionimbuzClientConfig;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.model.Log;
@@ -156,7 +156,7 @@ public class WorkflowHistoryBean implements Serializable {
             
         } else {
             
-            BioBucket bucket = PeriodicChecker.findFile(outputFile);
+            BioBucket bucket = PeriodicCheckerBuckets.findFile(outputFile);
 
             if (bucket != null) {
                 

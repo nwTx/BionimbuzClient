@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.unb.bionimbuz.storage;
+package br.unb.bionimbuz.storage.bucket.methods;
 
+import br.unb.bionimbuz.storage.bucket.BioBucket;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,7 +32,7 @@ import org.apache.commons.io.FileUtils;
  */
 
 @Singleton
-public class CloudStorageMethodsV1 extends CloudStorageMethods{
+public class CloudMethodsAmazonGoogle extends CloudStorageMethods{
 
     @Override
     public void StorageAuth(StorageProvider sp) throws Exception {

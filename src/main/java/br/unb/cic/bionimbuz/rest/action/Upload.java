@@ -1,9 +1,9 @@
 package br.unb.cic.bionimbuz.rest.action;
 
-import br.unb.bionimbuz.storage.BioBucket;
-import br.unb.bionimbuz.storage.CloudStorageMethods;
-import br.unb.bionimbuz.storage.CloudStorageMethodsV1;
-import br.unb.bionimbuz.storage.PeriodicChecker;
+import br.unb.bionimbuz.storage.bucket.BioBucket;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
+import br.unb.bionimbuz.storage.bucket.methods.CloudMethodsAmazonGoogle;
+import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
 import br.unb.cic.bionimbuz.model.FileInfo;
 import javax.ws.rs.client.Client;
 
@@ -67,11 +67,11 @@ public class Upload extends Action {
                 fos.write(req.getFileInfo().getPayload());
                 fos.close();
                 
-                BioBucket dest = PeriodicChecker.getBestBucket(PeriodicChecker.getBucketList());
+                BioBucket dest = PeriodicCheckerBuckets.getBestBucket(PeriodicCheckerBuckets.getBucketList());
                 
                 LOGGER.info("Uploading file to bucket: " + dest.getName());
                 
-                CloudStorageMethods methodsInstance = new CloudStorageMethodsV1();
+                CloudStorageMethods methodsInstance = new CloudMethodsAmazonGoogle();
                 
                 methodsInstance.StorageAuth(dest.getProvider());
                 methodsInstance.StorageUploadFile(dest, "/data-folder/", config.getTemporaryWorkflowFolder() + "/", req.getFileInfo().getName());

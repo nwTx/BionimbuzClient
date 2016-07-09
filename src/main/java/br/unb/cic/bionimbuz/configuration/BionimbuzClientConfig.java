@@ -1,6 +1,6 @@
 package br.unb.cic.bionimbuz.configuration;
 
-import br.unb.bionimbuz.storage.PeriodicChecker;
+import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +111,7 @@ public class BionimbuzClientConfig {
         LOGGER.info("========================================");
         
         if (getStorageMode().equalsIgnoreCase("1")) {
-            PeriodicChecker checker = new PeriodicChecker();
+            PeriodicCheckerBuckets checker = new PeriodicCheckerBuckets();
             checker.start();
         } 
     }

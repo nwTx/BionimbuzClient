@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.unb.bionimbuz.storage;
+package br.unb.bionimbuz.storage.bucket;
 
 
-import br.unb.bionimbuz.storage.CloudStorageMethods.*;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
