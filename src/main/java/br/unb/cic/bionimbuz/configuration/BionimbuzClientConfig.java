@@ -109,10 +109,6 @@ public class BionimbuzClientConfig {
         LOGGER.info(" - rootPath=" + rootPath);
 
         LOGGER.info("========================================");
-        
-        if (getStorageMode().equalsIgnoreCase("1")) {
-            PeriodicCheckerBuckets checker = new PeriodicCheckerBuckets();
-            checker.start();
-        } 
+
     }
 }

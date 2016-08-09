@@ -12,14 +12,3 @@ address: "http://127.0.0.1:8888"
 # BionimbuzCore REST address (need HTTP://)
 bionimbuz-address: "http://127.0.0.1:8181"
 
- # Path to the folder whre the Buckets will be mounted
-buckets-folder: /*/*/BionimbuzClient/buckets/
-
- # Path containing the files used to authenticate the Storage Services (Bucket)
-buckets-auth-folder: /*/*/*/Auth/
-
- # Path to de binary of gcloud/gsutil line-command
-gcloud-folder: /home/*/google-cloud-sdk/bin/
-
- # Storage mode (0 - old/vm, 1 - cloud)
-storage-mode: 0
