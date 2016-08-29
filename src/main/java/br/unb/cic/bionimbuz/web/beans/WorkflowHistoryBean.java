@@ -1,11 +1,20 @@
 package br.unb.cic.bionimbuz.web.beans;
 
+import br.unb.bionimbuz.storage.bucket.BioBucket;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
+import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
+import br.unb.cic.bionimbuz.configuration.BionimbuzClientConfig;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.model.Log;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.model.WorkflowOutputFile;
 import br.unb.cic.bionimbuz.rest.response.GetWorkflowHistoryResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +23,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.net.URL;
+import com.amazonaws.HttpMethod;
 
 /**
  * Controls workflow/history.xhtml page.
@@ -24,6 +35,8 @@ import javax.inject.Named;
 @SessionScoped
 public class WorkflowHistoryBean implements Serializable {
 
+    protected BionimbuzClientConfig config = ConfigurationRepository.getConfig();
+    
     private static final String REST_PATH = "/rest/file/download/";
     private String downloadURL;
     private String restPath;
@@ -133,7 +146,13 @@ public class WorkflowHistoryBean implements Serializable {
         return workflowOutputFiles;
     }
 
-    public String getDownloadURL() {
+    public String getDownloadURL(String outputFile) {
+        
+        System.out.println("[DEBUG] getDownloadURL for file: " + outputFile);
+        
+        downloadURL = restPath + selectedWorkflow.getId() + "/" + outputFile;
+       
+        System.out.println("downloadURL: " + downloadURL);
         return downloadURL;
     }
 

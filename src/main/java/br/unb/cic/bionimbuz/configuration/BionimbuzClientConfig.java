@@ -1,5 +1,6 @@
 package br.unb.cic.bionimbuz.configuration;
 
+import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,18 @@ public class BionimbuzClientConfig {
 
     @JsonProperty("bionimbuz-address")
     private String bionimbuzAddress;
+    
+    @JsonProperty("buckets-folder")
+    private String bucketsFolder;
+    
+    @JsonProperty("buckets-auth-folder")
+    private String bucketsAuthFolder;
+    
+    @JsonProperty("gcloud-folder")
+    private String gcloudFolder;
+    
+    @JsonProperty("storage-mode")
+    private String storageMode;
 
     public String getRootPath() {
         return rootPath;
@@ -54,6 +67,38 @@ public class BionimbuzClientConfig {
         this.bionimbuzAddress = bionimbuzAddress;
     }
 
+    public String getBucketsFolder() {
+        return bucketsFolder;
+    }
+
+    public void setBucketsFolder(String bucketsFolder) {
+        this.bucketsFolder = bucketsFolder;
+    }
+
+    public String getBucketsAuthFolder() {
+        return bucketsAuthFolder;
+    }
+
+    public void setBucketsAuthFolder(String bucketsAuthFolder) {
+        this.bucketsAuthFolder = bucketsAuthFolder;
+    }
+
+    public String getGcloudFolder() {
+        return gcloudFolder;
+    }
+
+    public void setGcloudFolder(String gcloudFolder) {
+        this.gcloudFolder = gcloudFolder;
+    }
+
+    public String getStorageMode() {
+        return storageMode;
+    }
+
+    public void setStorageMode(String storageMode) {
+        this.storageMode = storageMode;
+    }
+    
     public void log() {
         Logger LOGGER = LoggerFactory.getLogger(ApplicationConfiguration.class);
 
@@ -64,6 +109,6 @@ public class BionimbuzClientConfig {
         LOGGER.info(" - rootPath=" + rootPath);
 
         LOGGER.info("========================================");
-    }
 
+    }
 }

@@ -9,8 +9,8 @@
 
         <!-- Center Content -->
         <ui:define name="conteudo_centro">
-            <h:form>
-                <p:panel header="Deletar Arquivos">
+            <h:form id="delete_form">               
+                <p:panel id="panel_form" header="Deletar Arquivos">
                     <p:panel>
                         <p:outputLabel value="Listagem de arquivos para deleção"/>
 
@@ -20,13 +20,13 @@
                         </f:facet>
                     </p:panel>
                     <br />
-                    <p:panel header="Armazenamento">
+                    <p:panel id="panel_armazenamento" header="Armazenamento">
                         <p:outputLabel value="Seu armazenamento está em:"/> <br />
                         <p:progressBar value="#{fileUploadBean.storageUsage}" labelTemplate="{value}%" displayOnly="true"/>
                     </p:panel>
                     <br />
-                    <p:panel>
-                        <p:dataTable value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center">
+                    <p:panel id="filea">
+                        <p:dataTable id="datatable1" value="#{sessionBean.loggedUser.files}" var="f" style="text-align: center">
                             <f:facet name="header">Sua lista de arquivos</f:facet>
                             <p:column headerText="Nome" width="300" >
                                 <h:outputText value="#{f.name}" />
@@ -41,7 +41,7 @@
                             </p:column>
 
                             <p:column headerText="Excluir arquivo" width="100" style="text-align: center">
-                                <p:commandButton id="delete_btn" icon="ui-icon-circle-close" action="#{deleteFileBean.deleteFile(f)}"/>
+                                <p:commandButton icon="ui-icon-circle-close" action="#{deleteFileBean.deleteFile(f)}" update="datatable1"/>
                             </p:column>
                         </p:dataTable>
                     </p:panel>
