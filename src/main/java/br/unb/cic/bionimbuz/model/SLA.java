@@ -5,7 +5,8 @@
  */
 package br.unb.cic.bionimbuz.model;
 
-import br.unb.cic.bionimbuz.web.beans.SlaComposerBean;
+//import br.unb.cic.bionimbuz.web.beans.SlaComposerBean;
+import br.unb.cic.bionimbuz.web.beans.WorkflowComposerBean;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,7 @@ public class SLA {
         
     }
     
-    public SLA(SlaComposerBean slacomp,User user, User provider, List<PluginService> services){
+    public SLA(WorkflowComposerBean slacomp,User user, User provider, List<PluginService> services){
         
         this.user=user;
         this.provider=provider;
@@ -52,7 +53,7 @@ public class SLA {
         this.services= services;
     }
     
-    public SLA(SlaComposerBean slacomp,User user, User provider, List<PluginService> service,Date time, Double value){
+    public SLA(WorkflowComposerBean slacomp,User user, User provider, List<PluginService> service,Date time, Double value){
      
         this.user=user;
         this.provider=provider;

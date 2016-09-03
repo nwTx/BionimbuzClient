@@ -26,6 +26,7 @@ import org.primefaces.event.diagram.ConnectEvent;
 import org.primefaces.event.diagram.ConnectionChangeEvent;
 import org.primefaces.event.diagram.DisconnectEvent;
 import br.unb.cic.bionimbuz.model.FileInfo;
+import br.unb.cic.bionimbuz.model.Instance;
 import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.SLA;
@@ -42,6 +43,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
+import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -63,8 +65,8 @@ public class WorkflowComposerBean implements Serializable {
     @Inject
     private SessionBean sessionBean;
     
-    @Inject
-    private SlaComposerBean slacomp;
+//    @Inject
+//    private SlaComposerBean slacomp;
     
     private final RestService restService;
     private final List<PluginService> servicesList;
@@ -86,6 +88,19 @@ public class WorkflowComposerBean implements Serializable {
     private final List<String> supportedFormats;
     private String fileFormat;
     private SLA sla;
+    
+    //----------------------- SLA Declarations------------------
+    private String panel1 = "Hide-Panel1";
+    private boolean limitation;
+    private String limitationType;
+    private String limitationValue;
+    private List<Instance> instances;
+    private List<Instance> selectedInstances;
+    private Instance instance;
+    private String chosenInstanceId;
+    private int quantity;
+    private int objective;
+    //---------------------------------------------------------
 
     // Used by the user to download a workflow
     private StreamedContent workflowToDownload;
@@ -99,11 +114,20 @@ public class WorkflowComposerBean implements Serializable {
         servicesList = ConfigurationRepository.getSupportedServices();
         references = ConfigurationRepository.getReferences();
         supportedFormats = ConfigurationRepository.getSupportedFormats();
+//        instances = new ArrayList<>();
     }
 
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
+        
+        //------------- SLA inicialization------------------
+        selectedInstances=new ArrayList<>();
+        instances= new ArrayList<>();
+        instances.add(new Instance("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",1,20.0,"sata"));
+        instances.add(new Instance("Macro",0.24,5,"us-west",4.0,3.3,"Xeon",4,120.0,"sata"));
+        instances.add(new Instance("Large",0.41,3,"us-west",8.0,3.3,"Xeon",8,240.0,"sata"));
+        //--------------------------------------------------
     }
 
     /**
@@ -150,19 +174,19 @@ public class WorkflowComposerBean implements Serializable {
        
         String toGoStep = event.getNewStep();
 //
-        if(toGoStep.equals("template"))
-        {
-            
-            System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
-            sla= new SLA(slacomp,loggedUser,loggedUser,this.getServicesList());
-            System.out.println(sla.getId());
-            
-            try {
-                restService.startSla(sla,workflowDiagram.getWorkflow());
-            } catch (ServerNotReachableException ex) {
-                java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+//        if(toGoStep.equals("template"))
+//        {
+//            
+////    //        System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
+////            sla= new SLA(,loggedUser,loggedUser,this.getServicesList());
+////            System.out.println(sla.getId());
+//            
+//            try {
+//                restService.startSla(sla,workflowDiagram.getWorkflow());
+//            } catch (ServerNotReachableException ex) {
+//                java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
 
@@ -519,4 +543,190 @@ public class WorkflowComposerBean implements Serializable {
         this.fileFormat = fileFormat;
     }
 
+//-----------------------------SLA Methods---------------------------------
+    public SLA getSla(){
+        sla=new SLA(this, loggedUser, loggedUser, servicesList);
+        return sla;
+    }
+    
+    public void setPanel1(String panel1){
+    this.panel1 = panel1;
+    }
+
+    public String getPanel1(){
+    return this.panel1;
+    }
+
+    /**
+     * @return the limitation
+     */
+    public boolean isLimitation() {
+        return limitation;
+    }
+
+    /**
+     * @param limitation the limitation to set
+     */
+    public void setLimitation(boolean limitation) {
+        this.limitation = limitation;
+    }
+
+    /**
+     * @return the limitationType
+     */
+    public String getLimitationType() {
+        return limitationType;
+    }
+
+    /**
+     * @param limitationType the limitationType to set
+     */
+    public void setLimitationType(String limitationType) {
+        this.limitationType = limitationType;
+    }
+
+    /**
+     * @return the limitationValue
+     */
+    public String getLimitationValue() {
+        return limitationValue;
+    }
+
+    /**
+     * @param limitationValue the limitationValue to set
+     */
+    public void setLimitationValue(String limitationValue) {
+        this.limitationValue = limitationValue;
+    }
+
+    /**
+     * @return the instances
+     */
+    public List<Instance> getInstancies() {
+        return instances;
+    }
+
+    /**
+     * @param instancies the instances to set
+     */
+    public void setInstancies(List<Instance> instancies) {
+        this.instances = instancies;
+    }
+
+    /**
+     * @return the selectedInstances
+     */
+    public List<Instance> getSelectedInstancies() {
+        return selectedInstances;
+    }
+
+    /**
+     * @param selectedInstancies the selectedInstances to set
+     */
+    public void setSelectedInstancies(List<Instance> selectedInstancies) {
+        this.selectedInstances = selectedInstancies;
+    }
+    
+    public List<String> getListInstancesString(){
+        List<String> instancesString=new ArrayList<>();
+        instances.stream().forEach((i) -> {
+            instancesString.add(i.toString());
+        });
+        
+        return instancesString;   
+    }
+        
+    public void adSelectedInstance(ActionEvent actionEvent){
+        for(Instance i : instances)
+        {
+            
+            if(i.getId().equals(chosenInstanceId)&&!instances.isEmpty()){
+                    i.setQuantity(quantity);
+                    selectedInstances.add(i);
+                    instances.remove(i);
+                    System.out.println("Descrição: "+i.getDescription()+" quantidade: "+i.getQuantity());
+                    showMessage("Elemento " + i.getType() + " adicionado");
+                    break;
+            }else{
+                System.out.println("Not found!!");
+            }
+            
+        }
+       
+    }
+    
+    /**
+     * Removes an element from the selected instances list
+     *
+     * @param element
+     */
+    public void removeElement(Instance element) {
+        if(!selectedInstances.isEmpty()){
+            selectedInstances.remove(element);
+            instances.add(element);
+            showMessage("Elemento " + element.getType() + " removido");
+        }
+        else{
+            showMessage("Não existem elementos para ser removidos!");
+        }
+    }
+
+    /**
+     * @return the instance
+     */
+    public Instance getInstance() {
+        return instance;
+    }
+
+    /**
+     * @param instance the instance to set
+     */
+    public void setInstance(Instance instance) {
+        this.instance = instance;
+    }
+
+    /**
+     * @return the chosenInstanceId
+     */
+    public String getChosenInstanceId() {
+        return chosenInstanceId;
+    }
+
+    /**
+     * @param chosenInstanceId the chosenInstanceId to set
+     */
+    public void setChosenInstanceId(String chosenInstanceId) {
+        this.chosenInstanceId = chosenInstanceId;
+    }
+
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    /**
+     * @return the objective
+     */
+    public int getObjective() {
+        return objective;
+    }
+
+    /**
+     * @param objective the objective to set
+     */
+    public void setObjective(int objective) {
+        this.objective = objective;
+    }    
+    
+//-------------------------------------------------------------------------
+    
 }

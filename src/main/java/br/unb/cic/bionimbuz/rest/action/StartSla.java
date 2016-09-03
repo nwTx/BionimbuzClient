@@ -35,7 +35,7 @@ public class StartSla extends Action{
 
     @Override
     public ResponseInfo execute() {
-          logAction(REST_START_SLA_URL, StartSla.class);
+        logAction(REST_START_SLA_URL, StartSla.class);
 
         Response response = target
                 .request(MediaType.APPLICATION_JSON)

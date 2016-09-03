@@ -142,7 +142,7 @@
                                         <h:panelGrid columns="2" cellpadding="10">
 
                                             <p:outputLabel value="Limitar a execução:" />
-                                            <p:selectOneRadio value="#{slaComposerBean.panel1}">
+                                            <p:selectOneRadio value="#{workflowComposerBean.panel1}">
                                                 <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
                                                 <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
                                                 <f:ajax render="select-type-limitation-panel" />
@@ -152,20 +152,20 @@
                                             <h:panelGroup id="select-type-limitation-panel">
 
                                                 <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
-                                                <p:selectOneRadio id="sla_type_limitation" value="#{slaComposerBean.limitationType}" layout="custom">
-                                                    <f:selectItem itemLabel="Tempo de execução" itemValue="#{slaComposerBean.limitationType}" />
-                                                    <f:selectItem itemLabel="Custo de execução" itemValue="#{slaComposerBean.limitationType}" />
+                                                <p:selectOneRadio id="sla_type_limitation" value="#{workflowComposerBean.limitationType}" layout="custom">
+                                                    <f:selectItem itemLabel="Tempo de execução" itemValue="#{workflowComposerBean.limitationType}" />
+                                                    <f:selectItem itemLabel="Custo de execução" itemValue="#{workflowComposerBean.limitationType}" />
                                                 </p:selectOneRadio>
 
-                                                <h:panelGrid columns="3" cellpadding="5" rendered="#{slaComposerBean.panel1 == 'Show-Panel1'}">
+                                                <h:panelGrid columns="3" cellpadding="5" rendered="#{workflowComposerBean.panel1 == 'Show-Panel1'}">
                                                     <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
                                                     <p:outputLabel for="opt1" value="Tempo de execução: " />
-                                                    <p:inputText value="#{slaComposerBean.limitationValue}"/>
+                                                    <p:inputText value="#{workflowComposerBean.limitationValue}"/>
 
 
                                                     <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
                                                     <h:outputLabel for="opt2" value="Custo de execução" />
-                                                    <p:inputText value="#{slaComposerBean.limitationValue}" />  
+                                                    <p:inputText value="#{workflowComposerBean.limitationValue}" />  
 
                                                 </h:panelGrid>
                                                 <!--</p:outputPanel>-->
@@ -185,15 +185,15 @@
                                                 </f:facet>
                                             <p:row >
                                                     <p:column>
-                                                        <p:selectOneMenu id="instance" value="#{slaComposerBean.chosenInstanceId}"  style="width:60em">
-                                                            <f:selectItems value="#{slaComposerBean.instancies}" itemDescription="Selecione" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
+                                                        <p:selectOneMenu id="instance" value="#{workflowComposerBean.chosenInstanceId}"  style="width:60em">
+                                                            <f:selectItems value="#{workflowComposerBean.instancies}" itemDescription="Selecione" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
                                                         </p:selectOneMenu>
                                                     </p:column>
                                                     <p:column >
-                                                        <pe:inputNumber id="number" value="#{slaComposerBean.quantity}" minValue="0" maxValue="100" maxlength="3" required="true" requiredMessage="Campo quantidade obrigatório"/>
+                                                        <pe:inputNumber id="number" value="#{workflowComposerBean.quantity}" minValue="0" maxValue="100" maxlength="3" required="true" requiredMessage="Campo quantidade obrigatório"/>
                                                     </p:column>    
                                                     <p:column>
-                                                        <p:commandButton  actionListener="#{slaComposerBean.adSelectedInstance}"
+                                                        <p:commandButton  actionListener="#{workflowComposerBean.adSelectedInstance}"
                                                                           icon="ui-icon-check" 
                                                                           update="instancesList, instancesB, :form:growl"/>
                                                     </p:column>
@@ -202,7 +202,7 @@
                                     </p:fieldset>    
                                     
                                     <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
-                                        <p:dataTable value="#{slaComposerBean.selectedInstancies}" var="instance" style="width: 87.5em"   
+                                        <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance" style="width: 87.5em"   
                                                      paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
                                                      id="instancesList">
                                             <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
@@ -217,7 +217,7 @@
                                             </p:column>
 
                                             <p:column>
-                                                <p:commandButton actionListener="#{slaComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:slaopt:instancesB, :form:growl"/>
+                                                <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:slaopt:instancesB, :form:growl"/>
                                             </p:column>
                                         </p:dataTable>
                                     </p:fieldset>
@@ -225,7 +225,7 @@
                                     <p:fieldset id="objective" legend="Objetivo do SLA" style="border-color: #2980b9">
                                         <h:panelGrid id="sla_objective" columns="2" style="margin-bottom:10px" cellpadding="5">
                                             <p:outputLabel for="slaobjective" value="Foco da Execução:" />
-                                            <p:selectOneRadio id="slaobjective" value="#{slaComposerBean.objective}">
+                                            <p:selectOneRadio id="slaobjective" value="#{workflowComposerBean.objective}">
                                                 <f:selectItem itemLabel="Maior Desempenho" itemValue="1" />
                                                 <f:selectItem itemLabel="Menor Custo" itemValue="2" />
                                                 <f:selectItem itemLabel="Melhor Custo/Beneficio" itemValue="3" />

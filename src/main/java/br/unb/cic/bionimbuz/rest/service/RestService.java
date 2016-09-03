@@ -39,7 +39,6 @@ import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
 import br.unb.cic.bionimbuz.rest.response.StartSlaResponse;
 import br.unb.cic.bionimbuz.rest.response.StartWorkflowResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
-import br.unb.cic.bionimbuz.web.beans.SlaComposerBean;
 import java.util.List;
 
 /**
