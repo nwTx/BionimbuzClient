@@ -58,7 +58,7 @@
                                     </p:column>
 
                                     <p:column headerText="Download" width="30" style="text-align: center">
-                                        <a href="#{workflowHistoryBean.downloadURL.concat(out.outputFilename)}">Download</a>
+                                        <a href="#{workflowHistoryBean.getDownloadURL(out.outputFilename)}">Download</a>
                                     </p:column>
                                 </p:dataTable>
                             </center>

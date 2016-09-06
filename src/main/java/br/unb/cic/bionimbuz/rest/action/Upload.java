@@ -1,10 +1,17 @@
 package br.unb.cic.bionimbuz.rest.action;
 
+import br.unb.bionimbuz.storage.bucket.BioBucket;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
+import br.unb.bionimbuz.storage.bucket.methods.CloudMethodsAmazonGoogle;
+import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
+import br.unb.cic.bionimbuz.model.FileInfo;
 import javax.ws.rs.client.Client;
 
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -119,6 +126,7 @@ public class Upload extends Action {
                 returnFromServer = false;
             }
         }
+
 
         /*
         MultipartFormDataOutput multipart = new MultipartFormDataOutput();

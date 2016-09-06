@@ -1,5 +1,6 @@
 package br.unb.cic.bionimbuz.model;
 
+import br.unb.bionimbuz.storage.bucket.BioBucket;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
@@ -18,6 +19,8 @@ public class FileInfo {
     private String uploadTimestamp;
 
     private String hash;
+    
+    private String bucket;
 
     @JsonProperty("payload")
     private byte[] payload;
@@ -83,6 +86,14 @@ public class FileInfo {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public String getBucket() {
+        return bucket;
+    }
+
+    public void setBucket(String bucket) {
+        this.bucket = bucket;
     }
 
 }
