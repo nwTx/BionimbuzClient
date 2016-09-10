@@ -11,3 +11,4 @@ address: "http://127.0.0.1:8888"
 
 # BionimbuzCore REST address (need HTTP://)
 bionimbuz-address: "http://127.0.0.1:8181"
+
