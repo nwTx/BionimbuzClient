@@ -44,7 +44,7 @@ Servidor de aplicação web, utilizado no projeto.
 
 socket-binding name="http" port="${jboss.http.port:8080}" para 
 
-socket-binding name="http" port="${jboss.http.port:888}"
+socket-binding name="http" port="${jboss.http.port:8888}"
 
 http-listener name="default" socket-binding="http" redirect-socket="https" para
 
