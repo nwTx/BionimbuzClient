@@ -35,14 +35,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.util.logging.Level;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -64,10 +60,9 @@ public class WorkflowComposerBean implements Serializable {
 
     @Inject
     private SessionBean sessionBean;
-    
+
 //    @Inject
 //    private SlaComposerBean slacomp;
-    
     private final RestService restService;
     private final List<PluginService> servicesList;
     private ArrayList<DiagramElement> elements;
@@ -88,18 +83,19 @@ public class WorkflowComposerBean implements Serializable {
     private final List<String> supportedFormats;
     private String fileFormat;
     private SLA sla;
-    
+
     //----------------------- SLA Declarations------------------
     private String panel1 = "Hide-Panel1";
-    private boolean limitation;
-    private String limitationType;
-    private String limitationValue;
+    private boolean limitation=false;
+    private Integer limitationType;
+    private String limitationValueExecutionTime;
+    private String limitationValueExecutionCost;
     private List<Instance> instances;
     private List<Instance> selectedInstances;
     private Instance instance;
     private String chosenInstanceId;
-    private int quantity;
-    private int objective;
+    private Integer quantity;
+    private Integer objective;
     //---------------------------------------------------------
 
     // Used by the user to download a workflow
@@ -120,13 +116,15 @@ public class WorkflowComposerBean implements Serializable {
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
-        
+
         //------------- SLA inicialization------------------
-        selectedInstances=new ArrayList<>();
-        instances= new ArrayList<>();
-        instances.add(new Instance("Micro",0.03,10,"Brazil",1.0,3.3,"Xeon",1,20.0,"sata"));
-        instances.add(new Instance("Macro",0.24,5,"us-west",4.0,3.3,"Xeon",4,120.0,"sata"));
-        instances.add(new Instance("Large",0.41,3,"us-west",8.0,3.3,"Xeon",8,240.0,"sata"));
+        selectedInstances = new ArrayList<>();
+        instances = new ArrayList<>();
+        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
+        instances.add(new Instance("Macro", 0.24, 5, "us-west", 4.0, 3.3, "Xeon", 4, 120.0, "sata"));
+        instances.add(new Instance("Large", 0.41, 3, "us-west", 8.0, 3.3, "Xeon", 8, 240.0, "sata"));
+        limitation=false;
+
         //--------------------------------------------------
     }
 
@@ -171,22 +169,32 @@ public class WorkflowComposerBean implements Serializable {
      */
     public String flowController(FlowEvent event) {
         String currentStep = event.getOldStep();
-       
+
         String toGoStep = event.getNewStep();
-//
-//        if(toGoStep.equals("template"))
-//        {
-//            
+
+        if (toGoStep.equals("template")) {
+
 ////    //        System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
-////            sla= new SLA(,loggedUser,loggedUser,this.getServicesList());
-////            System.out.println(sla.getId());
-//            
+            System.out.println("limitationType: "+limitationType);
+            System.out.println("limitationValueExecutionCost: "+limitationValueExecutionCost);
+            System.out.println("limitationValueExecutionTime: "+limitationValueExecutionTime);
+            selectedInstances.stream().forEach((f) -> {
+                System.out.println(f.toString());
+            });
+                
+            System.out.println("quantity: "+getQuantity());
+            System.out.println("objective: "+getObjective());
+            System.out.println("getLimitationValueExecutionCost:"+this.getLimitationValueExecutionCost());
+            System.out.println("getLimitationValueExecutionTime:"+this.getLimitationValueExecutionTime());
+//            sla= new SLA(this,loggedUser,loggedUser,this.getServicesList());
+//            System.out.println(sla.getId());
+
 //            try {
 //                restService.startSla(sla,workflowDiagram.getWorkflow());
 //            } catch (ServerNotReachableException ex) {
 //                java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
 //            }
-//        }
+        }
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
 
@@ -290,7 +298,7 @@ public class WorkflowComposerBean implements Serializable {
         inputFiles = new ArrayList<>();
         arguments = "";
         inputURL = "";
-        fileFormat = "";        
+        fileFormat = "";
     }
 
     /**
@@ -424,33 +432,28 @@ public class WorkflowComposerBean implements Serializable {
 
     }
 
-    /** COMMENTED BECAUSE IT IS BEEN PASSED DIRECTLY TO THE SERVER (WITHOUT SAVE IN DISK)
-     * Saves temporary file in disk
+    /**
+     * COMMENTED BECAUSE IT IS BEEN PASSED DIRECTLY TO THE SERVER (WITHOUT SAVE
+     * IN DISK) Saves temporary file in disk
      *
      * @param fileName
      * @param in
-     * @return
-    public String saveTempFile(String fileName, InputStream in) throws FileNotFoundException, IOException {
-        String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + fileName;
-        // write the inputStream to a FileOutputStream
-        OutputStream outputStream = new FileOutputStream(new File(path));
-
-        int read = 0;
-        byte[] bytes = new byte[1024];
-
-        while ((read = in.read(bytes)) != -1) {
-            outputStream.write(bytes, 0, read);
-        }
-
-        // in.close();
-        LOGGER.info("Temporary file created [path="
-                + ConfigurationRepository.UPLOADED_FILES_PATH
-                + fileName + "]");
-
-        return path;
-    }
-    */
-
+     * @return public String saveTempFile(String fileName, InputStream in)
+     * throws FileNotFoundException, IOException { String path =
+     * ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + fileName; // write the
+     * inputStream to a FileOutputStream OutputStream outputStream = new
+     * FileOutputStream(new File(path));
+     *
+     * int read = 0; byte[] bytes = new byte[1024];
+     *
+     * while ((read = in.read(bytes)) != -1) { outputStream.write(bytes, 0,
+     * read); }
+     *
+     * // in.close(); LOGGER.info("Temporary file created [path=" +
+     * ConfigurationRepository.UPLOADED_FILES_PATH + fileName + "]");
+     *
+     * return path; }
+     */
     public StreamedContent getWorkflowToDownload() {
         return workflowToDownload;
     }
@@ -544,17 +547,17 @@ public class WorkflowComposerBean implements Serializable {
     }
 
 //-----------------------------SLA Methods---------------------------------
-    public SLA getSla(){
-        sla=new SLA(this, loggedUser, loggedUser, servicesList);
+    public SLA getSla() {
+        sla = new SLA(this, loggedUser, loggedUser, servicesList);
         return sla;
     }
-    
-    public void setPanel1(String panel1){
-    this.panel1 = panel1;
+
+    public void setPanel1(String panel1) {
+        this.panel1 = panel1;
     }
 
-    public String getPanel1(){
-    return this.panel1;
+    public String getPanel1() {
+        return this.panel1;
     }
 
     /**
@@ -574,30 +577,17 @@ public class WorkflowComposerBean implements Serializable {
     /**
      * @return the limitationType
      */
-    public String getLimitationType() {
+    public Integer getLimitationType() {
         return limitationType;
     }
 
     /**
      * @param limitationType the limitationType to set
      */
-    public void setLimitationType(String limitationType) {
+    public void setLimitationType(Integer limitationType) {
         this.limitationType = limitationType;
     }
 
-    /**
-     * @return the limitationValue
-     */
-    public String getLimitationValue() {
-        return limitationValue;
-    }
-
-    /**
-     * @param limitationValue the limitationValue to set
-     */
-    public void setLimitationValue(String limitationValue) {
-        this.limitationValue = limitationValue;
-    }
 
     /**
      * @return the instances
@@ -626,47 +616,45 @@ public class WorkflowComposerBean implements Serializable {
     public void setSelectedInstancies(List<Instance> selectedInstancies) {
         this.selectedInstances = selectedInstancies;
     }
-    
-    public List<String> getListInstancesString(){
-        List<String> instancesString=new ArrayList<>();
+
+    public List<String> getListInstancesString() {
+        List<String> instancesString = new ArrayList<>();
         instances.stream().forEach((i) -> {
             instancesString.add(i.toString());
         });
-        
-        return instancesString;   
+
+        return instancesString;
     }
-        
-    public void adSelectedInstance(ActionEvent actionEvent){
-        for(Instance i : instances)
-        {
-            
-            if(i.getId().equals(chosenInstanceId)&&!instances.isEmpty()){
-                    i.setQuantity(quantity);
-                    selectedInstances.add(i);
-                    instances.remove(i);
-                    System.out.println("Descrição: "+i.getDescription()+" quantidade: "+i.getQuantity());
-                    showMessage("Elemento " + i.getType() + " adicionado");
-                    break;
-            }else{
+
+    public void adSelectedInstance(ActionEvent actionEvent) {
+        for (Instance i : instances) {
+
+            if (i.getId().equals(chosenInstanceId) && !instances.isEmpty()) {
+                i.setQuantity(getQuantity());
+                selectedInstances.add(i);
+                instances.remove(i);
+                System.out.println("Descrição: " + i.getDescription() + " quantidade: " + i.getQuantity());
+                showMessage("Elemento " + i.getType() + " adicionado");
+                break;
+            } else {
                 System.out.println("Not found!!");
             }
-            
+
         }
-       
+
     }
-    
+
     /**
      * Removes an element from the selected instances list
      *
      * @param element
      */
     public void removeElement(Instance element) {
-        if(!selectedInstances.isEmpty()){
+        if (!selectedInstances.isEmpty()) {
             selectedInstances.remove(element);
             instances.add(element);
             showMessage("Elemento " + element.getType() + " removido");
-        }
-        else{
+        } else {
             showMessage("Não existem elementos para ser removidos!");
         }
     }
@@ -699,34 +687,63 @@ public class WorkflowComposerBean implements Serializable {
         this.chosenInstanceId = chosenInstanceId;
     }
 
+   
+
+//-------------------------------------------------------------------------
+
+    /**
+     * @return the limitationValueExecutionTime
+     */
+    public String getLimitationValueExecutionTime() {
+        return limitationValueExecutionTime;
+    }
+
+    /**
+     * @param limitationValueExecutionTime the limitationValueExecutionTime to set
+     */
+    public void setLimitationValueExecutionTime(String limitationValueExecutionTime) {
+        this.limitationValueExecutionTime = limitationValueExecutionTime;
+    }
+
+    /**
+     * @return the limitationValueExecutionCost
+     */
+    public String getLimitationValueExecutionCost() {
+        return limitationValueExecutionCost;
+    }
+
+    /**
+     * @param limitationValueExecutionCost the limitationValueExecutionCost to set
+     */
+    public void setLimitationValueExecutionCost(String limitationValueExecutionCost) {
+        this.limitationValueExecutionCost = limitationValueExecutionCost;
+    }
+
     /**
      * @return the quantity
      */
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
     /**
      * @param quantity the quantity to set
      */
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
     /**
      * @return the objective
      */
-    public int getObjective() {
+    public Integer getObjective() {
         return objective;
     }
 
     /**
      * @param objective the objective to set
      */
-    public void setObjective(int objective) {
+    public void setObjective(Integer objective) {
         this.objective = objective;
-    }    
-    
-//-------------------------------------------------------------------------
-    
+    }
 }
