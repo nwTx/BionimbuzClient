@@ -1,14 +1,7 @@
 # BioNimbuZ Web Application Configuration #
 
-# Root folder of the project
-root-path: "/home/biolabid1/BionimbuzClient"
-
-# Temporary workflow folder
-tmp-workflow-folder: "/home/biolabid1/tmp"
-
-# BionimbuzClient own address (need HTTP://)
-address: "http://127.0.0.1:8888"
-
 # BionimbuzCore REST address (need HTTP://)
 bionimbuz-address: "http://127.0.0.1:8181"
 
+# Temporary workflow folder
+tmp-workflow-folder: "/home/jgomes/developer/tmp"
