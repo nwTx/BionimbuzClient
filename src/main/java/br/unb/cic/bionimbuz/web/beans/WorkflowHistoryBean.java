@@ -1,8 +1,15 @@
 package br.unb.cic.bionimbuz.web.beans;
 
-import br.unb.bionimbuz.storage.bucket.BioBucket;
-import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
-import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
+
 import br.unb.cic.bionimbuz.configuration.BionimbuzClientConfig;
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.model.Log;
@@ -10,21 +17,6 @@ import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.model.WorkflowOutputFile;
 import br.unb.cic.bionimbuz.rest.response.GetWorkflowHistoryResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
-import java.net.URL;
-import com.amazonaws.HttpMethod;
 
 /**
  * Controls workflow/history.xhtml page.

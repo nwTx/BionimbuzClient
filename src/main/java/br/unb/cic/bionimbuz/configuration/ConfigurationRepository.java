@@ -47,12 +47,12 @@ public class ConfigurationRepository implements ServletContextListener {
         LOGGER.info("========> Starting client application...");
         LOGGER.info("========================================");
         boolean serverOnline = false;
-        final RestService restService = new RestService();
         config = loadConfiguration();
         config.log();
         // Send request to the server
         while (!serverOnline) {
-            if (restService.ping(config.getBionimbuzAddress())) {
+            if (RestService.ping()) {
+                final RestService restService = new RestService();
                 GetConfigurationsResponse response;
                 try {
                     response = restService.getServices();
@@ -60,7 +60,7 @@ public class ConfigurationRepository implements ServletContextListener {
                     supportedServices = (ArrayList<PluginService>) response.getServicesList();
                     supportedFormats = (ArrayList<String>) response.getSupportedFormats();
                 } catch (final Exception ex) {
-                    ex.printStackTrace();
+                    LOGGER.error("Error trying to get the supported services list", ex);
                 }
             } else {
                 LOGGER.error("===> BioNimbuZ Core Offline... Trying reconnection <===");

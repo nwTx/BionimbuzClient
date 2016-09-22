@@ -1,9 +1,9 @@
 package br.unb.cic.bionimbuz.configuration;
 
-import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
@@ -13,102 +13,74 @@ public class BionimbuzClientConfig {
 
     @JsonProperty("root-path")
     private String rootPath;
-
     @JsonProperty("tmp-workflow-folder")
     private String temporaryWorkflowFolder;
-
     @JsonProperty("address")
     private String address;
-
     @JsonProperty("bionimbuz-address")
     private String bionimbuzAddress;
-    
     @JsonProperty("buckets-folder")
     private String bucketsFolder;
-    
     @JsonProperty("buckets-auth-folder")
     private String bucketsAuthFolder;
-    
     @JsonProperty("gcloud-folder")
     private String gcloudFolder;
-    
     @JsonProperty("storage-mode")
     private String storageMode;
 
     public String getRootPath() {
-        return rootPath;
+        return this.rootPath;
     }
-
     public void setRootPath(String rootPath) {
         this.rootPath = rootPath;
     }
-
     public String getTemporaryWorkflowFolder() {
-        return temporaryWorkflowFolder;
+        return this.temporaryWorkflowFolder;
     }
-
     public void setTemporaryWorkflowFolder(String temporaryWorkflowFolder) {
         this.temporaryWorkflowFolder = temporaryWorkflowFolder;
     }
-
     public String getAddress() {
-        return address;
+        return this.address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
-
     public String getBionimbuzAddress() {
-        return bionimbuzAddress;
+        return this.bionimbuzAddress;
     }
-
     public void setBionimbuzAddress(String bionimbuzAddress) {
         this.bionimbuzAddress = bionimbuzAddress;
     }
-
     public String getBucketsFolder() {
-        return bucketsFolder;
+        return this.bucketsFolder;
     }
-
     public void setBucketsFolder(String bucketsFolder) {
         this.bucketsFolder = bucketsFolder;
     }
-
     public String getBucketsAuthFolder() {
-        return bucketsAuthFolder;
+        return this.bucketsAuthFolder;
     }
-
     public void setBucketsAuthFolder(String bucketsAuthFolder) {
         this.bucketsAuthFolder = bucketsAuthFolder;
     }
-
     public String getGcloudFolder() {
-        return gcloudFolder;
+        return this.gcloudFolder;
     }
-
     public void setGcloudFolder(String gcloudFolder) {
         this.gcloudFolder = gcloudFolder;
     }
-
     public String getStorageMode() {
-        return storageMode;
+        return this.storageMode;
     }
-
     public void setStorageMode(String storageMode) {
         this.storageMode = storageMode;
     }
-    
     public void log() {
-        Logger LOGGER = LoggerFactory.getLogger(ApplicationConfiguration.class);
-
+        final Logger LOGGER = LoggerFactory.getLogger(BionimbuzClientConfig.class);
         LOGGER.info("Web Application configurations:");
-        LOGGER.info(" - address=" + address);
-        LOGGER.info(" - bionimbuzAddress=" + bionimbuzAddress);
-        LOGGER.info(" - tmpWorkflowFolder=" + temporaryWorkflowFolder);
-        LOGGER.info(" - rootPath=" + rootPath);
-
+        LOGGER.info(" - bionimbuzAddress=" + this.bionimbuzAddress);
+        LOGGER.info(" - tmpWorkflowFolder=" + this.temporaryWorkflowFolder);
         LOGGER.info("========================================");
-
     }
 }
