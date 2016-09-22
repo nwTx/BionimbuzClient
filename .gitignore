@@ -1,2 +1,5 @@
 /target/
 /uploaded-files/
+/zookeeper.out
+/nbproject/
+/.metadata/

@@ -49,6 +49,7 @@ public class ConfigurationRepository implements ServletContextListener {
         boolean serverOnline = false;
         config = loadConfiguration();
         config.log();
+
         // Send request to the server
         while (!serverOnline) {
             if (RestService.ping()) {
@@ -79,6 +80,7 @@ public class ConfigurationRepository implements ServletContextListener {
             LOGGER.info(" - Program: " + p.getName());
         }
     }
+    
     /**
      * Called on Application Server stop
      *
@@ -90,18 +92,23 @@ public class ConfigurationRepository implements ServletContextListener {
         LOGGER.info("========> Stopping client application...");
         LOGGER.info("========================================");
     }
+    
     public static ArrayList<PluginService> getSupportedServices() {
         return supportedServices;
     }
+    
     public static ArrayList<String> getReferences() {
         return references;
     }
+    
     public static ArrayList<String> getSupportedFormats() {
         return supportedFormats;
     }
+
     public static BionimbuzClientConfig getConfig() {
         return config;
     }
+    
     /**
      * Loads web application configuration.
      *
@@ -111,6 +118,7 @@ public class ConfigurationRepository implements ServletContextListener {
      */
     private static BionimbuzClientConfig loadConfiguration() {
         BionimbuzClientConfig config = null;
+
         try {
             final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             final String defaultConfigPathname = System.getProperty("user.home") + "/BionimbuzClient/conf/conf.yaml";
@@ -118,6 +126,8 @@ public class ConfigurationRepository implements ServletContextListener {
         } catch (final IOException ex) {
             LOGGER.error("[IOException] - " + ex.getMessage());
         }
+
         return config;
     }
+
 }

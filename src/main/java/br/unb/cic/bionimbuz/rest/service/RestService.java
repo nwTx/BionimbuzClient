@@ -6,6 +6,7 @@ import java.util.List;
 import br.unb.cic.bionimbuz.communication.RestCommunicator;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.FileInfo;
+import br.unb.cic.bionimbuz.model.SLA;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.rest.action.DeleteFile;
@@ -15,6 +16,7 @@ import br.unb.cic.bionimbuz.rest.action.GetWorkflowStatus;
 import br.unb.cic.bionimbuz.rest.action.Login;
 import br.unb.cic.bionimbuz.rest.action.Logout;
 import br.unb.cic.bionimbuz.rest.action.SignUp;
+import br.unb.cic.bionimbuz.rest.action.StartSla;
 import br.unb.cic.bionimbuz.rest.action.StartWorkflow;
 import br.unb.cic.bionimbuz.rest.action.Upload;
 import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
@@ -25,6 +27,7 @@ import br.unb.cic.bionimbuz.rest.request.LoginRequest;
 import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.SignUpRequest;
+import br.unb.cic.bionimbuz.rest.request.StartSlaRequest;
 import br.unb.cic.bionimbuz.rest.request.StartWorkflowRequest;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.DeleteFileResponse;
@@ -34,6 +37,7 @@ import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
 import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
+import br.unb.cic.bionimbuz.rest.response.StartSlaResponse;
 import br.unb.cic.bionimbuz.rest.response.StartWorkflowResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 
@@ -128,6 +132,21 @@ public class RestService {
         return response.isWorkflowProcessed();
     }
     /**
+     * Sends an user SLA QOS to the BioNimbuZ Core to be processed and returns the SLA template
+     *
+     * @param sla
+     * @param workflow
+     * @return
+     * @throws ServerNotReachableException
+     */
+    public SLA startSla(SLA sla, Workflow workflow) throws ServerNotReachableException {
+       RequestInfo startSlaRequest = new StartSlaRequest(sla, workflow);
+       StartSlaResponse response = (StartSlaResponse) restCommunicator.sendRequest(new StartSla(), startSlaRequest);
+
+        return response.getSla();
+    }
+    
+    /**
      * Calls server to inform about the status of the user's workflow list
      *
      * @param user
@@ -140,7 +159,7 @@ public class RestService {
         return response.getUserWorkflows();
     }
     /**
-     * Send a request to the server to get the supported services list
+     * Send a request to the server to get the supported services list, instances list, references and supported format list
      *
      * @return
      * @throws ServerNotReachableException
