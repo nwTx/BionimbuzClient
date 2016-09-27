@@ -32,30 +32,30 @@ import br.unb.cic.bionimbuz.security.HashUtil;
  * @author Vinicius (with Edrward's help)
  */
 public class Upload extends Action {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(Upload.class);
     private static final String REST_UPLOAD_URL = "/rest/file/upload";
     private final String bionimbuzIP = this.config.getBionimbuzAddress();
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    // --------------------------------------------------------------
     // * @see
     // br.unb.cic.bionimbuz.rest.action.Action#setup(javax.ws.rs.client.Client,
     // br.unb.cic.bionimbuz.rest.request.RequestInfo)
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // --------------------------------------------------------------
     @Override
     public void setup(Client client, RequestInfo requestInfo) {
         this.request = requestInfo;
     }
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // --------------------------------------------------------------
     // * @see br.unb.cic.bionimbuz.rest.action.Action#prepareTarget()
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // --------------------------------------------------------------
     @Override
     public void prepareTarget() {
         // Nothing to do
     }
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // --------------------------------------------------------------
     // * @see br.unb.cic.bionimbuz.rest.action.Action#execute()
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // --------------------------------------------------------------
     @Override
     public UploadResponse execute() {
         boolean returnFromServer = false;
@@ -67,8 +67,8 @@ public class Upload extends Action {
              final InputStream inputStream = req.getFileInfo().getInputStream();) {
             // Add a part as the file (bute[])
             final InputStreamBody file = new InputStreamBody(inputStream, req.getFileInfo().getName());
-            // Set hash
-            req.getFileInfo().setHash(HashUtil.calculateSha3(inputStream));
+            // Setting hash
+            req.getFileInfo().setHash(HashUtil.computeSHA3(inputStream));
             // Transforms the file metadata into JSON
             final String jsonFileInfo = new ObjectMapper().writeValueAsString(req.getFileInfo());
             // Adds it as a part of the request
