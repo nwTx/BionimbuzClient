@@ -1,15 +1,14 @@
 package br.unb.cic.bionimbuz.rest.action;
 
-import br.unb.cic.bionimbuz.model.User;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import br.unb.cic.bionimbuz.rest.request.LoginRequest;
+import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.LoginResponse;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.Response;
 
 public class Login extends Action {
 
@@ -17,8 +16,8 @@ public class Login extends Action {
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {
-        this.target = client.target(config.getBionimbuzAddress());
-        this.request = (LoginRequest) reqInfo;
+        this.target = client.target(super.bionimbuzAddress);
+        this.request = reqInfo;
     }
 
     @Override
@@ -34,7 +33,9 @@ public class Login extends Action {
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(request, MediaType.APPLICATION_JSON), Response.class);
 
-        return new LoginResponse(response.readEntity(new GenericType<User>(){}));
+        return new LoginResponse(response.readEntity(new GenericType<User>(){
+            // Nothing to do.
+        }));
     }
 
 }

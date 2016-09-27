@@ -1,16 +1,18 @@
 package br.unb.cic.bionimbuz.rest.action;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.ws.rs.client.Client;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.InputStreamBody;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -19,6 +21,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
+import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
@@ -34,8 +38,16 @@ import br.unb.cic.bionimbuz.security.HashUtil;
 public class Upload extends Action {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(Upload.class);
-    private static final String REST_UPLOAD_URL = "/rest/file/upload";
-    private final String bionimbuzIP = this.config.getBionimbuzAddress();
+    private static final String SERVICE_URL = "/rest/file/upload";
+    private final String requestUrl;
+    
+    // --------------------------------------------------------------
+    // Constructors.
+    // --------------------------------------------------------------
+    public Upload() {
+        super();
+        this.requestUrl = super.bionimbuzAddress + SERVICE_URL;
+    }
     
     // --------------------------------------------------------------
     // * @see
@@ -58,46 +70,47 @@ public class Upload extends Action {
     // --------------------------------------------------------------
     @Override
     public UploadResponse execute() {
-        boolean returnFromServer = false;
         final UploadRequest req = (UploadRequest) this.request;
-        final HttpPost httpPost = new HttpPost(this.bionimbuzIP + REST_UPLOAD_URL);
+        final FileInfo fileInfo = req.getFileInfo();
+        final File tempFile = new File(ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + fileInfo.getName());
         try (
-             // Create HttpClient
-             final CloseableHttpClient httpclient = HttpClients.createDefault();
-             final InputStream inputStream = req.getFileInfo().getInputStream();) {
-            // Add a part as the file (bute[])
-            final InputStreamBody file = new InputStreamBody(inputStream, req.getFileInfo().getName());
-            // Setting hash
-            req.getFileInfo().setHash(HashUtil.computeSHA3(inputStream));
-            // Transforms the file metadata into JSON
-            final String jsonFileInfo = new ObjectMapper().writeValueAsString(req.getFileInfo());
-            // Adds it as a part of the request
-            final StringBody fileInfoBody = new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON);
-            // Create the request with Metadata and the file
-            final HttpEntity reqEntity = MultipartEntityBuilder.create().addPart("file", file).addPart("file_info", fileInfoBody).build();
-            // Adds it to the httpPost object
-            httpPost.setEntity(reqEntity);
-            LOGGER.info("Sending Upload request (fileId=" + req.getFileInfo().getSize() + ") to BioNimbuZ (path: " + REST_UPLOAD_URL);
+             final CloseableHttpClient httpClient = HttpClients.createDefault();) {
+            // Compute and store the hash on metadata object
+            final String computedHash = HashUtil.computeNativeSHA3(tempFile.getAbsolutePath());
+            fileInfo.setHash(computedHash);
+            // Transforms the metadata object into a json string
+            final String jsonFileInfo = new ObjectMapper().writeValueAsString(fileInfo);
+            // Config the http request
+            final HttpPost post = new HttpPost(this.requestUrl);
+            final MultipartEntityBuilder multpartBuilder = MultipartEntityBuilder.create();
+            multpartBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            multpartBuilder.addPart("file", new FileBody(tempFile, ContentType.DEFAULT_BINARY));
+            multpartBuilder.addPart("file_info", new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON));
+            final HttpEntity requestEntity = multpartBuilder.build();
+            post.setEntity(requestEntity);
             try (
-                 final CloseableHttpResponse response = httpclient.execute(httpPost);) {
-                final HttpEntity resEntity = response.getEntity();
-                if (resEntity != null) {
-                    LOGGER.info("Upload request got " + response.getStatusLine() + " response");
-                    if (response.getStatusLine().getStatusCode() == 200) {
-                        returnFromServer = true;
-                    } else {
-                        LOGGER.error("Response code from server is different of HTTP 200");
-                        returnFromServer = false;
+                 final CloseableHttpResponse response = httpClient.execute(post);) {
+                // Handle the http response
+                final HttpEntity responseEntity = response.getEntity();
+                if (responseEntity != null) {
+                    EntityUtils.consume(responseEntity);
+                    if (response.getStatusLine() != null) {
+                        LOGGER.info("Upload request got status code: " + response.getStatusLine().getStatusCode());
+                        if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
+                            return new UploadResponse(true);
+                        }
+                        return new UploadResponse(false);
                     }
-                } else {
-                    LOGGER.error("Response from Server is null");
                 }
-                EntityUtils.consume(resEntity);
+                LOGGER.error("Response from Server is null!");
             }
-        } catch (final IOException ex) {
-            LOGGER.error("[IOException] " + ex.getMessage());
-            returnFromServer = false;
+        } catch (final InterruptedException | IOException e) {
+            LOGGER.error("HTTP request error!", e);
+        } finally {
+            if (tempFile.exists()) {
+                tempFile.delete();
+            }
         }
-        return new UploadResponse(returnFromServer);
+        return new UploadResponse(false);
     }
 }

@@ -14,7 +14,7 @@ import org.jboss.resteasy.util.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.unb.cic.bionimbuz.util.RuntimeUtil;
+import br.unb.cic.bionimbuz.utils.RuntimeUtil;
 
 /**
  *
@@ -40,12 +40,28 @@ public class HashUtil {
         LOGGER.info(String.format("Native HASH time: %d", System.currentTimeMillis() - now));
         return response.split(SPACE_STRING)[0];
     }
+    /**
+     * @deprecated This method results in erratic behavior or deadlock (with large files > 2GB).
+     * @param filePath
+     *            indicating the file path
+     * @throws IOException
+     * @see br.unb.cic.bionimbus.security#computeNativeSHA3(String)
+     */
+    @Deprecated
     public static String computeSHA3(final String filePath) throws IOException {
         try (
              FileInputStream fileInputStream = new FileInputStream(filePath);) {
             return computeSHA3(fileInputStream);
         }
     }
+    /**
+     * @deprecated This method results in erratic behavior or deadlock (with large files > 2GB).
+     * @param inputStream
+     *            indicating the file path
+     * @throws IOException
+     * @see br.unb.cic.bionimbus.security#computeNativeSHA3(String)
+     */
+    @Deprecated
     public static String computeSHA3(final InputStream inputStream) throws IOException {
         final long now = System.currentTimeMillis();
         final byte[] dataBytes = new byte[KEY_SIZE];

@@ -1,4 +1,4 @@
-package br.unb.cic.bionimbuz.util;
+package br.unb.cic.bionimbuz.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,16 +1,13 @@
 package br.unb.cic.bionimbuz.model;
 
-import java.io.InputStream;
 import java.util.UUID;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class FileInfo {
-
+    
     private String id = UUID.randomUUID().toString();
     private String name;
     private long size;
@@ -18,13 +15,19 @@ public class FileInfo {
     private String uploadTimestamp;
     private String hash;
     private String bucket;
-    @JsonIgnore
-    private InputStream inputStream;
     @JsonProperty("payload")
     private byte[] payload;
-
+    
+    // --------------------------------------------------------------
+    // Constructors
+    // --------------------------------------------------------------
     public FileInfo() {
+        super();
     }
+    
+    // --------------------------------------------------------------
+    // get/set
+    // --------------------------------------------------------------
     public FileInfo(String id) {
         this.id = id;
     }
@@ -75,11 +78,5 @@ public class FileInfo {
     }
     public void setBucket(String bucket) {
         this.bucket = bucket;
-    }
-    public InputStream getInputStream() {
-        return this.inputStream;
-    }
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
     }
 }
