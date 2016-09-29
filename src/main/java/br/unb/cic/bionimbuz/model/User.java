@@ -15,7 +15,18 @@ public class User {
     private Long storageUsage;
     private List<FileInfo> files;
     private List<Workflow> workflows;
-
+    
+    public  User(){
+        
+    }
+    public User(String login, String password, String nome, String cpf, String email, String celphone) {
+        this.login = login;
+        this.password = password;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.celphone = celphone;
+    }
     public long getId() {
         return this.id;
     }

@@ -1,9 +1,6 @@
 package br.unb.cic.bionimbuz.model;
 
-import java.io.InputStream;
 import java.util.UUID;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,8 +15,6 @@ public class FileInfo {
     private String uploadTimestamp;
     private String hash;
     private String bucket;
-    @JsonIgnore
-    private InputStream inputStream;
     @JsonProperty("payload")
     private byte[] payload;
 
@@ -75,11 +70,5 @@ public class FileInfo {
     }
     public void setBucket(String bucket) {
         this.bucket = bucket;
-    }
-    public InputStream getInputStream() {
-        return this.inputStream;
-    }
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
     }
 }

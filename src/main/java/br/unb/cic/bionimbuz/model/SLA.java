@@ -27,8 +27,10 @@ public class SLA {
     private List<Instance> instances;
     private Double value;
     private Date time;
+    private Integer limitationType;
+    private String limitationValueExecutionTime;
+    private String limitationValueExecutionCost;
     
-            
     public SLA(){
         
         this.user=null;
@@ -41,7 +43,17 @@ public class SLA {
         this.time=new Date();
         
     }
-    
+    public SLA(SLA sla){
+        
+        this.user=sla.getUser();
+        this.provider=sla.getProvider();
+        this.objective= sla.getObjective();
+        this.period = sla.getPeriod();
+        this.instances=sla.getInstances();
+        this.services=sla.getServices();
+        this.time=sla.getTime();
+        
+    }
     public SLA(WorkflowComposerBean slacomp,User user, User provider, List<PluginService> services){
         
         this.user=user;
@@ -51,6 +63,9 @@ public class SLA {
         this.period = 2l;
         this.instances=slacomp.getSelectedInstancies();
         this.services= services;
+        this.limitationType= slacomp.getLimitationType();
+        this.limitationValueExecutionCost=slacomp.getLimitationValueExecutionCost();
+        this.limitationValueExecutionTime=slacomp.getLimitationValueExecutionTime();
     }
     
     public SLA(WorkflowComposerBean slacomp,User user, User provider, List<PluginService> service,Date time, Double value){
@@ -189,6 +204,48 @@ public class SLA {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * @return the limitationType
+     */
+    public Integer getLimitationType() {
+        return limitationType;
+    }
+
+    /**
+     * @param limitationType the limitationType to set
+     */
+    public void setLimitationType(Integer limitationType) {
+        this.limitationType = limitationType;
+    }
+
+    /**
+     * @return the limitationValueExecutionTime
+     */
+    public String getLimitationValueExecutionTime() {
+        return limitationValueExecutionTime;
+    }
+
+    /**
+     * @param limitationValueExecutionTime the limitationValueExecutionTime to set
+     */
+    public void setLimitationValueExecutionTime(String limitationValueExecutionTime) {
+        this.limitationValueExecutionTime = limitationValueExecutionTime;
+    }
+
+    /**
+     * @return the limitationValueExecutionCost
+     */
+    public String getLimitationValueExecutionCost() {
+        return limitationValueExecutionCost;
+    }
+
+    /**
+     * @param limitationValueExecutionCost the limitationValueExecutionCost to set
+     */
+    public void setLimitationValueExecutionCost(String limitationValueExecutionCost) {
+        this.limitationValueExecutionCost = limitationValueExecutionCost;
     }
     
 }

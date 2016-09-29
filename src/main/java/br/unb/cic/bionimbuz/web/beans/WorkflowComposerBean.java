@@ -31,6 +31,7 @@ import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.SLA;
 import br.unb.cic.bionimbuz.model.WorkflowStatus;
+import br.unb.cic.bionimbuz.security.PBKDF2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,6 +40,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.logging.Level;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -82,7 +86,7 @@ public class WorkflowComposerBean implements Serializable {
     private DiagramElement clickedElement;
     private final List<String> supportedFormats;
     private String fileFormat;
-    private SLA sla;
+    private SLA sla,template;
 
     //----------------------- SLA Declarations------------------
     private String panel1 = "Hide-Panel1";
@@ -186,9 +190,23 @@ public class WorkflowComposerBean implements Serializable {
             System.out.println("objective: "+getObjective());
             System.out.println("getLimitationValueExecutionCost:"+this.getLimitationValueExecutionCost());
             System.out.println("getLimitationValueExecutionTime:"+this.getLimitationValueExecutionTime());
-//            sla= new SLA(this,loggedUser,loggedUser,this.getServicesList());
+            //TODO: alterar para o usuário bionimbuz depois da implementação do cadastro de usuário
+            User provider;
+            
 //            System.out.println(sla.getId());
 
+            try {
+                provider = new User("bionimbuz", PBKDF2.generatePassword("@BioNimbuZ!"), "BioNimbuZ", "71004832206", "bionimbuz@gmail.com", "0");
+                sla= new SLA(this,loggedUser,provider,this.getServicesList());
+                template = new SLA(restService.startSla(sla, workflowDiagram.getWorkflow()));
+                    
+                
+            }catch (ServerNotReachableException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
+                java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+//            sla= new SLA(this,loggedUser,loggedUser,this.getServicesList());
+//            System.out.println(sla.getId());
+            
 //            try {
 //                restService.startSla(sla,workflowDiagram.getWorkflow());
 //            } catch (ServerNotReachableException ex) {
