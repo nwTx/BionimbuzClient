@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:decorate template="/resources/templates/template.xhtml">
+
+        <!-- Center Content -->
+        <ui:define name="conteudo_centro">
+   
+            <h:form id="form">
+                <p:growl id="growl" life="2000" />
+                <p:commandButton value="Create" id="withIcon" actionListener="#{buttonView.buttonAction}" update="growl" icon="ui-icon-star" />
+
+<!--                <p:contextMenu for="instances">
+                    <p:menuitem value="start" icon="fa fa-toggle-right" />
+                    <p:menuitem value="stop" icon="fa fa-pause" />
+                    <p:menuitem value="reboot"  icon="fa fa-refresh" />
+                    <p:menuitem value="shutdown"  icon="fa fa-power-off" />
+                    <p:menuitem value="terminate"  icon="fa fa-times-circle" />
+
+                </p:contextMenu>
+
+                <p:dataTable id="instances" var="instance" value="#{instanceView.instances}" rowKey="#{instance.id}"
+                             selection="#{instanceView.selectedInstance}" selectionMode="single">
+                    <f:facet name="header">
+                        Máquinas Virtuais BioNimbuZ
+                    </f:facet>
+                    <p:column headerText="Id">
+                        <h:outputText value="#{instance.id}" />
+                    </p:column>
+                    <p:column headerText="State">
+                        <h:outputText value="#{instance.state}" />
+                    </p:column>
+                </p:dataTable> 
+
+            </h:form> -->
+<!--            <h:form>
+
+                <p:panel header="Virtual Machine Status">
+                    <p:chart type="bar" model="#{chartView.barModel}" />						
+                </p:panel>
+
+            </h:form>-->
+        </ui:define>
+
+    </ui:decorate>
+</html>
