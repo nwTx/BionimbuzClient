@@ -1,6 +1,6 @@
 package br.unb.cic.bionimbuz.web.beans;
 
-import java.io.IOException;
+import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -25,7 +25,7 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 @Named
 @SessionScoped
 public class FileUploadBean implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     private static final String MAX_STORAGE = "25000 Mb";
     private static final Long MAX_STORAGE_SIZE = 25000000000L; // 25 Gb
@@ -34,7 +34,7 @@ public class FileUploadBean implements Serializable {
     private String allowedTypes;
     @Inject
     private SessionBean sessionBean;
-
+    
     public FileUploadBean() {
         this.restService = new RestService();
         this.allowedTypes = "/(\\.|\\/)(";
@@ -49,30 +49,37 @@ public class FileUploadBean implements Serializable {
      *
      * @param event
      */
-    public void handleUploadedFile(FileUploadEvent event) throws IOException {
+    public void handleUploadedFile(FileUploadEvent event) {
+        
         // Verifies if the file doesn't overflow the user storage usage
-        final UploadedFile file = event.getFile();
-        final long fileSize = file.getSize();
+        final UploadedFile uploadedFile = event.getFile();
+        final long fileSize = uploadedFile.getSize();
         if (this.sessionBean.getLoggedUser().getStorageUsage() + fileSize > MAX_STORAGE_SIZE) {
             this.showFacesMessage(FacesMessage.SEVERITY_ERROR, "Seu espaco de armazenamento ultrapassou " + MAX_STORAGE + "!");
             return;
         }
+        
         // Verifies if it wasn't uploaded previously
         for (final FileInfo u : this.sessionBean.getLoggedUser().getFiles()) {
-            if (file.getFileName().equals(u.getName())) {
+            if (uploadedFile.getFileName().equals(u.getName())) {
                 this.showFacesMessage(FacesMessage.SEVERITY_ERROR, "Arquivo existente!");
                 return;
             }
         }
+        final String tempFilePath = ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + uploadedFile.getFileName();
+        // Creates a new FileInfo
+        final FileInfo fileInfo = new FileInfo();
         try {
-            // Creates a new FileInfo
-            final FileInfo fileInfo = new FileInfo();
             // Set file information
-            fileInfo.setName(file.getFileName());
+            fileInfo.setName(uploadedFile.getFileName());
             fileInfo.setSize(fileSize);
             fileInfo.setUploadTimestamp(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
             fileInfo.setUserId(this.sessionBean.getLoggedUser().getId());
-            fileInfo.setInputStream(file.getInputstream());
+            final File tempFile = new File(tempFilePath);
+            if (!tempFile.getParentFile().exists()) {
+                tempFile.getParentFile().mkdirs();
+            }
+            uploadedFile.write(tempFile.getAbsolutePath());
             // Calls RestService to upload file
             this.restService.uploadFile(fileInfo);
             // If file was uploaded with success, adds file on user file list
@@ -82,9 +89,12 @@ public class FileUploadBean implements Serializable {
             // Shows message to the user
             this.showFacesMessage(FacesMessage.SEVERITY_INFO, "Arquivo enviado com sucesso!");
         } catch (final Exception e) {
+            LOGGER.error("[File Upload Error!]", e);
             this.showFacesMessage(FacesMessage.SEVERITY_ERROR, "Erro Interno. Não foi possível enviar o arquivo");
-            e.printStackTrace();
-            LOGGER.error("[Exception - " + e.getMessage() + "]");
+            final File tempFile = new File(tempFilePath);
+            if (tempFile.exists()) {
+                tempFile.delete();
+            }
         }
     }
     /**

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class FileInfo {
-
+    
     private String id = UUID.randomUUID().toString();
     private String name;
     private long size;
@@ -17,9 +17,17 @@ public class FileInfo {
     private String bucket;
     @JsonProperty("payload")
     private byte[] payload;
-
+    
+    // --------------------------------------------------------------
+    // Constructors
+    // --------------------------------------------------------------
     public FileInfo() {
+        super();
     }
+    
+    // --------------------------------------------------------------
+    // get/set
+    // --------------------------------------------------------------
     public FileInfo(String id) {
         this.id = id;
     }

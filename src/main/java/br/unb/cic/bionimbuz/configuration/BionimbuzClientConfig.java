@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Vinicius
  */
 public class BionimbuzClientConfig {
-
+    
     @JsonProperty("root-path")
     private String rootPath;
     @JsonProperty("tmp-workflow-folder")
@@ -27,7 +27,7 @@ public class BionimbuzClientConfig {
     private String gcloudFolder;
     @JsonProperty("storage-mode")
     private String storageMode;
-
+    
     public String getRootPath() {
         return this.rootPath;
     }
@@ -35,6 +35,9 @@ public class BionimbuzClientConfig {
         this.rootPath = rootPath;
     }
     public String getTemporaryWorkflowFolder() {
+        if (!this.temporaryWorkflowFolder.endsWith("/")) {
+            this.temporaryWorkflowFolder += "/";
+        }
         return this.temporaryWorkflowFolder;
     }
     public void setTemporaryWorkflowFolder(String temporaryWorkflowFolder) {

@@ -27,15 +27,14 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
  */
 @Named
 public class ConfigurationRepository implements ServletContextListener {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationRepository.class);
-    private static BionimbuzClientConfig config;
     private static ArrayList<PluginService> supportedServices;
     private static ArrayList<String> references;
     private static ArrayList<String> supportedFormats;
     public static String BIONIMBUZ_ADDRESS;
     public static String TEMPORARY_WORKFLOW_PATH;
-
+    
     /**
      * Called on Application Server start
      *
@@ -47,9 +46,8 @@ public class ConfigurationRepository implements ServletContextListener {
         LOGGER.info("========> Starting client application...");
         LOGGER.info("========================================");
         boolean serverOnline = false;
-        config = loadConfiguration();
-        config.log();
-
+        getConfig().log();
+        
         // Send request to the server
         while (!serverOnline) {
             if (RestService.ping()) {
@@ -104,9 +102,9 @@ public class ConfigurationRepository implements ServletContextListener {
     public static ArrayList<String> getSupportedFormats() {
         return supportedFormats;
     }
-
+    
     public static BionimbuzClientConfig getConfig() {
-        return config;
+        return loadConfiguration();
     }
     
     /**
@@ -118,7 +116,6 @@ public class ConfigurationRepository implements ServletContextListener {
      */
     private static BionimbuzClientConfig loadConfiguration() {
         BionimbuzClientConfig config = null;
-
         try {
             final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             final String defaultConfigPathname = System.getProperty("user.home") + "/BionimbuzClient/conf/conf.yaml";
@@ -126,8 +123,8 @@ public class ConfigurationRepository implements ServletContextListener {
         } catch (final IOException ex) {
             LOGGER.error("[IOException] - " + ex.getMessage());
         }
-
+        
         return config;
     }
-
+    
 }
