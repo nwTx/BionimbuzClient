@@ -110,7 +110,7 @@ public class WorkflowComposerBean implements Serializable {
         servicesList = ConfigurationRepository.getSupportedServices();
         references = ConfigurationRepository.getReferences();
         supportedFormats = ConfigurationRepository.getSupportedFormats();
-//        instances = new ArrayList<>();
+        instances = new ArrayList<>();
     }
 
     @PostConstruct

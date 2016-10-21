@@ -1,5 +1,6 @@
 package br.unb.cic.bionimbuz.configuration;
 
+import br.unb.cic.bionimbuz.model.Instance;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class ConfigurationRepository implements ServletContextListener {
     private static ArrayList<PluginService> supportedServices;
     private static ArrayList<String> references;
     private static ArrayList<String> supportedFormats;
+    private static ArrayList<Instance> instances;
     public static String BIONIMBUZ_ADDRESS;
     public static String TEMPORARY_WORKFLOW_PATH;
 
@@ -60,6 +62,7 @@ public class ConfigurationRepository implements ServletContextListener {
                     references = (ArrayList<String>) response.getReferences();
                     supportedServices = (ArrayList<PluginService>) response.getServicesList();
                     supportedFormats = (ArrayList<String>) response.getSupportedFormats();
+                    instances= (ArrayList<Instance>) response.getInstances();
                 } catch (final Exception ex) {
                     ex.printStackTrace();
                 }
@@ -107,6 +110,14 @@ public class ConfigurationRepository implements ServletContextListener {
 
     public static BionimbuzClientConfig getConfig() {
         return config;
+    }
+    
+    public static ArrayList<Instance> getInstances() {
+        return instances;
+    }
+
+    public static void setInstances(ArrayList<Instance> aInstances) {
+        instances = aInstances;
     }
     
     /**
