@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.unb.bionimbuz.storage.bucket.methods;
+package br.unb.cic.bionimbuz.storage.bucket.methods;
 
-import br.unb.bionimbuz.storage.bucket.BioBucket;
-import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
+import br.unb.cic.bionimbuz.storage.bucket.BioBucket;
+import br.unb.cic.bionimbuz.storage.bucket.CloudStorageMethods;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;

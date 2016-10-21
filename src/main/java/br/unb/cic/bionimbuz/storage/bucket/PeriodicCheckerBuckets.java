@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.unb.bionimbuz.storage.bucket;
+package br.unb.cic.bionimbuz.storage.bucket;
 
-import br.unb.bionimbuz.storage.bucket.methods.CloudMethodsAmazonGoogle;
-import br.unb.bionimbuz.storage.bucket.CloudStorageMethods.*;
-import br.unb.cic.bionimbuz.configuration.BionimbuzClientConfig;
-import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import br.unb.cic.bionimbuz.configuration.BionimbuzClientConfig;
+import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
+import br.unb.cic.bionimbuz.storage.bucket.CloudStorageMethods.StorageProvider;
+import br.unb.cic.bionimbuz.storage.bucket.methods.CloudMethodsAmazonGoogle;
 
 /**
  *

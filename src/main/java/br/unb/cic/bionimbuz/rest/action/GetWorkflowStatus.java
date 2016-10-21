@@ -1,12 +1,12 @@
 package br.unb.cic.bionimbuz.rest.action;
 
-import br.unb.cic.bionimbuz.rest.request.GetWorkflowStatusRequest;
-import br.unb.cic.bionimbuz.rest.request.RequestInfo;
-import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
-import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+
+import br.unb.cic.bionimbuz.rest.request.RequestInfo;
+import br.unb.cic.bionimbuz.rest.response.GetWorkflowStatusResponse;
+import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 
 /**
  * Requests an user's workflow status list
@@ -19,8 +19,8 @@ public class GetWorkflowStatus extends Action {
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {
-        this.target = client.target(config.getBionimbuzAddress());
-        this.request = (GetWorkflowStatusRequest) reqInfo;
+        this.target = client.target(super.bionimbuzAddress);
+        this.request = reqInfo;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package br.unb.cic.bionimbuz.rest.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import br.unb.cic.bionimbuz.communication.RestCommunicator;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
@@ -39,7 +40,6 @@ import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
 import br.unb.cic.bionimbuz.rest.response.StartSlaResponse;
 import br.unb.cic.bionimbuz.rest.response.StartWorkflowResponse;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
-import java.util.List;
 
 /**
  * This links the Web pages to the REST Comunicator
@@ -54,9 +54,8 @@ public class RestService {
      * Constructor that initializes the REST Communicator
      */
     public RestService() {
-        restCommunicator = new RestCommunicator();
+        this.restCommunicator = new RestCommunicator();
     }
-
     /**
      * Fires a Login request to the server
      *
@@ -65,12 +64,10 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public User login(User user) throws ServerNotReachableException {
-        RequestInfo loginRequest = new LoginRequest(user);
-        LoginResponse resp = (LoginResponse) restCommunicator.sendRequest(new Login(), loginRequest);
-
+        final RequestInfo loginRequest = new LoginRequest(user);
+        final LoginResponse resp = (LoginResponse) this.restCommunicator.sendRequest(new Login(), loginRequest);
         return resp.getUser();
     }
-
     /**
      * Communicates an user logout to the server
      *
@@ -79,12 +76,10 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public boolean logout(User user) throws ServerNotReachableException {
-        RequestInfo logoutRequest = new LogoutRequest(user);
-        LogoutResponse resp = (LogoutResponse) restCommunicator.sendRequest(new Logout(), logoutRequest);
-
+        final RequestInfo logoutRequest = new LogoutRequest(user);
+        final LogoutResponse resp = (LogoutResponse) this.restCommunicator.sendRequest(new Logout(), logoutRequest);
         return resp.isLogoutSuccess();
     }
-
     /**
      * Fires an Upload request to the server
      *
@@ -93,16 +88,13 @@ public class RestService {
      * @throws IOException
      */
     public boolean uploadFile(FileInfo fileInfo) throws Exception {
-        RequestInfo uploadRequest = new UploadRequest(fileInfo);
-        UploadResponse resp = (UploadResponse) restCommunicator.sendRequest(new Upload(), uploadRequest);
-
+        final RequestInfo uploadRequest = new UploadRequest(fileInfo);
+        final UploadResponse resp = (UploadResponse) this.restCommunicator.sendRequest(new Upload(), uploadRequest);
         if (!resp.isUploaded()) {
             throw new Exception("Failed to send file");
         }
-
         return true;
     }
-
     /**
      * Requests a file exclusion by the server
      *
@@ -111,12 +103,10 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public boolean deleteFile(FileInfo fileInfo) throws Exception {
-        RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
-        DeleteFileResponse response = (DeleteFileResponse) restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
-
+        final RequestInfo deleteFileRequest = new DeleteFileRequest(fileInfo);
+        final DeleteFileResponse response = (DeleteFileResponse) this.restCommunicator.sendRequest(new DeleteFile(), deleteFileRequest);
         return response.isDeleted();
     }
-
     /**
      * Requests an user signup
      *
@@ -125,12 +115,10 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public boolean signUp(User user) throws ServerNotReachableException {
-        RequestInfo signUpRequest = new SignUpRequest(user);
-        SignUpResponse response = (SignUpResponse) restCommunicator.sendRequest(new SignUp(), signUpRequest);
-
+        final RequestInfo signUpRequest = new SignUpRequest(user);
+        final SignUpResponse response = (SignUpResponse) this.restCommunicator.sendRequest(new SignUp(), signUpRequest);
         return response.isAdded();
     }
-
     /**
      * Sends an user workflow to the BioNimbuZ Core to be processed
      *
@@ -139,12 +127,10 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public boolean startWorkflow(Workflow workflow) throws ServerNotReachableException {
-        RequestInfo startWorkflowRequest = new StartWorkflowRequest(workflow);
-        StartWorkflowResponse response = (StartWorkflowResponse) restCommunicator.sendRequest(new StartWorkflow(), startWorkflowRequest);
-
+        final RequestInfo startWorkflowRequest = new StartWorkflowRequest(workflow);
+        final StartWorkflowResponse response = (StartWorkflowResponse) this.restCommunicator.sendRequest(new StartWorkflow(), startWorkflowRequest);
         return response.isWorkflowProcessed();
     }
-
     /**
      * Sends an user SLA QOS to the BioNimbuZ Core to be processed and returns the SLA template
      *
@@ -154,10 +140,9 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public SLA startSla(SLA sla, Workflow workflow) throws ServerNotReachableException {
-       RequestInfo startSlaRequest = new StartSlaRequest(sla, workflow);
-       StartSlaResponse response = (StartSlaResponse) restCommunicator.sendRequest(new StartSla(), startSlaRequest);
-
-        return response.getSla();
+//       final RequestInfo startSlaRequest = new StartSlaRequest(sla, workflow);
+       final StartSlaResponse response = (StartSlaResponse) this.restCommunicator.sendRequest(new StartSla(), new StartSlaRequest(sla, workflow));
+       return response.getSla();
     }
     
     /**
@@ -168,12 +153,10 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public List<Workflow> getWorkflowStatus(User user) throws ServerNotReachableException {
-        RequestInfo request = new GetWorkflowStatusRequest(user.getId());
-        GetWorkflowStatusResponse response = (GetWorkflowStatusResponse) restCommunicator.sendRequest(new GetWorkflowStatus(), request);
-
+        final RequestInfo request = new GetWorkflowStatusRequest(user.getId());
+        final GetWorkflowStatusResponse response = (GetWorkflowStatusResponse) this.restCommunicator.sendRequest(new GetWorkflowStatus(), request);
         return response.getUserWorkflows();
     }
-
     /**
      * Send a request to the server to get the supported services list, instances list, references and supported format list
      *
@@ -181,11 +164,9 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public GetConfigurationsResponse getServices() throws Exception {
-        GetConfigurationsResponse response = (GetConfigurationsResponse) restCommunicator.sendRequest(new GetConfigurations(), new GetConfigurationsRequest());
-
+        final GetConfigurationsResponse response = (GetConfigurationsResponse) this.restCommunicator.sendRequest(new GetConfigurations(), new GetConfigurationsRequest());
         return response;
     }
-
     /**
      * Send a request to the server to get workflow history.
      *
@@ -194,27 +175,17 @@ public class RestService {
      * @throws Exception
      */
     public GetWorkflowHistoryResponse getWorkflowHistory(String workflowId) throws Exception {
-        RequestInfo request = new GetWorkflowHistoryRequest(workflowId);
-
-        GetWorkflowHistoryResponse response = (GetWorkflowHistoryResponse) restCommunicator.sendRequest(new GetWorkflowHistory(), request);
-
+        final RequestInfo request = new GetWorkflowHistoryRequest(workflowId);
+        final GetWorkflowHistoryResponse response = (GetWorkflowHistoryResponse) this.restCommunicator.sendRequest(new GetWorkflowHistory(), request);
         return response;
     }
-
     /**
      * Pings BioNimbuZ core.
      *
      * @param address
      * @return
      */
-    public boolean ping(String address) {
-        try {
-            return restCommunicator.ping(address);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return false;
-        }
-
+    public static boolean ping() {
+        return RestCommunicator.ping();
     }
 }

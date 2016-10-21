@@ -1,18 +1,18 @@
 package br.unb.cic.bionimbuz.rest.action;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.ws.rs.client.Client;
 
-import br.unb.cic.bionimbuz.rest.request.RequestInfo;
-import br.unb.cic.bionimbuz.rest.request.UploadRequest;
-import br.unb.cic.bionimbuz.rest.response.UploadResponse;
-import java.io.IOException;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -20,6 +20,13 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
+import br.unb.cic.bionimbuz.model.FileInfo;
+import br.unb.cic.bionimbuz.rest.request.RequestInfo;
+import br.unb.cic.bionimbuz.rest.request.UploadRequest;
+import br.unb.cic.bionimbuz.rest.response.UploadResponse;
+import br.unb.cic.bionimbuz.security.HashUtil;
 
 /**
  * Since there is a bug in Resteasy upload method (documented here
@@ -29,138 +36,81 @@ import org.slf4j.LoggerFactory;
  * @author Vinicius (with Edrward's help)
  */
 public class Upload extends Action {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(Upload.class);
-    private static final String REST_UPLOAD_URL = "/rest/file/upload";
-    private final String bionimbuzIP = config.getBionimbuzAddress();
-
+    private static final String SERVICE_URL = "/rest/file/upload";
+    private final String requestUrl;
+    
+    // --------------------------------------------------------------
+    // Constructors.
+    // --------------------------------------------------------------
+    public Upload() {
+        super();
+        this.requestUrl = super.bionimbuzAddress + SERVICE_URL;
+    }
+    
+    // --------------------------------------------------------------
+    // * @see
+    // br.unb.cic.bionimbuz.rest.action.Action#setup(javax.ws.rs.client.Client,
+    // br.unb.cic.bionimbuz.rest.request.RequestInfo)
+    // --------------------------------------------------------------
     @Override
     public void setup(Client client, RequestInfo requestInfo) {
-        this.request = (UploadRequest) requestInfo;
+        this.request = requestInfo;
     }
-
+    // --------------------------------------------------------------
+    // * @see br.unb.cic.bionimbuz.rest.action.Action#prepareTarget()
+    // --------------------------------------------------------------
     @Override
     public void prepareTarget() {
+        // Nothing to do
     }
-
+    // --------------------------------------------------------------
+    // * @see br.unb.cic.bionimbuz.rest.action.Action#execute()
+    // --------------------------------------------------------------
     @Override
     public UploadResponse execute() {
-        boolean returnFromServer = false;
-
-        // Create HttpClient
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-
-        try {
-
-            // Creates HttpPost with server address
-            HttpPost httpPost = new HttpPost(bionimbuzIP + REST_UPLOAD_URL);
-            UploadRequest req = (UploadRequest) this.request;
-
-            // Add a part as the file (bute[])
-            ByteArrayBody file = new ByteArrayBody(req.getFileInfo().getPayload(), req.getFileInfo().getName());
-
-            // Set hash
-            req.getFileInfo().setHash(generateHash(req.getFileInfo().getPayload()));
-
-            // Avoid the payload to be sent twice (because it was already set as ByteArrayBody part)
-            req.getFileInfo().setPayload(null);
-
-            // Transforms the file metadata into JSON
-            String jsonFileInfo = new ObjectMapper().writeValueAsString(req.getFileInfo());
-
-            // Adds it as a part of the request
-            StringBody fileInfoBody = new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON);
-
-            // Create the request with the two parts: Metadata and the file as byte[]
-            HttpEntity reqEntity = MultipartEntityBuilder.create()
-                    .addPart("file", file)
-                    .addPart("file_info", fileInfoBody)
-                    .build();
-
-            // Adds it to the httpPost object
-            httpPost.setEntity(reqEntity);
-
-            LOGGER.info("Sending Upload request (fileId=" + req.getFileInfo().getSize() + ") to BioNimbuZ (path: " + REST_UPLOAD_URL);
-
-            // Creates the response and fires the post request
-            CloseableHttpResponse response = httpclient.execute(httpPost);
-
-            try {
-                HttpEntity resEntity = response.getEntity();
-
-                if (resEntity != null) {
-                    LOGGER.info("Upload request got " + response.getStatusLine() + " response");
-
-                    // Verifies response status code
-                    if (response.getStatusLine().getStatusCode() == 200) {
-                        returnFromServer = true;
-                    } else {
-                        LOGGER.error("Response code from server is different of HTTP 200");
-                        returnFromServer = false;
+        final UploadRequest req = (UploadRequest) this.request;
+        final FileInfo fileInfo = req.getFileInfo();
+        final File tempFile = new File(ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + fileInfo.getName());
+        try (
+             final CloseableHttpClient httpClient = HttpClients.createDefault();) {
+            // Compute and store the hash on metadata object
+            final String computedHash = HashUtil.computeNativeSHA3(tempFile.getAbsolutePath());
+            fileInfo.setHash(computedHash);
+            // Transforms the metadata object into a json string
+            final String jsonFileInfo = new ObjectMapper().writeValueAsString(fileInfo);
+            // Config the http request
+            final HttpPost post = new HttpPost(this.requestUrl);
+            final MultipartEntityBuilder multpartBuilder = MultipartEntityBuilder.create();
+            multpartBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            multpartBuilder.addPart("file", new FileBody(tempFile, ContentType.DEFAULT_BINARY));
+            multpartBuilder.addPart("file_info", new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON));
+            final HttpEntity requestEntity = multpartBuilder.build();
+            post.setEntity(requestEntity);
+            try (
+                 final CloseableHttpResponse response = httpClient.execute(post);) {
+                // Handle the http response
+                final HttpEntity responseEntity = response.getEntity();
+                if (responseEntity != null) {
+                    EntityUtils.consume(responseEntity);
+                    if (response.getStatusLine() != null) {
+                        LOGGER.info("Upload request got status code: " + response.getStatusLine().getStatusCode());
+                        if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
+                            return new UploadResponse(true);
+                        }
+                        return new UploadResponse(false);
                     }
-                } else {
-                    LOGGER.error("Response from Server is null");
                 }
-
-                EntityUtils.consume(resEntity);
-            } finally {
-                response.close();
+                LOGGER.error("Response from Server is null!");
             }
-        } catch (IOException ex) {
-            LOGGER.error("[IOException] " + ex.getMessage());
-
-            returnFromServer = false;
+        } catch (final InterruptedException | IOException e) {
+            LOGGER.error("HTTP request error!", e);
         } finally {
-            try {
-                httpclient.close();
-            } catch (IOException ex) {
-                LOGGER.error("[IOException] " + ex.getMessage());
-
-                returnFromServer = false;
+            if (tempFile.exists()) {
+                tempFile.delete();
             }
         }
-
-
-        /*
-        MultipartFormDataOutput multipart = new MultipartFormDataOutput();
-
-        // Generate Hash
-        ((UploadRequest) request).getUploadedFileInfo().setHash(generateHash(((UploadRequest) request).getUploadedFileInfo().getPayload()));
-
-        multipart.addFormData("file", ((UploadRequest) request).getUploadedFileInfo().getPayload(), MediaType.MULTIPART_FORM_DATA_TYPE);
-        multipart.addFormData("file_info", ((UploadRequest) request).getUploadedFileInfo(), MediaType.APPLICATION_JSON_TYPE);
-
-        GenericEntity<MultipartFormDataOutput> entity = new GenericEntity<MultipartFormDataOutput>(multipart) {
-        };
-
-        Response response = target
-                .request()
-                .post(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA_TYPE), Response.class);
-         
-        return new UploadResponse(response.readEntity(boolean.class));
-         */
-        return new UploadResponse(returnFromServer);
-    }
-
-    /**
-     * Generate SHA-3 from the input file
-     *
-     * @param inputFile
-     * @return
-     */
-    private String generateHash(byte[] inputFile) {
-
-        SHA3.DigestSHA3 md = new SHA3.DigestSHA3(256);
-        md.update(inputFile);
-
-        byte[] mdbytes = md.digest();
-
-        //Convert the byte to hex format
-        StringBuilder sb = new StringBuilder("");
-        for (int i = 0; i < mdbytes.length; i++) {
-            sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        return sb.toString();
+        return new UploadResponse(false);
     }
 }

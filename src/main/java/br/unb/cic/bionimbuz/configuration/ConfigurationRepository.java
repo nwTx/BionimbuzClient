@@ -28,16 +28,15 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
  */
 @Named
 public class ConfigurationRepository implements ServletContextListener {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationRepository.class);
-    private static BionimbuzClientConfig config;
     private static ArrayList<PluginService> supportedServices;
     private static ArrayList<String> references;
     private static ArrayList<String> supportedFormats;
     private static ArrayList<Instance> instances;
     public static String BIONIMBUZ_ADDRESS;
     public static String TEMPORARY_WORKFLOW_PATH;
-
+    
     /**
      * Called on Application Server start
      *
@@ -49,13 +48,12 @@ public class ConfigurationRepository implements ServletContextListener {
         LOGGER.info("========> Starting client application...");
         LOGGER.info("========================================");
         boolean serverOnline = false;
-        final RestService restService = new RestService();
-        config = loadConfiguration();
-        config.log();
-
+        getConfig().log();
+        
         // Send request to the server
         while (!serverOnline) {
-            if (restService.ping(config.getBionimbuzAddress())) {
+            if (RestService.ping()) {
+                final RestService restService = new RestService();
                 GetConfigurationsResponse response;
                 try {
                     response = restService.getServices();
@@ -64,7 +62,7 @@ public class ConfigurationRepository implements ServletContextListener {
                     supportedFormats = (ArrayList<String>) response.getSupportedFormats();
                     instances= (ArrayList<Instance>) response.getInstances();
                 } catch (final Exception ex) {
-                    ex.printStackTrace();
+                    LOGGER.error("Error trying to get the supported services list", ex);
                 }
             } else {
                 LOGGER.error("===> BioNimbuZ Core Offline... Trying reconnection <===");
@@ -107,9 +105,9 @@ public class ConfigurationRepository implements ServletContextListener {
     public static ArrayList<String> getSupportedFormats() {
         return supportedFormats;
     }
-
+    
     public static BionimbuzClientConfig getConfig() {
-        return config;
+        return loadConfiguration();
     }
     
     public static ArrayList<Instance> getInstances() {
@@ -129,7 +127,6 @@ public class ConfigurationRepository implements ServletContextListener {
      */
     private static BionimbuzClientConfig loadConfiguration() {
         BionimbuzClientConfig config = null;
-
         try {
             final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             final String defaultConfigPathname = System.getProperty("user.home") + "/BionimbuzClient/conf/conf.yaml";
@@ -137,8 +134,8 @@ public class ConfigurationRepository implements ServletContextListener {
         } catch (final IOException ex) {
             LOGGER.error("[IOException] - " + ex.getMessage());
         }
-
+        
         return config;
     }
-
+    
 }

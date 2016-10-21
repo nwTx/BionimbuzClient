@@ -5,121 +5,98 @@ import java.util.List;
 public class User {
 
     private long id;
-
     private String login;
-
     private String password;
-
     private String nome;
-
     private String cpf;
-
     private String email;
-
     private String celphone;
-
     private String securityToken;
-
     private Long storageUsage;
-
     private List<FileInfo> files;
-
     private List<Workflow> workflows;
-
-    public long getId() {
-        return id;
+    
+    public  User(){
+        
     }
-
+    public User(String login, String password, String nome, String cpf, String email, String celphone) {
+        this.login = login;
+        this.password = password;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.celphone = celphone;
+    }
+    public long getId() {
+        return this.id;
+    }
     public void setId(long id) {
         this.id = id;
     }
-
     public String getLogin() {
-        return login;
+        return this.login;
     }
-
     public void setLogin(String login) {
         this.login = login;
     }
-
     public String getPassword() {
-        return password;
+        return this.password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
-
     public String getNome() {
-        return nome;
+        return this.nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
-
     public String getCpf() {
-        return cpf;
+        return this.cpf;
     }
-
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-
     public String getEmail() {
-        return email;
+        return this.email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
-
     public String getCelphone() {
-        return celphone;
+        return this.celphone;
     }
-
     public void setCelphone(String celphone) {
         this.celphone = celphone;
     }
-
     public String getSecurityToken() {
-        return securityToken;
+        return this.securityToken;
     }
-
     public void setSecurityToken(String securityToken) {
         this.securityToken = securityToken;
     }
-
     public Long getStorageUsage() {
-        return storageUsage;
+        return this.storageUsage;
     }
-
     public void setStorageUsage(Long storageUsage) {
         this.storageUsage = storageUsage;
     }
-
     public void addStorageUsage(Long usage) {
         this.storageUsage += usage;
     }
-
     public void subtractStorageUsage(Long usage) {
         this.storageUsage -= usage;
     }
-
     public List<FileInfo> getFiles() {
-        return files;
+        return this.files;
     }
-
     public void setFiles(List<FileInfo> files) {
         this.files = files;
     }
-
     public List<Workflow> getWorkflows() {
-        return workflows;
+        return this.workflows;
     }
-
     public void setWorkflows(List<Workflow> workflows) {
         this.workflows = workflows;
     }
-
 }
