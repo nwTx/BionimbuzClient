@@ -22,7 +22,7 @@ public class GetConfigurationsResponse implements ResponseInfo {
     }
  
     
-    public GetConfigurationsResponse(List<PluginService> servicesList, List<String> references, List<String> supportedFormats,List<Instance> instanceList) {
+    public GetConfigurationsResponse(List<PluginService> servicesList, List<String> references, List<String> supportedFormats, List<Instance> instanceList) {
         this.servicesList = servicesList;
         this.references = references;
         this.supportedFormats = supportedFormats;
