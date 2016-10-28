@@ -4,4 +4,4 @@
 bionimbuz-address: "http://127.0.0.1:8181"
 
 # Temporary workflow folder
-tmp-workflow-folder: "/home/jgomes/developer/tmp"
+tmp-workflow-folder: "/home/biolabid2/BionimbuzClient/tmp"
