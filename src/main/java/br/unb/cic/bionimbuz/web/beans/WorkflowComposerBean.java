@@ -123,7 +123,6 @@ public class WorkflowComposerBean implements Serializable {
 
         //------------- SLA inicialization------------------
         selectedInstances = new ArrayList<>();
-        instances = new ArrayList<>();
 //        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
 //        instances.add(new Instance("Macro", 0.24, 5, "us-west", 4.0, 3.3, "Xeon", 4, 120.0, "sata"));
 //        instances.add(new Instance("Large", 0.41, 3, "us-west", 8.0, 3.3, "Xeon", 8, 240.0, "sata"));

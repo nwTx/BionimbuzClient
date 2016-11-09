@@ -140,13 +140,10 @@ public class Instance {
 
         return "Type: " + this.getType() + ", "
                 + "CPU: " + this.getNumCores() + " " + this.getCpuHtz() + " Ghz, "
-                + "CPUType: " + this.getCpuType() + ", "
                 + "Ram:" + this.getMemoryTotal() + " GB, "
                 + "Custo por hora : $" + this.getCostPerHour() + ", "
                 + "Quantidade: " + this.getQuantity() + ", "
-                + "Localidade: " + this.getLocality() + ", "
-                + "Provider: " + this.getProvider() + ", "
-                + "Id: " + this.getId();
+                + "Localidade: " + this.getLocality();
 
     }
 
