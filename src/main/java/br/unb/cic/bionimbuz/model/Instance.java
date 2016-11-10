@@ -148,11 +148,16 @@ public class Instance {
     }
 
     public String getDescription() {
-        return description;
+        return "Type: " + this.getType() + ", "
+                + "CPU: " + this.getNumCores() + " " + this.getCpuHtz() + " Ghz, "
+                + "Ram:" + this.getMemoryTotal() + " GB, "
+                + "Custo por hora : $" + this.getCostPerHour() + ", "
+                + "Quantidade: " + this.getQuantity() + ", "
+                + "Localidade: " + this.getLocality();
     }
 
     public void setDescription() {
-        this.setDescription(this.toString());
+        this.setDescription(toString());
     }
 
     public int getQuantityCPU() {
