@@ -15,6 +15,7 @@ public class User {
     private Long storageUsage;
     private List<FileInfo> files;
     private List<Workflow> workflows;
+    private List<Instance> instances;
     
     public  User(){
         
@@ -98,5 +99,13 @@ public class User {
     }
     public void setWorkflows(List<Workflow> workflows) {
         this.workflows = workflows;
+    }
+
+    public List<Instance> getInstances() {
+        return instances;
+    }
+
+    public void setInstances(List<Instance> instances) {
+        this.instances = instances;
     }
 }

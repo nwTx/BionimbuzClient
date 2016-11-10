@@ -114,7 +114,7 @@ public class WorkflowComposerBean implements Serializable {
         servicesList = ConfigurationRepository.getSupportedServices();
         references = ConfigurationRepository.getReferences();
         supportedFormats = ConfigurationRepository.getSupportedFormats();
-//        instances = new ArrayList<>();
+        instances = ConfigurationRepository.getInstances();
     }
 
     @PostConstruct
@@ -123,10 +123,9 @@ public class WorkflowComposerBean implements Serializable {
 
         //------------- SLA inicialization------------------
         selectedInstances = new ArrayList<>();
-        instances = new ArrayList<>();
-        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
-        instances.add(new Instance("Macro", 0.24, 5, "us-west", 4.0, 3.3, "Xeon", 4, 120.0, "sata"));
-        instances.add(new Instance("Large", 0.41, 3, "us-west", 8.0, 3.3, "Xeon", 8, 240.0, "sata"));
+//        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
+//        instances.add(new Instance("Macro", 0.24, 5, "us-west", 4.0, 3.3, "Xeon", 4, 120.0, "sata"));
+//        instances.add(new Instance("Large", 0.41, 3, "us-west", 8.0, 3.3, "Xeon", 8, 240.0, "sata"));
         limitation=false;
 
         //--------------------------------------------------
@@ -212,6 +211,10 @@ public class WorkflowComposerBean implements Serializable {
 //            } catch (ServerNotReachableException ex) {
 //                java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
 //            }
+        }
+        //Módulo Michel
+        if(toGoStep.equals("SLA")){
+            
         }
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {

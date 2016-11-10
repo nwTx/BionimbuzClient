@@ -6,6 +6,5 @@ bionimbuz-address: "http://127.0.0.1:8181"
 # Temporary workflow folder
 tmp-workflow-folder: "/home/biolabid2/BionimbuzClient/tmp/"
 
+# Folder that authentication
 buckets-auth-folder: "/home/biolabid2/BionimbuzClient/tmp/"
-
-storage-mode: 1
