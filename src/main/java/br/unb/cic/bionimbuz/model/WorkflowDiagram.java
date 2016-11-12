@@ -184,6 +184,7 @@ public class WorkflowDiagram {
      * @param url
      * @param dependency
      * @param outputName
+     * @param outputFormat
      */
     public void setJobFields(String id, ArrayList<FileInfo> inputs, String referenceFile, String arguments, String url, String dependency, String outputName, String outputFormat) {
         int cont = 0;

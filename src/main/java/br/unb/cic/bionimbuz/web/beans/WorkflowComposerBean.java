@@ -61,7 +61,9 @@ public class WorkflowComposerBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
-
+    private static final String PROVIDER = "BioNimbuZ";
+    String provider =PROVIDER;
+    String objetive;
     @Inject
     private SessionBean sessionBean;
 
@@ -176,31 +178,25 @@ public class WorkflowComposerBean implements Serializable {
         String toGoStep = event.getNewStep();
 
         if (toGoStep.equals("template")) {
-
+            String provider;
 ////    //        System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
-            System.out.println("limitationType: "+limitationType);
-            System.out.println("limitationValueExecutionCost: "+limitationValueExecutionCost);
-            System.out.println("limitationValueExecutionTime: "+limitationValueExecutionTime);
+
             selectedInstances.stream().forEach((f) -> {
                 System.out.println(f.toString());
             });
-                
-            System.out.println("quantity: "+getQuantity());
             System.out.println("objective: "+getObjective());
             System.out.println("getLimitationValueExecutionCost:"+this.getLimitationValueExecutionCost());
             System.out.println("getLimitationValueExecutionTime:"+this.getLimitationValueExecutionTime());
             //TODO: alterar para o usuário bionimbuz depois da implementação do cadastro de usuário
-            User provider;
             
-//            System.out.println(sla.getId());
+            
+////            System.out.println(sla.getId());
+//                provider = new User("bionimbuz", PBKDF2.generatePassword("@BioNimbuZ!"), "BioNimbuZ", "71004832206", "bionimbuz@gmail.com", "0");
 
             try {
-                provider = new User("bionimbuz", PBKDF2.generatePassword("@BioNimbuZ!"), "BioNimbuZ", "71004832206", "bionimbuz@gmail.com", "0");
-                sla= new SLA(this,loggedUser,provider,this.getServicesList());
-                template = new SLA(restService.startSla(sla, workflowDiagram.getWorkflow()));
-                    
-                
-            }catch (ServerNotReachableException | NoSuchAlgorithmException | InvalidKeySpecException ex) {
+                sla= new SLA(this,loggedUser, getProvider(),this.getServicesList());
+                template = new SLA(restService.startSla(sla, workflowDiagram.getWorkflow()));                   
+            }catch (ServerNotReachableException ex) {
                 java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
             }
 //            sla= new SLA(this,loggedUser,loggedUser,this.getServicesList());
@@ -569,7 +565,7 @@ public class WorkflowComposerBean implements Serializable {
 
 //-----------------------------SLA Methods---------------------------------
     public SLA getSla() {
-        sla = new SLA(this, loggedUser, loggedUser, servicesList);
+        sla = new SLA(this, loggedUser, getProvider(), servicesList);
         return sla;
     }
 
@@ -654,7 +650,6 @@ public class WorkflowComposerBean implements Serializable {
                 i.setQuantity(getQuantity());
                 selectedInstances.add(i);
                 instances.remove(i);
-                System.out.println("Descrição: " + i.getDescription() + " quantidade: " + i.getQuantity());
                 showMessage("Elemento " + i.getType() + " adicionado");
                 break;
             } else {
@@ -766,5 +761,24 @@ public class WorkflowComposerBean implements Serializable {
      */
     public void setObjective(Integer objective) {
         this.objective = objective;
+    }
+
+    public  String getProvider() {
+        return provider;
+    }
+    public String getObjetive(){
+        switch(this.objective){
+            case 1:
+                objetive="Desempenho";
+                break;
+            case 2:
+                objetive= "Menor Custo";
+                break;
+            case 3:
+                objetive= "Custo/Benificio";
+                break;
+            
+        }
+        return objetive;
     }
 }

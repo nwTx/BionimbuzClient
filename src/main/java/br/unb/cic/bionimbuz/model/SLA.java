@@ -20,7 +20,7 @@ public class SLA {
     
     private String id="SLA" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);;
     private User user;
-    private User provider;
+    private String provider;
     private int objective;
     private Long period;
     private List <PluginService> services;
@@ -54,7 +54,7 @@ public class SLA {
         this.time=sla.getTime();
         
     }
-    public SLA(WorkflowComposerBean slacomp,User user, User provider, List<PluginService> services){
+    public SLA(WorkflowComposerBean slacomp,User user, String provider, List<PluginService> services){
         
         this.user=user;
         this.provider=provider;
@@ -68,7 +68,7 @@ public class SLA {
         this.limitationValueExecutionTime=slacomp.getLimitationValueExecutionTime();
     }
     
-    public SLA(WorkflowComposerBean slacomp,User user, User provider, List<PluginService> service,Date time, Double value){
+    public SLA(WorkflowComposerBean slacomp,User user, String provider, List<PluginService> service,Date time, Double value){
      
         this.user=user;
         this.provider=provider;
@@ -97,14 +97,14 @@ public class SLA {
     /**
      * @return the provider
      */
-    public User getProvider() {
+    public String getProvider() {
         return provider;
     }
 
     /**
      * @param provider the provider to set
      */
-    public void setProvider(User provider) {
+    public void setProvider(String provider) {
         this.provider = provider;
     }
 
@@ -153,6 +153,7 @@ public class SLA {
     /**
      * @return the instances
      */
+    
     public List<Instance> getInstances() {
         return instances;
     }

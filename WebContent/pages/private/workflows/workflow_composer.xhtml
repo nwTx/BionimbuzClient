@@ -245,28 +245,53 @@
                         </p:tabView>
                         <!--</p:panel>-->
                     </p:tab>
-                    <p:tab id="template" title="Contrato do SLA">
-                        <p:panel id="template_sla">   
-                            <!-- ======== Contrato ======== -->
-                            <p:fieldset id="contract" legend="Contrato" style="border-color: #2980b9">
-
-                            </p:fieldset>
-                        </p:panel>
-                    </p:tab>
-                       
                     <!--Resumo do workflow-->
                     <p:tab id="workflow_summary" title="Resumo deste Workflow">
                         <p:panel>
-                            <p:panel>
+<!--                            <p:panel>
                                 Confira aqui o resumo desta execução. Ao clicar em "Confirmar Workflow" será iniciada sua execução.
                             </p:panel>
-                            <br />
+                            <br />-->
                             <p:panel>
                                 <p:panelGrid columns="2" style="width: 100%; margin: 15px">
                                     <f:facet name="header">
-                                        <p:outputLabel value="Dados deste workflow" style="font-size: 120%; margin: 10px"/>
+                                        <p:outputLabel value="Contrato de Nível de Serviço" style="font-size: 120%; margin: 10px"/>
                                     </f:facet>
-                                    <p:outputLabel value="Id" style="font-weight: bold"/>
+                                    <p:outputLabel value="User" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.loggedUser.nome}" style="font-weight: bold"/>
+                                     <p:outputLabel value="User" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/>
+                                    <p:outputLabel value="Provider" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/>
+                                    <p:outputLabel value="Objetivo" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.objetive}" style="font-weight: bold"/>
+                                    <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9; width:100%;column-span:all">
+                                        <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
+                                                     paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
+                                                     id="instancesList">
+                                            <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
+                                            <p:column headerText="Descrição"  style="text-align: center">
+                                                <p:outputLabel value="#{instance.description}"/>
+                                            </p:column>
+                                            <p:column headerText="Tipo" style="text-align: center">
+                                                <p:outputLabel value="#{instance.type}"/>
+                                            </p:column>
+                                            <p:column headerText="Quantidade"  style="text-align: center">
+                                                <h:outputLabel value="#{instance.quantity}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:fieldset>
+                                    <p:fieldset id="chosen_elementService" legend="Escopo" style="border-color: #2980b9;column-span:all">
+                                        <center>
+                                            <p:dataTable value="#{workflowComposerBean.elements}" var="e" style="width: 400px"
+                                                         emptyMessage="Nenhum elemento adicionado" paginator="true" rows="8">
+                                                <p:column headerText="Elemento">
+                                                    <p:outputLabel value="#{e.name}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </center>
+                                    </p:fieldset>
+                                    <p:outputLabel value="WorkFlow Id" style="font-weight: bold"/>
                                     <p:outputLabel value="#{workflowComposerBean.workflow.id}" style="font-weight: bold"/>
                                     <p:outputLabel value="Descrição" style="font-weight: bold"/>
                                     <p:outputLabel value="#{workflowComposerBean.workflow.description} " />
