@@ -275,36 +275,30 @@
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2">
-                                            <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9;">
-                                                <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
-                                                             paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
-                                                             id="instancesList">
-                                                    <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
-                                                    <p:column headerText="Descrição"  style="text-align: center">
-                                                        <p:outputLabel value="#{instance.description}"/>
-                                                    </p:column>
-                                                    <p:column headerText="Tipo" style="text-align: center">
-                                                        <p:outputLabel value="#{instance.type}"/>
-                                                    </p:column>
-                                                    <p:column headerText="Quantidade"  style="text-align: center">
-                                                        <h:outputLabel value="#{instance.quantity}"/>
-                                                    </p:column>
-                                                </p:dataTable>
-                                            </p:fieldset>
+                                            <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
+                                                         emptyMessage="Nenhuma instância adicionada" 
+                                                         id="instancesList">
+                                                <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
+                                                <p:column headerText="Descrição"  style="text-align: center">
+                                                    <p:outputLabel value="#{instance.description}"/>
+                                                </p:column>
+                                                <p:column headerText="Tipo" style="text-align: center">
+                                                    <p:outputLabel value="#{instance.type}"/>
+                                                </p:column>
+                                                <p:column headerText="Quantidade"  style="text-align: center">
+                                                    <h:outputLabel value="#{instance.quantity}"/>
+                                                </p:column>
+                                            </p:dataTable>
                                         </p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2">
-                                            <p:fieldset id="chosen_elementService" legend="Escopo" style="border-color: #2980b9;">
-                                                <center>
-                                                    <p:dataTable value="#{workflowComposerBean.elements}" var="e"
-                                                                 emptyMessage="Nenhum elemento adicionado" paginator="true" rows="8">
-                                                        <p:column headerText="Elemento">
-                                                            <p:outputLabel value="#{e.name}"/>
-                                                        </p:column>
-                                                    </p:dataTable>
-                                                </center>
-                                            </p:fieldset>
+                                            <p:dataTable value="#{workflowComposerBean.elements}" var="e"
+                                                         emptyMessage="Nenhum elemento adicionado">
+                                                <p:column headerText="Serviços">
+                                                    <p:outputLabel value="#{e.name}"/>
+                                                </p:column>
+                                            </p:dataTable>
                                         </p:column>
                                     </p:row>
                                     <p:row>

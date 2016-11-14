@@ -142,7 +142,6 @@ public class Instance {
                 + "CPU: " + this.getNumCores() + " " + this.getCpuHtz() + " Ghz, "
                 + "Ram:" + this.getMemoryTotal() + " GB, "
                 + "Custo por hora : $" + this.getCostPerHour() + ", "
-                + "Quantidade: " + this.getQuantity() + ", "
                 + "Localidade: " + this.getLocality();
 
     }
@@ -152,7 +151,6 @@ public class Instance {
                 + "CPU: " + this.getNumCores() + " " + this.getCpuHtz() + " Ghz, "
                 + "Ram:" + this.getMemoryTotal() + " GB, "
                 + "Custo por hora : $" + this.getCostPerHour() + ", "
-                + "Quantidade: " + this.getQuantity() + ", "
                 + "Localidade: " + this.getLocality();
     }
 

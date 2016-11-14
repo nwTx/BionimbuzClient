@@ -109,7 +109,6 @@ public class WorkflowComposerBean implements Serializable {
 
     // Logged user
     private User loggedUser;
-    String nameUserLogged;
 
     public WorkflowComposerBean() {
         restService = new RestService();
@@ -123,9 +122,7 @@ public class WorkflowComposerBean implements Serializable {
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
-        nameUserLogged= loggedUser.getNome();
-        System.out.println("nameloggeduse: "+sessionBean.getLoggedUser().getNome());
-        System.out.println("NAMELOGGED: "+nameUserLogged);
+
         //------------- SLA inicialization------------------
         selectedInstances = new ArrayList<>();
 //        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
@@ -580,59 +577,34 @@ public class WorkflowComposerBean implements Serializable {
         return this.panel1;
     }
 
-    /**
-     * @return the limitation
-     */
     public boolean isLimitation() {
         return limitation;
     }
 
-    /**
-     * @param limitation the limitation to set
-     */
     public void setLimitation(boolean limitation) {
         this.limitation = limitation;
     }
 
-    /**
-     * @return the limitationType
-     */
     public Integer getLimitationType() {
         return limitationType;
     }
 
-    /**
-     * @param limitationType the limitationType to set
-     */
     public void setLimitationType(Integer limitationType) {
         this.limitationType = limitationType;
     }
 
-
-    /**
-     * @return the instances
-     */
     public List<Instance> getInstancies() {
         return instances;
     }
 
-    /**
-     * @param instancies the instances to set
-     */
     public void setInstancies(List<Instance> instancies) {
         this.instances = instancies;
     }
 
-    /**
-     * @return the selectedInstances
-     */
     public List<Instance> getSelectedInstancies() {
         return selectedInstances;
     }
 
-    /**
-     * @param selectedInstancies the selectedInstances to set
-     */
     public void setSelectedInstancies(List<Instance> selectedInstancies) {
         this.selectedInstances = selectedInstancies;
     }
@@ -642,13 +614,11 @@ public class WorkflowComposerBean implements Serializable {
         instances.stream().forEach((i) -> {
             instancesString.add(i.toString());
         });
-
         return instancesString;
     }
 
     public void adSelectedInstance(ActionEvent actionEvent) {
         for (Instance i : instances) {
-
             if (i.getId().equals(chosenInstanceId) && !instances.isEmpty()) {
                 i.setQuantity(getQuantity());
                 selectedInstances.add(i);
@@ -658,9 +628,7 @@ public class WorkflowComposerBean implements Serializable {
             } else {
                 System.out.println("Not found!!");
             }
-
         }
-
     }
 
     /**
@@ -678,30 +646,18 @@ public class WorkflowComposerBean implements Serializable {
         }
     }
 
-    /**
-     * @return the instance
-     */
     public Instance getInstance() {
         return instance;
     }
 
-    /**
-     * @param instance the instance to set
-     */
     public void setInstance(Instance instance) {
         this.instance = instance;
     }
 
-    /**
-     * @return the chosenInstanceId
-     */
     public String getChosenInstanceId() {
         return chosenInstanceId;
     }
 
-    /**
-     * @param chosenInstanceId the chosenInstanceId to set
-     */
     public void setChosenInstanceId(String chosenInstanceId) {
         this.chosenInstanceId = chosenInstanceId;
     }
@@ -710,68 +666,43 @@ public class WorkflowComposerBean implements Serializable {
 
 //-------------------------------------------------------------------------
 
-    /**
-     * @return the limitationValueExecutionTime
-     */
     public String getLimitationValueExecutionTime() {
         return limitationValueExecutionTime;
     }
 
-    /**
-     * @param limitationValueExecutionTime the limitationValueExecutionTime to set
-     */
     public void setLimitationValueExecutionTime(String limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
     }
 
-    /**
-     * @return the limitationValueExecutionCost
-     */
     public String getLimitationValueExecutionCost() {
         return limitationValueExecutionCost;
     }
 
-    /**
-     * @param limitationValueExecutionCost the limitationValueExecutionCost to set
-     */
     public void setLimitationValueExecutionCost(String limitationValueExecutionCost) {
         this.limitationValueExecutionCost = limitationValueExecutionCost;
     }
 
-    /**
-     * @return the quantity
-     */
     public Integer getQuantity() {
         return quantity;
     }
 
-    /**
-     * @param quantity the quantity to set
-     */
+
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    /**
-     * @return the objective
-     */
     public Integer getObjective() {
         return objective;
     }
 
-    /**
-     * @param objective the objective to set
-     */
     public void setObjective(Integer objective) {
         this.objective = objective;
     }
     
-    public  String getNameUserLogged() {
-         return nameUserLogged;
-    }
     public  String getProvider() {
         return provider;
     }
+    
     public String getObjetive(){
         switch(this.objective){
             case 1:
@@ -781,9 +712,8 @@ public class WorkflowComposerBean implements Serializable {
                 objetive= "Menor Custo";
                 break;
             case 3:
-                objetive= "Custo/Benificio";
+                objetive= "Custo/Benefício";
                 break;
-            
         }
         return objetive;
     }
