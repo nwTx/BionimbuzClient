@@ -253,57 +253,85 @@
                             </p:panel>
                             <br />-->
                             <p:panel>
-                                <p:panelGrid columns="2" style="width: 100%; margin: 15px">
+                                <p:panelGrid style="width: 95%; margin: 15px">
                                     <f:facet name="header">
-                                        <p:outputLabel value="Contrato de Nível de Serviço" style="font-size: 120%; margin: 10px"/>
+                                        <p:column colspan="2"> <p:outputLabel value="Contrato de Nível de Serviço" style="font-size: 120%; margin: 10px"/></p:column>
                                     </f:facet>
-                                    <p:outputLabel value="User" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.loggedUser.nome}" style="font-weight: bold"/>
-                                     <p:outputLabel value="User" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/>
-                                    <p:outputLabel value="Provider" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/>
-                                    <p:outputLabel value="Objetivo" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.objetive}" style="font-weight: bold"/>
-                                    <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9; width:100%;column-span:all">
-                                        <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
-                                                     paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
-                                                     id="instancesList">
-                                            <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
-                                            <p:column headerText="Descrição"  style="text-align: center">
-                                                <p:outputLabel value="#{instance.description}"/>
-                                            </p:column>
-                                            <p:column headerText="Tipo" style="text-align: center">
-                                                <p:outputLabel value="#{instance.type}"/>
-                                            </p:column>
-                                            <p:column headerText="Quantidade"  style="text-align: center">
-                                                <h:outputLabel value="#{instance.quantity}"/>
-                                            </p:column>
-                                        </p:dataTable>
-                                    </p:fieldset>
-                                    <p:fieldset id="chosen_elementService" legend="Escopo" style="border-color: #2980b9;column-span:all">
-                                        <center>
-                                            <p:dataTable value="#{workflowComposerBean.elements}" var="e" style="width: 400px"
-                                                         emptyMessage="Nenhum elemento adicionado" paginator="true" rows="8">
-                                                <p:column headerText="Elemento">
-                                                    <p:outputLabel value="#{e.name}"/>
-                                                </p:column>
-                                            </p:dataTable>
-                                        </center>
-                                    </p:fieldset>
-                                    <p:outputLabel value="WorkFlow Id" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.workflow.id}" style="font-weight: bold"/>
-                                    <p:outputLabel value="Descrição" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.workflow.description} " />
-                                    <p:outputLabel value="Tamanho" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.workflow.jobs.size()} Job(s)" />
-                                    <p:outputLabel value="Criado em" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.workflow.creationDatestamp}" />
-                                    <p:outputLabel value="Quantidade de inputs" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.jobs.size()}" />
-                                    <p:outputLabel value="Status" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.workflowStatus}" 
-                                                   style="font-weight: bold; color: #{workflowComposerBean.workflowColor}"/>
+                                    <p:row>
+                                        <p:column><p:outputLabel value="User" style="font-weight: bold"/></p:column>
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.nameUserLogged}" style="font-weight: bold"/></p:column>                                            
+                                    </p:row>
+                                    <p:row>    
+                                        <p:column><p:outputLabel value="User" style="font-weight: bold"/></p:column>                                            
+                                        <p:column><p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/></p:column>                                            
+                                    </p:row>
+                                    <p:row>   
+                                        <p:column><p:outputLabel value="Provider" style="font-weight: bold"/></p:column>    
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/></p:column>    
+                                    </p:row>
+                                    <p:row>   
+                                        <p:column><p:outputLabel value="Objetivo" style="font-weight: bold"/></p:column>    
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.objetive}" style="font-weight: bold"/></p:column>    
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9;">
+                                                <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
+                                                             paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
+                                                             id="instancesList">
+                                                    <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
+                                                    <p:column headerText="Descrição"  style="text-align: center">
+                                                        <p:outputLabel value="#{instance.description}"/>
+                                                    </p:column>
+                                                    <p:column headerText="Tipo" style="text-align: center">
+                                                        <p:outputLabel value="#{instance.type}"/>
+                                                    </p:column>
+                                                    <p:column headerText="Quantidade"  style="text-align: center">
+                                                        <h:outputLabel value="#{instance.quantity}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </p:fieldset>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:fieldset id="chosen_elementService" legend="Escopo" style="border-color: #2980b9;">
+                                                <center>
+                                                    <p:dataTable value="#{workflowComposerBean.elements}" var="e"
+                                                                 emptyMessage="Nenhum elemento adicionado" paginator="true" rows="8">
+                                                        <p:column headerText="Elemento">
+                                                            <p:outputLabel value="#{e.name}"/>
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                </center>
+                                            </p:fieldset>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><p:outputLabel value="WorkFlow Id" style="font-weight: bold"/></p:column>
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflow.id}" style="font-weight: bold"/></p:column>
+                                    </p:row>
+                                    <p:row>    
+                                        <p:column><p:outputLabel value="Descrição" style="font-weight: bold"/></p:column>
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflow.description} " /></p:column>
+                                    </p:row>
+                                    <p:row>    
+                                        <p:column><p:outputLabel value="Tamanho" style="font-weight: bold"/></p:column>
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflow.jobs.size()} Job(s)" /></p:column>
+                                    </p:row>
+                                    <p:row>    
+                                        <p:column><p:outputLabel value="Criado em" style="font-weight: bold"/></p:column>
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflow.creationDatestamp}" /></p:column>
+                                    </p:row>
+                                    <p:row>    
+                                        <p:column><p:outputLabel value="Quantidade de inputs" style="font-weight: bold"/></p:column>
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.jobs.size()}" /></p:column>
+                                    </p:row>
+                                    <p:row>    
+                                        <p:column><p:outputLabel value="Status" style="font-weight: bold"/></p:column>
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflowStatus}" 
+                                                       style="font-weight: bold; color: #{workflowComposerBean.workflowColor}"/></p:column>
+                                    </p:row>
                                 </p:panelGrid>
                             </p:panel>
                             <br />

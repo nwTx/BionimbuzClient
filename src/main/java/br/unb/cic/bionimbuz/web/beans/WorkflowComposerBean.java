@@ -109,6 +109,7 @@ public class WorkflowComposerBean implements Serializable {
 
     // Logged user
     private User loggedUser;
+    String nameUserLogged;
 
     public WorkflowComposerBean() {
         restService = new RestService();
@@ -122,7 +123,9 @@ public class WorkflowComposerBean implements Serializable {
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
-
+        nameUserLogged= loggedUser.getNome();
+        System.out.println("nameloggeduse: "+sessionBean.getLoggedUser().getNome());
+        System.out.println("NAMELOGGED: "+nameUserLogged);
         //------------- SLA inicialization------------------
         selectedInstances = new ArrayList<>();
 //        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
@@ -762,7 +765,10 @@ public class WorkflowComposerBean implements Serializable {
     public void setObjective(Integer objective) {
         this.objective = objective;
     }
-
+    
+    public  String getNameUserLogged() {
+         return nameUserLogged;
+    }
     public  String getProvider() {
         return provider;
     }
