@@ -31,7 +31,6 @@ import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.SLA;
 import br.unb.cic.bionimbuz.model.WorkflowStatus;
-import br.unb.cic.bionimbuz.security.PBKDF2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,8 +39,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.logging.Level;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
@@ -625,9 +622,9 @@ public class WorkflowComposerBean implements Serializable {
                 instances.remove(i);
                 showMessage("Elemento " + i.getType() + " adicionado");
                 break;
-            } else {
-                System.out.println("Not found!!");
-            }
+            } else 
+                if(selectedInstances.isEmpty())
+                    System.out.println("Not found!!");
         }
     }
 

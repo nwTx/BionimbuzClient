@@ -257,16 +257,12 @@
                                     <f:facet name="header">
                                         <p:column colspan="2"> <p:outputLabel value="Contrato de Nível de Serviço" style="font-size: 120%; margin: 10px"/></p:column>
                                     </f:facet>
-                                    <p:row>
-                                        <p:column><p:outputLabel value="User" style="font-weight: bold"/></p:column>
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.nameUserLogged}" style="font-weight: bold"/></p:column>                                            
-                                    </p:row>
                                     <p:row>    
-                                        <p:column><p:outputLabel value="User" style="font-weight: bold"/></p:column>                                            
+                                        <p:column><p:outputLabel value="Usuário" style="font-weight: bold"/></p:column>                                            
                                         <p:column><p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/></p:column>                                            
                                     </p:row>
                                     <p:row>   
-                                        <p:column><p:outputLabel value="Provider" style="font-weight: bold"/></p:column>    
+                                        <p:column><p:outputLabel value="Provedor" style="font-weight: bold"/></p:column>    
                                         <p:column><p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/></p:column>    
                                     </p:row>
                                     <p:row>   
@@ -281,9 +277,6 @@
                                                 <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
                                                 <p:column headerText="Descrição"  style="text-align: center">
                                                     <p:outputLabel value="#{instance.description}"/>
-                                                </p:column>
-                                                <p:column headerText="Tipo" style="text-align: center">
-                                                    <p:outputLabel value="#{instance.type}"/>
                                                 </p:column>
                                                 <p:column headerText="Quantidade"  style="text-align: center">
                                                     <h:outputLabel value="#{instance.quantity}"/>
