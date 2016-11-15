@@ -3,11 +3,10 @@ package br.unb.cic.bionimbuz.rest.action;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import br.unb.cic.bionimbuz.rest.request.LogoutRequest;
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.response.LogoutResponse;
-import javax.ws.rs.core.Response;
 
 public class Logout extends Action {
 
@@ -15,8 +14,8 @@ public class Logout extends Action {
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {
-        this.target = client.target(config.getBionimbuzAddress());
-        this.request = (LogoutRequest) reqInfo;
+        this.target = client.target(super.bionimbuzAddress);
+        this.request = reqInfo;
     }
 
     @Override

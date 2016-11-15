@@ -18,13 +18,20 @@
                     </p:panel>
                     <br />
                     <p:panel>
-                        <p:fileUpload id="file_upload" mode="advanced" 
-                                      dragDropSupport="false" multiple="false" 
-                                      invalidFileMessage="Formato de arquivo inválido"
-                                      fileUploadListener="#{fileUploadBean.handleUploadedFile}"
-                                      cancelLabel="Cancelar" uploadLabel="Enviar"
-                                      label="Escolher Arquivo" allowTypes="#{fileUploadBean.allowedTypes}"
-                                      update="growl,panel" sizeLimit="25000000000"/>
+                        <p:fileUpload 
+                            id="file_upload" 
+                            mode="advanced" 
+                            dragDropSupport="false" 
+                            multiple="false" 
+                            invalidFileMessage="Formato de arquivo inválido"
+                            fileUploadListener="#{fileUploadBean.handleUploadedFile}"
+                            cancelLabel="Cancelar" 
+                            uploadLabel="Enviar"
+                            label="Escolher Arquivo" 
+                            allowTypes="#{fileUploadBean.allowedTypes}"
+                            update="growl,panel" 
+                            sizeLimit="25000000000"
+                        />
                     </p:panel>
                     <br />
                     <p:panel id="panel">

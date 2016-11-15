@@ -15,7 +15,19 @@ public class User {
     private Long storageUsage;
     private List<FileInfo> files;
     private List<Workflow> workflows;
-
+    private List<Instance> instances;
+    
+    public  User(){
+        
+    }
+    public User(String login, String password, String nome, String cpf, String email, String celphone) {
+        this.login = login;
+        this.password = password;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.celphone = celphone;
+    }
     public long getId() {
         return this.id;
     }
@@ -87,5 +99,13 @@ public class User {
     }
     public void setWorkflows(List<Workflow> workflows) {
         this.workflows = workflows;
+    }
+
+    public List<Instance> getInstances() {
+        return instances;
+    }
+
+    public void setInstances(List<Instance> instances) {
+        this.instances = instances;
     }
 }

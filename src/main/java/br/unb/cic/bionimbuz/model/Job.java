@@ -37,6 +37,8 @@ public class Job {
 
     private String referenceFile;
 
+    private String ipjob;
+    
     public Job() {
         inputFiles = new ArrayList<>();
         outputs = new ArrayList<>();
@@ -53,6 +55,7 @@ public class Job {
         inputFiles = new ArrayList<>();
         outputs = new ArrayList<>();
         dependencies = new ArrayList<>();
+        ipjob="";
     }
 
     /**
@@ -65,12 +68,27 @@ public class Job {
         inputFiles = new ArrayList<>();
         outputs = new ArrayList<>();
         dependencies = new ArrayList<>();
+        ipjob="";
     }
-
+    
+    /**
+     * Receives the String ID and ipjob
+     *
+     * @param id
+     * @param ipjob
+     */
+    public Job(String id, String ipjob) {
+        this.id = id;
+        inputFiles = new ArrayList<>();
+        outputs = new ArrayList<>();
+        dependencies = new ArrayList<>();
+        this.ipjob=ipjob;
+    }
+    
     public String getId() {
         return id;
     }
-
+    
     public void setId(String id) {
         this.id = id;
     }
@@ -192,5 +210,19 @@ public class Job {
         }
 
         return null;
+    }
+
+    /**
+     * @return the ipjob
+     */
+    public String getIpjob() {
+        return ipjob;
+    }
+
+    /**
+     * @param ipjob the ipjob to set
+     */
+    public void setIpjob(String ipjob) {
+        this.ipjob = ipjob;
     }
 }

@@ -140,10 +140,9 @@ public class RestService {
      * @throws ServerNotReachableException
      */
     public SLA startSla(SLA sla, Workflow workflow) throws ServerNotReachableException {
-       RequestInfo startSlaRequest = new StartSlaRequest(sla, workflow);
-       StartSlaResponse response = (StartSlaResponse) restCommunicator.sendRequest(new StartSla(), startSlaRequest);
-
-        return response.getSla();
+//       final RequestInfo startSlaRequest = new StartSlaRequest(sla, workflow);
+       final StartSlaResponse response = (StartSlaResponse) this.restCommunicator.sendRequest(new StartSla(), new StartSlaRequest(sla, workflow));
+       return response.getSla();
     }
     
     /**

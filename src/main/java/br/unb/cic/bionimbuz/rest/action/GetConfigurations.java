@@ -1,14 +1,15 @@
 package br.unb.cic.bionimbuz.rest.action;
 
-import br.unb.cic.bionimbuz.rest.request.GetConfigurationsRequest;
-import br.unb.cic.bionimbuz.rest.request.RequestInfo;
-import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
-import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import br.unb.cic.bionimbuz.rest.request.RequestInfo;
+import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
+import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 
 /**
  * Send a request to the server to get the supported Services
@@ -22,8 +23,8 @@ public class GetConfigurations extends Action {
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {
-        this.target = client.target(config.getBionimbuzAddress());
-        this.request = (GetConfigurationsRequest) reqInfo;
+        this.target = client.target(super.bionimbuzAddress);
+        this.request = reqInfo;
     }
 
     @Override

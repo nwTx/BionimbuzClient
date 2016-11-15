@@ -5,7 +5,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import br.unb.cic.bionimbuz.rest.request.RequestInfo;
-import br.unb.cic.bionimbuz.rest.request.SignUpRequest;
 import br.unb.cic.bionimbuz.rest.response.ResponseInfo;
 import br.unb.cic.bionimbuz.rest.response.SignUpResponse;
 
@@ -15,8 +14,8 @@ public class SignUp extends Action {
 
     @Override
     public void setup(Client client, RequestInfo reqInfo) {
-        this.target = client.target(config.getBionimbuzAddress());
-        this.request = (SignUpRequest) reqInfo;
+        this.target = client.target(super.bionimbuzAddress);
+        this.request = reqInfo;
     }
 
     @Override

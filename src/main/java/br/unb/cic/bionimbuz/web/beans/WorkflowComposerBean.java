@@ -39,6 +39,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.logging.Level;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -57,7 +58,9 @@ public class WorkflowComposerBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
-
+    private static final String PROVIDER = "BioNimbuZ";
+    String provider =PROVIDER;
+    String objetive;
     @Inject
     private SessionBean sessionBean;
 
@@ -82,7 +85,7 @@ public class WorkflowComposerBean implements Serializable {
     private DiagramElement clickedElement;
     private final List<String> supportedFormats;
     private String fileFormat;
-    private SLA sla;
+    private SLA sla,template;
 
     //----------------------- SLA Declarations------------------
     private String panel1 = "Hide-Panel1";
@@ -110,7 +113,7 @@ public class WorkflowComposerBean implements Serializable {
         servicesList = ConfigurationRepository.getSupportedServices();
         references = ConfigurationRepository.getReferences();
         supportedFormats = ConfigurationRepository.getSupportedFormats();
-//        instances = new ArrayList<>();
+        instances = ConfigurationRepository.getInstances();
     }
 
     @PostConstruct
@@ -119,10 +122,9 @@ public class WorkflowComposerBean implements Serializable {
 
         //------------- SLA inicialization------------------
         selectedInstances = new ArrayList<>();
-        instances = new ArrayList<>();
-        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
-        instances.add(new Instance("Macro", 0.24, 5, "us-west", 4.0, 3.3, "Xeon", 4, 120.0, "sata"));
-        instances.add(new Instance("Large", 0.41, 3, "us-west", 8.0, 3.3, "Xeon", 8, 240.0, "sata"));
+//        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
+//        instances.add(new Instance("Macro", 0.24, 5, "us-west", 4.0, 3.3, "Xeon", 4, 120.0, "sata"));
+//        instances.add(new Instance("Large", 0.41, 3, "us-west", 8.0, 3.3, "Xeon", 8, 240.0, "sata"));
         limitation=false;
 
         //--------------------------------------------------
@@ -173,27 +175,39 @@ public class WorkflowComposerBean implements Serializable {
         String toGoStep = event.getNewStep();
 
         if (toGoStep.equals("template")) {
-
+            String provider;
 ////    //        System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
-            System.out.println("limitationType: "+limitationType);
-            System.out.println("limitationValueExecutionCost: "+limitationValueExecutionCost);
-            System.out.println("limitationValueExecutionTime: "+limitationValueExecutionTime);
+
             selectedInstances.stream().forEach((f) -> {
                 System.out.println(f.toString());
             });
-                
-            System.out.println("quantity: "+getQuantity());
             System.out.println("objective: "+getObjective());
             System.out.println("getLimitationValueExecutionCost:"+this.getLimitationValueExecutionCost());
             System.out.println("getLimitationValueExecutionTime:"+this.getLimitationValueExecutionTime());
+            //TODO: alterar para o usuário bionimbuz depois da implementação do cadastro de usuário
+            
+            
+////            System.out.println(sla.getId());
+//                provider = new User("bionimbuz", PBKDF2.generatePassword("@BioNimbuZ!"), "BioNimbuZ", "71004832206", "bionimbuz@gmail.com", "0");
+
+            try {
+                sla= new SLA(this,loggedUser, getProvider(),this.getServicesList());
+                template = new SLA(restService.startSla(sla, workflowDiagram.getWorkflow()));                   
+            }catch (ServerNotReachableException ex) {
+                java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
 //            sla= new SLA(this,loggedUser,loggedUser,this.getServicesList());
 //            System.out.println(sla.getId());
-
+            
 //            try {
 //                restService.startSla(sla,workflowDiagram.getWorkflow());
 //            } catch (ServerNotReachableException ex) {
 //                java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
 //            }
+        }
+        //Módulo Michel
+        if(toGoStep.equals("SLA")){
+            
         }
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
@@ -548,7 +562,7 @@ public class WorkflowComposerBean implements Serializable {
 
 //-----------------------------SLA Methods---------------------------------
     public SLA getSla() {
-        sla = new SLA(this, loggedUser, loggedUser, servicesList);
+        sla = new SLA(this, loggedUser, getProvider(), servicesList);
         return sla;
     }
 
@@ -560,59 +574,34 @@ public class WorkflowComposerBean implements Serializable {
         return this.panel1;
     }
 
-    /**
-     * @return the limitation
-     */
     public boolean isLimitation() {
         return limitation;
     }
 
-    /**
-     * @param limitation the limitation to set
-     */
     public void setLimitation(boolean limitation) {
         this.limitation = limitation;
     }
 
-    /**
-     * @return the limitationType
-     */
     public Integer getLimitationType() {
         return limitationType;
     }
 
-    /**
-     * @param limitationType the limitationType to set
-     */
     public void setLimitationType(Integer limitationType) {
         this.limitationType = limitationType;
     }
 
-
-    /**
-     * @return the instances
-     */
     public List<Instance> getInstancies() {
         return instances;
     }
 
-    /**
-     * @param instancies the instances to set
-     */
     public void setInstancies(List<Instance> instancies) {
         this.instances = instancies;
     }
 
-    /**
-     * @return the selectedInstances
-     */
     public List<Instance> getSelectedInstancies() {
         return selectedInstances;
     }
 
-    /**
-     * @param selectedInstancies the selectedInstances to set
-     */
     public void setSelectedInstancies(List<Instance> selectedInstancies) {
         this.selectedInstances = selectedInstancies;
     }
@@ -622,26 +611,21 @@ public class WorkflowComposerBean implements Serializable {
         instances.stream().forEach((i) -> {
             instancesString.add(i.toString());
         });
-
         return instancesString;
     }
 
     public void adSelectedInstance(ActionEvent actionEvent) {
         for (Instance i : instances) {
-
             if (i.getId().equals(chosenInstanceId) && !instances.isEmpty()) {
                 i.setQuantity(getQuantity());
                 selectedInstances.add(i);
                 instances.remove(i);
-                System.out.println("Descrição: " + i.getDescription() + " quantidade: " + i.getQuantity());
                 showMessage("Elemento " + i.getType() + " adicionado");
                 break;
-            } else {
-                System.out.println("Not found!!");
-            }
-
+            } else 
+                if(selectedInstances.isEmpty())
+                    System.out.println("Not found!!");
         }
-
     }
 
     /**
@@ -659,30 +643,18 @@ public class WorkflowComposerBean implements Serializable {
         }
     }
 
-    /**
-     * @return the instance
-     */
     public Instance getInstance() {
         return instance;
     }
 
-    /**
-     * @param instance the instance to set
-     */
     public void setInstance(Instance instance) {
         this.instance = instance;
     }
 
-    /**
-     * @return the chosenInstanceId
-     */
     public String getChosenInstanceId() {
         return chosenInstanceId;
     }
 
-    /**
-     * @param chosenInstanceId the chosenInstanceId to set
-     */
     public void setChosenInstanceId(String chosenInstanceId) {
         this.chosenInstanceId = chosenInstanceId;
     }
@@ -691,59 +663,55 @@ public class WorkflowComposerBean implements Serializable {
 
 //-------------------------------------------------------------------------
 
-    /**
-     * @return the limitationValueExecutionTime
-     */
     public String getLimitationValueExecutionTime() {
         return limitationValueExecutionTime;
     }
 
-    /**
-     * @param limitationValueExecutionTime the limitationValueExecutionTime to set
-     */
     public void setLimitationValueExecutionTime(String limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
     }
 
-    /**
-     * @return the limitationValueExecutionCost
-     */
     public String getLimitationValueExecutionCost() {
         return limitationValueExecutionCost;
     }
 
-    /**
-     * @param limitationValueExecutionCost the limitationValueExecutionCost to set
-     */
     public void setLimitationValueExecutionCost(String limitationValueExecutionCost) {
         this.limitationValueExecutionCost = limitationValueExecutionCost;
     }
 
-    /**
-     * @return the quantity
-     */
     public Integer getQuantity() {
         return quantity;
     }
 
-    /**
-     * @param quantity the quantity to set
-     */
+
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    /**
-     * @return the objective
-     */
     public Integer getObjective() {
         return objective;
     }
 
-    /**
-     * @param objective the objective to set
-     */
     public void setObjective(Integer objective) {
         this.objective = objective;
+    }
+    
+    public  String getProvider() {
+        return provider;
+    }
+    
+    public String getObjetive(){
+        switch(this.objective){
+            case 1:
+                objetive="Desempenho";
+                break;
+            case 2:
+                objetive= "Menor Custo";
+                break;
+            case 3:
+                objetive= "Custo/Benefício";
+                break;
+        }
+        return objetive;
     }
 }

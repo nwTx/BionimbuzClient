@@ -100,6 +100,12 @@ public class WorkflowDiagram {
         newJob = new Job(element.getId());
         newJob.setServiceId(element.getServiceId() + "");
         newJob.setTimestamp(Calendar.getInstance().getTime().getTime());
+        //setar o ip do job para ser executado em tal máquina tem que trocara
+        //para o elemento escolhido pela predição e por o ip criado pela elasticidade;
+        if(element.getServiceId().equals(element.getId())){
+            newJob.setIpjob("");
+        }else
+            newJob.setIpjob("");
 
         // Adds it to the list of jobs
         workflow.addJob(newJob);
@@ -178,6 +184,7 @@ public class WorkflowDiagram {
      * @param url
      * @param dependency
      * @param outputName
+     * @param outputFormat
      */
     public void setJobFields(String id, ArrayList<FileInfo> inputs, String referenceFile, String arguments, String url, String dependency, String outputName, String outputFormat) {
         int cont = 0;
