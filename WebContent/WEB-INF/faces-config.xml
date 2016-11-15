@@ -98,6 +98,13 @@
             <redirect />
         </navigation-case>
 		
+        <!-- Elasticity -->
+        <navigation-case>
+            <from-outcome>elasticity</from-outcome>
+            <to-view-id>/pages/private/adm/elasticity.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+		
         <!-- Files -->
         <navigation-case>
             <from-outcome>storage</from-outcome>

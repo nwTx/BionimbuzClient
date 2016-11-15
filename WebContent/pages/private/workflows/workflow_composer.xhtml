@@ -57,7 +57,7 @@
 
                         </p:panel>
                     </p:tab>
-                    
+
                     <!-- Element selection tab -->
                     <p:tab id="element_selection" title="Seleção de Elementos">
                         <p:panel header="Escolha os elementos deste Workflow">
@@ -112,7 +112,7 @@
                             </p:fieldset>
                         </p:panel>
                     </p:tab>
-                    
+
                     <p:tab id="workflow_design" title="Desenho do Workflow">
                         <p:panel id="workflow_pnl">   
                             <!-- ======== Diagram ======== -->
@@ -132,193 +132,215 @@
                             </p:panel>
                         </p:panel>
                     </p:tab>
-                    
-                       <!-- Sla Part-->
+
+                    <!-- Previsao (michel)-->
+                    <p:tab id="previsao" title="Previsão">
+
+                        <p:panel id="detalhes" style="border-color: #2980b9" widgetVar="testPanel" visible="false" closable="true" toggleable="true">
+                            <p:fieldset id="prediction" legend="Serviço de Predição" style="border-color: #2980b9">
+                                <h:form>
+                                    <p:outputLabel for="preco" value="Preço Mínimo" />
+                                    <p:inputMask id="preco" value="#{maskView.preco}" mask="R$ 99.99"/>
+
+                                    <h:panelGrid columns="1" style="margin-bottom: 10px">
+                                        <h:outputText id="output" value="Custo/Beneficio#{sliderView.number2}" />
+                                        <h:inputHidden id="txt2" value="#{sliderView.number2}" />
+                                        <p:slider for="txt2" display="output" style="width: 200px" displayTemplate="Custo Beneficio em %{value}" />
+                                    </h:panelGrid>
+
+                                    <p:commandButton value="Start" id="start" type="button" onclick="start()" widgetVar="startButton1"/>
+                                    <p:commandButton value="Cancel" id="cancel" type="button" onclick="cancel()" />
+                                    <p:progressBar id="progressBarClient" widgetVar="pbClient" style="width:300px"/>
+
+                                    <p:growl id="growl" />
+                                </h:form>           
+                            </p:fieldset> 
+
+                            <p:fieldset id="prediction1" legend="Previsão" style="border-color: #2980b9">
+                                <h:form>
+                                    <p:dataTable var="instances" value="#{PredictionTableView.instances}">
+                                        <p:column headerText="id">
+                                            <h:outputText value="#{instances.id}" />
+                                        </p:column>
+                                        <p:column headerText="programa">
+                                            <h:outputText value="#{instances.programa}" />
+                                        </p:column>
+                                        <p:column headerText="memoria (Gb)">
+                                            <h:outputText value="#{instances.memoria}" />
+                                        </p:column>
+                                        <p:column headerText="cpu (Núcleos)">
+                                            <h:outputText value="#{instances.cpu}" />
+                                        </p:column>
+                                        <p:column headerText="preco R$">
+                                            <h:outputText value="#{instances.preco}" />
+                                        </p:column>
+                                        <p:column headerText="provider">
+                                            <h:outputText value="#{instances.provider}" />
+                                        </p:column>
+                                    </p:dataTable>
+
+                                </h:form>           
+                            </p:fieldset> 
+                        </p:panel> 
+                    </p:tab>
+
+                    <!-- Elasticidade (FaY)-->
+                    <p:tab id="Provisionamento" title="Provisionamento">
+                        <p:panel id="elasticity1" style="border-color: #2980b9">
+                            <p:fieldset id="instancesAvaible" legend="Instâncias Disponíveis" style="border-color: #2980b9">
+                                <p:panelGrid  id="instancesB">
+                                    <f:facet name="header">
+                                        <p:row>
+                                            <p:column >Instância</p:column>
+                                            <p:column>Quantidade</p:column>
+                                            <p:column>Adicionar</p:column>
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row >
+                                        <p:column>
+                                            <p:selectOneMenu id="instance" value="#{workflowComposerBean.chosenInstanceId}"  >
+                                                <f:selectItems value="#{workflowComposerBean.instancies}" itemDescription="Selecione" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column >
+                                            <pe:inputNumber id="number" value="#{workflowComposerBean.quantity}" minValue="0" maxValue="100" maxlength="3" required="true" requiredMessage="Campo quantidade obrigatório"/>
+                                        </p:column>    
+                                        <p:column>
+                                            <p:commandButton  actionListener="#{workflowComposerBean.adSelectedInstance}"
+                                                              icon="ui-icon-check" 
+                                                              update="instancesList, instancesB, :form:growl"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:fieldset>    
+
+                            <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
+                                <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
+                                             paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
+                                             id="instancesList">
+                                    <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
+                                    <p:column headerText="Descrição"  style="text-align: center">
+                                        <p:outputLabel value="#{instance.description}"/>
+                                    </p:column>
+                                    <p:column headerText="Tipo" style="text-align: center">
+                                        <p:outputLabel value="#{instance.type}"/>
+                                    </p:column>
+                                    <p:column headerText="Quantidade"  style="text-align: center">
+                                        <h:outputLabel value="#{instance.quantity}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:slaopt:instancesB, :form:growl"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:fieldset>    
+                        </p:panel>        
+                    </p:tab>
+
+
+                    <!-- Sla Part-->
                     <p:tab id="sla_option" title="SLA">
-                        <p:tabView id="slaopt">
-                            <p:tab id="detalhado" title="Detalhado">
-                                <p:panel id="detalhes" style="border-color: #2980b9">
-                                    <p:fieldset id="limitation" legend="Limitar" style="border-color: #2980b9">
-                                        <h:panelGrid columns="2" cellpadding="10">
+                        <p:panel id="detalhes2" style="border-color: #2980b9">
+                            <p:fieldset id="limitation" legend="Termos do SLA" style="border-color: #2980b9">
+                                <h:panelGrid columns="1" cellpadding="10">
+                                    <h:outputText
+                                        value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
+                                        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
+                                        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
+                                        but given to ruthless violence whenever anything stands against the good of the family." 
+                                        />    
 
-                                            <p:outputLabel value="Limitar a execução:" />
-                                            <p:selectOneRadio value="#{workflowComposerBean.panel1}">
-                                                <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
-                                                <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
-                                                <f:ajax render="select-type-limitation-panel" />
-                                            </p:selectOneRadio>
-                                        </h:panelGrid>
-                                        <h:panelGrid>
-                                            <h:panelGroup id="select-type-limitation-panel">
-
-                                                <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
-                                                <p:selectOneRadio id="sla_type_limitation" value="#{workflowComposerBean.limitationType}" layout="custom" onchange="javascritp: handleLimitations(this)">
-<!--                                                        <p:ajax  update="opt1v, opt2v" />-->
-                                                        <f:selectItem class="sla-type-imitation" itemLabel="Tempo de execução:" itemValue="0" itemDisabled="false"/>
-                                                        <f:selectItem class="sla-type-imitation" itemLabel="Custo de execução" itemValue="1" />
-                                                </p:selectOneRadio>
-
-                                                <h:panelGrid id="sla_type_limitation_panel" columns="3" cellpadding="5" rendered="#{workflowComposerBean.panel1 == 'Show-Panel1'}" >
-                                                    
-                                                    <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
-                                                    <p:outputLabel for="opt1" value="Tempo de execução: " />                                                    
-                                                    <p:inputText id="opt1v" class="limitationValueExecutionTime" value="#{workflowComposerBean.limitationValueExecutionTime}"/>
-
-                                                    <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
-                                                    <h:outputLabel for="opt2" value="Custo de execução" />
-                                                    <p:inputText id="opt2v" class="limitationValueExecutionCost" value="#{workflowComposerBean.limitationValueExecutionCost}"/>  
-                                                    <!--<p:ajax update="opt1 opt1v" />-->
-                                                </h:panelGrid>
-                                                <!--</p:outputPanel>-->
-
-                                            </h:panelGroup>
-                                        </h:panelGrid>     
-                                    </p:fieldset>  
-
-                                    <p:fieldset id="instancesAvaible" legend="Instâncias Disponíveis" style="border-color: #2980b9">
-                                        <p:panelGrid  id="instancesB">
-                                            <f:facet name="header">
-                                                <p:row>
-                                                    <p:column >Instância</p:column>
-                                                    <p:column>Quantidade</p:column>
-                                                    <p:column>Adicionar</p:column>
-                                                </p:row>
-                                            </f:facet>
-                                            <p:row >
-                                                <p:column>
-                                                    <p:selectOneMenu id="instance" value="#{workflowComposerBean.chosenInstanceId}"  >
-                                                        <f:selectItems value="#{workflowComposerBean.instancies}" itemDescription="Selecione" var="man" itemLabel="#{man.description}" itemValue="#{man.id}" />
-                                                    </p:selectOneMenu>
-                                                </p:column>
-                                                <p:column >
-                                                    <pe:inputNumber id="number" value="#{workflowComposerBean.quantity}" minValue="0" maxValue="100" maxlength="3" required="true" requiredMessage="Campo quantidade obrigatório"/>
-                                                </p:column>    
-                                                <p:column>
-                                                    <p:commandButton  actionListener="#{workflowComposerBean.adSelectedInstance}"
-                                                                      icon="ui-icon-check" 
-                                                                      update="instancesList, instancesB, :form:growl"/>
-                                                </p:column>
-                                            </p:row>
-                                        </p:panelGrid>
-                                    </p:fieldset>    
-
-                                    <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
-                                        <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
-                                                     paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
-                                                     id="instancesList">
-                                            <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
-                                            <p:column headerText="Descrição"  style="text-align: center">
-                                                <p:outputLabel value="#{instance.description}"/>
-                                            </p:column>
-                                            <p:column headerText="Tipo" style="text-align: center">
-                                                <p:outputLabel value="#{instance.type}"/>
-                                            </p:column>
-                                            <p:column headerText="Quantidade"  style="text-align: center">
-                                                <h:outputLabel value="#{instance.quantity}"/>
-                                            </p:column>
-
-                                            <p:column>
-                                                <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:slaopt:instancesB, :form:growl"/>
-                                            </p:column>
-                                        </p:dataTable>
-                                    </p:fieldset>
-
-                                    <p:fieldset id="objective" legend="Objetivo do SLA" style="border-color: #2980b9">
-                                        <h:panelGrid id="sla_objective" columns="2" style="margin-bottom:10px" cellpadding="5">
-                                            <p:outputLabel for="slaobjective" value="Foco da Execução:" />
-                                            <p:selectOneRadio id="slaobjective" value="#{workflowComposerBean.objective}">
-                                                <f:selectItem itemLabel="Maior Desempenho" itemValue="1" />
-                                                <f:selectItem itemLabel="Menor Custo" itemValue="2" />
-                                                <f:selectItem itemLabel="Melhor Custo/Beneficio" itemValue="3" />
-                                            </p:selectOneRadio>
-                                        </h:panelGrid>
-                                    </p:fieldset>
-                                </p:panel> 
-
-                            </p:tab>
-                            <p:tab title="Padrao">
-                                <h:panelGrid columns="2" cellpadding="10">
-                                    <p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-                                    <h:outputText value="Francis Ford Coppola's legendary..." />
+                                    <p:outputLabel value="Usuário" style="font-weight: bold"/></p:column>                                            
+                                    <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/></p:column>                                            
+                                    <p:outputLabel value="Provedor" style="font-weight: bold"/></p:column>    
+                                    <p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/></p:column>    
+                                    <p:outputLabel value="Objetivo" style="font-weight: bold"/></p:column>    
+                                    <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
+                                                 emptyMessage="Nenhuma instância adicionada" 
+                                                 id="instancesList">
+                                        <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
+                                        <p:column headerText="Descrição"  style="text-align: center">
+                                            <p:outputLabel value="#{instance.description}"/>
+                                        </p:column>
+                                        <p:column headerText="Quantidade"  style="text-align: center">
+                                            <h:outputLabel value="#{instance.quantity}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                    </p:column>
+                                    <p:dataTable value="#{workflowComposerBean.elements}" var="e"
+                                                 emptyMessage="Nenhum elemento adicionado">
+                                        <p:column headerText="Serviços">
+                                            <p:outputLabel value="#{e.name}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                    </p:column>
+                                    </p:row>    
+                                    <p:outputLabel value="Limitar a execução:" />
+                                    <p:selectOneRadio value="#{workflowComposerBean.panel1}">
+                                        <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
+                                        <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
+                                        <f:ajax render="select-type-limitation-panel" />
+                                    </p:selectOneRadio>
                                 </h:panelGrid>
-                            </p:tab>
-                        </p:tabView>
+                                <h:panelGrid>
+                                    <h:panelGroup id="select-type-limitation-panel">
+
+                                        <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
+                                        <p:selectOneRadio id="sla_type_limitation" value="#{workflowComposerBean.limitationType}" layout="custom" onchange="javascritp: handleLimitations(this)">
+                                            <!--                                                        <p:ajax  update="opt1v, opt2v" />-->
+                                            <f:selectItem class="sla-type-imitation" itemLabel="Tempo de execução:" itemValue="0" itemDisabled="false"/>
+                                            <f:selectItem class="sla-type-imitation" itemLabel="Custo de execução" itemValue="1" />
+                                        </p:selectOneRadio>
+
+                                        <h:panelGrid id="sla_type_limitation_panel" columns="3" cellpadding="5" rendered="#{workflowComposerBean.panel1 == 'Show-Panel1'}" >
+
+                                            <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
+                                            <p:outputLabel for="opt1" value="Tempo de execução: " />                                                    
+                                            <p:inputText id="opt1v" class="limitationValueExecutionTime" value="#{workflowComposerBean.limitationValueExecutionTime}"/>
+
+                                            <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
+                                            <h:outputLabel for="opt2" value="Custo de execução" />
+                                            <p:inputText id="opt2v" class="limitationValueExecutionCost" value="#{workflowComposerBean.limitationValueExecutionCost}"/>  
+                                            <!--<p:ajax update="opt1 opt1v" />-->
+                                        </h:panelGrid>
+                                        <!--</p:outputPanel>-->
+
+                                    </h:panelGroup>
+                                </h:panelGrid> 
+
+                                <p:commandButton value="Aceitar SLA?" id="nonAjax" ajax="false" />
+                            </p:fieldset>  
+                        </p:panel> 
+
+
                         <!--</p:panel>-->
                     </p:tab>
+
                     <!--Resumo do workflow-->
                     <p:tab id="workflow_summary" title="Resumo deste Workflow">
                         <p:panel>
-<!--                            <p:panel>
+                            <p:panel>
                                 Confira aqui o resumo desta execução. Ao clicar em "Confirmar Workflow" será iniciada sua execução.
                             </p:panel>
-                            <br />-->
+                            <br />
                             <p:panel>
-                                <p:panelGrid style="width: 95%; margin: 15px">
+                                <p:panelGrid columns="2" style="width: 100%; margin: 15px">
                                     <f:facet name="header">
-                                        <p:column colspan="2"> <p:outputLabel value="Contrato de Nível de Serviço" style="font-size: 120%; margin: 10px"/></p:column>
+                                        <p:outputLabel value="Dados deste workflow" style="font-size: 120%; margin: 10px"/>
                                     </f:facet>
-                                    <p:row>    
-                                        <p:column><p:outputLabel value="Usuário" style="font-weight: bold"/></p:column>                                            
-                                        <p:column><p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/></p:column>                                            
-                                    </p:row>
-                                    <p:row>   
-                                        <p:column><p:outputLabel value="Provedor" style="font-weight: bold"/></p:column>    
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/></p:column>    
-                                    </p:row>
-                                    <p:row>   
-                                        <p:column><p:outputLabel value="Objetivo" style="font-weight: bold"/></p:column>    
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.objetive}" style="font-weight: bold"/></p:column>    
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
-                                                         emptyMessage="Nenhuma instância adicionada" 
-                                                         id="instancesList">
-                                                <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
-                                                <p:column headerText="Descrição"  style="text-align: center">
-                                                    <p:outputLabel value="#{instance.description}"/>
-                                                </p:column>
-                                                <p:column headerText="Quantidade"  style="text-align: center">
-                                                    <h:outputLabel value="#{instance.quantity}"/>
-                                                </p:column>
-                                            </p:dataTable>
-                                        </p:column>
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            <p:dataTable value="#{workflowComposerBean.elements}" var="e"
-                                                         emptyMessage="Nenhum elemento adicionado">
-                                                <p:column headerText="Serviços">
-                                                    <p:outputLabel value="#{e.name}"/>
-                                                </p:column>
-                                            </p:dataTable>
-                                        </p:column>
-                                    </p:row>
-                                    <p:row>
-                                        <p:column><p:outputLabel value="WorkFlow Id" style="font-weight: bold"/></p:column>
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflow.id}" style="font-weight: bold"/></p:column>
-                                    </p:row>
-                                    <p:row>    
-                                        <p:column><p:outputLabel value="Descrição" style="font-weight: bold"/></p:column>
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflow.description} " /></p:column>
-                                    </p:row>
-                                    <p:row>    
-                                        <p:column><p:outputLabel value="Tamanho" style="font-weight: bold"/></p:column>
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflow.jobs.size()} Job(s)" /></p:column>
-                                    </p:row>
-                                    <p:row>    
-                                        <p:column><p:outputLabel value="Criado em" style="font-weight: bold"/></p:column>
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflow.creationDatestamp}" /></p:column>
-                                    </p:row>
-                                    <p:row>    
-                                        <p:column><p:outputLabel value="Quantidade de inputs" style="font-weight: bold"/></p:column>
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.jobs.size()}" /></p:column>
-                                    </p:row>
-                                    <p:row>    
-                                        <p:column><p:outputLabel value="Status" style="font-weight: bold"/></p:column>
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.workflowStatus}" 
-                                                       style="font-weight: bold; color: #{workflowComposerBean.workflowColor}"/></p:column>
-                                    </p:row>
+                                    <p:outputLabel value="Id" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.workflow.id}" style="font-weight: bold"/>
+                                    <p:outputLabel value="Descrição" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.workflow.description} " />
+                                    <p:outputLabel value="Tamanho" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.workflow.jobs.size()} Job(s)" />
+                                    <p:outputLabel value="Criado em" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.workflow.creationDatestamp}" />
+                                    <p:outputLabel value="Quantidade de inputs" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.jobs.size()}" />
+                                    <p:outputLabel value="Status" style="font-weight: bold"/>
+                                    <p:outputLabel value="#{workflowComposerBean.workflowStatus}" 
+                                                   style="font-weight: bold; color: #{workflowComposerBean.workflowColor}"/>
                                 </p:panelGrid>
                             </p:panel>
                             <br />
@@ -446,8 +468,8 @@
         </h:form>
     </p:dialog>
     <script type="text/javascript">
-        $(function() {
-        	$('.limitationValueExecutionTime').hide();
+        $(function () {
+            $('.limitationValueExecutionTime').hide();
             $('.limitationValueExecutionCost').hide();
         });
         function handleLimitations(element) {
@@ -457,12 +479,37 @@
                     $('.limitationValueExecutionCost').hide();
                     $('.limitationValueExecutionCost').val('');
                     $('.limitationValueExecutionTime').show();
-                }else {
+                } else {
                     $('.limitationValueExecutionTime').hide();
                     $('.limitationValueExecutionTime').val('');
                     $('.limitationValueExecutionCost').show();
                 }
-            } 
+            }
+        }
+
+
+        function start() {
+            PF('startButton1').disable();
+
+            window['progress'] = setInterval(function () {
+                var pbClient = PF('pbClient'),
+                        oldValue = pbClient.getValue(),
+                        newValue = oldValue + 10;
+
+                pbClient.setValue(pbClient.getValue() + 10);
+
+                if (newValue === 100) {
+                    clearInterval(window['progress']);
+                }
+
+
+            }, 1000);
+        }
+
+        function cancel() {
+            clearInterval(window['progress']);
+            PF('pbClient').setValue(0);
+            PF('startButton1').enable();
         }
     </script>
 </html>

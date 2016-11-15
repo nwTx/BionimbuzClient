@@ -19,7 +19,7 @@ public class TableView implements Serializable {
  
     @PostConstruct
     public void init() {
-        instances = service.createInstances(10);
+        instances = service.returnInstances();
     }
      
     public List<Instance> getInstances() {

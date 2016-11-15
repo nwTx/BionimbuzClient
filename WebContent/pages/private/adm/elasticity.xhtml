@@ -3,18 +3,61 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:ui="http://java.sun.com/jsf/facelets">
+
 
     <ui:decorate template="/resources/templates/template.xhtml">
 
         <!-- Center Content -->
         <ui:define name="conteudo_centro">
-   
+
             <h:form id="form">
+                <p:growl id="growl" autoUpdate="true"/>
+                
+                <p:commandButton value="Create" id="withIcon" actionListener="#{button.buttonAction}" update="tabela" icon="ui-icon-star">
+                                 <f:ajax  render="tabela" ></f:ajax> 
+                </p:commandButton>
+                <p:dataTable id="tabela" var="instances" value="#{PredictionTableView.instances}">
+                    <p:column headerText="Id" style="width:50px">
+                        <h:outputText value="#{instances.id}" />
+                    </p:column>
+                    <p:column headerText="Provider" style="width:50px">
+                        <h:outputText value="#{instances.provider}" />
+                    </p:column>
+                    <p:column headerText="CPU" style="width:20px">
+                        <h:outputText value="#{instances.cpu}" />
+                    </p:column>
+                    <p:column headerText="Memoria" style="width:40px">
+                        <h:outputText value="#{instances.memoria}" />
+                    </p:column>
+                    <p:column headerText="Preco" style="width:50px">
+                        <h:outputText value="#{instances.preco}" />
+                    </p:column>
+                    <p:column headerText="Programa" style="width:50px">
+                        <h:outputText value="#{instances.programa}" />
+                    </p:column>
+                    <p:column headerText="time to create" style="width:150px">
+                        <h:outputText value="#{instances.timetocreate}" />
+                    </p:column>
+                    <p:column headerText="pode criar?" style="width:150px">
+                        <h:outputText value="#{instances.isnow}" />
+                    </p:column>
+                    <p:column headerText="pode criar?" style="width:150px">
+                        <pe:timer  timeout="#{instances.delay}" /> 
+                    </p:column>
+                    
+                    
+                    
+                </p:dataTable>
+            </h:form>
+
+
+            <!--            <h:form id="form">
                 <p:growl id="growl" life="2000" />
                 <p:commandButton value="Create" id="withIcon" actionListener="#{buttonView.buttonAction}" update="growl" icon="ui-icon-star" />
 
-<!--                <p:contextMenu for="instances">
+                <p:contextMenu for="instances">
                     <p:menuitem value="start" icon="fa fa-toggle-right" />
                     <p:menuitem value="stop" icon="fa fa-pause" />
                     <p:menuitem value="reboot"  icon="fa fa-refresh" />
@@ -37,13 +80,13 @@
                 </p:dataTable> 
 
             </h:form> -->
-<!--            <h:form>
-
-                <p:panel header="Virtual Machine Status">
-                    <p:chart type="bar" model="#{chartView.barModel}" />						
-                </p:panel>
-
-            </h:form>-->
+            <!--            <h:form>
+            
+                            <p:panel header="Virtual Machine Status">
+                                <p:chart type="bar" model="#{chartView.barModel}" />						
+                            </p:panel>
+            
+                        </h:form>-->
         </ui:define>
 
     </ui:decorate>

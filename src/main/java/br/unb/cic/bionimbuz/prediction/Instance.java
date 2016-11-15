@@ -5,8 +5,11 @@
  */
 package br.unb.cic.bionimbuz.prediction;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.joda.time.DateTime;
+
 /**
- *
  * @author guilherme
  */
 public class Instance {
@@ -17,20 +20,24 @@ public class Instance {
     public int cpu;
     public int preco;
     public String provider;
+    public DateTime creationTimer;
+    public int delay;
+    public DateTime timetocreate;
+    public String isnow; 
 
     public Instance(){}
-    
-    public Instance(String id, String programa, int memoria, int cpu, int preco, String provider) {
+
+    public Instance(String id, String programa, int memoria, int cpu, int preco, String provider, DateTime creationTimer, int delay, DateTime timetocreate, String isnow) {
         this.id = id;
         this.programa = programa;
         this.memoria = memoria;
         this.cpu = cpu;
         this.preco = preco;
         this.provider = provider;
-    }
-
-    public Instance(String id) {
-        this.id = id;
+        this.creationTimer = creationTimer;
+        this.delay = delay;
+        this.timetocreate = timetocreate;
+        this.isnow = isnow;
     }
 
     public String getId() {
@@ -80,6 +87,40 @@ public class Instance {
     public void setProvider(String provider) {
         this.provider = provider;
     }
+
+    public DateTime getCreationTimer() {
+        return creationTimer;
+    }
+
+    public void setCreationTimer(DateTime creationTimer) {
+        this.creationTimer = creationTimer;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public DateTime getTimetocreate() {
+        return timetocreate;
+    }
+
+    public void setTimetocreate(DateTime timetocreate) {
+        this.timetocreate = timetocreate;
+    }
+
+    public String getIsnow() {
+        return isnow;
+    }
+
+    public void setIsnow(String isnow) {
+        this.isnow = isnow;
+    }
+    
+    
 
        
 }
