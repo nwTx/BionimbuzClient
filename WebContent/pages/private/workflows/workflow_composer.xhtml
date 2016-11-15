@@ -250,14 +250,14 @@
                                         but given to ruthless violence whenever anything stands against the good of the family." 
                                         />    
 
-                                    <p:outputLabel value="Usuário" style="font-weight: bold"/></p:column>                                            
-                                    <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/></p:column>                                            
-                                    <p:outputLabel value="Provedor" style="font-weight: bold"/></p:column>    
-                                    <p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/></p:column>    
-                                    <p:outputLabel value="Objetivo" style="font-weight: bold"/></p:column>    
+                                    <p:outputLabel value="Usuário" style="font-weight: bold"/>                                           
+                                    <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/>                                         
+                                    <p:outputLabel value="Provedor" style="font-weight: bold"/>  
+                                    <p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/>  
+                                    <p:outputLabel value="Objetivo" style="font-weight: bold"/>
                                     <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
                                                  emptyMessage="Nenhuma instância adicionada" 
-                                                 id="instancesList">
+                                                 id="instancesListS">
                                         <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
                                         <p:column headerText="Descrição"  style="text-align: center">
                                             <p:outputLabel value="#{instance.description}"/>
@@ -266,15 +266,15 @@
                                             <h:outputLabel value="#{instance.quantity}"/>
                                         </p:column>
                                     </p:dataTable>
-                                    </p:column>
+                                 
                                     <p:dataTable value="#{workflowComposerBean.elements}" var="e"
                                                  emptyMessage="Nenhum elemento adicionado">
                                         <p:column headerText="Serviços">
                                             <p:outputLabel value="#{e.name}"/>
                                         </p:column>
                                     </p:dataTable>
-                                    </p:column>
-                                    </p:row>    
+                                    
+                                    
                                     <p:outputLabel value="Limitar a execução:" />
                                     <p:selectOneRadio value="#{workflowComposerBean.panel1}">
                                         <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
