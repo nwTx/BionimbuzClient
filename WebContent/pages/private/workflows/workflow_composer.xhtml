@@ -136,7 +136,7 @@
                     <!-- Previsao (michel)-->
                     <p:tab id="previsao" title="Previsão">
 
-                        <p:panel id="detalhes" style="border-color: #2980b9" widgetVar="testPanel" visible="false" closable="true" toggleable="true">
+                        <p:panel id="detalhes" style="border-color: #2980b9" widgetVar="testPanel" visible="true" >
                             <p:fieldset id="prediction" legend="Serviço de Predição" style="border-color: #2980b9">
                                 <h:form>
                                     <p:outputLabel for="preco" value="Preço Mínimo" />
@@ -208,7 +208,7 @@
                                         <p:column>
                                             <p:commandButton  actionListener="#{workflowComposerBean.adSelectedInstance}"
                                                               icon="ui-icon-check" 
-                                                              update="instancesList, instancesB, :form:growl"/>
+                                                              update="instancesList2, instancesB, :form:growl"/>
                                         </p:column>
                                     </p:row>
                                 </p:panelGrid>
@@ -217,7 +217,7 @@
                             <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
                                 <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
                                              paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
-                                             id="instancesList">
+                                             id="instancesList2">
                                     <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
                                     <p:column headerText="Descrição"  style="text-align: center">
                                         <p:outputLabel value="#{instance.description}"/>
@@ -230,7 +230,7 @@
                                     </p:column>
 
                                     <p:column>
-                                        <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:slaopt:instancesB, :form:growl"/>
+                                        <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList2, form:slaopt:instancesB, :form:growl"/>
                                     </p:column>
                                 </p:dataTable>
                             </p:fieldset>    
@@ -247,17 +247,12 @@
                                         value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
                                         His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
                                         Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
-                                        but given to ruthless violence whenever anything stands against the good of the family." 
-                                        />    
+                                        but given to ruthless violence whenever anything stands against the good of the family." />    
+                                    
 
-                                    <p:outputLabel value="Usuário" style="font-weight: bold"/>                                           
-                                    <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/>                                         
-                                    <p:outputLabel value="Provedor" style="font-weight: bold"/>  
-                                    <p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/>  
-                                    <p:outputLabel value="Objetivo" style="font-weight: bold"/>
                                     <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
                                                  emptyMessage="Nenhuma instância adicionada" 
-                                                 id="instancesListS">
+                                                 id="instancesList">
                                         <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
                                         <p:column headerText="Descrição"  style="text-align: center">
                                             <p:outputLabel value="#{instance.description}"/>
@@ -266,7 +261,7 @@
                                             <h:outputLabel value="#{instance.quantity}"/>
                                         </p:column>
                                     </p:dataTable>
-                                 
+
                                     <p:dataTable value="#{workflowComposerBean.elements}" var="e"
                                                  emptyMessage="Nenhum elemento adicionado">
                                         <p:column headerText="Serviços">
@@ -274,8 +269,8 @@
                                         </p:column>
                                     </p:dataTable>
                                     
-                                    
                                     <p:outputLabel value="Limitar a execução:" />
+
                                     <p:selectOneRadio value="#{workflowComposerBean.panel1}">
                                         <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
                                         <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
@@ -311,9 +306,6 @@
                                 <p:commandButton value="Aceitar SLA?" id="nonAjax" ajax="false" />
                             </p:fieldset>  
                         </p:panel> 
-
-
-                        <!--</p:panel>-->
                     </p:tab>
 
                     <!--Resumo do workflow-->
