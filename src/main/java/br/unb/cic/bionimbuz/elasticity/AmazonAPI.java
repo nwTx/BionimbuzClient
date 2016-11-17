@@ -77,7 +77,7 @@ public class AmazonAPI {
             int minInstanceCount = 1; // 
             int maxInstanceCount = 1;
             RunInstancesRequest rir = new RunInstancesRequest(imageId, minInstanceCount, maxInstanceCount);
-            rir.setInstanceType("t1.micro");
+            rir.setInstanceType("t2.micro");
 
 //            Scanner keyscan = new Scanner(System.in);
 //            System.out.println("Do you want to use an existing keypair or do you want to create a new one?");

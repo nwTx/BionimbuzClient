@@ -24,14 +24,17 @@ public class Button {
         InstanceService.addInstances();
         //addMessage("Máquina Virtual Criada");
     }
+
+    public void SLAmessage(){  
+        FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"SLA Aceito!",null));  
+    }     
     
-    public void addMessage(String summary) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
+    public void onTimeout(){  
+        FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Máquina Virtual Criada",null));  
     } 
     
-//    public void onTimeout(){  
-//        FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO,"Máquina Virtual Criada",null));  
-//    } 
+    public void createInstance(){  
+        
+    }
 
 }
