@@ -148,7 +148,7 @@ public class Instance {
 
     public String getDescription() {
         return "Type: " + this.getType() + ", "
-                + "CPU: " + this.getNumCores() + " " + this.getCpuHtz() + " Ghz, "
+                + "CPU: " + this.getNumCores() + " - " + this.getCpuHtz() + " Ghz, "
                 + "Ram:" + this.getMemoryTotal() + " GB, "
                 + "Custo por hora : $" + this.getCostPerHour() + ", "
                 + "Localidade: " + this.getLocality();

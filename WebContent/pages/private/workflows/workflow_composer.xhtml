@@ -185,7 +185,7 @@
                     </p:tab>
 
                     <!-- Elasticidade (FaY)-->
-                    <p:tab id="Provisionamento" title="Provisionamento">
+                    <p:tab id="provisionamento" title="Provisionamento">
                         <p:panel id="elasticity1" style="border-color: #2980b9">
                             <p:fieldset id="instancesAvaible" legend="Instâncias Disponíveis" style="border-color: #2980b9">
                                 <p:panelGrid  id="instancesB">
@@ -208,7 +208,7 @@
                                         <p:column>
                                             <p:commandButton  actionListener="#{workflowComposerBean.adSelectedInstance}"
                                                               icon="ui-icon-check" 
-                                                              update="instancesList2, instancesB, :form:growl"/>
+                                                              update="instancesList, instancesB, :form:growl"/>
                                         </p:column>
                                     </p:row>
                                 </p:panelGrid>
@@ -217,7 +217,7 @@
                             <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
                                 <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
                                              paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
-                                             id="instancesList2">
+                                             id="instancesList">
                                     <f:facet name="header"> <center>Tipos de instâncias:</center></f:facet>
                                     <p:column headerText="Descrição"  style="text-align: center">
                                         <p:outputLabel value="#{instance.description}"/>
@@ -230,7 +230,7 @@
                                     </p:column>
 
                                     <p:column>
-                                        <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList2, form:slaopt:instancesB, :form:growl"/>
+                                        <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:instancesB, :form:growl"/>
                                     </p:column>
                                 </p:dataTable>
                             </p:fieldset>    
@@ -251,8 +251,7 @@
                                     
 
                                     <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
-                                                 emptyMessage="Nenhuma instância adicionada" 
-                                                 id="instancesList">
+                                                 emptyMessage="Nenhuma instância adicionada">
                                         <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
                                         <p:column headerText="Descrição"  style="text-align: center">
                                             <p:outputLabel value="#{instance.description}"/>
