@@ -241,40 +241,91 @@
                     <p:tab id="sla_option" title="SLA">
                         <p:panel id="detalhes2" style="border-color: #2980b9">
                             <p:fieldset id="limitation" legend="Termos do SLA" style="border-color: #2980b9">
-                                <h:panelGrid columns="1" cellpadding="10">
-                                    <h:outputText
-                                        value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                                        His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
-                                        Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect,
-                                        but given to ruthless violence whenever anything stands against the good of the family." />    
+                                <p:panelGrid>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <h:outputFormat
+                                            value="O presente Contrato de Nível de Serviços da Plataforma BioNimbuZ, 
+                                            que é constituída pela Plataforma Amazon EC2, Plataforma Google Compute 
+                                            Engine GCE e Plataforma de Nuvem Privada da UnB, consiste em uma 
+                                            política que rege o uso da Elastic Compute Cloud (EC2) (Amazon EC2), da 
+                                            Amazon Elastic Block Store (Amazon EBS), da Google Compute Engine (GCE), 
+                                            da Google Cloud Store (GCS) e da Plataforma de nuvem a UnB de acordo com 
+                                            os termos do Contrato do Cliente AWS da Amazon, da Google Cloud Platform 
+                                            e da Plataforma de nuvem da UnB celebrado entre a Amazon Web Services, 
+                                            Inc., a Google Cloud Platform e a Plataforma de nuvem da UnB e os 
+                                            usuários dos serviços da AWS, da Google Cloud Platform e da Plataforma 
+                                            de nuvem da UnB. 
+                                            O presente SLA aplica-se separadamente a cada conta que utilizar o 
+                                            BioNimbuZ, no qual utilizam os serviço da Amazon EC2 ou da Amazon EBS ou 
+                                            da Google Compute Engine (GCE) ou da Google Cloud Store (GCS) ou da 
+                                            Plataforma de nuvem a UnB. Salvo disposição em contrário neste 
+                                            instrumento, o presente SLA está sujeito aos termos do Contrato da AWS, 
+                                            da Google Cloud Platform e da Plataforma de Nuvem da UnB e as expressões 
+                                            grafadas com letras iniciais maiúsculas assumem os significados a elas 
+                                            atribuídos no Contrato do Cliente BioNimbuZ. Reservamo-nos o direito de 
+                                            mudar os termos do presente SLA de acordo com o Contrato do Cliente 
+                                            BioNimbuZ." /> 
+                                        </p:column>
+                                    </p:row>
+                                       
                                     
-
-                                    <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
-                                                 emptyMessage="Nenhuma instância adicionada">
-                                        <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
-                                        <p:column headerText="Descrição"  style="text-align: center">
-                                            <p:outputLabel value="#{instance.description}"/>
+                                    <p:row>                                       
+                                        <p:column><p:outputLabel value="Usuário" style="font-weight: bold"/></p:column>                                            
+                                        <p:column><p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/></p:column>                                            
+                                    </p:row>
+                                    <p:row>   
+                                        <p:column><p:outputLabel value="Provedor" style="font-weight: bold"/></p:column>    
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/></p:column>    
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><p:outputLabel value="Porcentagem de Funcionamento Mensal" style="font-weight: bold"/></p:column>                                            
+                                        <p:column><p:outputLabel value="Porcentagem de Crédito de Serviço" style="font-weight: bold"/></p:column>                                            
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><p:outputLabel value="Inferior a 99,95%, mas igual ou superior a 99,0%"/></p:column>    
+                                        <p:column><p:outputLabel value="10%"/></p:column>    
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><p:outputLabel value="Inferior a 99,0%"/></p:column>    
+                                        <p:column><p:outputLabel value="30%"/></p:column>    
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
+                                                         emptyMessage="Nenhuma instância adicionada">
+                                                <f:facet name="header"> <center>Instâncias Selecionadas:</center></f:facet>
+                                                <p:column headerText="Descrição"  style="text-align: center">
+                                                    <p:outputLabel value="#{instance.description}"/>
+                                                </p:column>
+                                                <p:column headerText="Quantidade"  style="text-align: center">
+                                                    <h:outputLabel value="#{instance.quantity}"/>
+                                                </p:column>
+                                            </p:dataTable>
                                         </p:column>
-                                        <p:column headerText="Quantidade"  style="text-align: center">
-                                            <h:outputLabel value="#{instance.quantity}"/>
-                                        </p:column>
-                                    </p:dataTable>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">    
+                                            <p:dataTable value="#{workflowComposerBean.elements}" var="e"
+                                                         emptyMessage="Nenhum elemento adicionado">
+                                                <p:column headerText="Serviços">
+                                                    <p:outputLabel value="#{e.name}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                      </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel value="Limitar a execução:" />
 
-                                    <p:dataTable value="#{workflowComposerBean.elements}" var="e"
-                                                 emptyMessage="Nenhum elemento adicionado">
-                                        <p:column headerText="Serviços">
-                                            <p:outputLabel value="#{e.name}"/>
+                                            <p:selectOneRadio value="#{workflowComposerBean.panel1}">
+                                                <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
+                                                <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
+                                                <f:ajax render="select-type-limitation-panel" />
+                                            </p:selectOneRadio>
                                         </p:column>
-                                    </p:dataTable>
-                                    
-                                    <p:outputLabel value="Limitar a execução:" />
-
-                                    <p:selectOneRadio value="#{workflowComposerBean.panel1}">
-                                        <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
-                                        <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
-                                        <f:ajax render="select-type-limitation-panel" />
-                                    </p:selectOneRadio>
-                                </h:panelGrid>
+                                    </p:row>
+                                </p:panelGrid>
                                 <h:panelGrid>
                                     <h:panelGroup id="select-type-limitation-panel">
 
@@ -319,11 +370,7 @@
                                         <p:outputLabel value="Dados deste workflow" style="font-size: 120%; margin: 10px"/>
                                     </f:facet>
                                     <p:outputLabel value="Id" style="font-weight: bold"/>
-                                    <p:outputLabel value="#{workflowComposerBean.workflow.id}" style="font-weight: bold"/>
-                                    <p:outputLabel value="Usuário" style="font-weight: bold"/>                                           
-                                    <p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/>                                         
-                                    <p:outputLabel value="Provedor" style="font-weight: bold"/>  
-                                    <p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/>  
+                                    <p:outputLabel value="#{workflowComposerBean.workflow.id}" style="font-weight: bold"/>  
                                     <p:outputLabel value="Descrição" style="font-weight: bold"/>
                                     <p:outputLabel value="#{workflowComposerBean.workflow.description} " />
                                     <p:outputLabel value="Tamanho" style="font-weight: bold"/>
