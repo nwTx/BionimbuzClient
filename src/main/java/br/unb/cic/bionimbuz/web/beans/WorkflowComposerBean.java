@@ -99,6 +99,7 @@ public class WorkflowComposerBean implements Serializable {
     private String chosenInstanceId;
     private Integer quantity;
     private Integer objective;
+    private boolean agreeContract;
     //---------------------------------------------------------
 
     // Used by the user to download a workflow
@@ -659,10 +660,6 @@ public class WorkflowComposerBean implements Serializable {
         this.chosenInstanceId = chosenInstanceId;
     }
 
-   
-
-//-------------------------------------------------------------------------
-
     public String getLimitationValueExecutionTime() {
         return limitationValueExecutionTime;
     }
@@ -714,4 +711,15 @@ public class WorkflowComposerBean implements Serializable {
         }
         return objetive;
     }
+
+    public boolean isAgreeContract() {
+        return agreeContract;
+    }
+
+    public void setAgreeContract(boolean agreeContract) {
+        this.agreeContract = agreeContract;
+        String message =this.agreeContract ? "Contrato aceito!" : "Contrato Recusado!";
+        showMessage(message);
+    }
+//-------------------------------------------------------------------------
 }

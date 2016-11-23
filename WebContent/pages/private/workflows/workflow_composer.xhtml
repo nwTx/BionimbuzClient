@@ -6,16 +6,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:pe="http://primefaces.org/ui/extensions">
 
-
-
     <ui:decorate template="/resources/templates/template.xhtml">	
-
         <!-- Center Content -->
         <ui:define name="conteudo_centro">
             <h:form id="form">
                 <p:growl id="growl" autoUpdate="true" showDetail="true"
                          showSummary="true" />      
-
                 <p:wizard widgetVar="wizard" nextLabel="Avançar" backLabel="Voltar" flowListener="#{workflowComposerBean.flowController}">
                     <p:tab id="initial" title="Início">
                         <p:panel>
@@ -25,7 +21,6 @@
                                         <p:outputLabel value="Iniciar novo Workflow" />
                                     </center>
                                 </f:facet>
-
                                 <center>
                                     <p:panel style="margin: 10px">
                                         Clique aqui para começar um novo Workflow, sem importá-lo.
@@ -40,7 +35,6 @@
                                         <p:outputLabel value="Importar Workflow" />
                                     </center>
                                 </f:facet>
-
                                 <center>
                                     <p:panel style="margin: 10px">
                                         Caso queira importar um Workflow, faça seu upload por aqui.
@@ -54,10 +48,8 @@
                                                   update="growl" sizeLimit="268435"/>
                                 </center>
                             </p:panel>
-
                         </p:panel>
                     </p:tab>
-
                     <!-- Element selection tab -->
                     <p:tab id="element_selection" title="Seleção de Elementos">
                         <p:panel header="Escolha os elementos deste Workflow">
@@ -112,7 +104,6 @@
                             </p:fieldset>
                         </p:panel>
                     </p:tab>
-
                     <p:tab id="workflow_design" title="Desenho do Workflow">
                         <p:panel id="workflow_pnl">   
                             <!-- ======== Diagram ======== -->
@@ -132,10 +123,8 @@
                             </p:panel>
                         </p:panel>
                     </p:tab>
-
                     <!-- Previsao (michel)-->
                     <p:tab id="previsao" title="Previsão">
-
                         <p:panel id="detalhes" style="border-color: #2980b9" widgetVar="testPanel" visible="true" >
                             <p:fieldset id="prediction" legend="Serviço de Predição" style="border-color: #2980b9">
                                 <h:form>
@@ -155,7 +144,6 @@
                                     <p:growl id="growl" />
                                 </h:form>           
                             </p:fieldset> 
-
                             <p:fieldset id="prediction1" legend="Previsão" style="border-color: #2980b9">
                                 <h:form>
                                     <p:dataTable var="instances" value="#{PredictionTableView.instances}">
@@ -183,7 +171,6 @@
                             </p:fieldset> 
                         </p:panel> 
                     </p:tab>
-
                     <!-- Elasticidade (FaY)-->
                     <p:tab id="provisionamento" title="Provisionamento">
                         <p:panel id="elasticity1" style="border-color: #2980b9">
@@ -213,7 +200,6 @@
                                     </p:row>
                                 </p:panelGrid>
                             </p:fieldset>    
-
                             <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
                                 <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
                                              paginator="true" rows="5" emptyMessage="Nenhuma instância adicionada" 
@@ -235,13 +221,19 @@
                             </p:fieldset>    
                         </p:panel>        
                     </p:tab>
-
-
                     <!-- Sla Part-->
                     <p:tab id="sla_option" title="SLA">
                         <p:panel id="detalhes2" style="border-color: #2980b9">
                             <p:fieldset id="limitation" legend="Termos do SLA" style="border-color: #2980b9">
                                 <p:panelGrid>
+                                    <p:row>                                       
+                                        <p:column><p:outputLabel value="Usuário" style="font-weight: bold"/></p:column>                                            
+                                        <p:column><p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/></p:column>                                            
+                                    </p:row>
+                                    <p:row>   
+                                        <p:column><p:outputLabel value="Provedor" style="font-weight: bold"/></p:column>    
+                                        <p:column><p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/></p:column>    
+                                    </p:row>
                                     <p:row>
                                         <p:column colspan="2">
                                             <h:outputFormat
@@ -267,16 +259,6 @@
                                             mudar os termos do presente SLA de acordo com o Contrato do Cliente 
                                             BioNimbuZ." /> 
                                         </p:column>
-                                    </p:row>
-                                       
-                                    
-                                    <p:row>                                       
-                                        <p:column><p:outputLabel value="Usuário" style="font-weight: bold"/></p:column>                                            
-                                        <p:column><p:outputLabel value="#{sessionBean.loggedUser.nome}" style="font-weight: bold"/></p:column>                                            
-                                    </p:row>
-                                    <p:row>   
-                                        <p:column><p:outputLabel value="Provedor" style="font-weight: bold"/></p:column>    
-                                        <p:column><p:outputLabel value="#{workflowComposerBean.provider}" style="font-weight: bold"/></p:column>    
                                     </p:row>
                                     <p:row>
                                         <p:column><p:outputLabel value="Porcentagem de Funcionamento Mensal" style="font-weight: bold"/></p:column>                                            
@@ -317,46 +299,41 @@
                                     <p:row>
                                         <p:column>
                                             <p:outputLabel value="Limitar a execução:" />
-
                                             <p:selectOneRadio value="#{workflowComposerBean.panel1}">
                                                 <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
                                                 <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
                                                 <f:ajax render="select-type-limitation-panel" />
-                                            </p:selectOneRadio>
+                                            </p:selectOneRadio> 
+                                            <h:panelGrid>
+                                                <h:panelGroup id="select-type-limitation-panel">
+                                                    <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
+                                                    <p:selectOneRadio id="sla_type_limitation" value="#{workflowComposerBean.limitationType}" layout="custom" onchange="javascritp: handleLimitations(this)">
+                                                        <!--                                                        <p:ajax  update="opt1v, opt2v" />-->
+                                                        <f:selectItem class="sla-type-imitation" itemLabel="Tempo de execução:" itemValue="0" itemDisabled="false"/>
+                                                        <f:selectItem class="sla-type-imitation" itemLabel="Custo de execução" itemValue="1" />
+                                                    </p:selectOneRadio>
+                                                    <h:panelGrid id="sla_type_limitation_panel" columns="3" cellpadding="5" rendered="#{workflowComposerBean.panel1 == 'Show-Panel1'}" >
+                                                        <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
+                                                        <p:outputLabel for="opt1" value="Tempo de execução: " />                                                    
+                                                        <p:inputText id="opt1v" class="limitationValueExecutionTime" value="#{workflowComposerBean.limitationValueExecutionTime}"/>
+                                                        <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
+                                                        <h:outputLabel for="opt2" value="Custo de execução" />
+                                                        <p:inputText id="opt2v" class="limitationValueExecutionCost" value="#{workflowComposerBean.limitationValueExecutionCost}"/>  
+                                                        <!--<p:ajax update="opt1 opt1v" />-->
+                                                    </h:panelGrid>
+                                                    <!--</p:outputPanel>-->
+                                                </h:panelGroup>
+                                            </h:panelGrid> 
+                                            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                                <h:outputText value="Aceita o contrato?: " />
+                                                <p:selectBooleanCheckbox value="#{workflowComposerBean.agreeContract}"></p:selectBooleanCheckbox>
+                                            </h:panelGrid>
                                         </p:column>
                                     </p:row>
                                 </p:panelGrid>
-                                <h:panelGrid>
-                                    <h:panelGroup id="select-type-limitation-panel">
-
-                                        <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
-                                        <p:selectOneRadio id="sla_type_limitation" value="#{workflowComposerBean.limitationType}" layout="custom" onchange="javascritp: handleLimitations(this)">
-                                            <!--                                                        <p:ajax  update="opt1v, opt2v" />-->
-                                            <f:selectItem class="sla-type-imitation" itemLabel="Tempo de execução:" itemValue="0" itemDisabled="false"/>
-                                            <f:selectItem class="sla-type-imitation" itemLabel="Custo de execução" itemValue="1" />
-                                        </p:selectOneRadio>
-
-                                        <h:panelGrid id="sla_type_limitation_panel" columns="3" cellpadding="5" rendered="#{workflowComposerBean.panel1 == 'Show-Panel1'}" >
-
-                                            <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
-                                            <p:outputLabel for="opt1" value="Tempo de execução: " />                                                    
-                                            <p:inputText id="opt1v" class="limitationValueExecutionTime" value="#{workflowComposerBean.limitationValueExecutionTime}"/>
-
-                                            <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
-                                            <h:outputLabel for="opt2" value="Custo de execução" />
-                                            <p:inputText id="opt2v" class="limitationValueExecutionCost" value="#{workflowComposerBean.limitationValueExecutionCost}"/>  
-                                            <!--<p:ajax update="opt1 opt1v" />-->
-                                        </h:panelGrid>
-                                        <!--</p:outputPanel>-->
-
-                                    </h:panelGroup>
-                                </h:panelGrid> 
-
-                                <p:commandButton value="Aceitar SLA?" />
                             </p:fieldset>  
                         </p:panel> 
                     </p:tab>
-
                     <!--Resumo do workflow-->
                     <p:tab id="workflow_summary" title="Resumo deste Workflow">
                         <p:panel>
@@ -413,7 +390,6 @@
             </h:form>
         </ui:define>
     </ui:decorate>
-
     <!-- ***************************************************************************************************************** -->
     <!--                                                        DIALOGS                                                    -->
     <!-- ***************************************************************************************************************** -->
@@ -421,7 +397,6 @@
     <p:dialog widgetVar="file_dlg" showEffect="fade" header="Entrada"
               hideEffect="fade" modal="true" closable="false">
         <h:form id="file_form">
-
             <p:panel>
                 Escolha a o arquivo de entrada deste passo e seus parâmetros.
             </p:panel>
@@ -456,7 +431,6 @@
                         </center>
                     </p:fieldset>
                 </p:tab>
-
                 <!--                <p:tab title="URL">
                                     <p:fieldset legend="URL">
                                         Digite a URL de onde se encontra seu arquivo (URL de um armazenamento, link do Dropbox, link do Google Drive, ...). <br />
@@ -529,7 +503,6 @@
                 }
             }
         }
-
 
         function start() {
             PF('startButton1').disable();
