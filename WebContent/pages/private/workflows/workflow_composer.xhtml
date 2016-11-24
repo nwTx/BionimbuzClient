@@ -236,6 +236,7 @@
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2">
+                                           <p:fieldset id="contract" legend="Contrato de Nível de Serviço BioNimbuZ" style="border-color: #2980b9"> 
                                             <h:outputFormat
                                             value="O presente Contrato de Nível de Serviços da Plataforma BioNimbuZ, 
                                             que é constituída pela Plataforma Amazon EC2, Plataforma Google Compute 
@@ -258,6 +259,7 @@
                                             atribuídos no Contrato do Cliente BioNimbuZ. Reservamo-nos o direito de 
                                             mudar os termos do presente SLA de acordo com o Contrato do Cliente 
                                             BioNimbuZ." /> 
+                                           </p:fieldset>
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -325,8 +327,8 @@
                                                 </h:panelGroup>
                                             </h:panelGrid> 
                                             <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                                                <h:outputText value="Aceita o contrato?: " />
                                                 <p:selectBooleanCheckbox value="#{workflowComposerBean.agreeContract}"></p:selectBooleanCheckbox>
+                                                <h:outputText value="Aceito os termos do contrato de SLA" />
                                             </h:panelGrid>
                                         </p:column>
                                     </p:row>
