@@ -248,7 +248,7 @@
                                             e da Plataforma de nuvem da UnB celebrado entre a Amazon Web Services, 
                                             Inc., a Google Cloud Platform e a Plataforma de nuvem da UnB e os 
                                             usuários dos serviços da AWS, da Google Cloud Platform e da Plataforma 
-                                            de nuvem da UnB. 
+                                            de nuvem da UnB. \n
                                             O presente SLA aplica-se separadamente a cada conta que utilizar o 
                                             BioNimbuZ, no qual utilizam os serviço da Amazon EC2 ou da Amazon EBS ou 
                                             da Google Compute Engine (GCE) ou da Google Cloud Store (GCS) ou da 
@@ -299,7 +299,7 @@
                                       </p:column>
                                     </p:row>
                                     <p:row>
-                                        <p:column>
+                                        <p:column colspan="2">
                                             <p:outputLabel value="Limitar a execução:" />
                                             <p:selectOneRadio value="#{workflowComposerBean.panel1}">
                                                 <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
@@ -326,10 +326,8 @@
                                                     <!--</p:outputPanel>-->
                                                 </h:panelGroup>
                                             </h:panelGrid> 
-                                            <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                                                <p:selectBooleanCheckbox value="#{workflowComposerBean.agreeContract}"></p:selectBooleanCheckbox>
-                                                <h:outputText value="Aceito os termos do contrato de SLA" />
-                                            </h:panelGrid>
+                                            <h:outputText value="Aceito os termos do contrato de SLA: " />
+                                            <p:selectBooleanButton id="value1" value="#{workflowComposerBean.agreeContract}" onLabel="Sim" offLabel="Não" style="width:60px" />
                                         </p:column>
                                     </p:row>
                                 </p:panelGrid>
@@ -372,7 +370,7 @@
                                         <p:outputLabel value="Iniciar execução deste Workflow. Seu Workflow será enviado ao BioNimbuZ e você poderá acompanhar sua execução" 
                                                        style="margin: 10px" /> <br />
                                         <center>
-                                            <p:commandButton action="#{workflowComposerBean.startWorkflow()}" value="Confirmar Workflow" style="margin: 10px; border-color: #2980b9"/>
+                                            <p:commandButton action="#{workflowComposerBean.startWorkflow()}" disabled="#{workflowComposerBean.agreeContract==false}" value="Confirmar Workflow" style="margin: 10px; border-color: #2980b9"/>
                                         </center>
                                     </p:panel>
                                     <p:panel header="Download" style="text-align: center; width: 400px">
