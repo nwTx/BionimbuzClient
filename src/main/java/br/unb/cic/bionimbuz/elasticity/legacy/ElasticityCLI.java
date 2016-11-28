@@ -21,8 +21,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.unb.cic.bionimbuz.elasticity;
+package br.unb.cic.bionimbuz.elasticity.legacy;
 
+import br.unb.cic.bionimbuz.elasticity.AmazonAPI;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -40,27 +41,27 @@ while(true){
         System.out.println("Input: ");
         String name = test.nextLine();
 
-        if (name.equals("list")) {
-            AmazonAPI.listinstances();
-        } else if (name.equals("create")) {
-            AmazonAPI.createinstance();
-        } else if (name.equals("shutdown")) {
-            AmazonAPI.shutdown();
-        } else if (name.equals("stopinstance")) {
-            AmazonAPI.stopinstance();
-        } else if (name.equals("startinstance")) {
-            AmazonAPI.startinstance();
-        } else if (name.equals("terminate")) {
-            AmazonAPI.terminate();
-        } else if (name.equals("rebootinstance")) {
-            AmazonAPI.rebootinstance();
-        } else if (name.equals("createami")) {
-            AmazonAPI.createami();
-        } else if (name.equals("sair")) {
-            break;
-        } else {
-            System.out.println("Something is wrong...");
-        }
+//        if (name.equals("list")) {
+//            AmazonAPI.listinstances();
+//        } else if (name.equals("create")) {
+//            AmazonAPI.createinstance();
+//        } else if (name.equals("shutdown")) {
+//            AmazonAPI.shutdown();
+//        } else if (name.equals("stopinstance")) {
+//            AmazonAPI.stopinstance();
+//        } else if (name.equals("startinstance")) {
+//            AmazonAPI.startinstance();
+//        } else if (name.equals("terminate")) {
+//            AmazonAPI.terminate();
+//        } else if (name.equals("rebootinstance")) {
+//            AmazonAPI.rebootinstance();
+//        } else if (name.equals("createami")) {
+//            AmazonAPI.createami();
+//        } else if (name.equals("sair")) {
+//            break;
+//        } else {
+//            System.out.println("Something is wrong...");
+//        }
     }
     }
 

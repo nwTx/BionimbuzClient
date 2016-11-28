@@ -21,7 +21,10 @@ import javax.faces.event.ActionEvent;
 public class ButtonView {
      
     public void buttonAction(ActionEvent actionEvent) throws IOException {
-        InstanceService.createinstance();
+        //AmazonAPI.createinstance();
+        InstanceService service = new InstanceService();
+        service.createInstance("n1-standard-1");
+        
         addMessage("Máquina Virtual Criada");
     }
      

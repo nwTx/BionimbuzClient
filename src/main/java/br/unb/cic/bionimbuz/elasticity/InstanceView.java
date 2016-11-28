@@ -19,7 +19,7 @@ public class InstanceView implements Serializable {
  
     @PostConstruct
     public void init() {        
-        instances = service.getInstances();
+//        instances = service.getInstances();
     }
 
     public List<Instance> getInstances() {

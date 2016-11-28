@@ -13,6 +13,9 @@ import javax.inject.Named;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
+import br.unb.cic.bionimbuz.elasticity.AmazonAPI;
+import br.unb.cic.bionimbuz.elasticity.GoogleAPI;
+import br.unb.cic.bionimbuz.elasticity.InstanceService;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.DiagramElement;
 import br.unb.cic.bionimbuz.model.User;
@@ -353,18 +356,48 @@ public class WorkflowComposerBean implements Serializable {
      */
     public String startWorkflow() {
         try {
-            // Calls RestService to send the workflow to core
+ 
             if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
 
                 // Updates user workflow list
                 workflowDiagram.getWorkflow().setStatus(WorkflowStatus.EXECUTING);
                 sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
+                
+                InstanceService createInstanceService = new InstanceService();
+                AmazonAPI amazonapi = new AmazonAPI();
+                GoogleAPI googleapi = new GoogleAPI();
+            
+            for (int maquina = 0; maquina < getSelectedInstancies().size(); maquina++) {
+                
+                createInstanceService.createInstance(getSelectedInstancies().get(maquina).getType());
+                System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada");
+                
+                
+                
+//                if (getSelectedInstancies().get(maquina).getProvider().equals("Amazon")){
+//                   
+//                   amazonapi.createinstance(getSelectedInstancies().get(maquina).getType());
+//                
+//                   System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada na Amazon");
+//                } else {
+//                
+//                   googleapi.createinstance(getSelectedInstancies().get(maquina).getType());
+//                
+//                   System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada na Amazon");
+//                }
+                
+                
+                break;
+            } 
 
                 return "start_success";
             }
         } catch (ServerNotReachableException e) {
             LOGGER.error("[ServerNotReachableException] " + e.getMessage());
-        }
+        } 
+//        catch (IOException ex) {
+//            java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
         return "start_error";
     }
