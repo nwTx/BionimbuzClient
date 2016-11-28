@@ -1,25 +1,11 @@
 package br.unb.cic.bionimbuz.elasticity;
 
-import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
-import com.amazonaws.services.ec2.model.CreateImageRequest;
-import com.amazonaws.services.ec2.model.CreateImageResult;
-import com.amazonaws.services.ec2.model.CreateKeyPairRequest;
-import com.amazonaws.services.ec2.model.CreateKeyPairResult;
-import com.amazonaws.services.ec2.model.DescribeInstancesResult;
-import com.amazonaws.services.ec2.model.Instance;
-import com.amazonaws.services.ec2.model.InstanceState;
 import com.amazonaws.services.ec2.model.KeyPair;
-import com.amazonaws.services.ec2.model.RebootInstancesRequest;
-import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
-import com.amazonaws.services.ec2.model.StartInstancesRequest;
-import com.amazonaws.services.ec2.model.StopInstancesRequest;
-import com.amazonaws.services.ec2.model.StopInstancesResult;
-import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
 import com.amazonaws.auth.PropertiesCredentials;
 
 
@@ -37,8 +23,13 @@ public class AmazonAPI implements ProvidersAPI{
     @Override
     public void setup() {
         try {
-            String credentialsFile = "AwsCredentials.properties";
-            PropertiesCredentials credentials = new PropertiesCredentials(AmazonAPI.class.getResourceAsStream(credentialsFile));
+            String credentialsFile = System.getProperty("user.home") + "BionimbuzClient/target/BionimbuzClient-0.0.1-SNAPSHOT/resources/apiCredentials/AwsCredentials.properties";
+            
+            InputStream is = null;
+            is = new FileInputStream(credentialsFile);
+            
+            
+            PropertiesCredentials credentials = new PropertiesCredentials(is);
             EC2 = new AmazonEC2Client(credentials);
             EC2.setEndpoint("ec2.sa-east-1.amazonaws.com");
         } catch( IOException ioe) {

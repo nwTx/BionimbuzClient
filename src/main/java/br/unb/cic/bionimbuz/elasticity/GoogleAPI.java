@@ -65,7 +65,7 @@ public class GoogleAPI implements ProvidersAPI{
   /** Global instance of the JSON factory. */
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   
-  private static final String authpath = "/home/guilherme/BioNimbuZ-3b35cb1f5f2a.json";
+  private static final String authpath = System.getProperty("user.home") + "BionimbuzClient/target/BionimbuzClient-0.0.1-SNAPSHOT/resources/apiCredentials/GoogleCredentials.json";
   
     @Override
     public void setup() {

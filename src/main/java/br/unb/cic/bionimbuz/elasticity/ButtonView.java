@@ -23,7 +23,7 @@ public class ButtonView {
     public void buttonAction(ActionEvent actionEvent) throws IOException {
         //AmazonAPI.createinstance();
         InstanceService service = new InstanceService();
-        service.createInstance("n1-standard-1");
+        service.createInstance("t2.micro");
         
         addMessage("Máquina Virtual Criada");
     }
