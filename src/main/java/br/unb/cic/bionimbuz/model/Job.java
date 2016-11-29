@@ -37,7 +37,7 @@ public class Job {
 
     private String referenceFile;
 
-    private String ipjob;
+    private List<String> ipjob;
     
     public Job() {
         inputFiles = new ArrayList<>();
@@ -55,7 +55,7 @@ public class Job {
         inputFiles = new ArrayList<>();
         outputs = new ArrayList<>();
         dependencies = new ArrayList<>();
-        ipjob="";
+        ipjob=new ArrayList<>();
     }
 
     /**
@@ -68,7 +68,7 @@ public class Job {
         inputFiles = new ArrayList<>();
         outputs = new ArrayList<>();
         dependencies = new ArrayList<>();
-        ipjob="";
+        ipjob=new ArrayList<>();
     }
     
     /**
@@ -77,12 +77,12 @@ public class Job {
      * @param id
      * @param ipjob
      */
-    public Job(String id, String ipjob) {
+    public Job(String id, List<String> ipjob) {
         this.id = id;
         inputFiles = new ArrayList<>();
         outputs = new ArrayList<>();
         dependencies = new ArrayList<>();
-        this.ipjob=ipjob;
+        ipjob=new ArrayList<>();
     }
     
     public String getId() {
@@ -215,14 +215,14 @@ public class Job {
     /**
      * @return the ipjob
      */
-    public String getIpjob() {
+    public List<String> getIpjob() {
         return ipjob;
     }
 
     /**
      * @param ipjob the ipjob to set
      */
-    public void setIpjob(String ipjob) {
+    public void setIpjob(List<String> ipjob) {
         this.ipjob = ipjob;
     }
 }
