@@ -19,6 +19,7 @@ public class AmazonAPI implements ProvidersAPI{
     public static String instanceid;
     public static KeyPair keyPair;
     public static int count = 1;
+    private String ipInstance;
 
     @Override
     public void setup() {
@@ -73,6 +74,7 @@ public class AmazonAPI implements ProvidersAPI{
             for (com.amazonaws.services.ec2.model.Instance ins : resultInstance) {
 
                 createdInstanceId = ins.getInstanceId();
+                setIpInstance(ins.getPublicIpAddress());
                 System.out.println("New instance has been created: " + ins.getInstanceId());//print the instance ID
 
             }
@@ -90,5 +92,14 @@ public class AmazonAPI implements ProvidersAPI{
         }
     
     }
+
+    public String getIpInstance() {
+        return ipInstance;
+    }
+
+    public void setIpInstance(String ipInstance) {
+        this.ipInstance = ipInstance;
+    }
+    
 
 } //main end

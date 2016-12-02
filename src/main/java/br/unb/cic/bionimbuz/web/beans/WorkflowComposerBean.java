@@ -41,10 +41,12 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SlideEndEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
@@ -58,6 +60,7 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class WorkflowComposerBean implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
@@ -94,8 +97,8 @@ public class WorkflowComposerBean implements Serializable {
     private String panel1 = "Hide-Panel1";
     private boolean limitation=false;
     private Integer limitationType;
-    private String limitationValueExecutionTime;
-    private String limitationValueExecutionCost;
+    private Double limitationValueExecutionTime;
+    private Double limitationValueExecutionCost;
     private List<Instance> instances;
     private List<Instance> selectedInstances;
     private Instance instance;
@@ -103,7 +106,14 @@ public class WorkflowComposerBean implements Serializable {
     private Integer quantity;
     private Integer objective;
     private boolean agreeContract;
+    private Double minToHour=0.0;
+    private String firstname;
     //---------------------------------------------------------
+    
+    //--------------------------Prediction Declarations ---
+    private Double preco;
+    private int number2;   
+    private boolean agreePrediction;
 
     // Used by the user to download a workflow
     private StreamedContent workflowToDownload;
@@ -123,7 +133,7 @@ public class WorkflowComposerBean implements Serializable {
     @PostConstruct
     public void init() {
         loggedUser = sessionBean.getLoggedUser();
-
+        minToHour=0.0;
         //------------- SLA inicialization------------------
         selectedInstances = new ArrayList<>();
 //        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
@@ -178,10 +188,10 @@ public class WorkflowComposerBean implements Serializable {
 
         String toGoStep = event.getNewStep();
 
-        if (toGoStep.equals("template")) {
+        if (toGoStep.equals("workflow_summary")) {
             String provider;
 ////    //        System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
-
+            System.out.println(minToHour);
             selectedInstances.stream().forEach((f) -> {
                 System.out.println(f.toString());
             });
@@ -210,7 +220,9 @@ public class WorkflowComposerBean implements Serializable {
 //            }
         }
         //Módulo Michel
-        if(toGoStep.equals("SLA")){
+        if(toGoStep.equals("sla_option")){
+            setMinToHour(0.0);
+//            System.out.println(minToHour);
             
         }
         // Resets Workflow
@@ -356,40 +368,41 @@ public class WorkflowComposerBean implements Serializable {
      */
     public String startWorkflow() {
         try {
- 
+            
+            InstanceService createInstanceService = new InstanceService();
+            AmazonAPI amazonapi = new AmazonAPI();
+            GoogleAPI googleapi = new GoogleAPI();
+            List<Job> jobs= workflowDiagram.getWorkflow().getJobs();
+            for(Job job : jobs ){
+               
+            }
+            String ip;
+            for (int maquina = 0; maquina < getSelectedInstancies().size(); maquina++) {
+                createInstanceService.createInstance(getSelectedInstancies().get(maquina).getType());
+                System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada");
+
+//                if (getSelectedInstancies().get(maquina).getProvider().equals("Amazon")){
+//                   
+//                   amazonapi.createinstance(getSelectedInstancies().get(maquina).getType());
+                     
+                     ip= amazonapi.getIpInstance();
+//                
+//                   System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada na Amazon");
+//                } else {
+//                
+//                   googleapi.createinstance(getSelectedInstancies().get(maquina).getType()); 
+//                     googleapi.   
+//                   System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada na Amazon");
+//                }
+             //   break;
+            
             if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
 
                 // Updates user workflow list
                 workflowDiagram.getWorkflow().setStatus(WorkflowStatus.EXECUTING);
                 sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
                 
-                InstanceService createInstanceService = new InstanceService();
-                AmazonAPI amazonapi = new AmazonAPI();
-                GoogleAPI googleapi = new GoogleAPI();
-            
-            for (int maquina = 0; maquina < getSelectedInstancies().size(); maquina++) {
-                
-                createInstanceService.createInstance(getSelectedInstancies().get(maquina).getType());
-                System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada");
-                
-                
-                
-//                if (getSelectedInstancies().get(maquina).getProvider().equals("Amazon")){
-//                   
-//                   amazonapi.createinstance(getSelectedInstancies().get(maquina).getType());
-//                
-//                   System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada na Amazon");
-//                } else {
-//                
-//                   googleapi.createinstance(getSelectedInstancies().get(maquina).getType());
-//                
-//                   System.out.println("Máquina " + getSelectedInstancies().get(maquina).getType() + " Criada na Amazon");
-//                }
-                
-                
-                break;
-            } 
-
+                } 
                 return "start_success";
             }
         } catch (ServerNotReachableException e) {
@@ -693,19 +706,19 @@ public class WorkflowComposerBean implements Serializable {
         this.chosenInstanceId = chosenInstanceId;
     }
 
-    public String getLimitationValueExecutionTime() {
+    public Double getLimitationValueExecutionTime() {
         return limitationValueExecutionTime;
     }
 
-    public void setLimitationValueExecutionTime(String limitationValueExecutionTime) {
+    public void setLimitationValueExecutionTime(Double limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
     }
 
-    public String getLimitationValueExecutionCost() {
+    public Double getLimitationValueExecutionCost() {
         return limitationValueExecutionCost;
     }
 
-    public void setLimitationValueExecutionCost(String limitationValueExecutionCost) {
+    public void setLimitationValueExecutionCost(Double limitationValueExecutionCost) {
         this.limitationValueExecutionCost = limitationValueExecutionCost;
     }
 
@@ -744,7 +757,21 @@ public class WorkflowComposerBean implements Serializable {
         }
         return objetive;
     }
+    
+    public Double getMinToHour() {
+        int decimalPlaces = 2;
+        BigDecimal bd = new BigDecimal(minToHour);
 
+        // setScale is immutable
+        bd = bd.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP);
+        minToHour = bd.doubleValue();
+        return (minToHour/60.0);
+    }
+
+    public void setMinToHour(Double minToHour) {
+        this.minToHour = minToHour;
+    }
+    
     public boolean isAgreeContract() {
         return agreeContract;
     }
@@ -754,5 +781,42 @@ public class WorkflowComposerBean implements Serializable {
         String message =this.agreeContract ? "Contrato aceito!" : "Contrato Recusado!";
         showMessage(message);
     }
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 //-------------------------------------------------------------------------
+//-------------------------------- Prediction functions
+    public int getNumber2() {
+        return number2;
+    }
+ 
+    public void setNumber2(int number2) {
+        this.number2 = number2;
+    }
+    
+    public void onSlideEnd(SlideEndEvent event) {
+        FacesMessage message = new FacesMessage("Slide Ended", "Value: " + event.getValue());
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    } 
+    
+    public Double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+
+    public boolean isAgreePrediction() {
+        return agreePrediction;
+    }
+
+    public void setAgreePrediction(boolean agreePrediction) {
+        this.agreePrediction = agreePrediction;
+    }
+    
 }

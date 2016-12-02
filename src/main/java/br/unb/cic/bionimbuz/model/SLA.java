@@ -28,8 +28,8 @@ public class SLA {
     private Double value;
     private Date time;
     private Integer limitationType;
-    private String limitationValueExecutionTime;
-    private String limitationValueExecutionCost;
+    private Double limitationValueExecutionTime;
+    private Double limitationValueExecutionCost;
     
     public SLA(){
         
@@ -224,28 +224,28 @@ public class SLA {
     /**
      * @return the limitationValueExecutionTime
      */
-    public String getLimitationValueExecutionTime() {
+    public Double getLimitationValueExecutionTime() {
         return limitationValueExecutionTime;
     }
 
     /**
      * @param limitationValueExecutionTime the limitationValueExecutionTime to set
      */
-    public void setLimitationValueExecutionTime(String limitationValueExecutionTime) {
+    public void setLimitationValueExecutionTime(Double limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
     }
 
     /**
      * @return the limitationValueExecutionCost
      */
-    public String getLimitationValueExecutionCost() {
+    public Double getLimitationValueExecutionCost() {
         return limitationValueExecutionCost;
     }
 
     /**
      * @param limitationValueExecutionCost the limitationValueExecutionCost to set
      */
-    public void setLimitationValueExecutionCost(String limitationValueExecutionCost) {
+    public void setLimitationValueExecutionCost(Double limitationValueExecutionCost) {
         this.limitationValueExecutionCost = limitationValueExecutionCost;
     }
     

@@ -125,7 +125,9 @@ public class GoogleAPI implements ProvidersAPI{
           configs.add(config);
           ifc.setAccessConfigs(configs);
           instance.setNetworkInterfaces(Collections.singletonList(ifc));
-          
+         //get Internal ip, do a method that set it
+          //ifc.getNetworkIP();
+          config.getNatIP();
           // Add attached Persistent Disk to be used by VM Instance.
           AttachedDisk disk = new AttachedDisk();
           disk.setBoot(true);
