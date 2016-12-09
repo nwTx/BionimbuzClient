@@ -3,3 +3,5 @@
 /zookeeper.out
 /nbproject/
 /.metadata/
+/.idea/
+/BionimbuzClient.iml
