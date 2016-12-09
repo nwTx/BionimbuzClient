@@ -56,6 +56,7 @@ public class FULLGoogleAPI {
   private static final String PROJECT_ID = "bustling-cosmos-151913";
 //          "bionimbuz-150212";
 
+
   /** Set Compute Engine zone */
   private static final String ZONE_NAME = "us-central1-f";
 
@@ -80,7 +81,6 @@ public class FULLGoogleAPI {
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   
   private static final String authpath = "/home/biolabid2/Bionimbuz/conf/BioNimbuZ-c134edaa2a6e.json";
-
 
 
   public static void main(String[] args) {

@@ -2,7 +2,9 @@ package br.unb.cic.bionimbuz.model;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
 import org.primefaces.model.diagram.DefaultDiagramModel;
@@ -102,10 +104,11 @@ public class WorkflowDiagram {
         newJob.setTimestamp(Calendar.getInstance().getTime().getTime());
         //setar o ip do job para ser executado em tal máquina tem que trocara
         //para o elemento escolhido pela predição e por o ip criado pela elasticidade;
+        List<String> ips= Arrays.asList("192.168.2.1"); 
         if(element.getServiceId().equals(element.getId())){
-            newJob.setIpjob("");
+            newJob.setIpjob(ips);
         }else
-            newJob.setIpjob("");
+            newJob.setIpjob(ips);
 
         // Adds it to the list of jobs
         workflow.addJob(newJob);

@@ -86,7 +86,7 @@ public class Instance {
         this.provider = provider;
         setDescription();
     }
-
+     
      public Instance(String id, String type, Double costPerHour, Double memoria, int numCores, String provider, List<String> idprogramas, DateTime creationTimer, int delay, DateTime timetocreate, String isnow) {
         this.id = id;
         this.type = type;
@@ -109,14 +109,6 @@ public class Instance {
         this.type = type;
     }
 
-    public Double getValueHour() {
-        return getCostPerHour();
-    }
-
-    public void setValueHour(Double costPerHour) {
-        this.setCostPerHour(costPerHour);
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -131,14 +123,6 @@ public class Instance {
 
     public void setLocality(String locality) {
         this.locality = locality;
-    }
-
-    public Double getMemory() {
-        return getMemoryTotal();
-    }
-
-    public void setMemory(Double memoryTotal) {
-        this.setMemoryTotal(memoryTotal);
     }
 
     public Double getCpuHtz() {
@@ -170,7 +154,7 @@ public class Instance {
 
     public String getDescription() {
         return "Type: " + this.getType() + ", "
-                + "CPU: " + this.getNumCores() + " " + this.getCpuHtz() + " Ghz, "
+                + "CPU: " + this.getNumCores() + " - " + this.getCpuHtz() + " Ghz, "
                 + "Ram:" + this.getMemoryTotal() + " GB, "
                 + "Custo por hora : $" + this.getCostPerHour() + ", "
                 + "Localidade: " + this.getLocality();
@@ -247,7 +231,6 @@ public class Instance {
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public List <String> getidProgramas() {
         return idprogramas;

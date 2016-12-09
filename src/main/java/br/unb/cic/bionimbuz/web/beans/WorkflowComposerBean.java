@@ -16,7 +16,6 @@ import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
 import br.unb.cic.bionimbuz.elasticity.AmazonAPI;
 import br.unb.cic.bionimbuz.elasticity.GoogleAPI;
 import br.unb.cic.bionimbuz.elasticity.InstanceService;
-import java.math.BigDecimal;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.DiagramElement;
 import br.unb.cic.bionimbuz.model.User;
@@ -35,7 +34,6 @@ import br.unb.cic.bionimbuz.model.Job;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.model.SLA;
 import br.unb.cic.bionimbuz.model.WorkflowStatus;
-import br.unb.cic.bionimbuz.security.PBKDF2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,12 +41,14 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SlideEndEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
@@ -62,6 +62,7 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class WorkflowComposerBean implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
@@ -99,8 +100,8 @@ public class WorkflowComposerBean implements Serializable {
     private String panel1 = "Hide-Panel1";
     private boolean limitation = false;
     private Integer limitationType;
-    private String limitationValueExecutionTime;
-    private String limitationValueExecutionCost;
+    private Double limitationValueExecutionTime;
+    private Double limitationValueExecutionCost;
     private List<Instance> instances;
     private List<Instance> selectedInstances;
     private Instance instance;
@@ -111,10 +112,10 @@ public class WorkflowComposerBean implements Serializable {
     private Double minToHour = 0.0;
     private String firstname;
     //---------------------------------------------------------
-
+    
     //--------------------------Prediction Declarations ---
     private Double preco;
-    private int number2;
+    private int number2;   
     private boolean agreePrediction;
 
     // Used by the user to download a workflow
@@ -437,7 +438,10 @@ public class WorkflowComposerBean implements Serializable {
             return "start_success";
         } catch (ServerNotReachableException e) {
             LOGGER.error("[ServerNotReachableException] " + e.getMessage());
-        }
+        } 
+//        catch (IOException ex) {
+//            java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
 //        catch (IOException ex) {
 //            java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -701,9 +705,9 @@ public class WorkflowComposerBean implements Serializable {
                 instances.remove(i);
                 showMessage("Elemento " + i.getType() + " adicionado");
                 break;
-            } else if (selectedInstances.isEmpty()) {
-                System.out.println("Not found!!");
-            }
+            } else 
+                if(selectedInstances.isEmpty())
+                    System.out.println("Not found!!");
         }
     }
 
@@ -738,23 +742,19 @@ public class WorkflowComposerBean implements Serializable {
         this.chosenInstanceId = chosenInstanceId;
     }
 
-   
-
-//-------------------------------------------------------------------------
-
-    public String getLimitationValueExecutionTime() {
+    public Double getLimitationValueExecutionTime() {
         return limitationValueExecutionTime;
     }
 
-    public void setLimitationValueExecutionTime(String limitationValueExecutionTime) {
+    public void setLimitationValueExecutionTime(Double limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
     }
 
-    public String getLimitationValueExecutionCost() {
+    public Double getLimitationValueExecutionCost() {
         return limitationValueExecutionCost;
     }
 
-    public void setLimitationValueExecutionCost(String limitationValueExecutionCost) {
+    public void setLimitationValueExecutionCost(Double limitationValueExecutionCost) {
         this.limitationValueExecutionCost = limitationValueExecutionCost;
     }
 
