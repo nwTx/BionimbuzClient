@@ -5,6 +5,9 @@
  */
 package br.unb.cic.bionimbuz.model;
 
+import java.util.List;
+import org.joda.time.DateTime;
+
 /**
  * Class that defines the Instance
  * @author brenokx
@@ -24,6 +27,11 @@ public class Instance {
     private String description;
     private String cpuArch;
     private String provider;
+    private List <String> idprogramas;
+    public DateTime creationTimer;
+    public int delay;
+    public DateTime timetocreate;
+    public String isnow; 
 
     /**
      * Constructor
@@ -77,6 +85,20 @@ public class Instance {
         this.cpuArch = cpuArch;
         this.provider = provider;
         setDescription();
+    }
+
+     public Instance(String id, String type, Double costPerHour, Double memoria, int numCores, String provider, List<String> idprogramas, DateTime creationTimer, int delay, DateTime timetocreate, String isnow) {
+        this.id = id;
+        this.type = type;
+        this.costPerHour = costPerHour;
+        this.memoryTotal = memoria;
+        this.numCores = numCores;
+        this.provider = provider;
+        this.idprogramas = idprogramas;
+        this.creationTimer = creationTimer;
+        this.delay = delay;
+        this.timetocreate = timetocreate;
+        this.isnow = isnow;
     }
 
     public String getType() {
@@ -226,4 +248,44 @@ public class Instance {
         this.description = description;
     }
 
+
+    public List <String> getidProgramas() {
+        return idprogramas;
+    }
+
+    public void setidProgramas(List <String> idprogramas) {
+        this.idprogramas = idprogramas;
+    }
+    
+     public DateTime getCreationTimer() {
+        return creationTimer;
+    }
+
+    public void setCreationTimer(DateTime creationTimer) {
+        this.creationTimer = creationTimer;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public DateTime getTimetocreate() {
+        return timetocreate;
+    }
+
+    public void setTimetocreate(DateTime timetocreate) {
+        this.timetocreate = timetocreate;
+    }
+
+    public String getIsnow() {
+        return isnow;
+    }
+
+    public void setIsnow(String isnow) {
+        this.isnow = isnow;
+    }
 }
