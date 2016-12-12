@@ -7,6 +7,9 @@ import com.amazonaws.services.ec2.model.KeyPair;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.auth.PropertiesCredentials;
+import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
+import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.Reservation;
 
 
 import java.io.*;
@@ -24,7 +27,7 @@ public class AmazonAPI implements ProvidersAPI{
     @Override
     public void setup() {
         try {
-            String credentialsFile = System.getProperty("user.home") + "BionimbuzClient/target/BionimbuzClient-0.0.1-SNAPSHOT/resources/apiCredentials/AwsCredentials.properties";
+            String credentialsFile = System.getProperty("user.home") + "/BionimbuzClient/target/BionimbuzClient-0.0.1-SNAPSHOT/resources/apiCredentials/AwsCredentials.properties";
             
             InputStream is = null;
             is = new FileInputStream(credentialsFile);
@@ -61,7 +64,7 @@ public class AmazonAPI implements ProvidersAPI{
 
             System.out.println("waiting");
             try {
-                Thread.sleep(1);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -74,12 +77,27 @@ public class AmazonAPI implements ProvidersAPI{
             for (com.amazonaws.services.ec2.model.Instance ins : resultInstance) {
 
                 createdInstanceId = ins.getInstanceId();
-                setIpInstance(ins.getPublicIpAddress());
-                System.out.println("New instance has been created: " + ins.getInstanceId());//print the instance ID
-
-            }
+                
+                System.out.println("New instance has been created: " + createdInstanceId);//print the instance ID
 
             
+            
+            DescribeInstancesRequest request = new DescribeInstancesRequest().withInstanceIds(ins.getInstanceId());
+            DescribeInstancesResult result2= EC2.describeInstances(request);
+            List <Reservation> list  = result2.getReservations();
+
+                for (Reservation res:list) {
+                     List <com.amazonaws.services.ec2.model.Instance> instanceList= res.getInstances();
+
+                     for (com.amazonaws.services.ec2.model.Instance instance:instanceList){
+
+                             System.out.println("Instance Public IP :" + instance.getPublicIpAddress());
+                             setIpInstance(instance.getPublicIpAddress());
+                     }     
+                }
+            }
+            
+          
 //    AmazonAPI.enteroption();	
         } catch (AmazonServiceException ase) {
             System.out.println("Caught Exception: " + ase.getMessage());

@@ -27,7 +27,7 @@ public class Instance {
     private String description;
     private String cpuArch;
     private String provider;
-    private List <String> idprogramas;
+    private List <String> idProgramas;
     public DateTime creationTimer;
     public int delay;
     public DateTime timetocreate;
@@ -87,14 +87,14 @@ public class Instance {
         setDescription();
     }
      
-     public Instance(String id, String type, Double costPerHour, Double memoria, int numCores, String provider, List<String> idprogramas, DateTime creationTimer, int delay, DateTime timetocreate, String isnow) {
+     public Instance(String id, String type, Double costPerHour, Double memoria, int numCores, String provider, List<String> idProgramas, DateTime creationTimer, int delay, DateTime timetocreate, String isnow) {
         this.id = id;
         this.type = type;
         this.costPerHour = costPerHour;
         this.memoryTotal = memoria;
         this.numCores = numCores;
         this.provider = provider;
-        this.idprogramas = idprogramas;
+        this.idProgramas = idProgramas;
         this.creationTimer = creationTimer;
         this.delay = delay;
         this.timetocreate = timetocreate;
@@ -233,11 +233,11 @@ public class Instance {
     }
 
     public List <String> getidProgramas() {
-        return idprogramas;
+        return idProgramas;
     }
 
-    public void setidProgramas(List <String> idprogramas) {
-        this.idprogramas = idprogramas;
+    public void setidProgramas(List <String> idProgramas) {
+        this.idProgramas = idProgramas;
     }
     
      public DateTime getCreationTimer() {

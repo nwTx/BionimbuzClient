@@ -145,15 +145,15 @@
                                 </h:form>           
                             </p:fieldset> 
                             <p:fieldset id="prediction1" legend="Previsão" style="border-color: #2980b9">
-                                <h:form>
+<!--                                <h:form>-->
                                     <p:dataTable var="instances" value="#{workflowComposerBean.selectedInstancies}">
                                         <p:column headerText="id">
                                             <h:outputText value="#{instances.id}" />
                                         </p:column>
                                         <p:column headerText="Programas">
-                                            <p:dataTable var="programs" value="#{instances.programas}">
-                                                <h:outputText value="#{programs.name}" />
-                                            </p:dataTable>
+<!--                                            <p:dataTable var="programs" value="{instances.programas}">
+                                                <h:outputText value="{programs.name}" />
+                                            </p:dataTable>-->
                                         </p:column>
                                         <p:column headerText="Memória (Gb)">
                                             <h:outputText value="#{instances.memoryTotal}" />
@@ -168,9 +168,9 @@
                                             <h:outputText value="#{instances.provider}" />
                                         </p:column>
                                     </p:dataTable>
-                                    <h:outputText value="Deseja utilizar as instâncias indicadas pela predição?: " />
+                                <!--</h:form>-->           
+                                    <h:outputText value="Deseja utilizar as instâncias indicadas pela predição? " />
                                     <p:selectBooleanButton id="value2" value="#{workflowComposerBean.agreePrediction}" onLabel="Sim" offLabel="Não" style="width:60px" />
-                                </h:form>           
                             </p:fieldset> 
                         </p:panel> 
                     </p:tab>
