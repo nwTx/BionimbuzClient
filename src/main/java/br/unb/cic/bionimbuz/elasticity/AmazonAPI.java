@@ -32,24 +32,21 @@ public class AmazonAPI implements ProvidersAPI{
             InputStream is = null;
             is = new FileInputStream(credentialsFile);
             
-            
             PropertiesCredentials credentials = new PropertiesCredentials(is);
             EC2 = new AmazonEC2Client(credentials);
             EC2.setEndpoint("ec2.sa-east-1.amazonaws.com");
         } catch( IOException ioe) {
             throw new RuntimeException(ioe);
         }//, IllegalArgumentException
-        
     }
 
     @Override
     public void createinstance(String type) throws IOException {
-        
-        AmazonAPI setup = new AmazonAPI();
-         setup.setup();
+    // Acho que tem que mudar isso aqui em    
+       
+        this.setup();
 
         try {
-
             System.out.println("Criando nova maquina BioninbuZ");
             //String imageId = "ami-6e3bb102";
             String imageId = "ami-912db2fd";
@@ -59,9 +56,9 @@ public class AmazonAPI implements ProvidersAPI{
             RunInstancesRequest rir = new RunInstancesRequest(imageId, minInstanceCount, maxInstanceCount);
             rir.setInstanceType(type);
             rir.withSecurityGroups("default");
-
+            
             RunInstancesResult result = AmazonAPI.EC2.runInstances(rir);
-
+           
             System.out.println("waiting");
             try {
                 Thread.sleep(3000);
@@ -80,8 +77,6 @@ public class AmazonAPI implements ProvidersAPI{
                 
                 System.out.println("New instance has been created: " + createdInstanceId);//print the instance ID
 
-            
-            
             DescribeInstancesRequest request = new DescribeInstancesRequest().withInstanceIds(ins.getInstanceId());
             DescribeInstancesResult result2= EC2.describeInstances(request);
             List <Reservation> list  = result2.getReservations();
@@ -96,7 +91,6 @@ public class AmazonAPI implements ProvidersAPI{
                      }     
                 }
             }
-            
           
 //    AmazonAPI.enteroption();	
         } catch (AmazonServiceException ase) {

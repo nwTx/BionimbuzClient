@@ -32,7 +32,7 @@ public class InstanceService {
                     break;
                 case "n1-standard-1":
                     System.out.println("google");
-                    googleapi.createinstance("n1-standard-1");
+                    googleapi.createinstance("n1-standard-1", "teste2");
                     break;
                 default:
                     System.out.println("Este não é um tipo válido!");

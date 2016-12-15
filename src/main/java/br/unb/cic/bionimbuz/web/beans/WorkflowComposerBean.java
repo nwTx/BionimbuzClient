@@ -142,7 +142,7 @@ public class WorkflowComposerBean implements Serializable {
         selectedInstances = new ArrayList<>();
         selectedservicesList = new ArrayList<>();
         idServiceSelecteds = new ArrayList<>();
-        
+
 //        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
 //        instances.add(new Instance("Macro", 0.24, 5, "us-west", 4.0, 3.3, "Xeon", 4, 120.0, "sata"));
 //        instances.add(new Instance("Large", 0.41, 3, "us-west", 8.0, 3.3, "Xeon", 8, 240.0, "sata"));
@@ -213,7 +213,6 @@ public class WorkflowComposerBean implements Serializable {
 
             if (elements.isEmpty()) {
                 showMessage("Workflow vazio! Favor selecionar elementos");
-
                 return currentStep;
             }
             try {
@@ -252,7 +251,6 @@ public class WorkflowComposerBean implements Serializable {
         }
         //SLA Tab
         if (toGoStep.equals("workflow_summary")) {
-
             String provider;
 //        System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
             System.out.println(minToHour);
@@ -274,7 +272,6 @@ public class WorkflowComposerBean implements Serializable {
 //            }
 //            sla= new SLA(this,loggedUser,loggedUser,this.getServicesList());
 //            System.out.println(sla.getId());
-
 //            try {
 //                restService.startSla(sla,workflowDiagram.getWorkflow());
 //            } catch (ServerNotReachableException ex) {
@@ -333,7 +330,6 @@ public class WorkflowComposerBean implements Serializable {
 
             // Call input pick painel
             context.execute("PF('file_dlg').show();");
-
         } else {
             suspendEvent = false;
         }
@@ -397,7 +393,7 @@ public class WorkflowComposerBean implements Serializable {
         fileFormat = "";
     }
 
-    private String createInstance(String provider, String type) {
+    private String createInstance(String provider, String type , String nameInstance) {
         AmazonAPI amazonapi = new AmazonAPI();
         GoogleAPI googleapi = new GoogleAPI();
         String IP = null;
@@ -409,15 +405,19 @@ public class WorkflowComposerBean implements Serializable {
                 } catch (IOException ex) {
                     java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
+                System.out.println("Amazon IP:" + amazonapi.getIpInstance());
                 return IP = amazonapi.getIpInstance();
             }
             case "Google": {
                 try {
 //                    googleapi.createinstance(type);
-                    googleapi.createinstance("n1-standard-1");
+                    googleapi.createinstance("n1-standard-1", nameInstance);
+                    
                 } catch (IOException ex) {
                     java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                System.out.println("Google IP:" + googleapi.getIpInstance());
                 return IP = googleapi.getIpInstance();
             }
         }
@@ -432,37 +432,23 @@ public class WorkflowComposerBean implements Serializable {
     public String startWorkflow() {
         try {
             // Calls RestService to send the workflow to core
-
             List<String> ip = new ArrayList();
             List<Job> jobs = workflowDiagram.getWorkflow().getJobs();
             String maquina;
-            int aux=0;
+            int aux = 0;
             int index;
             if (agreePrediction) {
-//                for(int f = 0; f < getSelectedInstancies().size(); f++) {
-//                System.out.println("Máquina " + getSelectedInstancies().get(f).getType() + " Criada");
-//                ip.add(createInstance(getProvider(), getSelectedInstancies().get(f).getType()));    
-//                }
-                
-                
                 for (Instance f : selectedInstances) {
-//                for(int m = 0; m < getSelectedInstancies().size(); m++) {  
-//                Instance f = new Instance();
                     System.out.println(f.toString());
                     f.setidProgramas(idServiceSelecteds);
-                    for(aux=0; aux<f.getQuantity();aux++){
-                        ip.add(createInstance(f.getProvider(),f.getType()));
-                       
-//                       maquina = createInstance("Amazon", getSelectedInstancies().get(m).getType());
-//                       ip.add(maquina);
-                      
-                    }    
+                    for (aux = 0; aux < f.getQuantity(); aux++) {
+                        Thread.sleep(3000);
                         
-//                    }
-
-
+                        String instanceName =f.getType().substring(25).toLowerCase();
+                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
+                        ip.add(createInstance(f.getProvider(), f.getType(),instanceName));
+                    }
                     for (Job jAux : jobs) {
-//                        Instance g = new Instance();
                         if (f.getidProgramas().get(0).equals(jAux.getServiceId())) {
                             index = workflowDiagram.getWorkflow().getJobs().lastIndexOf(jAux);
                             jAux.setIpjob(ip);
@@ -474,9 +460,12 @@ public class WorkflowComposerBean implements Serializable {
             } else {
                 for (Instance f : selectedInstances) {
                     f.setidProgramas(idServiceSelecteds);
-                     for(aux=0; aux<f.getQuantity();aux++){
-                        ip.add(createInstance(f.getProvider(),f.getType()));
-                     }
+                    for (aux = 0; aux < f.getQuantity(); aux++) {
+                        Thread.sleep(3000);
+                        String instanceName =f.getType().substring(25).toLowerCase();
+                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
+                        ip.add(createInstance(f.getProvider(), f.getType(),instanceName));
+                    }
                 }
                 //
                 for (Job jAux : jobs) {
@@ -491,8 +480,9 @@ public class WorkflowComposerBean implements Serializable {
                 sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
             }
             return "start_success";
-        } catch (ServerNotReachableException e) {
-            LOGGER.error("[ServerNotReachableException] " + e.getMessage());
+        } catch (InterruptedException | ServerNotReachableException ex) {
+            LOGGER.error("[ServerNotReachableException] " + ex.getMessage());
+            java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "start_error";
     }
@@ -526,11 +516,9 @@ public class WorkflowComposerBean implements Serializable {
         DefaultStreamedContent content = null;
         String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + this.workflowDiagram.getWorkflow().getId() + ".json";
         File jsonFile = null;
-
         try {
             jsonFile = new File(path);
             mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, this.workflowDiagram.getWorkflow());
-
             FileInputStream is = new FileInputStream(jsonFile);
             content = new DefaultStreamedContent(is, "application/json", this.workflowDiagram.getWorkflow().getId() + ".flow");
         } catch (IOException ex) {

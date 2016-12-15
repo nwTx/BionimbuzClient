@@ -15,11 +15,11 @@ import com.google.api.services.compute.ComputeScopes;
 import com.google.api.services.compute.model.AccessConfig;
 import com.google.api.services.compute.model.AttachedDisk;
 import com.google.api.services.compute.model.AttachedDiskInitializeParams;
+import com.google.api.services.compute.model.Instance;
 import com.google.api.services.compute.model.Metadata;
 import com.google.api.services.compute.model.NetworkInterface;
 import com.google.api.services.compute.model.ServiceAccount;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -41,7 +41,7 @@ public class GoogleAPI implements ProvidersAPI {
      * Set PROJECT_ID to your Project ID from the Overview pane in the
      * Developers console.
      */
-    private static final String PROJECT_ID = "bustling-cosmos-151913";
+    private static final String PROJECT_ID = "bionimbuz-150212";
             //"bionimbuz-150212";
 
     /**
@@ -52,7 +52,7 @@ public class GoogleAPI implements ProvidersAPI {
     /**
      * Set the name of the sample VM instance to be created.
      */
-    private static final String SAMPLE_INSTANCE_NAME ="bustling-cosmos-151913";
+    private static final String SAMPLE_INSTANCE_NAME ="my-sample-instance";
             //"my-sample-instance2";
 
     /**
@@ -84,7 +84,7 @@ public class GoogleAPI implements ProvidersAPI {
      */
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-    private static final String authpath = System.getProperty("user.home") + "BionimbuzClient/target/BionimbuzClient-0.0.1-SNAPSHOT/resources/apiCredentials/GoogleCredentials.json";
+    private static final String authpath = System.getProperty("user.home") + "/BionimbuzClient/target/BionimbuzClient-0.0.1-SNAPSHOT/resources/apiCredentials/GoogleCredentials.json";
     private String ipInstance;
 
     @Override
@@ -92,8 +92,8 @@ public class GoogleAPI implements ProvidersAPI {
 
     }
 
-    @Override
-    public void createinstance(String type) throws IOException {
+    //@Override
+    public void createinstance(String type, String instanceName) throws IOException {
         System.out.println("================== Setup ==================");
         try {
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -121,12 +121,12 @@ public class GoogleAPI implements ProvidersAPI {
             Compute compute = new Compute.Builder(httpTransport, JSON_FACTORY, credential)
                     .setApplicationName(APPLICATION_NAME)
                     .build();
-
+            
             System.out.println("================== Starting New Instance ==================");
 
             // Create VM Instance object with the required properties.
             com.google.api.services.compute.model.Instance instance = new com.google.api.services.compute.model.Instance();
-            instance.setName(SAMPLE_INSTANCE_NAME);
+            instance.setName(instanceName);
             instance.setMachineType("https://www.googleapis.com/compute/v1/projects/" + PROJECT_ID
                     + "/zones/" + ZONE_NAME + "/machineTypes/" + type);
 
@@ -141,8 +141,7 @@ public class GoogleAPI implements ProvidersAPI {
             ifc.setAccessConfigs(configs);
             instance.setNetworkInterfaces(Collections.singletonList(ifc));
             //get Internal ip, do a method that set it
-            //ifc.getNetworkIP();
-            setIpInstance(config.getNatIP());
+            
             // Add attached Persistent Disk to be used by VM Instance.
             AttachedDisk disk = new AttachedDisk();
             disk.setBoot(true);
@@ -150,7 +149,7 @@ public class GoogleAPI implements ProvidersAPI {
             disk.setType("PERSISTENT");
             AttachedDiskInitializeParams params = new AttachedDiskInitializeParams();
             // Assign the Persistent Disk the same name as the VM Instance.
-            params.setDiskName(SAMPLE_INSTANCE_NAME);
+            params.setDiskName(instanceName);
             // Specify the source operating system machine image to be used by the VM Instance.
             params.setSourceImage(SOURCE_IMAGE_PREFIX + SOURCE_IMAGE_PATH);
             // Specify the disk type as Standard Persistent Disk
@@ -182,7 +181,21 @@ public class GoogleAPI implements ProvidersAPI {
             System.out.println(instance.toPrettyString());
             Compute.Instances.Insert insert = compute.instances().insert(PROJECT_ID, ZONE_NAME, instance);
             insert.execute();
+            
+            try {
+                Thread.sleep(15000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            System.out.println("OK");
 
+            String instanceCreatedName= instance.getName();
+            System.out.println(instanceCreatedName);
+            Compute.Instances.Get get = compute.instances().get(PROJECT_ID, ZONE_NAME, instanceCreatedName);
+            Instance instanceCreated = get.execute();
+            setIpInstance(instanceCreated.getNetworkInterfaces().get(0).getAccessConfigs().get(0).getNatIP()); 
+            
         } catch (GeneralSecurityException ex) {
             Logger.getLogger(GoogleAPI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -197,4 +210,8 @@ public class GoogleAPI implements ProvidersAPI {
         this.ipInstance = ipInstance;
     }
 
+    @Override
+    public void createinstance(String type) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
