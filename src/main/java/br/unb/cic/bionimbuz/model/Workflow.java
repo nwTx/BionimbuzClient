@@ -19,6 +19,9 @@ public class Workflow {
     private final String description;
 
     private WorkflowStatus status;
+   
+    private List<Instance> intancesWorkflow;
+    
 
     public Workflow() {
         this.jobs = null;
@@ -65,6 +68,14 @@ public class Workflow {
 
     public WorkflowStatus getStatus() {
         return status;
+    }
+
+    public List<Instance> getIntancesWorkflow() {
+        return intancesWorkflow;
+    }
+
+    public void setIntancesWorkflow(List<Instance> intancesWorkflow) {
+        this.intancesWorkflow = intancesWorkflow;
     }
 
 }

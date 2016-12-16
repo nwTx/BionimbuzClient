@@ -438,7 +438,7 @@ public class WorkflowComposerBean implements Serializable {
             int aux = 0;
             int index;
             if (agreePrediction) {
-                for (Instance f : selectedInstances) {
+                for (Instance f : selectedInstances) {                    
                     System.out.println(f.toString());
                     f.setidProgramas(idServiceSelecteds);
                     for (aux = 0; aux < f.getQuantity(); aux++) {
@@ -473,7 +473,14 @@ public class WorkflowComposerBean implements Serializable {
                     jAux.setIpjob(ip);
                     workflowDiagram.getWorkflow().getJobs().set(index, jAux);
                 }
-            }
+            }                
+            //Setting the instances for that user;
+            if(!sessionBean.getLoggedUser().getInstances().isEmpty())
+                sessionBean.getLoggedUser().addInstances(selectedInstances);
+            else
+                sessionBean.getLoggedUser().setInstances(selectedInstances);
+            //Setting the instances for that workflow;
+            workflowDiagram.getWorkflow().setIntancesWorkflow(selectedInstances);
             if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
                 // Updates user workflow list
                 workflowDiagram.getWorkflow().setStatus(WorkflowStatus.EXECUTING);

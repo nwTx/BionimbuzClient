@@ -108,4 +108,7 @@ public class User {
     public void setInstances(List<Instance> instances) {
         this.instances = instances;
     }
+    public void addInstances(List<Instance> instances) {
+        this.instances.addAll(instances);
+    }
 }
