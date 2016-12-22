@@ -202,6 +202,46 @@
                                         </p:column>
                                     </p:row>
                                 </p:panelGrid>
+
+<!--                                <p:dataTable var="maq" value="#{workflowComposerBean.instancies}" widgetVar="maqtable"
+                                             scrollable="true" scrollHeight="200" selectionMode="single" rowKey="#{maq.id}"
+                                             emptyMessage="No Virtual Machines found with given criteria">
+                                    <p:column filterBy="#{maq.provider}" headerText="Provider" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('maqtable').filter()" >
+                                                <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                                                <f:selectItem itemLabel="Amazon" itemValue="Amazon"/>
+                                                <f:selectItem itemLabel="Google" itemValue="Google" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{maq.provider}" /> 
+                                    </p:column>              
+                                    
+                                    <p:column filterBy="#{maq.type}" headerText="Type" filterMatchMode="contains">
+                                        <h:outputText value="#{maq.type}" />
+                                    </p:column>
+                                    
+                                    <p:column filterBy="#{maq.locality}" headerText="Locality" filterMatchMode="exact">
+                                        <f:facet name="filter">
+                                            <p:selectOneMenu onchange="PF('maqtable').filter()" >
+                                                <f:selectItem itemLabel="All"  />
+                                                <f:selectItem itemLabel="São Paulo" itemValue="South America (Sao Paulo)" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
+                                        <h:outputText value="#{maq.locality}" />
+                                    </p:column>
+                                    
+                                    <p:column headerText="Quantity" >
+                                        <p:inputNumber id="number" value="#{workflowComposerBean.quantity}" />
+                                        <p:commandButton  actionListener="#{workflowComposerBean.chosenInstanceId}"
+                                                              icon="ui-icon-check" 
+                                                              />
+                                        <p:commandButton  actionListener="#{workflowComposerBean.adSelectedInstance}"
+                                                              icon="ui-icon-check" 
+                                                              />
+                                    </p:column>
+
+                                </p:dataTable>-->
                             </p:fieldset>    
                             <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
                                 <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  

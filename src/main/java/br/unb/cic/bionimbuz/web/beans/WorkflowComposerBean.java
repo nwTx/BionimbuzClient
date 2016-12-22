@@ -906,4 +906,6 @@ public class WorkflowComposerBean implements Serializable {
     public void setSelectedservicesList(List<PluginService> selectedservicesList) {
         this.selectedservicesList = selectedservicesList;
     }
+    
+    
 }
