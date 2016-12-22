@@ -481,6 +481,7 @@ public class WorkflowComposerBean implements Serializable {
                 sessionBean.getLoggedUser().setInstances(selectedInstances);
             //Setting the instances for that workflow;
             workflowDiagram.getWorkflow().setIntancesWorkflow(selectedInstances);
+            System.out.println("Testes");
             if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
                 // Updates user workflow list
                 workflowDiagram.getWorkflow().setStatus(WorkflowStatus.EXECUTING);

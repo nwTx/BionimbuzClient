@@ -32,6 +32,8 @@ public class Instance {
     public int delay;
     public DateTime timetocreate;
     public String isnow; 
+    private String idUser;
+    
 
     /**
      * Constructor
@@ -270,5 +272,13 @@ public class Instance {
 
     public void setIsnow(String isnow) {
         this.isnow = isnow;
+    }
+      
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 }
