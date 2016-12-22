@@ -10,31 +10,41 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 public class InstanceView implements Serializable {
      
-    private List<Instance> instances;
+    private List<InstanceNEW> instances;
+    private List<String> CPU;
      
-    private Instance selectedInstance;
+    private InstanceNEW selectedInstance;
      
     @ManagedProperty("#{instanceService}")
     private InstanceService service;
  
     @PostConstruct
     public void init() {        
-//        instances = service.getInstances();
+        instances = service.getInstances();
+        
     }
 
-    public List<Instance> getInstances() {
+    public List<String> getCPU() {
+        return CPU;
+    }
+
+    public void setCPU(List<String> CPU) {
+        this.CPU = CPU;
+    }
+
+    public List<InstanceNEW> getInstances() {
         return instances;
     }
 
-    public void setInstances(List<Instance> instances) {
+    public void setInstances(List<InstanceNEW> instances) {
         this.instances = instances;
     }
 
-    public Instance getSelectedInstance() {
+    public InstanceNEW getSelectedInstance() {
         return selectedInstance;
     }
 
-    public void setSelectedInstance(Instance selectedInstance) {
+    public void setSelectedInstance(InstanceNEW selectedInstance) {
         this.selectedInstance = selectedInstance;
     }
 
@@ -46,7 +56,6 @@ public class InstanceView implements Serializable {
         this.service = service;
     }
 
-    
-    
+     
 
 }

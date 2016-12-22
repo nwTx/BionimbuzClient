@@ -2,29 +2,40 @@ package br.unb.cic.bionimbuz.elasticity;
 
 import java.io.Serializable;
 
-public class Instance implements Serializable {
+public class InstanceNEW implements Serializable {
     
     public String id;
     public String name;
     public String state;
     public String provider;
+    public String CPUutilization;
     
-    public Instance() {}
+    public InstanceNEW() {}
 
-//    public Instance(String id, String name, String state, String provider) {
+//    public InstanceNEW(String id, String name, String state, String provider) {
 //        this.id = id;
 //        this.name = name;
 //        this.state = state;
 //        this.provider = provider;
 //    }
-    
-    public Instance(String id, String state) {
+
+    public InstanceNEW(String id, String name, String state, String provider, String CPUutilization) {
         this.id = id;
+        this.name = name;
         this.state = state;
+        this.provider = provider;
+        this.CPUutilization = CPUutilization;
     }
 
-    
+    public String getCPUutilization() {
+        return CPUutilization;
+    }
 
+    public void setCPUutilization(String CPUutilization) {
+        this.CPUutilization = CPUutilization;
+    }
+    
+ 
     public String getId() {
         return id;
     }

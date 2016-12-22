@@ -12,57 +12,46 @@
         <!-- Center Content -->
         <ui:define name="conteudo_centro">
 
-            <h:form id="form">
-                <p:growl id="growl" autoUpdate="true"/>
-
-                <p:commandButton value="Create" id="withIcon" actionListener="#{button.buttonAction}" update="tabela" icon="ui-icon-star">
-                                 <f:ajax  render="tabela" ></f:ajax> 
-                </p:commandButton>
-                <p:dataTable id="tabela" var="instances" value="#{PredictionTableView.instances}">
-                    <p:column headerText="Id" style="width:50px">
-                        <h:outputText value="#{instances.id}" />
-                    </p:column>
-                    <p:column headerText="Provider" style="width:50px">
-                        <h:outputText value="#{instances.provider}" />
-                    </p:column>
-                    <p:column headerText="CPU" style="width:20px">
-                        <h:outputText value="#{instances.cpu}" />
-                    </p:column>
-                    <p:column headerText="Memoria" style="width:40px">
-                        <h:outputText value="#{instances.memoria}" />
-                    </p:column>
-                    <p:column headerText="Preco" style="width:50px">
-                        <h:outputText value="#{instances.preco}" />
-                    </p:column>
-                    <p:column headerText="Programa" style="width:50px">
-                        <h:outputText value="#{instances.programa}" />
-                    </p:column>
-                    <p:column headerText="time to create" style="width:150px">
-                        <h:outputText value="#{instances.timetocreate}" />
-                    </p:column>
-                    <p:column headerText="pode criar?" style="width:150px">
-                        <h:outputText value="#{instances.isnow}" />
-                    </p:column>
-                    <p:column headerText="pode criar?" style="width:150px">
-                        <pe:timer  timeout="#{instances.delay}" /> 
-                    </p:column>
-                </p:dataTable>
-            </h:form> 
+            <!--            <h:form id="form">
+                            <p:growl id="growl" autoUpdate="true"/>
+            
+                            <p:commandButton value="Create" id="withIcon" actionListener="#{button.buttonAction}" update="tabela" icon="ui-icon-star">
+                                             <f:ajax  render="tabela" ></f:ajax> 
+                            </p:commandButton>
+                            <p:dataTable id="tabela" var="instances" value="#{PredictionTableView.instances}">
+                                <p:column headerText="Id" style="width:50px">
+                                    <h:outputText value="#{instances.id}" />
+                                </p:column>
+                                <p:column headerText="Provider" style="width:50px">
+                                    <h:outputText value="#{instances.provider}" />
+                                </p:column>
+                                <p:column headerText="CPU" style="width:20px">
+                                    <h:outputText value="#{instances.cpu}" />
+                                </p:column>
+                                <p:column headerText="Memoria" style="width:40px">
+                                    <h:outputText value="#{instances.memoria}" />
+                                </p:column>
+                                <p:column headerText="Preco" style="width:50px">
+                                    <h:outputText value="#{instances.preco}" />
+                                </p:column>
+                                <p:column headerText="Programa" style="width:50px">
+                                    <h:outputText value="#{instances.programa}" />
+                                </p:column>
+                                <p:column headerText="time to create" style="width:150px">
+                                    <h:outputText value="#{instances.timetocreate}" />
+                                </p:column>
+                                <p:column headerText="pode criar?" style="width:150px">
+                                    <h:outputText value="#{instances.isnow}" />
+                                </p:column>
+                                <p:column headerText="pode criar?" style="width:150px">
+                                    <pe:timer  timeout="#{instances.delay}" /> 
+                                </p:column>
+                            </p:dataTable>
+                        </h:form> -->
 
 
             <h:form id="form2">
-                <p:growl id="growl" life="2000" />
-                <p:commandButton value="Create" id="withIcon" actionListener="#{buttonView.buttonAction}" update="growl" icon="ui-icon-star" />
-
-<!--                <p:contextMenu for="instances">
-                    <p:menuitem value="start" icon="fa fa-toggle-right" />
-                    <p:menuitem value="stop" icon="fa fa-pause" />
-                    <p:menuitem value="reboot"  icon="fa fa-refresh" />
-                    <p:menuitem value="shutdown"  icon="fa fa-power-off" />
-                    <p:menuitem value="terminate"  icon="fa fa-times-circle" />
-
-                </p:contextMenu>
-
+                
                 <p:dataTable id="instances" var="instance" value="#{instanceView.instances}" rowKey="#{instance.id}"
                              selection="#{instanceView.selectedInstance}" selectionMode="single">
                     <f:facet name="header">
@@ -74,7 +63,30 @@
                     <p:column headerText="State">
                         <h:outputText value="#{instance.state}" />
                     </p:column>
-                </p:dataTable> -->
+                </p:dataTable>
+                
+                <p:contextMenu for="instances">
+                    <p:menuitem value="View" update="instanceDetail" icon="ui-icon-search" oncomplete="PF('instDialog').show()"/>
+                    <p:menuitem value="start" icon="fa fa-toggle-right" />
+                    <p:menuitem value="stop" icon="fa fa-pause" />
+                    <p:menuitem value="reboot"  icon="fa fa-refresh" />
+                    <p:menuitem value="shutdown"  icon="fa fa-power-off" />
+                    <p:menuitem value="terminate"  icon="fa fa-times-circle" />
+                </p:contextMenu>
+
+                <p:dialog header="Instance Info" widgetVar="instDialog" resizable="false">
+                    <p:outputPanel id="instanceDetail" style="text-align:center;">
+                        <p:panelGrid  columns="2" rendered="#{not empty instanceView.selectedInstance}">
+<!--                            <f:facet name="header">
+                                <p:graphicImage name="/home/guilherme/BionimbuzClient/WebContent/resources/img/amazon-s3.png"/> 
+                            </f:facet> -->
+
+                            <h:outputText value="CPU Utilization:" />
+                            <h:outputText value="#{instanceView.selectedInstance.CPUutilization}" />
+
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
             </h:form>
             <!--            <h:form>
             

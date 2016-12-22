@@ -7,6 +7,9 @@ import java.util.UUID;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
+import br.unb.cic.bionimbuz.elasticity.InstanceNEW;
+
+import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
@@ -44,16 +47,55 @@ public class InstanceService {
     }
    
     
-//    public List<Instance> getInstances() {
-//        List<Instance> list = new ArrayList<>();
-//         
-//        for (com.amazonaws.services.ec2.model.Instance instanceAWS : AmazonAPI.listinstances()) {
-//            Instance instance = new Instance();
-//            instance.setId(instanceAWS.getImageId());
-//            instance.setState(instanceAWS.getState().getName());
-//            list.add(instance);
+    public List<InstanceNEW> getInstances() {
+        List<InstanceNEW> list = new ArrayList<>();
+         
+        for (Instance instanceAWS : AmazonAPI.listinstances()) {
+            InstanceNEW instance = new InstanceNEW();
+            AmazonMonitoring api2 = new AmazonMonitoring();
+            instance.setId(instanceAWS.getInstanceId());
+            instance.setState(instanceAWS.getState().getName());
+            instance.setCPUutilization(api2.monitoring(instanceAWS.getInstanceId()).get(3).toString());
+            list.add(instance);
+        }
+        return list;
+    }
+    
+//    public List<String> CPUutilization(){
+//    
+//        AmazonAPI api = new AmazonAPI();
+//        AmazonMonitoring api2 = new AmazonMonitoring();
+//        List<String> list = new ArrayList<>();
+//        
+//        for(int i = 0; i < api.listinstances().size(); i++){
+//            InstanceNEW instance = new InstanceNEW();
+//            
+//            String type = AmazonAPI.listinstances().get(i).getInstanceId();
+//            String teste = api2.monitoring(type).get(3).toString();
+//            instance.setCPUutilization(teste);
+//            list.add(teste);
+//    
 //        }
 //        return list;
+//    }
+//    
+//    public String getCPUutilization(String type){
+//    
+////        AmazonMonitoring api2 = new AmazonMonitoring();
+////        
+////        String teste = api2.monitoring(type).get(3).toString();
+////        
+////        return teste;
+//        
+//        InstanceView teste = new InstanceView();
+//        String id = teste.getSelectedInstance().id;
+//        
+//        AmazonMonitoring api2 = new AmazonMonitoring();
+//        
+//        String teste2 = api2.monitoring(type).get(3).toString();
+//        
+//
+//
 //    }
     
     
