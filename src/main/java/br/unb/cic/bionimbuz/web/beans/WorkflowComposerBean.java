@@ -106,7 +106,7 @@ public class WorkflowComposerBean implements Serializable {
     private List<Instance> selectedInstances;
     private Instance instance;
     private String chosenInstanceId;
-    private Integer quantity;
+//    private Integer quantity;
     private Integer objective;
     private boolean agreeContract;
     private Double minToHour = 0.0;
@@ -243,6 +243,7 @@ public class WorkflowComposerBean implements Serializable {
                     value.setidProgramas(Arrays.asList(key));
                     return value;
                 }).forEachOrdered((value) -> {
+                    value.setIdUser(sessionBean.getLoggedUser().getId());
                     selectedInstances.add(value);
                 });
             }
@@ -441,13 +442,12 @@ public class WorkflowComposerBean implements Serializable {
                 for (Instance f : selectedInstances) {                    
                     System.out.println(f.toString());
                     f.setidProgramas(idServiceSelecteds);
-                    for (aux = 0; aux < f.getQuantity(); aux++) {
                         Thread.sleep(3000);
-                        
-                        String instanceName =f.getType().substring(25).toLowerCase();
-                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
+//                        String instanceName =f.getType().substring(25).toLowerCase();
+//                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
+                        String instanceName = getWorkflowDescription()+"-"+aux;
                         ip.add(createInstance(f.getProvider(), f.getType(),instanceName));
-                    }
+                    
                     for (Job jAux : jobs) {
                         if (f.getidProgramas().get(0).equals(jAux.getServiceId())) {
                             index = workflowDiagram.getWorkflow().getJobs().lastIndexOf(jAux);
@@ -459,13 +459,12 @@ public class WorkflowComposerBean implements Serializable {
                 }
             } else {
                 for (Instance f : selectedInstances) {
-                    f.setidProgramas(idServiceSelecteds);
-                    for (aux = 0; aux < f.getQuantity(); aux++) {
+                      f.setidProgramas(idServiceSelecteds);
                         Thread.sleep(3000);
-                        String instanceName =f.getType().substring(25).toLowerCase();
-                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
+//                        String instanceName = f.getType().substring(25).toLowerCase();
+//                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
+                        String instanceName = getWorkflowDescription()+"-"+aux;
                         ip.add(createInstance(f.getProvider(), f.getType(),instanceName));
-                    }
                 }
                 //
                 for (Job jAux : jobs) {
@@ -475,7 +474,7 @@ public class WorkflowComposerBean implements Serializable {
                 }
             }                
             //Setting the instances for that user;
-            if(!sessionBean.getLoggedUser().getInstances().isEmpty())
+            if(loggedUser.getInstances() != null)
                 sessionBean.getLoggedUser().addInstances(selectedInstances);
             else
                 sessionBean.getLoggedUser().setInstances(selectedInstances);
@@ -739,12 +738,12 @@ public class WorkflowComposerBean implements Serializable {
         return instancesString;
     }
 
-    public void adSelectedInstance(ActionEvent actionEvent) {
+    public void adSelectedInstance(Instance maq) {
         for (Instance i : instances) {
-            if (i.getId().equals(chosenInstanceId) && !instances.isEmpty()) {
-                i.setQuantity(getQuantity());
-                selectedInstances.add(i);
-                instances.remove(i);
+            if (i.getId().equals(maq.getId()) && !instances.isEmpty()) {
+                i.setIdUser(sessionBean.getLoggedUser().getId());              
+                selectedInstances.add(i);                
+//                instances.remove(i);
                 showMessage("Elemento " + i.getType() + " adicionado");
                 break;
             } else if (selectedInstances.isEmpty()) {
@@ -761,7 +760,7 @@ public class WorkflowComposerBean implements Serializable {
     public void removeElement(Instance element) {
         if (!selectedInstances.isEmpty()) {
             selectedInstances.remove(element);
-            instances.add(element);
+//            instances.add(element);
             showMessage("Elemento " + element.getType() + " removido");
         } else {
             showMessage("Não existem elementos para ser removidos!");
@@ -800,13 +799,13 @@ public class WorkflowComposerBean implements Serializable {
         this.limitationValueExecutionCost = limitationValueExecutionCost;
     }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+//    public Integer getQuantity() {
+//        return quantity;
+//    }
+//
+//    public void setQuantity(Integer quantity) {
+//        this.quantity = quantity;
+//    }
 
     public Integer getObjective() {
         return objective;

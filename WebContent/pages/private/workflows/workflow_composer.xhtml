@@ -178,7 +178,7 @@
                     <p:tab id="provisionamento" title="Provisionamento">
                         <p:panel id="elasticity1" style="border-color: #2980b9">
                             <p:fieldset id="instancesAvaible" legend="Instâncias Disponíveis" style="border-color: #2980b9">
-                                <p:panelGrid  id="instancesB">
+<!--                                <p:panelGrid  id="instancesB">
                                     <f:facet name="header">
                                         <p:row>
                                             <p:column >Instância</p:column>
@@ -201,9 +201,9 @@
                                                               update="instancesList, instancesB, :form:growl"/>
                                         </p:column>
                                     </p:row>
-                                </p:panelGrid>
+                                </p:panelGrid>-->
 
-<!--                                <p:dataTable var="maq" value="#{workflowComposerBean.instancies}" widgetVar="maqtable"
+                                <p:dataTable id="instancesB" var="maq" value="#{workflowComposerBean.instancies}" widgetVar="maqtable"
                                              scrollable="true" scrollHeight="200" selectionMode="single" rowKey="#{maq.id}"
                                              emptyMessage="No Virtual Machines found with given criteria">
                                     <p:column filterBy="#{maq.provider}" headerText="Provider" filterMatchMode="exact">
@@ -221,27 +221,59 @@
                                         <h:outputText value="#{maq.type}" />
                                     </p:column>
                                     
-                                    <p:column filterBy="#{maq.locality}" headerText="Locality" filterMatchMode="exact">
+                                    <p:column filterBy="#{maq.numCores}" headerText="CPU " filterMatchMode="contains">
+                                        <h:outputText value="#{maq.numCores} x #{maq.cpuHtz} GHZ" />
+                                    </p:column>
+                                    
+                                    <p:column filterBy="#{maq.memoryTotal}" headerText="Memoria" filterMatchMode="contains">
+                                        <h:outputText value="#{maq.memoryTotal} GB" />
+                                    </p:column>
+                                    <p:column filterBy="#{maq.costPerHour}" headerText="Preço" filterMatchMode="contains">
+                                        <h:outputText value="$ #{maq.costPerHour}" />
+                                    </p:column>
+                                    
+                                    <p:column filterBy="#{maq.locality}" headerText="Localização" filterMatchMode="exact">
                                         <f:facet name="filter">
-                                            <p:selectOneMenu onchange="PF('maqtable').filter()" >
+                                            
+                                            <p:selectCheckboxMenu label="Localização" onchange="PF('maqtable').filter()" panelStyle="width:125px" scrollHeight="150">
+                                                <f:selectItems value="us" />
+                                                <f:selectItems value="asia-northeast" />
+                                                <f:selectItems value="asia-east" />
+                                                <f:selectItems value="asia" />
+                                                <f:selectItems value="europe" />
+                                                <f:selectItems value="Asia Pacific (Mumbai)" />
+                                                <f:selectItems value="Asia Pacific (Seoul)" />
+                                                <f:selectItems value="Asia Pacific (Tokyo)" />
+                                                <f:selectItems value="Asia Pacific (Singapore)" />
+                                                <f:selectItems value="Asia Pacific (Sydney)" />
+                                                <f:selectItems value="South America (Sao Paulo)" />
+                                                <f:selectItems value="AWS GovCloud (US)" />
+                                                <f:selectItems value="US West (Oregon)" />
+                                                <f:selectItems value="US West (N. California)" />
+                                                <f:selectItems value="US East (N. Virginia)" />
+                                                <f:selectItems value="EU (Frankfurt)" />
+                                                <f:selectItems value="EU (Ireland)" />
+                                            </p:selectCheckboxMenu>
+                                            
+<!--                                            <p:selectOneMenu onchange="PF('maqtable').filter()" >
                                                 <f:selectItem itemLabel="All"  />
                                                 <f:selectItem itemLabel="São Paulo" itemValue="South America (Sao Paulo)" />
-                                            </p:selectOneMenu>
+                                            </p:selectOneMenu>-->
                                         </f:facet>
                                         <h:outputText value="#{maq.locality}" />
                                     </p:column>
                                     
-                                    <p:column headerText="Quantity" >
-                                        <p:inputNumber id="number" value="#{workflowComposerBean.quantity}" />
-                                        <p:commandButton  actionListener="#{workflowComposerBean.chosenInstanceId}"
+                                    <p:column headerText="Adicionar" style="width:50px">
+                                        <!--<p:inputNumber id="number" value="#{workflowComposerBean.quantity}" />-->
+<!--                                        <p:commandButton  actionListener="#{workflowComposerBean.chosenInstanceId}"
                                                               icon="ui-icon-check" 
-                                                              />
-                                        <p:commandButton  actionListener="#{workflowComposerBean.adSelectedInstance}"
-                                                              icon="ui-icon-check" 
-                                                              />
+                                                              />-->
+                                        <p:commandButton  actionListener="#{workflowComposerBean.adSelectedInstance(maq)}"
+                                                              icon="ui-icon-check"  
+                                                              update="form:instancesList, :form:growl"/>
                                     </p:column>
 
-                                </p:dataTable>-->
+                                </p:dataTable>
                             </p:fieldset>    
                             <p:fieldset id="instancesSelected" legend="Instâncias Selecionadas" style="border-color: #2980b9">
                                 <p:dataTable value="#{workflowComposerBean.selectedInstancies}" var="instance"  
@@ -254,11 +286,12 @@
                                     <p:column headerText="Tipo" style="text-align: center">
                                         <p:outputLabel value="#{instance.type}"/>
                                     </p:column>
-                                    <p:column headerText="Quantidade"  style="text-align: center">
+<!--                                    <p:column headerText="Quantidade"  style="text-align: center">
                                         <h:outputLabel value="#{instance.quantity}"/>
-                                    </p:column>
+                                    </p:column>-->
+
                                     <p:column>
-                                        <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, form:instancesB, :form:growl"/>
+                                        <p:commandButton actionListener="#{workflowComposerBean.removeElement(instance)}" icon="ui-icon-trash"  update="instancesList, :form:growl"/>
                                     </p:column>
                                 </p:dataTable>
                             </p:fieldset>    
@@ -326,9 +359,9 @@
                                                 <p:column headerText="Descrição"  style="text-align: center">
                                                     <p:outputLabel value="#{instance.description}"/>
                                                 </p:column>
-                                                <p:column headerText="Quantidade"  style="text-align: center">
+<!--                                                <p:column headerText="Quantidade"  style="text-align: center">
                                                     <h:outputLabel value="#{instance.quantity}"/>
-                                                </p:column>
+                                                </p:column>-->
                                             </p:dataTable>
                                         </p:column>
                                     </p:row>
