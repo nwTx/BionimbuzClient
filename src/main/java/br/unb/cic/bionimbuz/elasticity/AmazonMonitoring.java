@@ -23,6 +23,9 @@ import com.amazonaws.services.cloudwatch.model.Dimension;
 import com.amazonaws.services.cloudwatch.model.GetMetricStatisticsRequest;
 import com.amazonaws.services.cloudwatch.model.GetMetricStatisticsResult;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +33,7 @@ import java.util.List;
  *
  * @author guilherme
  */
-public class AmazonMonitoring {
+public class AmazonMonitoring{
 
     final String awsAccessKey = "AKIAJDWBBQA3CFVU55OQ";
     final String awsSecretKey = "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";
@@ -40,26 +43,39 @@ public class AmazonMonitoring {
     //final GetMetricStatisticsRequest request = request(instanceId); 
     //final GetMetricStatisticsResult result = result(client, request);
     //toStdOut(result, instanceId);   
-    
-    public List<Double> monitoring (String instanceId){
+    public ArrayList<Datapoint> monitoring(String instanceId) {
         final AmazonCloudWatchClient client = client(awsAccessKey, awsSecretKey);
-        final GetMetricStatisticsRequest request = request(instanceId); 
+        final GetMetricStatisticsRequest request = request(instanceId);
         final GetMetricStatisticsResult result = result(client, request);
+
         //toStdOut(result, instanceId);   
-        
-        List<Double> data = new ArrayList<>();
-        //System.out.println(result); // outputs empty result: {Label: CPUUtilization,Datapoints: []}
+        //Object[] teste = null;
+        //teste = result.getDatapoints().toArray(teste);
+        ArrayList infos = new ArrayList();
+        ArrayList dates = new ArrayList();
+        ArrayList<Datapoint> dat = new ArrayList();
+        //ArrayList<ArrayList> all = new ArrayList<ArrayList>();
+
         for (final Datapoint dataPoint : result.getDatapoints()) {
+            
+            dat.add(dataPoint);
             //System.out.printf("%s instance's average CPU utilization : %s%n", instanceId, dataPoint.getAverage());
             //System.out.printf("%s instance's max CPU utilization : %s%n", instanceId, dataPoint.getMaximum());
-           data.add(dataPoint.getAverage());
-           data.add(dataPoint.getMaximum());
+
+            dates.add(dataPoint.getTimestamp());
+//          infos.add(dataPoint.getAverage());
+//          infos.add(dataPoint.getMaximum());
+//dates.add(infos);
+
         }
-    
-       return data;
+
+        Collections.sort(dat, 
+                        (o1, o2) -> o1.getTimestamp().compareTo(o2.getTimestamp()));
+        System.out.println(dat.toString());
+        return dat;
     }
-    
-    
+
+
     public AmazonCloudWatchClient client(final String awsAccessKey, final String awsSecretKey) {
         final AmazonCloudWatchClient client = new AmazonCloudWatchClient(new BasicAWSCredentials(awsAccessKey, awsSecretKey));
         client.setEndpoint("monitoring.sa-east-1.amazonaws.com");
