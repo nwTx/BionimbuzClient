@@ -51,42 +51,44 @@
 
 
             <h:form id="form2">
+                <p:commandButton update=":form2:tabela" icon="fa-refresh"/>
                 
-                <p:dataTable id="instances" var="instance" value="#{instanceView.instances}" rowKey="#{instance.id}"
-                             selection="#{instanceView.selectedInstance}" selectionMode="single">
-                    <f:facet name="header">
-                        Máquinas Virtuais BioNimbuZ
-                    </f:facet>
+<!--                <p:poll interval="3" listener="#{counterBean.increment}" update="form2" />-->
+                <p:dataTable id="tabela" var="instance" value="#{instanceView.instances}">
                     <p:column headerText="Id">
                         <h:outputText value="#{instance.id}" />
                     </p:column>
                     <p:column headerText="State">
                         <h:outputText value="#{instance.state}" />
                     </p:column>
+                    <p:column headerText="CPU Utilization">
+                        <h:outputText value="#{instance.CPUutilization}" />
+                    </p:column>
+                    
                 </p:dataTable>
                 
-                <p:contextMenu for="instances">
+<!--                <p:contextMenu for="instances">
                     <p:menuitem value="View" update="instanceDetail" icon="ui-icon-search" oncomplete="PF('instDialog').show()"/>
                     <p:menuitem value="start" icon="fa fa-toggle-right" />
                     <p:menuitem value="stop" icon="fa fa-pause" />
                     <p:menuitem value="reboot"  icon="fa fa-refresh" />
                     <p:menuitem value="shutdown"  icon="fa fa-power-off" />
                     <p:menuitem value="terminate"  icon="fa fa-times-circle" />
-                </p:contextMenu>
+                </p:contextMenu>-->
 
-                <p:dialog header="Instance Info" widgetVar="instDialog" resizable="false">
+<!--                <p:dialog header="Instance Info" widgetVar="instDialog" resizable="false">
                     <p:outputPanel id="instanceDetail" style="text-align:center;">
                         <p:panelGrid  columns="2" rendered="#{not empty instanceView.selectedInstance}">
-<!--                            <f:facet name="header">
+                            <f:facet name="header">
                                 <p:graphicImage name="/home/guilherme/BionimbuzClient/WebContent/resources/img/amazon-s3.png"/> 
-                            </f:facet> -->
+                            </f:facet> 
 
                             <h:outputText value="CPU Utilization:" />
                             <h:outputText value="#{instanceView.selectedInstance.CPUutilization}" />
 
                         </p:panelGrid>
                     </p:outputPanel>
-                </p:dialog>
+                </p:dialog>-->
             </h:form>
             <!--            <h:form>
             
