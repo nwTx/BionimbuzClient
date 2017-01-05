@@ -1,5 +1,9 @@
 package br.unb.cic.bionimbuz.rest.action;
 
+import br.unb.bionimbuz.storage.bucket.BioBucket;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
+import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
+import br.unb.bionimbuz.storage.bucket.methods.CloudMethodsAmazonGoogle;
 import java.io.File;
 import java.io.IOException;
 
@@ -27,6 +31,8 @@ import br.unb.cic.bionimbuz.rest.request.RequestInfo;
 import br.unb.cic.bionimbuz.rest.request.UploadRequest;
 import br.unb.cic.bionimbuz.rest.response.UploadResponse;
 import br.unb.cic.bionimbuz.security.HashUtil;
+import java.io.FileOutputStream;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Since there is a bug in Resteasy upload method (documented here
@@ -73,36 +79,98 @@ public class Upload extends Action {
         final UploadRequest req = (UploadRequest) this.request;
         final FileInfo fileInfo = req.getFileInfo();
         final File tempFile = new File(ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + fileInfo.getName());
-        try (
-             final CloseableHttpClient httpClient = HttpClients.createDefault();) {
-            // Compute and store the hash on metadata object
-            final String computedHash = HashUtil.computeNativeSHA3(tempFile.getAbsolutePath());
-            fileInfo.setHash(computedHash);
-            // Transforms the metadata object into a json string
-            final String jsonFileInfo = new ObjectMapper().writeValueAsString(fileInfo);
-            // Config the http request
-            final HttpPost post = new HttpPost(this.requestUrl);
-            final MultipartEntityBuilder multpartBuilder = MultipartEntityBuilder.create();
-            multpartBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-            multpartBuilder.addPart("file", new FileBody(tempFile, ContentType.DEFAULT_BINARY));
-            multpartBuilder.addPart("file_info", new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON));
-            final HttpEntity requestEntity = multpartBuilder.build();
-            post.setEntity(requestEntity);
-            try (
-                 final CloseableHttpResponse response = httpClient.execute(post);) {
-                // Handle the http response
-                final HttpEntity responseEntity = response.getEntity();
-                if (responseEntity != null) {
-                    EntityUtils.consume(responseEntity);
-                    if (response.getStatusLine() != null) {
-                        LOGGER.info("Upload request got status code: " + response.getStatusLine().getStatusCode());
-                        if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
-                            return new UploadResponse(true);
+        try (final CloseableHttpClient httpClient = HttpClients.createDefault();) {
+
+            if (ConfigurationRepository.getConfig().getStorageMode().equalsIgnoreCase("1")) { // Cloud Storage
+                
+                // Compute and store the hash on metadata object
+                final String computedHash = HashUtil.computeNativeSHA3(tempFile.getAbsolutePath());
+                fileInfo.setHash(computedHash);
+                // Transforms the metadata object into a json string
+                final String jsonFileInfo = new ObjectMapper().writeValueAsString(fileInfo);
+                // Config the http request
+                final HttpPost post = new HttpPost(this.requestUrl);
+                final MultipartEntityBuilder multpartBuilder = MultipartEntityBuilder.create();
+                multpartBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+               // multpartBuilder.addPart("file", new FileBody(tempFile, ContentType.DEFAULT_BINARY));
+                multpartBuilder.addPart("file_info", new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON));
+                final HttpEntity requestEntity = multpartBuilder.build();
+                post.setEntity(requestEntity);
+                try (final CloseableHttpResponse response = httpClient.execute(post);) {
+                    // Handle the http response
+                    final HttpEntity responseEntity = response.getEntity();
+                    String destName = IOUtils.toString(responseEntity.getContent(), "UTF-8");
+                     System.out.println("destname:"+destName);
+                    if (responseEntity != null) {
+                        EntityUtils.consume(responseEntity);
+                        if (response.getStatusLine() != null) {
+                            LOGGER.info("Upload request got status code: " + response.getStatusLine().getStatusCode());
+//                        HttpEntity entity = response.getClass().toString();
+                             LOGGER.info("pq ignorame??");    
+                             LOGGER.info("é true?" +(HttpStatus.SC_OK == response.getStatusLine().getStatusCode()));
+                            if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
+                                
+                                System.out.println("adestname:"+destName);
+                                
+//                                FileOutputStream fos = new FileOutputStream(ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + "/" + req.getFileInfo().getName());
+//                               
+//                                fos.write(req.getFileInfo().getPayload());
+//                                fos.close();
+                                PeriodicCheckerBuckets instance = new PeriodicCheckerBuckets();
+                                instance.start();
+                                BioBucket dest = PeriodicCheckerBuckets.getBucket(destName);
+
+                                LOGGER.info("Uploading file to bucket: " + dest.getName());
+
+                                CloudStorageMethods methodsInstance = new CloudMethodsAmazonGoogle();
+                                try {
+                                    methodsInstance.StorageAuth(dest.getProvider());
+                                    methodsInstance.StorageUploadFile(dest, "/data-folder/", ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + "/", req.getFileInfo().getName());
+                                } catch (Throwable t) {
+                                    LOGGER.error(t.getMessage());
+                                }
+                                File aux = new File(ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + "/" + req.getFileInfo().getName());
+                                aux.delete();
+
+                                return new UploadResponse(true);
+                            }
+                            return new UploadResponse(false);
                         }
-                        return new UploadResponse(false);
                     }
+                    LOGGER.error("Response from Server is null!");
                 }
-                LOGGER.error("Response from Server is null!");
+
+            } else {
+
+                // Compute and store the hash on metadata object
+                final String computedHash = HashUtil.computeNativeSHA3(tempFile.getAbsolutePath());
+                fileInfo.setHash(computedHash);
+                // Transforms the metadata object into a json string
+                final String jsonFileInfo = new ObjectMapper().writeValueAsString(fileInfo);
+                // Config the http request
+                final HttpPost post = new HttpPost(this.requestUrl);
+                final MultipartEntityBuilder multpartBuilder = MultipartEntityBuilder.create();
+                multpartBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+                multpartBuilder.addPart("file", new FileBody(tempFile, ContentType.DEFAULT_BINARY));
+                multpartBuilder.addPart("file_info", new StringBody(jsonFileInfo, ContentType.APPLICATION_JSON));
+                final HttpEntity requestEntity = multpartBuilder.build();
+                post.setEntity(requestEntity);
+                try (final CloseableHttpResponse response = httpClient.execute(post);) {
+                    // Handle the http response
+                    final HttpEntity responseEntity = response.getEntity();
+                    if (responseEntity != null) {
+                        EntityUtils.consume(responseEntity);
+                        if (response.getStatusLine() != null) {
+                            LOGGER.info("Upload request got status code: " + response.getStatusLine().getStatusCode());
+//                        HttpEntity entity = response.getClass().toString();
+                            if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
+                                return new UploadResponse(true);
+                            }
+                            return new UploadResponse(false);
+                        }
+                    }
+                    LOGGER.error("Response from Server is null!");
+                }
             }
         } catch (final InterruptedException | IOException e) {
             LOGGER.error("HTTP request error!", e);
@@ -111,6 +179,6 @@ public class Upload extends Action {
                 tempFile.delete();
             }
         }
-        return new UploadResponse(false);
-    }
+            return new UploadResponse(false);
+        }
 }
