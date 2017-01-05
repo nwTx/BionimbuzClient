@@ -433,43 +433,51 @@ public class WorkflowComposerBean implements Serializable {
     public String startWorkflow() {
         try {
             // Calls RestService to send the workflow to core
-            List<String> ip = new ArrayList();
+            List<String> ips = new ArrayList();
             List<Job> jobs = workflowDiagram.getWorkflow().getJobs();
-            String maquina;
+            List<Instance> instAux =selectedInstances;
+            String ipAux;
             int aux = 0;
             int index;
             if (agreePrediction) {
-                for (Instance f : selectedInstances) {                    
-                    System.out.println(f.toString());
-                    f.setidProgramas(idServiceSelecteds);
-                        Thread.sleep(3000);
+                for (Instance f : instAux) {                    
+                  //  System.out.println(f.toString());
+                  //  f.setidProgramas(idServiceSelecteds);
+                    Thread.sleep(3000);
 //                        String instanceName =f.getType().substring(25).toLowerCase();
 //                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
-                        String instanceName = getWorkflowDescription()+"-"+aux;
-                        ip.add(createInstance(f.getProvider(), f.getType(),instanceName));
-                    
+                    String instanceName = getWorkflowDescription()+"-"+aux;
+                    ipAux=createInstance(f.getProvider(), f.getType(),instanceName);
+                    index =selectedInstances.lastIndexOf(f);
+                    f.setIp(ipAux);
+                    selectedInstances.set(index, f);
+                    ips.add(ipAux);
                     for (Job jAux : jobs) {
                         if (f.getidProgramas().get(0).equals(jAux.getServiceId())) {
                             index = workflowDiagram.getWorkflow().getJobs().lastIndexOf(jAux);
-                            jAux.setIpjob(ip);
+                            jAux.setIpjob(ips);
                             workflowDiagram.getWorkflow().getJobs().set(index, jAux);
                             break;
                         }
                     }
                 }
             } else {
-                for (Instance f : selectedInstances) {
-                      f.setidProgramas(idServiceSelecteds);
-                        Thread.sleep(3000);
+                for (Instance f : instAux) {
+                    f.setidProgramas(idServiceSelecteds);
+                    Thread.sleep(3000);
 //                        String instanceName = f.getType().substring(25).toLowerCase();
 //                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
-                        String instanceName = getWorkflowDescription()+"-"+aux;
-                        ip.add(createInstance(f.getProvider(), f.getType(),instanceName));
+                    String instanceName = getWorkflowDescription()+"-"+aux;
+                    ipAux=createInstance(f.getProvider(), f.getType(),instanceName);
+                    index =selectedInstances.lastIndexOf(f);
+                    f.setIp(ipAux);
+                    selectedInstances.set(index, f);
+                    ips.add(ipAux);
                 }
                 //
                 for (Job jAux : jobs) {
                     index = workflowDiagram.getWorkflow().getJobs().lastIndexOf(jAux);
-                    jAux.setIpjob(ip);
+                    jAux.setIpjob(ips);
                     workflowDiagram.getWorkflow().getJobs().set(index, jAux);
                 }
             }                
@@ -480,6 +488,7 @@ public class WorkflowComposerBean implements Serializable {
                 sessionBean.getLoggedUser().setInstances(selectedInstances);
             //Setting the instances for that workflow;
             workflowDiagram.getWorkflow().setIntancesWorkflow(selectedInstances);
+            workflowDiagram.getWorkflow().setUserWorkflow(loggedUser);
             System.out.println("Testes");
             if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
                 // Updates user workflow list
