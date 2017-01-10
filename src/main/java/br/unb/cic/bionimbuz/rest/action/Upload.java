@@ -80,9 +80,7 @@ public class Upload extends Action {
         final FileInfo fileInfo = req.getFileInfo();
         final File tempFile = new File(ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + fileInfo.getName());
         try (final CloseableHttpClient httpClient = HttpClients.createDefault();) {
-
             if (ConfigurationRepository.getConfig().getStorageMode().equalsIgnoreCase("1")) { // Cloud Storage
-                
                 // Compute and store the hash on metadata object
                 final String computedHash = HashUtil.computeNativeSHA3(tempFile.getAbsolutePath());
                 fileInfo.setHash(computedHash);
@@ -100,20 +98,13 @@ public class Upload extends Action {
                     // Handle the http response
                     final HttpEntity responseEntity = response.getEntity();
                     String destName = IOUtils.toString(responseEntity.getContent(), "UTF-8");
-                     System.out.println("destname:"+destName);
                     if (responseEntity != null) {
                         EntityUtils.consume(responseEntity);
                         if (response.getStatusLine() != null) {
                             LOGGER.info("Upload request got status code: " + response.getStatusLine().getStatusCode());
 //                        HttpEntity entity = response.getClass().toString();
-                             LOGGER.info("pq ignorame??");    
-                             LOGGER.info("é true?" +(HttpStatus.SC_OK == response.getStatusLine().getStatusCode()));
                             if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
-                                
-                                System.out.println("adestname:"+destName);
-                                
 //                                FileOutputStream fos = new FileOutputStream(ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + "/" + req.getFileInfo().getName());
-//                               
 //                                fos.write(req.getFileInfo().getPayload());
 //                                fos.close();
                                 PeriodicCheckerBuckets instance = new PeriodicCheckerBuckets();
@@ -139,9 +130,7 @@ public class Upload extends Action {
                     }
                     LOGGER.error("Response from Server is null!");
                 }
-
             } else {
-
                 // Compute and store the hash on metadata object
                 final String computedHash = HashUtil.computeNativeSHA3(tempFile.getAbsolutePath());
                 fileInfo.setHash(computedHash);

@@ -47,16 +47,15 @@ public class AmazonAPI implements ProvidersAPI {
             throw new RuntimeException(ioe);
         }//, IllegalArgumentException
     }
-
-    @Override
-    public void createinstance(String type) throws IOException {
+    
+    public void createinstance(String type, String nameinstance) throws IOException {
         // Acho que tem que mudar isso aqui em    
 
         this.setup();
 
         try {
 
-            // CREATE EC2 INSTANCES
+            // CREATE EC2 INSTANCES 
             RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
                     .withInstanceType(type)
                     .withImageId("ami-912db2fd")
@@ -95,20 +94,15 @@ public class AmazonAPI implements ProvidersAPI {
             List<com.amazonaws.services.ec2.model.Instance> resultInstance = result.getReservation().getInstances();
 
             String createdInstanceId = null;
-            int idx = 1;
             
             for (com.amazonaws.services.ec2.model.Instance ins : resultInstance) {
 
                 createdInstanceId = ins.getInstanceId();
-
                 System.out.println("New instance has been created: " + createdInstanceId);//print the instance ID
-                
                 CreateTagsRequest createTagsRequest = new CreateTagsRequest();
                 createTagsRequest.withResources(createdInstanceId) //
-                .withTags(new Tag("Name", "BioNimbuZ-" + idx));
+                .withTags(new Tag("Name", nameinstance));
                 EC2.createTags(createTagsRequest);
-
-                idx++;
 
                 DescribeInstancesRequest request = new DescribeInstancesRequest().withInstanceIds(ins.getInstanceId());
                 DescribeInstancesResult result2 = EC2.describeInstances(request);
@@ -159,6 +153,11 @@ public class AmazonAPI implements ProvidersAPI {
 
     public void setIpInstance(String ipInstance) {
         this.ipInstance = ipInstance;
+    }
+
+    @Override
+    public void createinstance(String type) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 } //main end

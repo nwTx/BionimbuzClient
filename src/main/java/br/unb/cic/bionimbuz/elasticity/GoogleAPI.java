@@ -42,7 +42,7 @@ public class GoogleAPI implements ProvidersAPI {
      * Developers console.
      */
     private static final String PROJECT_ID = "bionimbuz-150212";
-            //"bionimbuz-150212";
+            //"bustling-cosmos-151913";
 
     /**
      * Set Compute Engine zone
@@ -60,6 +60,7 @@ public class GoogleAPI implements ProvidersAPI {
      */
     private static final String SOURCE_IMAGE_PREFIX = "https://www.googleapis.com/compute/v1/projects/";
     private static final String SOURCE_IMAGE_PATH = "debian-cloud/global/images/debian-7-wheezy-v20150710";
+//    private static final String SOURCE_IMAGE_PATH = "bustling-cosmos-151913/global/images/bionimbuz";
 
     //private static final String TYPE = "n1-standard-1";
     /**

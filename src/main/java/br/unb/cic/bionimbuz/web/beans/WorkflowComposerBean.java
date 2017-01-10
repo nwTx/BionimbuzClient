@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -394,32 +395,38 @@ public class WorkflowComposerBean implements Serializable {
         fileFormat = "";
     }
 
-    private String createInstance(String provider, String type , String nameInstance) {
+    private String createInstance(String provider, String type , String nameInstance) throws InterruptedException {
         AmazonAPI amazonapi = new AmazonAPI();
         GoogleAPI googleapi = new GoogleAPI();
         String IP = null;
         switch (provider) {
             case "Amazon": {
                 try {
-//                    amazonapi.createinstance(type);
-                    amazonapi.createinstance("t2.micro");
+//                    amazonapi.createinstance(type, nameInstance);
+                    amazonapi.createinstance("t2.micro", nameInstance);
                 } catch (IOException ex) {
                     java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
                 System.out.println("Amazon IP:" + amazonapi.getIpInstance());
-                return IP = amazonapi.getIpInstance();
+                while((IP = amazonapi.getIpInstance()) == null) {
+                    Thread.sleep(1000);
+                }
+                break;
             }
             case "Google": {
                 try {
-//                    googleapi.createinstance(type);
+//                    googleapi.createinstance(type, nameInstance);
                     googleapi.createinstance("n1-standard-1", nameInstance);
                     
                 } catch (IOException ex) {
                     java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 System.out.println("Google IP:" + googleapi.getIpInstance());
-                return IP = googleapi.getIpInstance();
+                while((IP = googleapi.getIpInstance()) == null) {
+                    Thread.sleep(1000);
+                }
+                 break;
             }
         }
         return IP;
@@ -434,29 +441,25 @@ public class WorkflowComposerBean implements Serializable {
         try {
             // Calls RestService to send the workflow to core
             List<String> ips = new ArrayList();
-            List<Job> jobs = workflowDiagram.getWorkflow().getJobs();
             List<Instance> instAux =selectedInstances;
             String ipAux;
             int aux = 0;
             int index;
             if (agreePrediction) {
                 for (Instance f : instAux) {                    
-                  //  System.out.println(f.toString());
-                  //  f.setidProgramas(idServiceSelecteds);
-                    Thread.sleep(3000);
 //                        String instanceName =f.getType().substring(25).toLowerCase();
 //                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
                     String instanceName = getWorkflowDescription()+"-"+aux;
                     ipAux=createInstance(f.getProvider(), f.getType(),instanceName);
                     index =selectedInstances.lastIndexOf(f);
                     f.setIp(ipAux);
+                    f.setCreationTimer(System.currentTimeMillis());
+                    f.setTimetocreate(System.currentTimeMillis());
                     selectedInstances.set(index, f);
                     ips.add(ipAux);
-                    for (Job jAux : jobs) {
+                    for (Job jAux : workflowDiagram.getWorkflow().getJobs()) {
                         if (f.getidProgramas().get(0).equals(jAux.getServiceId())) {
-                            index = workflowDiagram.getWorkflow().getJobs().lastIndexOf(jAux);
                             jAux.setIpjob(ips);
-                            workflowDiagram.getWorkflow().getJobs().set(index, jAux);
                             break;
                         }
                     }
@@ -464,22 +467,20 @@ public class WorkflowComposerBean implements Serializable {
             } else {
                 for (Instance f : instAux) {
                     f.setidProgramas(idServiceSelecteds);
-                    Thread.sleep(3000);
-//                        String instanceName = f.getType().substring(25).toLowerCase();
-//                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
                     String instanceName = getWorkflowDescription()+"-"+aux;
                     ipAux=createInstance(f.getProvider(), f.getType(),instanceName);
                     index =selectedInstances.lastIndexOf(f);
                     f.setIp(ipAux);
+                    f.setCreationTimer(System.currentTimeMillis());
+                    f.setTimetocreate(System.currentTimeMillis());
                     selectedInstances.set(index, f);
                     ips.add(ipAux);
                 }
                 //
-                for (Job jAux : jobs) {
-                    index = workflowDiagram.getWorkflow().getJobs().lastIndexOf(jAux);
+                for (Job jAux : workflowDiagram.getWorkflow().getJobs()) {
                     jAux.setIpjob(ips);
-                    workflowDiagram.getWorkflow().getJobs().set(index, jAux);
                 }
+                
             }                
             //Setting the instances for that user;
             if(loggedUser.getInstances() != null)
