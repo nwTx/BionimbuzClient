@@ -22,50 +22,52 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class InstanceService {
     
-    public void createInstance (String type){
-        
-        try {
-            AmazonAPI amazonapi = new AmazonAPI();
-            GoogleAPI googleapi = new GoogleAPI();
-
-            switch (type) {
-                case "t2.micro":
-                    System.out.println("amazon");
-                    amazonapi.createinstance("t2.micro");
-                    break;
-                case "n1-standard-1":
-                    System.out.println("google");
-                    googleapi.createinstance("n1-standard-1", "teste2");
-                    break;
-                default:
-                    System.out.println("Este não é um tipo válido!");
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(InstanceService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-    }
+//    public void createInstance (String type){
+//        
+//        try {
+//            AmazonAPI amazonapi = new AmazonAPI();
+//            GoogleAPI googleapi = new GoogleAPI();
+//
+//            switch (type) {
+//                case "t2.micro":
+//                    System.out.println("amazon");
+//                    amazonapi.createinstance("t2.micro");
+//                    break;
+//                case "n1-standard-1":
+//                    System.out.println("google");
+//                    googleapi.createinstance("n1-standard-1", "teste2");
+//                    break;
+//                default:
+//                    System.out.println("Este não é um tipo válido!");
+//            }
+//        } catch (IOException ex) {
+//            Logger.getLogger(InstanceService.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    
+//    }
    
     
-    public List<InstanceNEW> getInstances() {
-        List<InstanceNEW> list = new ArrayList<>();
-         
-        for (Instance instanceAWS : AmazonAPI.listinstances()) {
-            InstanceNEW instance = new InstanceNEW();
-            AmazonMonitoring api2 = new AmazonMonitoring();
-            instance.setId(instanceAWS.getInstanceId());
-            instance.setState(instanceAWS.getState().getName());
-            //int maxsize = instanceAWS.getInstanceId().length();
-            if (instanceAWS.getState().getName().equals("running") ) {
-                instance.setCPUutilization(api2.monitoring(instanceAWS.getInstanceId()).get(3).getAverage().toString());
-            } else {
-                instance.setCPUutilization("valor nao encontrado");
-            }
-            
-            list.add(instance);
-        }
-        return list;
-    }
+
+//    public List<InstanceNEW> getInstances() {
+//        List<InstanceNEW> list = new ArrayList<>();
+//         
+//        for (Instance instanceAWS : AmazonAPI.listinstances()) {
+//            InstanceNEW instance = new InstanceNEW();
+//            AmazonMonitoring api2 = new AmazonMonitoring();
+//            instance.setId(instanceAWS.getInstanceId());
+//            instance.setState(instanceAWS.getState().getName());
+//            int maxsize = instanceAWS.getInstanceId().length();
+//            if (instanceAWS.getState().getName().equals("running") ) {
+//                instance.setCPUutilization(api2.monitoring(instanceAWS.getInstanceId()).get(maxsize).toString());
+//            } else {
+//                instance.setCPUutilization("valor nao encontrado");
+//            }
+//            
+//            list.add(instance);
+//        }
+//        return list;
+//    }
+
     
 //    public List<String> CPUutilization(){
 //    

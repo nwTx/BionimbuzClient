@@ -13,9 +13,6 @@ import javax.inject.Named;
 import org.primefaces.model.diagram.DefaultDiagramModel;
 
 import br.unb.cic.bionimbuz.configuration.ConfigurationRepository;
-import br.unb.cic.bionimbuz.elasticity.AmazonAPI;
-import br.unb.cic.bionimbuz.elasticity.GoogleAPI;
-import br.unb.cic.bionimbuz.elasticity.InstanceService;
 import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.DiagramElement;
 import br.unb.cic.bionimbuz.model.User;
@@ -46,7 +43,6 @@ import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
-import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SlideEndEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -394,36 +390,42 @@ public class WorkflowComposerBean implements Serializable {
         fileFormat = "";
     }
 
-    private String createInstance(String provider, String type , String nameInstance) {
-        AmazonAPI amazonapi = new AmazonAPI();
-        GoogleAPI googleapi = new GoogleAPI();
-        String IP = null;
-        switch (provider) {
-            case "Amazon": {
-                try {
-//                    amazonapi.createinstance(type);
-                    amazonapi.createinstance("t2.micro");
-                } catch (IOException ex) {
-                    java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-                System.out.println("Amazon IP:" + amazonapi.getIpInstance());
-                return IP = amazonapi.getIpInstance();
-            }
-            case "Google": {
-                try {
-//                    googleapi.createinstance(type);
-                    googleapi.createinstance("n1-standard-1", nameInstance);
-                    
-                } catch (IOException ex) {
-                    java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                System.out.println("Google IP:" + googleapi.getIpInstance());
-                return IP = googleapi.getIpInstance();
-            }
-        }
-        return IP;
-    }
+//    private String createInstance(String provider, String type , String nameInstance) throws InterruptedException {
+//        AmazonAPI amazonapi = new AmazonAPI();
+//        GoogleAPI googleapi = new GoogleAPI();
+//        String IP = null;
+//        switch (provider) {
+//            case "Amazon": {
+//                try {
+////                    amazonapi.createinstance(type, nameInstance);
+//                    amazonapi.createinstance("t2.micro", nameInstance);
+//                } catch (IOException ex) {
+//                    java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                
+//                System.out.println("Amazon IP:" + amazonapi.getIpInstance());
+//                while((IP = amazonapi.getIpInstance()) == null) {
+//                    Thread.sleep(1000);
+//                }
+//                break;
+//            }
+//            case "Google": {
+//                try {
+////                    googleapi.createinstance(type, nameInstance);
+//                    googleapi.createinstance("n1-standard-1", nameInstance);
+//                    
+//                } catch (IOException ex) {
+//                    java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                System.out.println("Google IP:" + googleapi.getIpInstance());
+//                while((IP = googleapi.getIpInstance()) == null) {
+//                    Thread.sleep(1000);
+//                }
+//                 break;
+//            }
+//        }
+//        return IP;
+//    }
 
     /**
      * Send out workflow to be processed by BioNimbuZ core
@@ -433,44 +435,45 @@ public class WorkflowComposerBean implements Serializable {
     public String startWorkflow() {
         try {
             // Calls RestService to send the workflow to core
-            List<String> ip = new ArrayList();
-            List<Job> jobs = workflowDiagram.getWorkflow().getJobs();
-            String maquina;
+            List<String> ips = new ArrayList();
+            String ipAux;
             int aux = 0;
-            int index;
             if (agreePrediction) {
                 for (Instance f : selectedInstances) {                    
-                    System.out.println(f.toString());
-                    f.setidProgramas(idServiceSelecteds);
-                        Thread.sleep(3000);
 //                        String instanceName =f.getType().substring(25).toLowerCase();
 //                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
-                        String instanceName = getWorkflowDescription()+"-"+aux;
-                        ip.add(createInstance(f.getProvider(), f.getType(),instanceName));
-                    
-                    for (Job jAux : jobs) {
+                    String instanceName = getWorkflowDescription()+"-"+aux;
+                    if((ipAux=restService.createelasticity(f.getProvider(), f.getType(), instanceName, "create", "12345"))==null)
+                        return "start_error";
+                    f.setIp(ipAux);
+                    f.setCreationTimer(System.currentTimeMillis());
+                    f.setTimetocreate(System.currentTimeMillis());
+                    ips.add(ipAux);
+                    for (Job jAux : workflowDiagram.getWorkflow().getJobs()) {
                         if (f.getidProgramas().get(0).equals(jAux.getServiceId())) {
-                            index = workflowDiagram.getWorkflow().getJobs().lastIndexOf(jAux);
-                            jAux.setIpjob(ip);
-                            workflowDiagram.getWorkflow().getJobs().set(index, jAux);
+                            jAux.setIpjob(ips);
                             break;
                         }
                     }
+                    aux++;
                 }
             } else {
                 for (Instance f : selectedInstances) {
-                      f.setidProgramas(idServiceSelecteds);
-                        Thread.sleep(3000);
-//                        String instanceName = f.getType().substring(25).toLowerCase();
-//                        instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
-                        String instanceName = getWorkflowDescription()+"-"+aux;
-                        ip.add(createInstance(f.getProvider(), f.getType(),instanceName));
+                    f.setidProgramas(idServiceSelecteds);
+                    String instanceName = getWorkflowDescription()+"-"+aux;
+                    if((ipAux=restService.createelasticity(f.getProvider(), f.getType(), instanceName, "create", "teste"))==null){
+                        System.out.println("IP: "+ipAux);
+                        return "start_error";
+                    }
+                    f.setIp(ipAux);
+                    f.setCreationTimer(System.currentTimeMillis());
+                    f.setTimetocreate(System.currentTimeMillis());
+                    ips.add(ipAux);
+                    aux++;
                 }
                 //
-                for (Job jAux : jobs) {
-                    index = workflowDiagram.getWorkflow().getJobs().lastIndexOf(jAux);
-                    jAux.setIpjob(ip);
-                    workflowDiagram.getWorkflow().getJobs().set(index, jAux);
+                for (Job jAux : workflowDiagram.getWorkflow().getJobs()) {
+                    jAux.setIpjob(ips);
                 }
             }                
             //Setting the instances for that user;
@@ -480,14 +483,14 @@ public class WorkflowComposerBean implements Serializable {
                 sessionBean.getLoggedUser().setInstances(selectedInstances);
             //Setting the instances for that workflow;
             workflowDiagram.getWorkflow().setIntancesWorkflow(selectedInstances);
-            System.out.println("Testes");
+            workflowDiagram.getWorkflow().setUserWorkflow(loggedUser);
             if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
                 // Updates user workflow list
                 workflowDiagram.getWorkflow().setStatus(WorkflowStatus.EXECUTING);
                 sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
             }
             return "start_success";
-        } catch (InterruptedException | ServerNotReachableException ex) {
+        } catch (ServerNotReachableException ex) {
             LOGGER.error("[ServerNotReachableException] " + ex.getMessage());
             java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
         }

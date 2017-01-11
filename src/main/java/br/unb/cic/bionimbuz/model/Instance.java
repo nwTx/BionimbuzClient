@@ -27,12 +27,12 @@ public class Instance {
     private String cpuArch;
     private String provider;
     private List <String> idProgramas;
-    public DateTime creationTimer;
+    public Long creationTimer;
     public int delay;
-    public DateTime timetocreate;
+    public Long timetocreate;
     public String isnow; 
     private Long idUser;
-    
+    private String ip;
 
     /**
      * Constructor
@@ -87,7 +87,7 @@ public class Instance {
         setDescription();
     }
      
-     public Instance(String id, String type, Double costPerHour, Double memoria, int numCores, String provider, List<String> idProgramas, DateTime creationTimer, int delay, DateTime timetocreate, String isnow) {
+     public Instance(String id, String type, Double costPerHour, Double memoria, int numCores, String provider, List<String> idProgramas, Long creationTimer, int delay, Long timetocreate) {
         this.id = id;
         this.type = type;
         this.costPerHour = costPerHour;
@@ -99,6 +99,7 @@ public class Instance {
         this.delay = delay;
         this.timetocreate = timetocreate;
         this.isnow = isnow;
+        setDescription();
     }
 
     public String getType() {
@@ -224,11 +225,11 @@ public class Instance {
         this.idProgramas = idProgramas;
     }
     
-     public DateTime getCreationTimer() {
+     public Long getCreationTimer() {
         return creationTimer;
     }
 
-    public void setCreationTimer(DateTime creationTimer) {
+    public void setCreationTimer(Long creationTimer) {
         this.creationTimer = creationTimer;
     }
 
@@ -240,11 +241,11 @@ public class Instance {
         this.delay = delay;
     }
 
-    public DateTime getTimetocreate() {
+    public Long getTimetocreate() {
         return timetocreate;
     }
 
-    public void setTimetocreate(DateTime timetocreate) {
+    public void setTimetocreate(Long timetocreate) {
         this.timetocreate = timetocreate;
     }
 
@@ -262,5 +263,13 @@ public class Instance {
 
     public void setIdUser(Long idUser) {
         this.idUser = idUser;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

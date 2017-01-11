@@ -22,6 +22,7 @@ public class Workflow {
    
     private List<Instance> intancesWorkflow;
     
+    private User userWorkflow;
 
     public Workflow() {
         this.jobs = null;
@@ -78,4 +79,11 @@ public class Workflow {
         this.intancesWorkflow = intancesWorkflow;
     }
 
+    public User getUserWorkflow() {
+        return userWorkflow;
+    }
+
+    public void setUserWorkflow(User userWorkflow) {
+        this.userWorkflow = userWorkflow;
+    }
 }

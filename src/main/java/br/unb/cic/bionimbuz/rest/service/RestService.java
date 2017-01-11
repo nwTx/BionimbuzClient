@@ -1,5 +1,6 @@
 package br.unb.cic.bionimbuz.rest.service;
 
+import br.unb.cic.bionimbuz.rest.response.CreateElasticityResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import br.unb.cic.bionimbuz.model.FileInfo;
 import br.unb.cic.bionimbuz.model.SLA;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.model.Workflow;
+import br.unb.cic.bionimbuz.rest.action.CreateElasticity;
 import br.unb.cic.bionimbuz.rest.action.DeleteFile;
 import br.unb.cic.bionimbuz.rest.action.GetConfigurations;
 import br.unb.cic.bionimbuz.rest.action.GetWorkflowHistory;
@@ -20,6 +22,7 @@ import br.unb.cic.bionimbuz.rest.action.StartSla;
 import br.unb.cic.bionimbuz.rest.action.StartWorkflow;
 import br.unb.cic.bionimbuz.rest.action.Upload;
 import br.unb.cic.bionimbuz.rest.request.DeleteFileRequest;
+import br.unb.cic.bionimbuz.rest.request.CreateElasticityRequest;
 import br.unb.cic.bionimbuz.rest.request.GetConfigurationsRequest;
 import br.unb.cic.bionimbuz.rest.request.GetWorkflowHistoryRequest;
 import br.unb.cic.bionimbuz.rest.request.GetWorkflowStatusRequest;
@@ -130,6 +133,22 @@ public class RestService {
         final RequestInfo startWorkflowRequest = new StartWorkflowRequest(workflow);
         final StartWorkflowResponse response = (StartWorkflowResponse) this.restCommunicator.sendRequest(new StartWorkflow(), startWorkflowRequest);
         return response.isWorkflowProcessed();
+    }
+    /**
+     * Sends an CreateElasticity operation to the BioNimbuZ Core to be processed
+     *
+     * @param provider
+     * @param type
+     * @param instanceName
+     * @param operation
+     * @param idInstance
+     * @return String
+     * @throws ServerNotReachableException
+     */
+    public String createelasticity(String provider, String type,String instanceName, String operation, String idInstance) throws ServerNotReachableException {
+        final RequestInfo elasticityRequest = new CreateElasticityRequest(provider, type, instanceName, operation, idInstance);
+        final CreateElasticityResponse response = (CreateElasticityResponse) this.restCommunicator.sendRequest(new CreateElasticity(), elasticityRequest);
+        return response.getIp();
     }
     /**
      * Sends an user SLA QOS to the BioNimbuZ Core to be processed and returns the SLA template
