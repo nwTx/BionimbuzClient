@@ -17,15 +17,20 @@
 package br.unb.cic.bionimbuz.elasticity;
 
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.autoscaling.model.AutoScalingGroup;
+import com.amazonaws.services.autoscaling.model.PutScalingPolicyRequest;
+import com.amazonaws.services.autoscaling.model.PutScalingPolicyResult;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchClient;
+import com.amazonaws.services.cloudwatch.model.ComparisonOperator;
 import com.amazonaws.services.cloudwatch.model.Datapoint;
 import com.amazonaws.services.cloudwatch.model.Dimension;
 import com.amazonaws.services.cloudwatch.model.GetMetricStatisticsRequest;
 import com.amazonaws.services.cloudwatch.model.GetMetricStatisticsResult;
+import com.amazonaws.services.cloudwatch.model.PutMetricAlarmRequest;
+import com.amazonaws.services.cloudwatch.model.StandardUnit;
+import com.amazonaws.services.cloudwatch.model.Statistic;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -33,48 +38,30 @@ import java.util.List;
  *
  * @author guilherme
  */
-public class AmazonMonitoring{
+public class AmazonMonitoring {
 
-    final String awsAccessKey = "AKIAJDWBBQA3CFVU55OQ";
-    final String awsSecretKey = "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";
-    //final String instanceId = "i-0364f4b725eeaf44e";
+    final String awsAccessKey = "AKIAJKOWVDC56R7RR4UQ";
+    final String awsSecretKey = "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";
+    
 
-    //final AmazonCloudWatchClient client = client(awsAccessKey, awsSecretKey);
-    //final GetMetricStatisticsRequest request = request(instanceId); 
-    //final GetMetricStatisticsResult result = result(client, request);
-    //toStdOut(result, instanceId);   
     public ArrayList<Datapoint> monitoring(String instanceId) {
         final AmazonCloudWatchClient client = client(awsAccessKey, awsSecretKey);
         final GetMetricStatisticsRequest request = request(instanceId);
         final GetMetricStatisticsResult result = result(client, request);
 
-        //toStdOut(result, instanceId);   
-        //Object[] teste = null;
-        //teste = result.getDatapoints().toArray(teste);
-        ArrayList infos = new ArrayList();
-        ArrayList dates = new ArrayList();
-        ArrayList<Datapoint> dat = new ArrayList();
-        //ArrayList<ArrayList> all = new ArrayList<ArrayList>();
+        ArrayList<Datapoint> infos = new ArrayList();
 
         for (final Datapoint dataPoint : result.getDatapoints()) {
-            
-            dat.add(dataPoint);
-            //System.out.printf("%s instance's average CPU utilization : %s%n", instanceId, dataPoint.getAverage());
-            //System.out.printf("%s instance's max CPU utilization : %s%n", instanceId, dataPoint.getMaximum());
-
-            dates.add(dataPoint.getTimestamp());
-//          infos.add(dataPoint.getAverage());
-//          infos.add(dataPoint.getMaximum());
-//dates.add(infos);
-
+            infos.add(dataPoint);
+//            System.out.println("teste");
         }
 
-        Collections.sort(dat, 
-                        (o1, o2) -> o1.getTimestamp().compareTo(o2.getTimestamp()));
-        System.out.println(dat.toString());
-        return dat;
-    }
+        Collections.sort(infos,
+                (o1, o2) -> o1.getTimestamp().compareTo(o2.getTimestamp()));
+        System.out.println(infos);
 
+        return infos;
+    }
 
     public AmazonCloudWatchClient client(final String awsAccessKey, final String awsSecretKey) {
         final AmazonCloudWatchClient client = new AmazonCloudWatchClient(new BasicAWSCredentials(awsAccessKey, awsSecretKey));
@@ -83,12 +70,12 @@ public class AmazonMonitoring{
     }
 
     public GetMetricStatisticsRequest request(final String instanceId) {
-        final long twentyFourHrs = 1000 * 60 * 60 * 24;
-        final int oneHour = 60 * 60;
+        final long start = 1000 * 60 * 60 * 1;
+        final int period = 60 * 15;
         return new GetMetricStatisticsRequest()
-                .withStartTime(new Date(new Date().getTime() - twentyFourHrs))
+                .withStartTime(new Date(new Date().getTime() - start))
                 .withNamespace("AWS/EC2")
-                .withPeriod(oneHour)
+                .withPeriod(period)
                 .withDimensions(new Dimension().withName("InstanceId").withValue(instanceId))
                 .withMetricName("CPUUtilization")
                 .withStatistics("Average", "Maximum")
@@ -100,6 +87,34 @@ public class AmazonMonitoring{
         return client.getMetricStatistics(request);
     }
 
+//    public PutMetricAlarmRequest setAlarm() {
+//        Iterable<AutoScalingGroup> autoScalingGroups = null;
+//        
+//        for (AutoScalingGroup asg : autoScalingGroups) {
+//            PutScalingPolicyRequest spr = new PutScalingPolicyRequest();
+//            spr.setAutoScalingGroupName(asg.getAutoScalingGroupName());
+//            spr.setPolicyName("testautoscalePolicy");
+//            spr.setAdjustmentType("ChangeInCapacity");
+//            spr.setScalingAdjustment(2);
+//            PutScalingPolicyResult result1 = autoClient.putScalingPolicy(spr);
+//        
+//        PutMetricAlarmRequest putMetricAlarmRequest = new PutMetricAlarmRequest();
+//        putMetricAlarmRequest.setAlarmName("Scaleup-alarm");
+//        putMetricAlarmRequest.setMetricName("CPUUtilization");
+//        putMetricAlarmRequest.setComparisonOperator(ComparisonOperator.GreaterThanOrEqualToThreshold);
+//        putMetricAlarmRequest.setStatistic(Statistic.Sum);
+//        putMetricAlarmRequest.setUnit(StandardUnit.Percent);
+//        putMetricAlarmRequest.setThreshold(40.0);
+//        putMetricAlarmRequest.setPeriod(60);
+//        putMetricAlarmRequest.setEvaluationPeriods(1);
+//        List actions = new ArrayList();
+//        actions.add(result1.getPolicyARN());
+//        putMetricAlarmRequest.setAlarmActions(actions);
+//
+//        AmazonCloudWatchClient amazonCloudWatchClient = new AmazonCloudWatchClient(awscredentials);
+//        PutMetricAlarmResult alarmResult = amazonCloudWatchClient.putMetricAlarm(putMetricAlarmRequest);
+//    }
+
 //    public void toStdOut(final GetMetricStatisticsResult result, final String instanceId) {
 //        System.out.println(result); // outputs empty result: {Label: CPUUtilization,Datapoints: []}
 //        for (final Datapoint dataPoint : result.getDatapoints()) {
@@ -107,5 +122,4 @@ public class AmazonMonitoring{
 //            System.out.printf("%s instance's max CPU utilization : %s%n", instanceId, dataPoint.getMaximum());
 //        }
 //    }
-
 }

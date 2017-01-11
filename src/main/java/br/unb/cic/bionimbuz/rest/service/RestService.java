@@ -144,7 +144,7 @@ public class RestService {
        final StartSlaResponse response = (StartSlaResponse) this.restCommunicator.sendRequest(new StartSla(), new StartSlaRequest(sla, workflow));
        return response.getSla();
     }
-    
+  
     /**
      * Calls server to inform about the status of the user's workflow list
      *

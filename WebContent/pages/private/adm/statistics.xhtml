@@ -53,7 +53,7 @@
             <h:form id="form2">
                 <p:commandButton update=":form2:tabela" icon="fa-refresh"/>
                 
-<!--                <p:poll interval="3" listener="#{counterBean.increment}" update="form2" />-->
+<!--                <p:poll interval="1" update=":form2:tabela"/>-->
                 <p:dataTable id="tabela" var="instance" value="#{instanceView.instances}">
                     <p:column headerText="Id">
                         <h:outputText value="#{instance.id}" />

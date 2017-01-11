@@ -98,10 +98,15 @@
             <redirect />
         </navigation-case>
 		
-        <!-- Elasticity -->
+        <!-- adm -->
         <navigation-case>
-            <from-outcome>elasticity</from-outcome>
-            <to-view-id>/pages/private/adm/elasticity.xhtml</to-view-id>
+            <from-outcome>statistics</from-outcome>
+            <to-view-id>/pages/private/adm/statistics.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>configurations</from-outcome>
+            <to-view-id>/pages/private/adm/configurations.xhtml</to-view-id>
             <redirect />
         </navigation-case>
 		

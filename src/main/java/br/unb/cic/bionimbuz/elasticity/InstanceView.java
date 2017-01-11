@@ -55,6 +55,8 @@ public class InstanceView implements Serializable {
     public void setService(InstanceService service) {
         this.service = service;
     }
+    
+    
 
      
 

@@ -55,9 +55,9 @@ public class InstanceService {
             AmazonMonitoring api2 = new AmazonMonitoring();
             instance.setId(instanceAWS.getInstanceId());
             instance.setState(instanceAWS.getState().getName());
-            int maxsize = instanceAWS.getInstanceId().length();
+            //int maxsize = instanceAWS.getInstanceId().length();
             if (instanceAWS.getState().getName().equals("running") ) {
-                instance.setCPUutilization(api2.monitoring(instanceAWS.getInstanceId()).get(maxsize).toString());
+                instance.setCPUutilization(api2.monitoring(instanceAWS.getInstanceId()).get(3).getAverage().toString());
             } else {
                 instance.setCPUutilization("valor nao encontrado");
             }
