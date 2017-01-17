@@ -38,6 +38,11 @@
                                              value="#{signUpBean.user.cpf}" 
                                              mask="999.999.999-99"/>
                                 <br />
+                                <p:inputMask placeholder="Telefone" required="true"
+                                             requiredMessage="Telefone obrigatório" 
+                                             value="#{signUpBean.user.celphone}" 
+                                             mask="(99)9999-9999" />
+                                <br />
                                 <p:inputText placeholder="Login" value="#{signUpBean.user.login}"
                                              required="true" requiredMessage="Login obrigatório" />
                                 <br />

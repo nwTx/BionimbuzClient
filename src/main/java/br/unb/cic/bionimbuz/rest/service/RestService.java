@@ -126,11 +126,12 @@ public class RestService {
      * Sends an user workflow to the BioNimbuZ Core to be processed
      *
      * @param workflow
+     * @param sla
      * @return
      * @throws ServerNotReachableException
      */
-    public boolean startWorkflow(Workflow workflow) throws ServerNotReachableException {
-        final RequestInfo startWorkflowRequest = new StartWorkflowRequest(workflow);
+    public boolean startWorkflow(Workflow workflow, SLA sla) throws ServerNotReachableException {
+        final RequestInfo startWorkflowRequest = new StartWorkflowRequest(workflow,sla);
         final StartWorkflowResponse response = (StartWorkflowResponse) this.restCommunicator.sendRequest(new StartWorkflow(), startWorkflowRequest);
         return response.isWorkflowProcessed();
     }

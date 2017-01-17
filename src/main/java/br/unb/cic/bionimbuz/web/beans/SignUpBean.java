@@ -7,8 +7,14 @@ import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
 import br.unb.cic.bionimbuz.model.User;
 import br.unb.cic.bionimbuz.rest.service.RestService;
 import br.unb.cic.bionimbuz.security.PBKDF2;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.logging.Level;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,32 +31,42 @@ public class SignUpBean {
     }
 
     /**
-     * Calss RestService to perform a signUp request
+     * Class RestService to perform a signUp request
      *
-     * @return
+     * @param actionEvent
      */
-    public String signUp() {
+    public void signUp() {
         boolean result = false;
 
         try {            
-            
             // Hashes user password using bCrypt algorithm.
             user.setPassword(PBKDF2.generatePassword(user.getPassword()));
-            
             // Send to core
             result = restService.signUp(user);
-            
         } catch (ServerNotReachableException e) {
-            return "server_offline";
+            addMessage("server_offline");
         } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
             ex.printStackTrace();
         }
-        
-         user = new User();
-         
-         return ((result)? "sign_up_success" : "sign_up_error");
+        user = new User();
+        if(result)
+            addMessage("sign_up_success");
+        else
+            addMessage("sign_up_error");
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            context.redirect(context.getRequestContextPath() + "/");
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(SignUpBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+     
+    public void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+    
     public User getUser() {
         return user;
     }

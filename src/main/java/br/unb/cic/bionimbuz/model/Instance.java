@@ -5,8 +5,11 @@
  */
 package br.unb.cic.bionimbuz.model;
 
+import java.io.IOException;
 import java.util.List;
-import org.joda.time.DateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Class that defines the Instance
@@ -136,13 +139,12 @@ public class Instance {
 
     @Override
     public String toString() {
-
-        return "Type: " + this.getType() + ", "
-                + "CPU: " + this.getNumCores() + " " + this.getCpuHtz() + " Ghz, "
-                + "Ram:" + this.getMemoryTotal() + " GB, "
-                + "Custo por hora : $" + this.getCostPerHour() + ", "
-                + "Localidade: " + this.getLocality();
-
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (IOException ex) {
+            Logger.getLogger(Workflow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public String getDescription() {
@@ -150,7 +152,8 @@ public class Instance {
                 + "CPU: " + this.getNumCores() + " - " + this.getCpuHtz() + " Ghz, "
                 + "Ram:" + this.getMemoryTotal() + " GB, "
                 + "Custo por hora : $" + this.getCostPerHour() + ", "
-                + "Localidade: " + this.getLocality();
+                + "Localidade: " + this.getLocality() + ", "
+                + "Provedor: " + this.getProvider();
     }
 
     public void setDescription() {

@@ -313,8 +313,8 @@
                                     <p:row>
                                         <p:column colspan="2">
                                            <p:fieldset id="contract" legend="Contrato de Nível de Serviço BioNimbuZ" style="border-color: #2980b9"> 
-                                            <h:outputFormat
-                                            value="O presente Contrato de Nível de Serviços da Plataforma BioNimbuZ, 
+                                            <h:outputText escape="false"
+                                                value="&lt;p&gt;O presente Contrato de Nível de Serviços da Plataforma BioNimbuZ, 
                                             que é constituída pela Plataforma Amazon EC2, Plataforma Google Compute 
                                             Engine GCE e Plataforma de Nuvem Privada da UnB, consiste em uma 
                                             política que rege o uso da Elastic Compute Cloud (EC2) (Amazon EC2), da 
@@ -324,8 +324,8 @@
                                             e da Plataforma de nuvem da UnB celebrado entre a Amazon Web Services, 
                                             Inc., a Google Cloud Platform e a Plataforma de nuvem da UnB e os 
                                             usuários dos serviços da AWS, da Google Cloud Platform e da Plataforma 
-                                            de nuvem da UnB.
-                                            O presente SLA aplica-se separadamente a cada conta que utilizar o 
+                                            de nuvem da UnB.&lt;/p&gt;
+                                            &lt;p&gt;O presente SLA aplica-se separadamente a cada conta que utilizar o 
                                             BioNimbuZ, no qual utilizam os serviço da Amazon EC2 ou da Amazon EBS ou 
                                             da Google Compute Engine (GCE) ou da Google Cloud Store (GCS) ou da 
                                             Plataforma de nuvem a UnB. Salvo disposição em contrário neste 
@@ -334,7 +334,7 @@
                                             grafadas com letras iniciais maiúsculas assumem os significados a elas 
                                             atribuídos no Contrato do Cliente BioNimbuZ. Reservamo-nos o direito de 
                                             mudar os termos do presente SLA de acordo com o Contrato do Cliente 
-                                            BioNimbuZ." styleClass=".preformatted {white-space: pre-wrap;}"/> 
+                                            BioNimbuZ.&lt;/p&gt;"/> 
                                            </p:fieldset>
                                         </p:column>
                                     </p:row>
@@ -393,18 +393,18 @@
                                                     </p:selectOneRadio>
                                                     <h:panelGrid id="sla_type_limitation_panel" columns="5" cellpadding="5" rendered="#{workflowComposerBean.panel1 == 'Show-Panel1'}" >
                                                         <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
-                                                        <p:outputLabel for="opt1" value="Tempo de execução: " />                                                    
+                                                        <p:outputLabel for="opt1" value="Tempo de execução em horas: " />                                                    
                                                         <p:inputNumber id="opt1v" class="limitationValueExecutionTime" value="#{workflowComposerBean.limitationValueExecutionTime}" emptyValue="0.0" symbol=" H" symbolPosition="sufix"/>
                                               
-                                                        <p:inputNumber id="dd" immediate="true" title="Min To Hour" value="#{workflowComposerBean.minToHour}" converterMessage="Cannot convert to double." emptyValue="0" symbol=" Min" symbolPosition="sufix">
+<!--                                                        <p:inputNumber id="dd" immediate="true" title="Min To Hour" value="#{workflowComposerBean.minToHour}" converterMessage="Cannot convert to double." emptyValue="0" symbol=" Min" symbolPosition="sufix">
                                                             <f:validateDoubleRange minimum="1.0" />
-<!--                                                            <f:convertNumber pattern="#0.00"  locale="pt_BR"/>-->
+                                                            <f:convertNumber pattern="#0.00"  locale="pt_BR"/>
                                                             <p:ajax event="keyup" update="out1" />
                                                         </p:inputNumber>
-                                                        <h:outputText id="out1" value="#{workflowComposerBean.minToHour} H" />
+                                                        <h:outputText id="out1" value="#{workflowComposerBean.minToHour} H" />-->
 
                                                         <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
-                                                        <h:outputLabel for="opt2" value="Custo de execução" />
+                                                        <h:outputLabel for="opt2" value="Custo de execução: " />
                                                         <p:inputNumber id="opt2v" class="limitationValueExecutionCost" value="#{workflowComposerBean.limitationValueExecutionCost}" emptyValue="0.0" symbol="R$ " decimalPlaces="2"/>  
                                        
                                                     </h:panelGrid>

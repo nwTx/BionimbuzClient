@@ -40,8 +40,8 @@ import java.util.List;
  */
 public class AmazonMonitoring {
 
-    final String awsAccessKey = "AKIAJKOWVDC56R7RR4UQ";
-    final String awsSecretKey = "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";
+    final String awsAccessKey = "";
+    final String awsSecretKey = "";
     
 
     public ArrayList<Datapoint> monitoring(String instanceId) {

@@ -18,18 +18,19 @@ import java.util.UUID;
  */
 public class SLA {
     
-    private String id="SLA" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);;
+    private String id="SLA" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
     private User user;
     private String provider;
-    private int objective;
+    private Integer objective;
     private Long period;
     private List <PluginService> services;
     private List<Instance> instances;
     private Double value;
-    private Date time;
+    private Long time;
     private Integer limitationType;
-    private Double limitationValueExecutionTime;
+    private Long limitationValueExecutionTime;
     private Double limitationValueExecutionCost;
+    
     
     public SLA(){
         
@@ -39,10 +40,25 @@ public class SLA {
         this.period = 0l;
         this.instances=null;
         this.services=null;
-        this.time=null;
-        this.time=new Date();
+        this.time=0l;
         
     }
+
+    public SLA(User user, String provider, Integer objective, Long period, List<PluginService> services, List<Instance> instances, Double value, Long time, Integer limitationType, Long limitationValueExecutionTime, Double limitationValueExecutionCost) {
+        this.user = user;
+        this.provider = provider;
+        this.objective = objective;
+        this.period = period;
+        this.services = services;
+        this.instances = instances;
+        this.value = value;
+        this.time = time;
+        this.limitationType = limitationType;
+        this.limitationValueExecutionTime = limitationValueExecutionTime;
+        this.limitationValueExecutionCost = limitationValueExecutionCost;
+    }
+    
+   
     public SLA(SLA sla){
         
         this.user=sla.getUser();
@@ -68,7 +84,7 @@ public class SLA {
         this.limitationValueExecutionTime=slacomp.getLimitationValueExecutionTime();
     }
     
-    public SLA(WorkflowComposerBean slacomp,User user, String provider, List<PluginService> service,Date time, Double value){
+    public SLA(WorkflowComposerBean slacomp,User user, String provider, List<PluginService> service,Long time, Double value){
      
         this.user=user;
         this.provider=provider;
@@ -111,14 +127,14 @@ public class SLA {
     /**
      * @return the objective
      */
-    public int getObjective() {
+    public Integer getObjective() {
         return objective;
     }
 
     /**
      * @param objective the objective to set
      */
-    public void setObjective(int objective) {
+    public void setObjective(Integer objective) {
         this.objective = objective;
     }
 
@@ -182,14 +198,14 @@ public class SLA {
     /**
      * @return the time
      */
-    public Date getTime() {
+    public Long getTime() {
         return time;
     }
 
     /**
      * @param time the time to set
      */
-    public void setTime(Date time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 
@@ -224,14 +240,14 @@ public class SLA {
     /**
      * @return the limitationValueExecutionTime
      */
-    public Double getLimitationValueExecutionTime() {
+    public Long getLimitationValueExecutionTime() {
         return limitationValueExecutionTime;
     }
 
     /**
      * @param limitationValueExecutionTime the limitationValueExecutionTime to set
      */
-    public void setLimitationValueExecutionTime(Double limitationValueExecutionTime) {
+    public void setLimitationValueExecutionTime(Long limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
     }
 

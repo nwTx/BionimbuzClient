@@ -96,7 +96,7 @@ public class WorkflowComposerBean implements Serializable {
     private String panel1 = "Hide-Panel1";
     private boolean limitation = false;
     private Integer limitationType;
-    private Double limitationValueExecutionTime;
+    private Long limitationValueExecutionTime;
     private Double limitationValueExecutionCost;
     private List<Instance> instances;
     private List<Instance> selectedInstances;
@@ -220,9 +220,11 @@ public class WorkflowComposerBean implements Serializable {
         }
         //Módulo Michel Prediction Tab
         if (toGoStep.equals("provisionamento")) {
+                        System.out.println("aqui");
         }
         //Provision Tab
         if (toGoStep.equals("sla_option")) {
+            
             setMinToHour(0.0);
             //TODO: Get HashMap List from Michel Module
             if (agreePrediction) {
@@ -248,16 +250,16 @@ public class WorkflowComposerBean implements Serializable {
         }
         //SLA Tab
         if (toGoStep.equals("workflow_summary")) {
-            String provider;
 //        System.out.println("peguei: "+slacomp.getSelectedInstancies().get(0).toString());
             System.out.println(minToHour);
             selectedInstances.stream().forEach((f) -> {
-                System.out.println(f.toString());
+                System.out.println(f.getDescription());
             });
             System.out.println("objective: " + getObjective());
             System.out.println("getLimitationValueExecutionCost:" + this.getLimitationValueExecutionCost());
             System.out.println("getLimitationValueExecutionTime:" + this.getLimitationValueExecutionTime());
             //TODO: alterar para o usuário bionimbuz depois da implementação do cadastro de usuário
+            
 
 //            System.out.println(sla.getId());
 //            provider = new User("bionimbuz", PBKDF2.generatePassword("@BioNimbuZ!"), "BioNimbuZ", "71004832206", "bionimbuz@gmail.com", "0");
@@ -484,7 +486,9 @@ public class WorkflowComposerBean implements Serializable {
             //Setting the instances for that workflow;
             workflowDiagram.getWorkflow().setIntancesWorkflow(selectedInstances);
             workflowDiagram.getWorkflow().setUserWorkflow(loggedUser);
-            if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
+            sla= new SLA(loggedUser, PROVIDER, getObjective(),0l , selectedservicesList, selectedInstances,0D, System.currentTimeMillis(),getLimitationType(), getLimitationValueExecutionTime(), limitationValueExecutionCost);
+            
+            if (restService.startWorkflow(workflowDiagram.getWorkflow(),sla)) {
                 // Updates user workflow list
                 workflowDiagram.getWorkflow().setStatus(WorkflowStatus.EXECUTING);
                 sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());
@@ -786,11 +790,11 @@ public class WorkflowComposerBean implements Serializable {
         this.chosenInstanceId = chosenInstanceId;
     }
 
-    public Double getLimitationValueExecutionTime() {
+    public Long getLimitationValueExecutionTime() {
         return limitationValueExecutionTime;
     }
 
-    public void setLimitationValueExecutionTime(Double limitationValueExecutionTime) {
+    public void setLimitationValueExecutionTime(Long limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
     }
 

@@ -77,7 +77,7 @@ public class PeriodicCheckerBuckets implements Runnable {
         
         //AMAZON
         //Brazil
-        aux = new BioBucket(StorageProvider.AMAZON, "bionimbuz-a-br", (bucketsFolder + "bionimbuz-a-br"));
+        aux = new BioBucket(StorageProvider.AMAZON, "bionimbuz-a-br2", (bucketsFolder + "bionimbuz-a-br2"));
         aux.setEndPoint("s3-sa-east-1.amazonaws.com");
         bucketList.add(aux);
 //
@@ -93,8 +93,8 @@ public class PeriodicCheckerBuckets implements Runnable {
         
 //        //GOOGLE
 //        //US
-//        aux = new BioBucket(StorageProvider.GOOGLE, "bionimbuz-g-us", (bucketsFolder + "bionimbuz-g-us"));
-//        bucketList.add(aux);
+            aux = new BioBucket(StorageProvider.GOOGLE, "bustling-cosmos-151913.appspot.com", (bucketsFolder + "bustling-cosmos-151913.appspot.com"));
+            bucketList.add(aux);
 
         //EU
 //        aux = new BioBucket(StorageProvider.GOOGLE, "bionimbuz-g-eu", (bucketsFolder + "bionimbuz-g-eu"));

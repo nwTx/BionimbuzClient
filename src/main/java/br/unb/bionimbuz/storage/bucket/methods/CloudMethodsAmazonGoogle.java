@@ -41,7 +41,7 @@ public class CloudMethodsAmazonGoogle extends CloudStorageMethods{
             
             case AMAZON: {
                 
-                byte[] encoded = Files.readAllBytes(Paths.get(authFolder + "accesskey.txt"));
+                byte[] encoded = Files.readAllBytes(Paths.get(authFolder + "AwsCredentials.txt"));
                 String fileContent = new String(encoded, Charset.defaultCharset());
                 //System.out.println("AuthString: " + fileContent);
                 String accessKeyID, accessKey;
@@ -55,7 +55,7 @@ public class CloudMethodsAmazonGoogle extends CloudStorageMethods{
             }
             case GOOGLE: {
                 
-                String command = gcloudFolder + "gcloud auth activate-service-account --key-file=" + authFolder + "cred.json";
+                String command = gcloudFolder + "gcloud auth activate-service-account --key-file=" + authFolder + "GoogleCredentials.json";
                 ExecCommand(command);
 
                 break;
