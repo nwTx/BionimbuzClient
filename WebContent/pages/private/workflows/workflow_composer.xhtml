@@ -377,24 +377,22 @@
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2">
-                                            <p:outputLabel value="Limitar a execução:" />
-                                            <p:selectOneRadio value="#{workflowComposerBean.panel1}">
-                                                <f:selectItem itemLabel="Sim" itemValue="Show-Panel1" />
-                                                <f:selectItem itemLabel="Não" itemValue="Hide-Panel1" />
-                                                <f:ajax render="select-type-limitation-panel" />
-                                            </p:selectOneRadio> 
-                                            <h:panelGrid>
-                                                <h:panelGroup id="select-type-limitation-panel">
+                                             <h:outputText value="Deseja limitar a execução? " />
+                                             <p:selectBooleanButton id="limit" value="#{workflowComposerBean.limitation}" onLabel="Sim" offLabel="Não" style="width:60px">
+                                                 <f:ajax render="select-type-limitation-panel" />
+                                             </p:selectBooleanButton>
+                                            <h:panelGrid  >
+                                                <h:panelGroup id="select-type-limitation-panel"  >
                                                     <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
                                                     <p:selectOneRadio id="sla_type_limitation" value="#{workflowComposerBean.limitationType}" layout="custom" onchange="handleLimitations(this)">
                                                         <!--                                                        <p:ajax  update="opt1v, opt2v" />-->
-                                                        <f:selectItem class="sla-type-imitation" itemLabel="Tempo de execução:" itemValue="0" itemDisabled="false"/>
-                                                        <f:selectItem class="sla-type-imitation" itemLabel="Custo de execução" itemValue="1" />
+                                                        <f:selectItem class="sla-type-limitation" itemLabel="Tempo de execução:" itemValue="0" itemDisabled="false"/>
+                                                        <f:selectItem class="sla-type-limitation" itemLabel="Custo de execução" itemValue="1" />
                                                     </p:selectOneRadio>
-                                                    <h:panelGrid id="sla_type_limitation_panel" columns="5" cellpadding="5" rendered="#{workflowComposerBean.panel1 == 'Show-Panel1'}" >
+                                                    <h:panelGrid id="sla_type_limitation_panel" columns="3" cellpadding="5" rendered="#{workflowComposerBean.limitation == true}" >
                                                         <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
                                                         <p:outputLabel for="opt1" value="Tempo de execução em horas: " />                                                    
-                                                        <p:inputNumber id="opt1v" class="limitationValueExecutionTime" value="#{workflowComposerBean.limitationValueExecutionTime}" emptyValue="0.0" symbol=" H" symbolPosition="sufix"/>
+                                                        <p:inputNumber id="opt1v" class="limitationValueExecutionTime" value="#{workflowComposerBean.limitationValueExecutionTime}" emptyValue="0.00" symbol=" H" symbolPosition="sufix" decimalPlaces="4"/>
                                               
 <!--                                                        <p:inputNumber id="dd" immediate="true" title="Min To Hour" value="#{workflowComposerBean.minToHour}" converterMessage="Cannot convert to double." emptyValue="0" symbol=" Min" symbolPosition="sufix">
                                                             <f:validateDoubleRange minimum="1.0" />
@@ -405,7 +403,7 @@
 
                                                         <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
                                                         <h:outputLabel for="opt2" value="Custo de execução: " />
-                                                        <p:inputNumber id="opt2v" class="limitationValueExecutionCost" value="#{workflowComposerBean.limitationValueExecutionCost}" emptyValue="0.0" symbol="R$ " decimalPlaces="2"/>  
+                                                        <p:inputNumber id="opt2v" class="limitationValueExecutionCost" value="#{workflowComposerBean.limitationValueExecutionCost}" emptyValue="0.00" symbol="R$ " decimalPlaces="4"/>  
                                        
                                                     </h:panelGrid>
 

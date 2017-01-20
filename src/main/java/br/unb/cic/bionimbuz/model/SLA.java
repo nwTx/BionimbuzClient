@@ -6,11 +6,15 @@
 package br.unb.cic.bionimbuz.model;
 
 //import br.unb.cic.bionimbuz.web.beans.SlaComposerBean;
-import br.unb.cic.bionimbuz.web.beans.WorkflowComposerBean;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  *
@@ -18,84 +22,56 @@ import java.util.UUID;
  */
 public class SLA {
     
-    private String id="SLA" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
+    private String id="SLA" + new SimpleDateFormat("dd-MM-yyyy-HH-mm").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
     private User user;
+    private String idWorkflow;
     private String provider;
     private Integer objective;
     private Long period;
-    private List <PluginService> services;
-    private List<Instance> instances;
     private Double value;
     private Long time;
     private Integer limitationType;
     private Long limitationValueExecutionTime;
     private Double limitationValueExecutionCost;
-    
-    
-    public SLA(){
-        
-        this.user=null;
-        this.provider=null;
-        this.objective= 0;
-        this.period = 0l;
-        this.instances=null;
-        this.services=null;
-        this.time=0l;
-        
+    private Boolean prediction;
+    private List<Prediction> solutions;
+    private Boolean limitationExecution;
+
+    public SLA() {
+
     }
 
-    public SLA(User user, String provider, Integer objective, Long period, List<PluginService> services, List<Instance> instances, Double value, Long time, Integer limitationType, Long limitationValueExecutionTime, Double limitationValueExecutionCost) {
+    public SLA(String id, User user, String idWorkflow, String provider, Integer objective, Long period, Double value, Long time, Integer limitationType, Long limitationValueExecutionTime, Double limitationValueExecutionCost, Boolean prediction, List<Prediction> solutions, Boolean limitationExecution) {
+        this.id = id;
         this.user = user;
+        this.idWorkflow = idWorkflow;
         this.provider = provider;
         this.objective = objective;
         this.period = period;
-        this.services = services;
-        this.instances = instances;
         this.value = value;
         this.time = time;
         this.limitationType = limitationType;
         this.limitationValueExecutionTime = limitationValueExecutionTime;
         this.limitationValueExecutionCost = limitationValueExecutionCost;
+        this.prediction = prediction;
+        this.solutions = solutions;
+        this.limitationExecution = limitationExecution;
     }
-    
-   
-    public SLA(SLA sla){
-        
-        this.user=sla.getUser();
-        this.provider=sla.getProvider();
-        this.objective= sla.getObjective();
-        this.period = sla.getPeriod();
-        this.instances=sla.getInstances();
-        this.services=sla.getServices();
-        this.time=sla.getTime();
-        
+
+    public SLA(String provider, Integer objective, Long period, Double value, Long time, Integer limitationType, Long limitationValueExecutionTime, Double limitationValueExecutionCost, Boolean prediction, List<Prediction> solutions, Boolean limitationExecution) {
+        this.provider = provider;
+        this.objective = objective;
+        this.period = period;
+        this.value = value;
+        this.time = time;
+        this.limitationType = limitationType;
+        this.limitationValueExecutionTime = limitationValueExecutionTime;
+        this.limitationValueExecutionCost = limitationValueExecutionCost;
+        this.prediction = prediction;
+        this.solutions = solutions;
+        this.limitationExecution = limitationExecution;
     }
-    public SLA(WorkflowComposerBean slacomp,User user, String provider, List<PluginService> services){
-        
-        this.user=user;
-        this.provider=provider;
-        this.objective= slacomp.getObjective();
-        System.out.println("objective constructor:"+slacomp.getObjective());
-        this.period = 2l;
-        this.instances=slacomp.getSelectedInstancies();
-        this.services= services;
-        this.limitationType= slacomp.getLimitationType();
-        this.limitationValueExecutionCost=slacomp.getLimitationValueExecutionCost();
-        this.limitationValueExecutionTime=slacomp.getLimitationValueExecutionTime();
-    }
-    
-    public SLA(WorkflowComposerBean slacomp,User user, String provider, List<PluginService> service,Long time, Double value){
-     
-        this.user=user;
-        this.provider=provider;
-        this.objective= slacomp.getObjective();
-        this.period = 2l;
-        this.instances=slacomp.getSelectedInstancies();
-        this.services=service;
-        this.time= time;
-        this.value=value;
-    }
-    
+
     /**
      * @return the user
      */
@@ -150,35 +126,6 @@ public class SLA {
      */
     public void setPeriod(Long period) {
         this.period = period;
-    }
-
-    /**
-     * @return the services
-     */
-    public List <PluginService> getServices() {
-        return services;
-    }
-
-    /**
-     * @param services the services to set
-     */
-    public void setServices(List <PluginService> services) {
-        this.services = services;
-    }
-
-    /**
-     * @return the instances
-     */
-    
-    public List<Instance> getInstances() {
-        return instances;
-    }
-
-    /**
-     * @param instances the instances to set
-     */
-    public void setInstances(List<Instance> instances) {
-        this.instances = instances;
     }
 
     /**
@@ -245,7 +192,8 @@ public class SLA {
     }
 
     /**
-     * @param limitationValueExecutionTime the limitationValueExecutionTime to set
+     * @param limitationValueExecutionTime the limitationValueExecutionTime to
+     * set
      */
     public void setLimitationValueExecutionTime(Long limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
@@ -259,10 +207,53 @@ public class SLA {
     }
 
     /**
-     * @param limitationValueExecutionCost the limitationValueExecutionCost to set
+     * @param limitationValueExecutionCost the limitationValueExecutionCost to
+     * set
      */
     public void setLimitationValueExecutionCost(Double limitationValueExecutionCost) {
         this.limitationValueExecutionCost = limitationValueExecutionCost;
+    }
+
+    public Boolean getPrediction() {
+        return prediction;
+    }
+
+    public void setPrediction(Boolean prediction) {
+        this.prediction = prediction;
+    }
+
+    public List<Prediction> getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(List<Prediction> solutions) {
+        this.solutions = solutions;
+    }
+
+    public Boolean getLimitationExecution() {
+        return limitationExecution;
+    }
+
+    public void setLimitationExecution(Boolean limitationExecution) {
+        this.limitationExecution = limitationExecution;
+    }
+
+    public String getIdWorkflow() {
+        return idWorkflow;
+    }
+
+    public void setIdWorkflow(String idWorkflow) {
+        this.idWorkflow = idWorkflow;
+    }
+    
+    @Override
+    public String toString() {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (IOException ex) {
+            Logger.getLogger(SLA.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
 }
