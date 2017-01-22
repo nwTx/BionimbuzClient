@@ -9,7 +9,6 @@ package br.unb.cic.bionimbuz.model;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -21,9 +20,8 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author Breno Rodrigues
  */
 public class SLA {
-    
-    private String id="SLA" + new SimpleDateFormat("dd-MM-yyyy-HH-mm").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
-    private User user;
+
+    private String id = "SLA" + new SimpleDateFormat("dd-MM-yyyy-HH-mm").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
     private String idWorkflow;
     private String provider;
     private Integer objective;
@@ -41,9 +39,23 @@ public class SLA {
 
     }
 
-    public SLA(String id, User user, String idWorkflow, String provider, Integer objective, Long period, Double value, Long time, Integer limitationType, Long limitationValueExecutionTime, Double limitationValueExecutionCost, Boolean prediction, List<Prediction> solutions, Boolean limitationExecution) {
+    public SLA( String idWorkflow, String provider, Integer objective, Long period, Double value, Long time, Integer limitationType, Long limitationValueExecutionTime, Double limitationValueExecutionCost, Boolean prediction, List<Prediction> solutions, Boolean limitationExecution) {
+        this.provider = provider;
+        this.idWorkflow = idWorkflow;
+        this.objective = objective;
+        this.period = period;
+        this.value = value;
+        this.time = time;
+        this.limitationType = limitationType;
+        this.limitationValueExecutionTime = limitationValueExecutionTime;
+        this.limitationValueExecutionCost = limitationValueExecutionCost;
+        this.prediction = prediction;
+        this.solutions = solutions;
+        this.limitationExecution = limitationExecution;
+    }
+
+    public SLA(String id, String idWorkflow, String provider, Integer objective, Long period, Double value, Long time, Integer limitationType, Long limitationValueExecutionTime, Double limitationValueExecutionCost, Boolean prediction, List<Prediction> solutions, Boolean limitationExecution) {
         this.id = id;
-        this.user = user;
         this.idWorkflow = idWorkflow;
         this.provider = provider;
         this.objective = objective;
@@ -56,34 +68,6 @@ public class SLA {
         this.prediction = prediction;
         this.solutions = solutions;
         this.limitationExecution = limitationExecution;
-    }
-
-    public SLA(String provider, Integer objective, Long period, Double value, Long time, Integer limitationType, Long limitationValueExecutionTime, Double limitationValueExecutionCost, Boolean prediction, List<Prediction> solutions, Boolean limitationExecution) {
-        this.provider = provider;
-        this.objective = objective;
-        this.period = period;
-        this.value = value;
-        this.time = time;
-        this.limitationType = limitationType;
-        this.limitationValueExecutionTime = limitationValueExecutionTime;
-        this.limitationValueExecutionCost = limitationValueExecutionCost;
-        this.prediction = prediction;
-        this.solutions = solutions;
-        this.limitationExecution = limitationExecution;
-    }
-
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(User user) {
-        this.user = user;
     }
 
     /**
@@ -245,7 +229,7 @@ public class SLA {
     public void setIdWorkflow(String idWorkflow) {
         this.idWorkflow = idWorkflow;
     }
-    
+
     @Override
     public String toString() {
         try {
@@ -255,5 +239,5 @@ public class SLA {
         }
         return null;
     }
-    
+
 }

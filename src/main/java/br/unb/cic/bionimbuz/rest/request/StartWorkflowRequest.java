@@ -10,14 +10,12 @@ import br.unb.cic.bionimbuz.model.Workflow;
 public class StartWorkflowRequest implements RequestInfo {
 
     private Workflow workflow;
-    private SLA sla;
 
     public StartWorkflowRequest() {
     }
 
-    public StartWorkflowRequest(Workflow workflow, SLA sla) {
+    public StartWorkflowRequest(Workflow workflow) {
         this.workflow = workflow;
-        this.sla = sla;
     }
 
     public void setWorkflow(Workflow workflow) {
@@ -27,13 +25,4 @@ public class StartWorkflowRequest implements RequestInfo {
     public Workflow getWorkflow() {
         return workflow;
     }
-
-    public SLA getSla() {
-        return sla;
-    }
-
-    public void setSla(SLA sla) {
-        this.sla = sla;
-    }
-
 }

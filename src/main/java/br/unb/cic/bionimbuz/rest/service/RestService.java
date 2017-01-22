@@ -130,8 +130,8 @@ public class RestService {
      * @return
      * @throws ServerNotReachableException
      */
-    public boolean startWorkflow(Workflow workflow, SLA sla) throws ServerNotReachableException {
-        final RequestInfo startWorkflowRequest = new StartWorkflowRequest(workflow,sla);
+    public boolean startWorkflow(Workflow workflow) throws ServerNotReachableException {
+        final RequestInfo startWorkflowRequest = new StartWorkflowRequest(workflow);
         final StartWorkflowResponse response = (StartWorkflowResponse) this.restCommunicator.sendRequest(new StartWorkflow(), startWorkflowRequest);
         return response.isWorkflowProcessed();
     }

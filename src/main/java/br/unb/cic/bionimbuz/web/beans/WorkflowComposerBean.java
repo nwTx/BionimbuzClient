@@ -546,9 +546,9 @@ public class WorkflowComposerBean implements Serializable {
             }catch(Exception ex){
                 execuTime=null;
             }
-            sla = new SLA(PROVIDER, getObjective(), 0l, 0D, 0l, getLimitationType(), execuTime, limitationValueExecutionCost,agreePrediction,solutions,limitation);
-
-            if (restService.startWorkflow(workflowDiagram.getWorkflow(), sla)) {
+            sla = new SLA(workflowDiagram.getWorkflow().getId(), PROVIDER ,getObjective(), 0l, 0D, 0l, getLimitationType(), execuTime, limitationValueExecutionCost,agreePrediction,solutions,limitation);
+            workflowDiagram.getWorkflow().setSla(sla);
+            if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
                 // Updates user workflow list
                 workflowDiagram.getWorkflow().setStatus(WorkflowStatus.EXECUTING);
                 sessionBean.getLoggedUser().getWorkflows().add(workflowDiagram.getWorkflow());

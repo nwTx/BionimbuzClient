@@ -9,21 +9,15 @@ import java.util.UUID;
 public class Workflow {
 
     private final String id = "Workflow" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "-" + UUID.randomUUID().toString().substring(0, 13);
-
     private final List<Job> jobs;
-
     private final String creationDatestamp;
-
     private final Long userId;
-
     private final String description;
-
     private WorkflowStatus status;
-   
     private List<Instance> intancesWorkflow;
-    
     private User userWorkflow;
-
+    private SLA sla;
+    
     public Workflow() {
         this.jobs = null;
         this.creationDatestamp = null;
@@ -37,6 +31,17 @@ public class Workflow {
         this.jobs = new ArrayList<>();
         this.description = description;
         this.status = WorkflowStatus.PENDING;
+    }
+
+    public Workflow(List<Job> jobs, String creationDatestamp, Long userId, String description, WorkflowStatus status, List<Instance> intancesWorkflow, User userWorkflow, SLA sla) {
+        this.jobs = jobs;
+        this.creationDatestamp = creationDatestamp;
+        this.userId = userId;
+        this.description = description;
+        this.status = status;
+        this.intancesWorkflow = intancesWorkflow;
+        this.userWorkflow = userWorkflow;
+        this.sla = sla;
     }
 
     public String getId() {
@@ -85,5 +90,12 @@ public class Workflow {
 
     public void setUserWorkflow(User userWorkflow) {
         this.userWorkflow = userWorkflow;
+    }
+    public SLA getSla() {
+        return sla;
+    }
+
+    public void setSla(SLA sla) {
+        this.sla = sla;
     }
 }
