@@ -359,9 +359,6 @@
                                                 <p:column headerText="Descrição"  style="text-align: center">
                                                     <p:outputLabel value="#{instance.description}"/>
                                                 </p:column>
-<!--                                                <p:column headerText="Quantidade"  style="text-align: center">
-                                                    <h:outputLabel value="#{instance.quantity}"/>
-                                                </p:column>-->
                                             </p:dataTable>
                                         </p:column>
                                     </p:row>
@@ -383,9 +380,7 @@
                                              </p:selectBooleanButton>
                                             <h:panelGrid  >
                                                 <h:panelGroup id="select-type-limitation-panel"  >
-                                                    <!--<p:outputPanel id="select_type_limitation" style="margin-bottom:10px">-->
                                                     <p:selectOneRadio id="sla_type_limitation" value="#{workflowComposerBean.limitationType}" layout="custom" onchange="handleLimitations(this)">
-                                                        <!--                                                        <p:ajax  update="opt1v, opt2v" />-->
                                                         <f:selectItem class="sla-type-limitation" itemLabel="Tempo de execução:" itemValue="0" itemDisabled="false"/>
                                                         <f:selectItem class="sla-type-limitation" itemLabel="Custo de execução" itemValue="1" />
                                                     </p:selectOneRadio>
@@ -393,26 +388,21 @@
                                                         <p:radioButton id="opt1" for="sla_type_limitation" itemIndex="0" />
                                                         <p:outputLabel for="opt1" value="Tempo de execução em horas: " />                                                    
                                                         <p:inputNumber id="opt1v" class="limitationValueExecutionTime" value="#{workflowComposerBean.limitationValueExecutionTime}" emptyValue="0.00" symbol=" H" symbolPosition="sufix" decimalPlaces="4"/>
-                                              
-<!--                                                        <p:inputNumber id="dd" immediate="true" title="Min To Hour" value="#{workflowComposerBean.minToHour}" converterMessage="Cannot convert to double." emptyValue="0" symbol=" Min" symbolPosition="sufix">
-                                                            <f:validateDoubleRange minimum="1.0" />
-                                                            <f:convertNumber pattern="#0.00"  locale="pt_BR"/>
-                                                            <p:ajax event="keyup" update="out1" />
-                                                        </p:inputNumber>
-                                                        <h:outputText id="out1" value="#{workflowComposerBean.minToHour} H" />-->
-
                                                         <p:radioButton id="opt2" for="sla_type_limitation" itemIndex="1" />
                                                         <h:outputLabel for="opt2" value="Custo de execução: " />
                                                         <p:inputNumber id="opt2v" class="limitationValueExecutionCost" value="#{workflowComposerBean.limitationValueExecutionCost}" emptyValue="0.00" symbol="R$ " decimalPlaces="4"/>  
-                                       
                                                     </h:panelGrid>
-
                                                 </h:panelGroup>
                                             </h:panelGrid> 
+                                             <p:row>
+                                            <h:outputLabel id="exceedValue" value="Custo Máximo disposto à pagar, caso execução não termine: " />
+                                            <p:inputNumber id="exceedValueInput" class="exceedValueExecutionCost" value="#{workflowComposerBean.exceedValueExecutionCost}" emptyValue="0.00" symbol="R$ " decimalPlaces="4"/>  
+                                            </p:row>
                                             <h:outputText value="Aceito os termos do contrato de SLA: " />
                                             <p:selectBooleanButton id="value1" value="#{workflowComposerBean.agreeContract}" onLabel="Sim" offLabel="Não" style="width:60px"/>
                                         </p:column>
                                     </p:row>
+                                    
                                 </p:panelGrid>
                             </p:fieldset>  
                         </p:panel> 

@@ -41,6 +41,7 @@ public class SignUpBean {
         try {            
             // Hashes user password using bCrypt algorithm.
             user.setPassword(PBKDF2.generatePassword(user.getPassword()));
+            user.setStorageUsage(0L);
             // Send to core
             result = restService.signUp(user);
         } catch (ServerNotReachableException e) {

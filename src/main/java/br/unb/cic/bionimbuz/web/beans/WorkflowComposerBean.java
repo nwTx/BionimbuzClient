@@ -39,12 +39,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SlideEndEvent;
@@ -101,6 +96,7 @@ public class WorkflowComposerBean implements Serializable {
     private Integer limitationType;
     private Double limitationValueExecutionTime;
     private Double limitationValueExecutionCost;
+    private Double exceedValueExecutionCost;
     private List<Instance> instances;
     private List<Instance> selectedInstances;
     private Instance instance;
@@ -115,7 +111,7 @@ public class WorkflowComposerBean implements Serializable {
 
     //--------------------------Prediction Declarations ---
     private Double preco;
-    private int number2=0;
+    private int number2 = 0;
     private boolean agreePrediction;
     private List<Prediction> solutions;
 
@@ -144,14 +140,15 @@ public class WorkflowComposerBean implements Serializable {
         selectedInstances = new ArrayList<>();
         selectedservicesList = new ArrayList<>();
         idServiceSelecteds = new ArrayList<>();
-        solutions= new ArrayList<>();
+        solutions = new ArrayList<>();
 //        instances.add(new Instance("Micro", 0.03, 10, "Brazil", 1.0, 3.3, "Xeon", 1, 20.0, "sata"));
 //        instances.add(new Instance("Macro", 0.24, 5, "us-west", 4.0, 3.3, "Xeon", 4, 120.0, "sata"));
 //        instances.add(new Instance("Large", 0.41, 3, "us-west", 8.0, 3.3, "Xeon", 8, 240.0, "sata"));
         limitation = false;
         itest = new Instance();
         limitationValueExecutionTime = null;
-        limitationValueExecutionCost= null;
+        limitationValueExecutionCost = null;
+        exceedValueExecutionCost=null;
         itest.setId("Default");
         itest.setType("lab5");
         itest.setCostPerHour(0D);
@@ -167,7 +164,7 @@ public class WorkflowComposerBean implements Serializable {
         itest.setTimetocreate(System.currentTimeMillis());
         itest.setIdUser(loggedUser.getId());
         itest.setIp("164.41.209.97");
-        
+
         instances.add(itest);
         //--------------------------------------------------
     }
@@ -243,12 +240,13 @@ public class WorkflowComposerBean implements Serializable {
                 LOGGER.error("[MalformedURLException] " + e.getMessage());
             }
         }
-        
-        if(currentStep.equals("sla_option") && toGoStep.equals("provisionamento")){
-            if(agreePrediction)
+
+        if (currentStep.equals("sla_option") && toGoStep.equals("provisionamento")) {
+            if (agreePrediction) {
                 return "previsao";
-            else
+            } else {
                 return "provisionamento";
+            }
         }
         //Módulo Michel Prediction Tab
         if (toGoStep.equals("provisionamento")) {
@@ -262,30 +260,27 @@ public class WorkflowComposerBean implements Serializable {
                 //Descomentar apos o michel retornar a lista;
 //                solutions.addAll(solutions);
 //                solution to not put repetead
-                if(!solutions.contains(so)){
-                    
-    //                solutions.put(selectedservicesList.get(1).getId(), instances.get(1));
+                if (!solutions.contains(so)) {
+
+                    //                solutions.put(selectedservicesList.get(1).getId(), instances.get(1));
                     //Interating on Hash map and and set the program for that kind of instance
-                    for(Prediction s1 : solutions){
+                    for (Prediction s1 : solutions) {
                         s1.getInstance().setIdUser(sessionBean.getLoggedUser().getId());
                         selectedInstances.add(s1.getInstance());
                     }
-                    
+
                 }
-                return "sla_option" ;
+                return "sla_option";
             }
         }
         //Provision Tab
         if (toGoStep.equals("sla_option")) {
             System.out.println("Provisionamento");
-            
+
 //            setMinToHour(0.0);
             //TODO: Get HashMap List from Michel Module
-            
-
         }
-      
-            
+
         //SLA Tab
         if (toGoStep.equals("workflow_summary")) {
             System.out.println("SLA");
@@ -297,13 +292,13 @@ public class WorkflowComposerBean implements Serializable {
             System.out.println("objective: " + getObjective());
             System.out.println("getLimitationValueExecutionCost:" + this.getLimitationValueExecutionCost());
             System.out.println("getLimitationValueExecutionTime:" + this.getLimitationValueExecutionTime());
-             System.out.println("limitation: "+limitation);
-            System.out.println("limitationType: "+limitationType);
-            System.out.println("limitationValueExecutionCost: "+limitationValueExecutionCost);
-            System.out.println("limitationValueExecutionTime: "+limitationValueExecutionTime);
-            if(!limitation){
-                limitationValueExecutionCost=null;
-                limitationValueExecutionTime=null;
+            System.out.println("limitation: " + limitation);
+            System.out.println("limitationType: " + limitationType);
+            System.out.println("limitationValueExecutionCost: " + limitationValueExecutionCost);
+            System.out.println("limitationValueExecutionTime: " + limitationValueExecutionTime);
+            if (!limitation) {
+                limitationValueExecutionCost = null;
+                limitationValueExecutionTime = null;
             }
             //TODO: alterar para o usuário bionimbuz depois da implementação do cadastro de usuário
 
@@ -482,7 +477,7 @@ public class WorkflowComposerBean implements Serializable {
     public String startWorkflow() {
         try {
             // Calls RestService to send the workflow to core
-           
+
             List<String> ips = new ArrayList();
             String ipAux;
             int aux = 0;
@@ -518,7 +513,7 @@ public class WorkflowComposerBean implements Serializable {
                             System.out.println("IP: " + ipAux);
                             return "start_error";
                         }
-                    f.setIp(ipAux);
+                        f.setIp(ipAux);
                     }
                     ipAux = f.getIp();
                     f.setCreationTimer(System.currentTimeMillis());
@@ -541,12 +536,12 @@ public class WorkflowComposerBean implements Serializable {
             workflowDiagram.getWorkflow().setIntancesWorkflow(selectedInstances);
             workflowDiagram.getWorkflow().setUserWorkflow(loggedUser);
             Long execuTime;
-            try{
-            execuTime=Double.doubleToLongBits(getLimitationValueExecutionTime());
-            }catch(Exception ex){
-                execuTime=null;
+            try {
+                execuTime = Double.doubleToLongBits(getLimitationValueExecutionTime());
+            } catch (Exception ex) {
+                execuTime = null;
             }
-            sla = new SLA(workflowDiagram.getWorkflow().getId(), PROVIDER ,getObjective(), 0l, 0D, 0l, getLimitationType(), execuTime, limitationValueExecutionCost,agreePrediction,solutions,limitation);
+            sla = new SLA(PROVIDER, workflowDiagram.getWorkflow().getId(), getObjective(), 0l, 0D, getLimitationType(), execuTime, limitationValueExecutionCost, agreePrediction,solutions, limitation, exceedValueExecutionCost);
             workflowDiagram.getWorkflow().setSla(sla);
             if (restService.startWorkflow(workflowDiagram.getWorkflow())) {
                 // Updates user workflow list
@@ -752,7 +747,6 @@ public class WorkflowComposerBean implements Serializable {
     }
 
 //-----------------------------SLA Methods---------------------------------
-
     public void setPanel1(String panel1) {
         this.panel1 = panel1;
     }
@@ -792,7 +786,14 @@ public class WorkflowComposerBean implements Serializable {
     public void setSelectedInstancies(List<Instance> selectedInstancies) {
         this.selectedInstances = selectedInstancies;
     }
+    
+    public Double getExceedValueExecutionCost() {
+        return exceedValueExecutionCost;
+    }
 
+    public void setExceedValueExecutionCost(Double exceedValueExecutionCost) {
+        this.exceedValueExecutionCost = exceedValueExecutionCost;
+    }
     public List<String> getListInstancesString() {
         List<String> instancesString = new ArrayList<>();
         instances.stream().forEach((i) -> {
@@ -909,7 +910,6 @@ public class WorkflowComposerBean implements Serializable {
 //    public void setMinToHour(Double minToHour) {
 //        this.minToHour = minToHour;
 //    }
-
     public boolean isAgreeContract() {
         return agreeContract;
     }
