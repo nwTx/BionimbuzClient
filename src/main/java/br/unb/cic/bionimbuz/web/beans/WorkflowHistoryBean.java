@@ -1,5 +1,9 @@
 package br.unb.cic.bionimbuz.web.beans;
 
+import br.unb.bionimbuz.storage.bucket.BioBucket;
+import br.unb.bionimbuz.storage.bucket.CloudStorageMethods;
+import br.unb.bionimbuz.storage.bucket.PeriodicCheckerBuckets;
+import br.unb.bionimbuz.storage.bucket.methods.CloudMethodsAmazonGoogle;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +21,16 @@ import br.unb.cic.bionimbuz.model.Workflow;
 import br.unb.cic.bionimbuz.model.WorkflowOutputFile;
 import br.unb.cic.bionimbuz.rest.response.GetWorkflowHistoryResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controls workflow/history.xhtml page.
@@ -28,21 +42,22 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 public class WorkflowHistoryBean implements Serializable {
 
     protected BionimbuzClientConfig config = ConfigurationRepository.getConfig();
-    
+    protected static final Logger LOGGER = LoggerFactory.getLogger(WorkflowHistoryBean.class);
     private static final String REST_PATH = "/rest/file/download/";
     private String downloadURL;
     private String restPath;
-
+    private StreamedContent file;
     private RestService restService;
     private Workflow selectedWorkflow;
     private List<Log> history;
     private List<WorkflowOutputFile> workflowOutputFiles;
 
     @PostConstruct
-    private void initialize() {
-        restPath = ConfigurationRepository.BIONIMBUZ_ADDRESS + REST_PATH;
+    public void initialize() {
+        restPath = ConfigurationRepository.getConfig().getBionimbuzAddress() + REST_PATH;
         restService = new RestService();
         workflowOutputFiles = new ArrayList<>();
+        file = new DefaultStreamedContent();
     }
 
     /**
@@ -138,18 +153,49 @@ public class WorkflowHistoryBean implements Serializable {
         return workflowOutputFiles;
     }
 
-    public String getDownloadURL(String outputFile) {
+    public StreamedContent getDownloadURL(String outputFile) {
         
         System.out.println("[DEBUG] getDownloadURL for file: " + outputFile);
         
         downloadURL = restPath + selectedWorkflow.getId() + "/" + outputFile;
-       
+        CloudStorageMethods methodsInstance = new CloudMethodsAmazonGoogle();
+        PeriodicCheckerBuckets instance = new PeriodicCheckerBuckets();
+        instance.start();
+        //TODO: Medida paleativa para pegar o nome do bucket por enquanto 
+        //utilizando so o bucket abaixo, mudar para pegar o bucket onde tiver o arquivo
+        BioBucket dest = PeriodicCheckerBuckets.getBucket("bionimbuz-a-br2");
+
+        try {
+            methodsInstance.StorageAuth(dest.getProvider());
+            methodsInstance.StorageDownloadFile(dest, "/data-folder/", 
+                    ConfigurationRepository.getConfig().getTemporaryWorkflowFolder() + "/", outputFile);
+            String pathName = ConfigurationRepository.getConfig().getTemporaryWorkflowFolder()+ outputFile;
+            
+            String contentType = Files.probeContentType(Paths.get(pathName));
+            InputStream stream = null;
+            try{
+                stream = new FileInputStream(pathName);
+            }catch(FileNotFoundException ex){
+                LOGGER.info(ex.getMessage());
+            }
+//            InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(pathName);
+            file = new DefaultStreamedContent(stream, contentType, outputFile);
+            
+        } catch (Exception t) {
+            LOGGER.info(t.getMessage());
+            addMessage("get_download_url_error");
+        }
         System.out.println("downloadURL: " + downloadURL);
-        return downloadURL;
+        return file;
     }
 
     public void setDownloadURL(String downloadURL) {
         this.downloadURL = downloadURL;
+    }
+    
+    public void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
 }

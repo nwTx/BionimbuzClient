@@ -101,7 +101,9 @@ public class CloudMethodsAmazonGoogle extends CloudStorageMethods{
                 s3client.setEndpoint(bucket.getEndPoint());
                 S3Object object = s3client.getObject(new GetObjectRequest(bucket.getName(), bucketPath.substring(1) + fileName));
                 InputStream objectData = object.getObjectContent();
-                Files.copy(objectData, Paths.get(localPath + fileName));
+                if(!(new File(localPath + fileName)).exists()){
+                    Files.copy(objectData, Paths.get(localPath + fileName));
+                }
                 objectData.close();
 
                 break;

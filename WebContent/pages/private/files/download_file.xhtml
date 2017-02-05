@@ -32,7 +32,9 @@
                             </p:column>
 
                             <p:column headerText="Download" width="50" style="text-align: center">
-                                <p:commandButton icon="ui-icon-arrowstop-1-s"/>
+                                <p:commandButton icon="ui-icon-arrowstop-1-s" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:fileDownload value="#{workflowHistoryBean.getDownloadURL(f.name)}"/>
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
 
@@ -42,4 +44,14 @@
         </ui:define>
 
     </ui:decorate>
+    <script type="text/javascript">
+        function start() {
+            PF('statusDialog').show();
+        }
+
+        function stop() {
+            PF('statusDialog').hide();
+        }
+    </script>
 </html>
+

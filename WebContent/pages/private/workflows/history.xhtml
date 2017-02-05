@@ -58,7 +58,10 @@
                                     </p:column>
 
                                     <p:column headerText="Download" width="30" style="text-align: center">
-                                        <a href="#{workflowHistoryBean.getDownloadURL(out.outputFilename)}">Download</a>
+                                        <p:commandButton icon="ui-icon-arrowstop-1-s" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                            <p:fileDownload value="#{workflowHistoryBean.getDownloadURL(out.outputFilename)}"/>
+                                        </p:commandButton>
+                                        <!--<a href="#{workflowHistoryBean.getDownloadURL(out.outputFilename)}">Download</a>-->
                                     </p:column>
                                 </p:dataTable>
                             </center>
@@ -124,4 +127,14 @@
             </center>
         </p:panel>
     </p:dialog>
+    <script type="text/javascript">
+        function start() {
+            PF('statusDialog').show();
+        }
+
+        function stop() {
+            PF('statusDialog').hide();
+        }
+    </script>
 </html>
+

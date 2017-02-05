@@ -84,7 +84,12 @@ public class Upload extends Action {
                 // Compute and store the hash on metadata object
                 final String computedHash = HashUtil.computeNativeSHA3(tempFile.getAbsolutePath());
                 fileInfo.setHash(computedHash);
-                // Transforms the metadata object into a json string
+                
+                //TODO: Colocar para setar depois que enviou o arquivo, para gravar no banco o no znode,
+                ///depois que enviar o arquivo para o bucket PAleativo
+                fileInfo.setBucket("bionimbuz-a-br2");
+                
+               // Transforms the metadata object into a json string
                 final String jsonFileInfo = new ObjectMapper().writeValueAsString(fileInfo);
                 // Config the http request
                 final HttpPost post = new HttpPost(this.requestUrl);
