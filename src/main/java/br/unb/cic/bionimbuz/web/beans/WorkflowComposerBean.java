@@ -109,6 +109,7 @@ public class WorkflowComposerBean implements Serializable {
     // private Double minToHour = 0.0;
     private String firstname;
     private Instance itest;
+    Long execuTime = null;
     // ---------------------------------------------------------
     
     // --------------------------Prediction Declarations ---
@@ -165,7 +166,7 @@ public class WorkflowComposerBean implements Serializable {
         this.itest.setDelay(0);
         this.itest.setTimetocreate(System.currentTimeMillis());
         this.itest.setIdUser(this.loggedUser.getId());
-        this.itest.setIp("164.41.209.101");
+        this.itest.setIp("164.41.209.97");
         
         this.instances.add(this.itest);
         // --------------------------------------------------
@@ -255,6 +256,9 @@ public class WorkflowComposerBean implements Serializable {
             System.out.println("Prediction");
             if (this.agreePrediction) {
                 final Prediction so = new Prediction();
+                Double totalCustWorkflow=0d;
+                Long totalTimeWorkflow=0l;
+                
                 so.setInstance(this.itest);
                 so.setCustoService(0.0D);
                 so.setTimeService(System.currentTimeMillis());
@@ -267,11 +271,15 @@ public class WorkflowComposerBean implements Serializable {
                     // solutions.put(selectedservicesList.get(1).getId(), instances.get(1));
                     // Interating on Hash map and and set the program for that kind of instance
                     for (final Prediction s1 : this.solutions) {
+                        totalTimeWorkflow+=s1.getTimeService();
+                        totalCustWorkflow+=s1.getCustoService()*s1.getTimeService();
                         s1.getInstance().setIdUser(this.sessionBean.getLoggedUser().getId());
                         this.selectedInstances.add(s1.getInstance());
                     }
                     
                 }
+                this.setLimitationValueExecutionCost(totalCustWorkflow);
+                execuTime=totalTimeWorkflow;
                 return "sla_option";
             }
         }
@@ -536,7 +544,7 @@ public class WorkflowComposerBean implements Serializable {
             // Setting the instances for that workflow;
             this.workflowDiagram.getWorkflow().setIntancesWorkflow(this.selectedInstances);
             this.workflowDiagram.getWorkflow().setUserWorkflow(this.loggedUser);
-            Long execuTime = null;
+          
             if (this.getLimitationValueExecutionTime() != null) {
                 execuTime = (long) (this.getLimitationValueExecutionTime() * ONE_HOUR_MILLES);
             }
