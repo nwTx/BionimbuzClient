@@ -492,6 +492,7 @@ public class WorkflowComposerBean implements Serializable {
             int aux = 0;
             if (this.agreePrediction) {
                 for (final Instance f : this.selectedInstances) {
+                    final List<String> ipsPrediction = new ArrayList<>();
                     // String instanceName =f.getType().substring(25).toLowerCase();
                     // instanceName = getWorkflowDescription()+"-"+instanceName+"-"+aux;
                     final String instanceName = this.getWorkflowDescription() + "-" + aux;
@@ -504,10 +505,11 @@ public class WorkflowComposerBean implements Serializable {
                     f.setCreationTimer(System.currentTimeMillis());
                     f.setTimetocreate(System.currentTimeMillis());
                     ipAux = f.getIp();
-                    ips.add(ipAux);
+                    ipsPrediction.add(ipAux);
+                    //TODO arrumar a logica; somente 1 ip como lista é adicionado no job
                     for (final Job jAux : this.workflowDiagram.getWorkflow().getJobs()) {
                         if (f.getidProgramas().get(0).equals(jAux.getServiceId())) {
-                            jAux.setIpjob(ips);
+                            jAux.setIpjob(ipsPrediction);
                             break;
                         }
                     }
