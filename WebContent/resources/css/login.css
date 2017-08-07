@@ -6,7 +6,7 @@ url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 body {
     font-size: 12px;
     background: #34495e;
-    background-image: url("/resources/img/bground.jpg");
+    background-image: url("resources/img/bground.jpg");
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
