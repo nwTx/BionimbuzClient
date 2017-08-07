@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -50,6 +51,7 @@ public class RestCommunicator implements Communicator {
         }
         return new UploadResponse(false);
     }
+
     /**
      * Ping server
      *
@@ -62,7 +64,7 @@ public class RestCommunicator implements Communicator {
         try (
              final CloseableHttpClient httpClient = HttpClients.createDefault();
              final CloseableHttpResponse response = httpClient.execute(request);) {
-            return response.getStatusLine().getStatusCode() == 200;
+            return response.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
         } catch (final IOException e) {
             LOGGER.error("Rest Communicator fault: " + e.getMessage());
         }
