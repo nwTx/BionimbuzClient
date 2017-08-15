@@ -20,13 +20,17 @@ import javax.faces.event.ActionEvent;
 @ManagedBean
 public class ButtonView {
      
-//    public void buttonAction(ActionEvent actionEvent) throws IOException {
-//        //AmazonAPI.createinstance();
-//        InstanceService service = new InstanceService();
-//        service.createInstance("t2.micro");
-//        
-//        addMessage("Máquina Virtual Criada");
-//    }
+    public void buttonAction(ActionEvent actionEvent) throws IOException {
+        //AmazonAPI.createinstance();
+        InstanceService service = new InstanceService();
+        //service.createInstance("t2.micro");
+        
+        addMessage("Máquina Virtual Criada");
+    }
+    
+    public void buttonActionCredential(ActionEvent actionEvent) {
+        addMessage("Credenciais Aceitas!!");
+    }
      
     public void addMessage(String summary) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);

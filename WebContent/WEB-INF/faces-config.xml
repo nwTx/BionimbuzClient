@@ -109,6 +109,12 @@
             <to-view-id>/pages/private/adm/configurations.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        
+        <navigation-case>
+            <from-outcome>keys</from-outcome>
+            <to-view-id>/pages/private/adm/keys.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
 		
         <!-- Files -->
         <navigation-case>

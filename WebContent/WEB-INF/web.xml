@@ -46,6 +46,11 @@
     <context-param>  
         <param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>  
         <param-value>-1</param-value>  
+    </context-param> 
+    
+     <context-param>  
+        <param-name>primefaces.FONT_AWESOME</param-name>  
+        <param-value>true</param-value>  
     </context-param>  
 
     <!-- If the application returns a ViewExpiredException, user will be redirected 
@@ -77,6 +82,30 @@
         <extension>otf</extension>
         <mime-type>application/font-sfnt</mime-type>
     </mime-mapping>
+    
+    
+    
+        <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/vnd.ms-fontobject</mime-type>
+    </mime-mapping>
+    <mime-mapping>  
+        <extension>otf</extension>  
+        <mime-type>font/opentype</mime-type>  
+    </mime-mapping>      
+    <mime-mapping>  
+        <extension>ttf</extension>  
+        <mime-type>application/x-font-ttf</mime-type>  
+    </mime-mapping>      
+    <mime-mapping>  
+        <extension>woff</extension>  
+        <mime-type>application/x-font-woff</mime-type>  
+    </mime-mapping>
+    <mime-mapping>  
+        <extension>svg</extension>  
+        <mime-type>image/svg+xml</mime-type>  
+    </mime-mapping>
+    
 
     <!-- Primefaces Upload -->
     <filter>

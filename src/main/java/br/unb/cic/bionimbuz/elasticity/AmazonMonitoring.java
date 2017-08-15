@@ -40,10 +40,9 @@ import java.util.List;
  */
 public class AmazonMonitoring {
 
-    final String awsAccessKey = "AKIAJKOWVDC56R7RR4UQ";
-    final String awsSecretKey = "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";
+    final String awsAccessKey = "AKIAJXKCOLRSSX3YLZUQ";
+    final String awsSecretKey = "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";
     
-
     public ArrayList<Datapoint> monitoring(String instanceId) {
         final AmazonCloudWatchClient client = client(awsAccessKey, awsSecretKey);
         final GetMetricStatisticsRequest request = request(instanceId);
