@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ import br.unb.cic.bionimbuz.rest.service.RestService;
 @Named
 @SessionScoped
 public class WorkflowComposerBean implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     private static final long ONE_HOUR_MILLES = 36 * 100000;
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowComposerBean.class);
@@ -66,7 +65,7 @@ public class WorkflowComposerBean implements Serializable {
     String objetive;
     @Inject
     private SessionBean sessionBean;
-    
+
     // @Inject
     // private SlaComposerBean slacomp;
     private final RestService restService;
@@ -75,14 +74,12 @@ public class WorkflowComposerBean implements Serializable {
     private List<String> idServiceSelecteds;
     private ArrayList<DiagramElement> elements;
     private WorkflowDiagram workflowDiagram;
-    private PluginService service;
     private String workflowDescription;
     private boolean suspendEvent;
     private String clickedElementId;
     private String inputURL;
     private String arguments;
     private String dependency;
-    private int jobListSize = 0;
     private String currentJobOutput = "";
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
     private final ArrayList<String> references;
@@ -90,8 +87,8 @@ public class WorkflowComposerBean implements Serializable {
     private DiagramElement clickedElement;
     private final List<String> supportedFormats;
     private String fileFormat;
-    private SLA sla, template;
-    
+    private SLA sla;
+
     // ----------------------- SLA Declarations------------------
     private String panel1 = "Hide-Panel1";
     private boolean limitation = false;
@@ -111,19 +108,19 @@ public class WorkflowComposerBean implements Serializable {
     private Instance itest;
     Long execuTime = null;
     // ---------------------------------------------------------
-    
+
     // --------------------------Prediction Declarations ---
     private Double preco;
     private int number2 = 0;
     private boolean agreePrediction;
     private List<Prediction> solutions;
-    
+
     // Used by the user to download a workflow
     private StreamedContent workflowToDownload;
-    
+
     // Logged user
     private User loggedUser;
-    
+
     public WorkflowComposerBean() {
         this.restService = new RestService();
         this.elements = new ArrayList<>();
@@ -133,11 +130,11 @@ public class WorkflowComposerBean implements Serializable {
         this.supportedFormats = ConfigurationRepository.getSupportedFormats();
         this.instances.addAll(ConfigurationRepository.getInstances());
     }
-    
+
     @PostConstruct
     public void init() {
         this.loggedUser = this.sessionBean.getLoggedUser();
-        
+
         // minToHour = 0.0;
         // ------------- SLA inicialization------------------
         this.selectedInstances = new ArrayList<>();
@@ -153,12 +150,12 @@ public class WorkflowComposerBean implements Serializable {
         this.limitationValueExecutionCost = null;
         this.exceedValueExecutionCost = null;
         this.itest.setId("Default");
-        this.itest.setType("lab5");
+        this.itest.setType("localhost");
         this.itest.setCostPerHour(0D);
         this.itest.setLocality("Brasil, Brasilia");
-        this.itest.setMemoryTotal(8.0);
-        this.itest.setCpuHtz(3.40);
-        this.itest.setCpuType("Intel Core i7-3770");
+        this.itest.setMemoryTotal(7.7);
+        this.itest.setCpuHtz(2.6);
+        this.itest.setCpuType("Intel(R) Core(TM) i7-6700HQ");
         this.itest.setNumCores(8);
         this.itest.setCpuArch("64");
         this.itest.setProvider("UnB");
@@ -166,12 +163,12 @@ public class WorkflowComposerBean implements Serializable {
         this.itest.setDelay(0);
         this.itest.setTimetocreate(System.currentTimeMillis());
         this.itest.setIdUser(this.loggedUser.getId());
-        this.itest.setIp("164.41.209.97");
-        
+        this.itest.setIp("127.0.0.1");
+
         this.instances.add(this.itest);
         // --------------------------------------------------
     }
-    
+
     /**
      * Adds an element to the chosen programs list
      *
@@ -183,7 +180,7 @@ public class WorkflowComposerBean implements Serializable {
         this.idServiceSelecteds.add(service.getId());
         this.showMessage("Elemento " + service.getName() + " adicionado");
     }
-    
+
     /**
      * Removes an element from the chosen programs list
      *
@@ -202,7 +199,7 @@ public class WorkflowComposerBean implements Serializable {
         this.selectedservicesList.remove(serveaut);
         this.showMessage("Elemento " + element.getName() + " removido");
     }
-    
+
     /**
      * Show message in growl component (View)
      *
@@ -212,7 +209,7 @@ public class WorkflowComposerBean implements Serializable {
         final FacesMessage message = new FacesMessage(msg, "");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
     /**
      * Controlls Wizard flow. It is linked with the HTML page that renders the
      * diagram and contains Wizard PrimeFaces component.
@@ -222,16 +219,15 @@ public class WorkflowComposerBean implements Serializable {
      */
     public String flowController(FlowEvent event) {
         final String currentStep = event.getOldStep();
-        
+
         final String toGoStep = event.getNewStep();
-        
+
         // Resets Workflow
         if (toGoStep.equals("element_selection")) {
-            
+
             // Verifies if the user is entering workflow composer page
         } else if (toGoStep.equals("workflow_design")) {
-            this.jobListSize = this.elements.size();
-            
+
             if (this.elements.isEmpty()) {
                 this.showMessage("Workflow vazio! Favor selecionar elementos");
                 return currentStep;
@@ -243,7 +239,7 @@ public class WorkflowComposerBean implements Serializable {
                 LOGGER.error("[MalformedURLException] " + e.getMessage());
             }
         }
-        
+
         if (currentStep.equals("sla_option") && toGoStep.equals("provisionamento")) {
             if (this.agreePrediction) {
                 return "previsao";
@@ -256,9 +252,9 @@ public class WorkflowComposerBean implements Serializable {
             System.out.println("Prediction");
             if (this.agreePrediction) {
                 final Prediction so = new Prediction();
-                Double totalCustWorkflow=0d;
-                Long totalTimeWorkflow=0l;
-                
+                Double totalCustWorkflow = 0d;
+                Long totalTimeWorkflow = 0l;
+
                 so.setInstance(this.itest);
                 so.setCustoService(0.0D);
                 so.setTimeService(System.currentTimeMillis());
@@ -267,30 +263,30 @@ public class WorkflowComposerBean implements Serializable {
                 // solutions.addAll(solutions);
                 // solution to not put repetead
                 if (!this.solutions.contains(so)) {
-                    
+
                     // solutions.put(selectedservicesList.get(1).getId(), instances.get(1));
                     // Interating on Hash map and and set the program for that kind of instance
                     for (final Prediction s1 : this.solutions) {
-                        totalTimeWorkflow+=s1.getTimeService();
-                        totalCustWorkflow+=s1.getCustoService()*s1.getTimeService();
+                        totalTimeWorkflow += s1.getTimeService();
+                        totalCustWorkflow += s1.getCustoService() * s1.getTimeService();
                         s1.getInstance().setIdUser(this.sessionBean.getLoggedUser().getId());
                         this.selectedInstances.add(s1.getInstance());
                     }
-                    
+
                 }
                 this.setLimitationValueExecutionCost(totalCustWorkflow);
-                execuTime=totalTimeWorkflow;
+                execuTime = totalTimeWorkflow;
                 return "sla_option";
             }
         }
         // Provision Tab
         if (toGoStep.equals("sla_option")) {
             System.out.println("Provisionamento");
-            
+
             // setMinToHour(0.0);
             // TODO: Get HashMap List from Michel Module
         }
-        
+
         // SLA Tab
         if (toGoStep.equals("workflow_summary")) {
             System.out.println("SLA");
@@ -311,7 +307,7 @@ public class WorkflowComposerBean implements Serializable {
                 this.limitationValueExecutionTime = null;
             }
             // TODO: alterar para o usuário bionimbuz depois da implementação do cadastro de usuário
-            
+
             // System.out.println(sla.getId());
             // provider = new User("bionimbuz", PBKDF2.generatePassword("@BioNimbuZ!"), "BioNimbuZ", "71004832206", "bionimbuz@gmail.com", "0");
             // try {
@@ -328,10 +324,10 @@ public class WorkflowComposerBean implements Serializable {
             // java.util.logging.Logger.getLogger(WorkflowComposerBean.class.getName()).log(Level.SEVERE, null, ex);
             // }
         }
-        
+
         return toGoStep;
     }
-    
+
     /**
      * Server side method called when an element is connected to another
      *
@@ -339,29 +335,29 @@ public class WorkflowComposerBean implements Serializable {
      */
     public void onConnect(ConnectEvent event) {
         final DiagramElement clickedElement = (DiagramElement) event.getTargetElement().getData();
-        
+
         // Add dependency
         if (((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || ((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
             this.dependency = null;
         } else {
             this.dependency = ((DiagramElement) event.getSourceElement().getData()).getId();
         }
-        
+
         if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
             final RequestContext context = RequestContext.getCurrentInstance();
-            
+
             // Sets clicked element id to be used to set element input file
             this.clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
             this.clickedElement = (DiagramElement) event.getTargetElement().getData();
-            
+
             // Call input pick painel
             context.execute("PF('file_dlg').show();");
-            
+
         } else {
             this.suspendEvent = false;
         }
     }
-    
+
     /**
      * Server side method called when a connection is changed from an element to
      * another
@@ -370,48 +366,48 @@ public class WorkflowComposerBean implements Serializable {
      */
     public void onDisconnect(DisconnectEvent event) {
         final DiagramElement clickedElement = (DiagramElement) event.getTargetElement().getData();
-        
+
         if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
             final RequestContext context = RequestContext.getCurrentInstance();
-            
+
             // Sets clicked element id to be used to set element input file
             this.clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
-            
+
             // Call input pick painel
             context.execute("PF('file_dlg').show();");
         } else {
             this.suspendEvent = false;
         }
     }
-    
+
     /**
      * Server side method called when a connection is taken to another element
      *
      * @param event
      */
     public void onConnectionChange(ConnectionChangeEvent event) {
-        
+
         this.suspendEvent = true;
     }
-    
+
     /**
      * Sets the step fields (like, inputfiles, arguments, ...)
      */
     public void setJobFields() {
-        
+
         // Sets element input list
         this.workflowDiagram.setJobFields(this.clickedElementId, this.inputFiles, this.chosenReference, this.arguments, this.inputURL, this.dependency, this.clickedElement.getName(), this.fileFormat);
-        
+
         // Saves current job output filename in case the next job uses it as input
         this.currentJobOutput = this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat;
-        
+
         // Resets fields
         this.inputFiles = new ArrayList<>();
         this.arguments = "";
         this.inputURL = "";
         this.fileFormat = "";
     }
-    
+
     /**
      * Sets job fields when the "jump" button is pressed
      */
@@ -424,24 +420,24 @@ public class WorkflowComposerBean implements Serializable {
         file.setSize(0l);
         file.setUploadTimestamp("");
         file.setUserId(this.sessionBean.getLoggedUser().getId());
-        
+
         // Creates the input file list with the file info
         final ArrayList<FileInfo> inputs = new ArrayList<>();
         inputs.add(file);
-        
+
         // Sets element input list
         this.workflowDiagram.setJobFields(this.clickedElementId, inputs, this.chosenReference, this.arguments, this.inputURL, this.dependency, this.clickedElement.getName(), this.fileFormat);
-        
+
         // Saves current job output filename in case the next job uses it as input
         this.currentJobOutput = this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat;
-        
+
         // Resets fields
         this.inputFiles = new ArrayList<>();
         this.arguments = "";
         this.inputURL = "";
         this.fileFormat = "";
     }
-    
+
     // private String createInstance(String provider, String type , String nameInstance) throws InterruptedException {
     // AmazonAPI amazonapi = new AmazonAPI();
     // GoogleAPI googleapi = new GoogleAPI();
@@ -486,7 +482,7 @@ public class WorkflowComposerBean implements Serializable {
     public String startWorkflow() {
         try {
             // Calls RestService to send the workflow to core
-            
+
             final List<String> ips = new ArrayList<>();
             String ipAux;
             int aux = 0;
@@ -506,7 +502,7 @@ public class WorkflowComposerBean implements Serializable {
                     f.setTimetocreate(System.currentTimeMillis());
                     ipAux = f.getIp();
                     ipsPrediction.add(ipAux);
-                    //TODO arrumar a logica; somente 1 ip como lista é adicionado no job
+                    // TODO arrumar a logica; somente 1 ip como lista é adicionado no job
                     for (final Job jAux : this.workflowDiagram.getWorkflow().getJobs()) {
                         if (f.getidProgramas().get(0).equals(jAux.getServiceId())) {
                             jAux.setIpjob(ipsPrediction);
@@ -546,11 +542,11 @@ public class WorkflowComposerBean implements Serializable {
             // Setting the instances for that workflow;
             this.workflowDiagram.getWorkflow().setIntancesWorkflow(this.selectedInstances);
             this.workflowDiagram.getWorkflow().setUserWorkflow(this.loggedUser);
-          
+
             if (this.getLimitationValueExecutionTime() != null) {
                 execuTime = (long) (this.getLimitationValueExecutionTime() * ONE_HOUR_MILLES);
             }
-            
+
             this.sla = new SLA(PROVIDER, this.workflowDiagram.getWorkflow().getId(), this.getObjective(), 0l, 0D, this.getLimitationType(), execuTime, this.limitationValueExecutionCost,
                     this.agreePrediction, this.solutions, this.limitation, this.exceedValueExecutionCost);
             this.workflowDiagram.getWorkflow().setSla(this.sla);
@@ -566,7 +562,7 @@ public class WorkflowComposerBean implements Serializable {
         }
         return "start_error";
     }
-    
+
     /**
      * Returns workflow status as a String
      *
@@ -575,7 +571,7 @@ public class WorkflowComposerBean implements Serializable {
     public String getWorkflowStatus() {
         return this.workflowDiagram.getWorkflow().getStatus().toString();
     }
-    
+
     /**
      * Returns the color of the status
      *
@@ -584,14 +580,13 @@ public class WorkflowComposerBean implements Serializable {
     public String getWorkflowColor() {
         return this.workflowDiagram.getWorkflow().getStatus().getColor();
     }
-    
+
     /**
      * Method used for users to download a .json workflow representation
      *
      * @return
      */
     public StreamedContent downloadWorkflow() {
-        final InputStream stream;
         final ObjectMapper mapper = new ObjectMapper();
         DefaultStreamedContent content = null;
         final String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + this.workflowDiagram.getWorkflow().getId() + ".json";
@@ -606,10 +601,10 @@ public class WorkflowComposerBean implements Serializable {
         } finally {
             jsonFile.delete();
         }
-        
+
         return content;
     }
-    
+
     /**
      * Called when an user clicks to import a workflow file to application
      *
@@ -618,31 +613,32 @@ public class WorkflowComposerBean implements Serializable {
     public void handleImportedWorkflow(FileUploadEvent event) {
         try {
             final String path = ConfigurationRepository.TEMPORARY_WORKFLOW_PATH + event.getFile().getFileName();
-            
+
             final File workflowFile = new File(path);
-            
-            final BufferedReader br = new BufferedReader(new FileReader(workflowFile));
-            
-            final StringBuilder builder = new StringBuilder();
-            String line;
-            
-            while ((line = br.readLine()) != null) {
-                builder.append(line);
+
+            try (
+                 final BufferedReader br = new BufferedReader(new FileReader(workflowFile));) {
+
+                final StringBuilder builder = new StringBuilder();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    builder.append(line);
+                }
+
+                final ObjectMapper mapper = new ObjectMapper();
+                final Workflow workflow = mapper.readValue(builder.toString(), Workflow.class);
+                System.out.println("Tamanho: " + workflow.getJobs().size());
+                System.out.println("Descriçao: " + workflow.getDescription());
+                System.out.println("UserId: " + workflow.getUserId());
             }
-            
-            final ObjectMapper mapper = new ObjectMapper();
-            final Workflow workflow = mapper.readValue(builder.toString(), Workflow.class);
-            
-            System.out.println("Tamanho: " + workflow.getJobs().size());
-            System.out.println("Descriçao: " + workflow.getDescription());
-            System.out.println("UserId: " + workflow.getUserId());
-            
+
         } catch (final Exception ex) {
             LOGGER.error("[Exception] - " + ex.getMessage());
         }
-        
+
     }
-    
+
     /**
      * COMMENTED BECAUSE IT IS BEEN PASSED DIRECTLY TO THE SERVER (WITHOUT SAVE
      * IN DISK) Saves temporary file in disk
@@ -668,143 +664,140 @@ public class WorkflowComposerBean implements Serializable {
     public StreamedContent getWorkflowToDownload() {
         return this.workflowToDownload;
     }
-    
+
     public DefaultDiagramModel getWorkflowModel() {
         return this.workflowDiagram.getWorkflowModel();
     }
-    
+
     public List<PluginService> getServicesList() {
         return this.servicesList;
     }
-    
+
     public User getLoggedUser() {
         return this.loggedUser;
     }
-    
-    public void setService(PluginService service) {
-        this.service = service;
-    }
-    
+
     public String getWorkflowDescription() {
         return this.workflowDescription;
     }
-    
+
     public void setWorkflowDescription(String workflowDescription) {
         this.workflowDescription = workflowDescription;
     }
-    
+
     public List<DiagramElement> getElements() {
         return this.elements;
     }
-    
+
     public void setElements(ArrayList<DiagramElement> elements) {
         this.elements = elements;
     }
-    
+
     public String getInputURL() {
         return this.inputURL;
     }
-    
+
     public void setInputURL(String inputURL) {
         this.inputURL = inputURL;
     }
-    
+
     public void setInputFiles(ArrayList<FileInfo> inputFiles) {
         this.inputFiles = inputFiles;
     }
-    
+
     public ArrayList<FileInfo> getInputFiles() {
         return this.inputFiles;
     }
-    
+
     public ArrayList<Job> getJobs() {
         return (ArrayList<Job>) this.workflowDiagram.getWorkflow().getJobs();
     }
-    
+
     public Workflow getWorkflow() {
         return this.workflowDiagram.getWorkflow();
     }
-    
+
     public String getArguments() {
         return this.arguments;
     }
-    
+
     public void setArguments(String arguments) {
         this.arguments = arguments;
     }
-    
+
     public ArrayList<String> getReferences() {
         return this.references;
     }
-    
+
     public String getChosenReference() {
         return this.chosenReference;
     }
-    
+
     public void setChosenReference(String chosenReference) {
         this.chosenReference = chosenReference;
     }
-    
+
     public List<String> getSupportedFormats() {
         return this.supportedFormats;
     }
-    
+
     public String getFileFormat() {
         return this.fileFormat;
     }
-    
+
     public void setFileFormat(String fileFormat) {
         this.fileFormat = fileFormat;
     }
-    
+
     // -----------------------------SLA Methods---------------------------------
     public void setPanel1(String panel1) {
         this.panel1 = panel1;
     }
-    
+
     public String getPanel1() {
         return this.panel1;
     }
-    
+
     public boolean isLimitation() {
         return this.limitation;
     }
-    
+
     public void setLimitation(boolean limitation) {
         this.limitation = limitation;
     }
-    
+
     public Integer getLimitationType() {
         return this.limitationType;
     }
-    
+
     public void setLimitationType(Integer limitationType) {
         this.limitationType = limitationType;
     }
-    
+
     public List<Instance> getInstancies() {
         return this.instances;
     }
-    
+
     public void setInstancies(List<Instance> instancies) {
         this.instances = instancies;
     }
-    
+
     public List<Instance> getSelectedInstancies() {
         return this.selectedInstances;
     }
-    
+
     public void setSelectedInstancies(List<Instance> selectedInstancies) {
         this.selectedInstances = selectedInstancies;
     }
-    
+
     public Double getExceedValueExecutionCost() {
         return this.exceedValueExecutionCost;
     }
-    
+
     public void setExceedValueExecutionCost(Double exceedValueExecutionCost) {
         this.exceedValueExecutionCost = exceedValueExecutionCost;
     }
+
     public List<String> getListInstancesString() {
         final List<String> instancesString = new ArrayList<>();
         this.instances.stream().forEach((i) -> {
@@ -812,7 +805,7 @@ public class WorkflowComposerBean implements Serializable {
         });
         return instancesString;
     }
-    
+
     public void adSelectedInstance(Instance maq) {
         for (final Instance i : this.instances) {
             if (i.getId().equals(maq.getId()) && !this.instances.isEmpty()) {
@@ -826,7 +819,7 @@ public class WorkflowComposerBean implements Serializable {
             }
         }
     }
-    
+
     /**
      * Removes an element from the selected instances list
      *
@@ -841,39 +834,39 @@ public class WorkflowComposerBean implements Serializable {
             this.showMessage("Não existem elementos para ser removidos!");
         }
     }
-    
+
     public Instance getInstance() {
         return this.instance;
     }
-    
+
     public void setInstance(Instance instance) {
         this.instance = instance;
     }
-    
+
     public String getChosenInstanceId() {
         return this.chosenInstanceId;
     }
-    
+
     public void setChosenInstanceId(String chosenInstanceId) {
         this.chosenInstanceId = chosenInstanceId;
     }
-    
+
     public Double getLimitationValueExecutionTime() {
         return this.limitationValueExecutionTime;
     }
-    
+
     public void setLimitationValueExecutionTime(Double limitationValueExecutionTime) {
         this.limitationValueExecutionTime = limitationValueExecutionTime;
     }
-    
+
     public Double getLimitationValueExecutionCost() {
         return this.limitationValueExecutionCost;
     }
-    
+
     public void setLimitationValueExecutionCost(Double limitationValueExecutionCost) {
         this.limitationValueExecutionCost = limitationValueExecutionCost;
     }
-    
+
     // public Integer getQuantity() {
     // return quantity;
     // }
@@ -884,15 +877,15 @@ public class WorkflowComposerBean implements Serializable {
     public Integer getObjective() {
         return this.objective;
     }
-    
+
     public void setObjective(Integer objective) {
         this.objective = objective;
     }
-    
+
     public String getProvider() {
         return this.provider;
     }
-    
+
     public String getObjetive() {
         switch (this.objective) {
             case 1:
@@ -907,7 +900,7 @@ public class WorkflowComposerBean implements Serializable {
         }
         return this.objetive;
     }
-    
+
     // public Double getMinToHour() {
     // int decimalPlaces = 2;
     // BigDecimal bd = new BigDecimal(minToHour);
@@ -924,60 +917,60 @@ public class WorkflowComposerBean implements Serializable {
     public boolean isAgreeContract() {
         return this.agreeContract;
     }
-    
+
     public void setAgreeContract(boolean agreeContract) {
         this.agreeContract = agreeContract;
         final String message = this.agreeContract ? "Contrato aceito!" : "Contrato Recusado!";
         this.showMessage(message);
     }
-    
+
     public String getFirstname() {
         return this.firstname;
     }
-    
+
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
     // -------------------------------------------------------------------------
     // -------------------------------- Prediction functions
-    
+
     public int getNumber2() {
         return this.number2;
     }
-    
+
     public void setNumber2(int number2) {
         this.number2 = number2;
     }
-    
+
     public void onSlideEnd(SlideEndEvent event) {
         final FacesMessage message = new FacesMessage("Slide Ended", "Value: " + event.getValue());
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
-    
+
     public Double getPreco() {
         return this.preco;
     }
-    
+
     public void setPreco(Double preco) {
         this.preco = preco;
     }
-    
+
     public boolean isAgreePrediction() {
         return this.agreePrediction;
     }
-    
+
     public void setAgreePrediction(boolean agreePrediction) {
         this.agreePrediction = agreePrediction;
         final String message = this.agreePrediction ? "Predição aceita!" : "Predição Recusado!";
         this.showMessage(message);
     }
-    
+
     public List<PluginService> getSelectedservicesList() {
         return this.selectedservicesList;
     }
-    
+
     public void setSelectedservicesList(List<PluginService> selectedservicesList) {
         this.selectedservicesList = selectedservicesList;
     }
-    
+
 }
