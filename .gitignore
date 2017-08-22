@@ -8,6 +8,7 @@
 /BionimbuzClient.iml
 /.settings/
 .classpath
+/bin/
 
 # Arquivos de configuração com informações sensíveis
 /conf/conf.yaml
