@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.unb.cic.bionimbuz</groupId>
     <artifactId>BionimbuzClient</artifactId>
@@ -50,7 +50,7 @@
             <artifactId>resteasy-jaxrs</artifactId>
             <version>3.0.11.Final</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -61,17 +61,6 @@
             <artifactId>httpmime</artifactId>
             <version>4.5.1</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.4.4</version>
-        </dependency>-->
-<!--         Spring Security 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>4.0.3.RELEASE</version>
-        </dependency>-->
 
         <!-- Primefaces Dependency -->
         <dependency>
@@ -89,7 +78,7 @@
             <artifactId>primefaces-extensions</artifactId>
             <version>6.0.0</version>
         </dependency>
-       
+
         <!-- JSON Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -100,7 +89,7 @@
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>2.7.0</version>
-        </dependency> 
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -122,15 +111,8 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
-        </dependency>        
-        
-        <!-- Apache Common Lang 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
-        </dependency>-->
-             
+        </dependency>
+
         <!-- JavaEE Dependencies (like EJB, CDI, mail, WS...) -->
         <dependency>
             <groupId>junit</groupId>
@@ -167,7 +149,7 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
         </dependency>
-        
+
         <!-- slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -179,7 +161,7 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.55</version>
         </dependency>
-        
+
         <!-- Amazon AWS -->
         <dependency>
             <groupId>org.json</groupId>
@@ -227,6 +209,17 @@
                 <configuration>
                     <warSourceDirectory>WebContent</warSourceDirectory>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <resource>
+                            <directory>conf</directory>
+                            <includes>
+                                <include>conf.yaml</include>
+                                <include>config.json</include>
+                                <include>programs.json</include>
+                            </includes>
+                            <targetPath>META-INF/conf</targetPath>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <plugin>

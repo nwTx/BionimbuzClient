@@ -1,8 +1,7 @@
 package br.unb.cic.bionimbuz.configuration;
 
-import br.unb.cic.bionimbuz.model.Instance;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.inject.Named;
@@ -15,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import br.unb.cic.bionimbuz.model.Instance;
 import br.unb.cic.bionimbuz.model.PluginService;
 import br.unb.cic.bionimbuz.rest.response.GetConfigurationsResponse;
 import br.unb.cic.bionimbuz.rest.service.RestService;
@@ -36,6 +36,8 @@ public class ConfigurationRepository implements ServletContextListener {
     private static ArrayList<Instance> instances;
     public static String BIONIMBUZ_ADDRESS;
     public static String TEMPORARY_WORKFLOW_PATH;
+    private static BionimbuzClientConfig config = null;
+    private static final String CNF_FILE = "/META-INF/conf/conf.yaml"; // Deployed in pom.xml
     
     /**
      * Called on Application Server start
@@ -106,10 +108,6 @@ public class ConfigurationRepository implements ServletContextListener {
         return supportedFormats;
     }
     
-    public static BionimbuzClientConfig getConfig() {
-        return loadConfiguration();
-    }
-    
     public static ArrayList<Instance> getInstances() {
         return instances;
     }
@@ -118,24 +116,17 @@ public class ConfigurationRepository implements ServletContextListener {
         instances = aInstances;
     }
     
-    /**
-     * Loads web application configuration.
-     *
-     * @param filename
-     * @return
-     * @throws IOException
-     */
-    private static BionimbuzClientConfig loadConfiguration() {
-        BionimbuzClientConfig config = null;
-        try {
-            final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-            final String defaultConfigPathname = System.getProperty("user.home") + "/BionimbuzClient/conf/conf.yaml";
-            config = mapper.readValue(new File(defaultConfigPathname), BionimbuzClientConfig.class);
-        } catch (final IOException ex) {
-            LOGGER.error("[IOException] - " + ex.getMessage());
+    public static BionimbuzClientConfig getConfig() {
+        if(config == null) {        
+            try {                
+                InputStream stream = ConfigurationRepository.class.getResourceAsStream(CNF_FILE);
+                final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+                config = mapper.readValue(stream, BionimbuzClientConfig.class);
+            } catch (final IOException ex) {
+                LOGGER.error("[IOException] - " + ex.getMessage());
+            }
         }
-        
-        return config;
+        return config;        
     }
     
 }
