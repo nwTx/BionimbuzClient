@@ -7,3 +7,7 @@
 /.idea/
 /BionimbuzClient.iml
 /.settings/
+
+# Arquivos de configuração com informações sensíveis
+/conf/conf.yaml
+/conf/config.json
