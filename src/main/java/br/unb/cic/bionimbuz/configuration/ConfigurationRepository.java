@@ -37,7 +37,7 @@ public class ConfigurationRepository implements ServletContextListener {
     public static String BIONIMBUZ_ADDRESS;
     public static String TEMPORARY_WORKFLOW_PATH;
     private static BionimbuzClientConfig config = null;
-    private static final String CNF_FILE = "/META-INF/conf/conf.yaml"; // Deployed in pom.xml
+    private static final String CFG_FILE_CONF = "/META-INF/conf/conf.yaml"; // Deployed in pom.xml
     
     /**
      * Called on Application Server start
@@ -119,7 +119,7 @@ public class ConfigurationRepository implements ServletContextListener {
     public static BionimbuzClientConfig getConfig() {
         if(config == null) {        
             try {                
-                InputStream stream = ConfigurationRepository.class.getResourceAsStream(CNF_FILE);
+                InputStream stream = ConfigurationRepository.class.getResourceAsStream(CFG_FILE_CONF);
                 final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
                 config = mapper.readValue(stream, BionimbuzClientConfig.class);
             } catch (final IOException ex) {
