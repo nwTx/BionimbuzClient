@@ -31,14 +31,11 @@ public class BionimbuzClientConfig {
     public String getRootPath() {
         return this.rootPath;
     }
-    public void setRootPath(String rootPath) {
-        this.rootPath = rootPath;
-    }
     public String getTemporaryWorkflowFolder() {
         if (!this.temporaryWorkflowFolder.endsWith("/")) {
             this.temporaryWorkflowFolder += "/";
         }
-        return getRootPath()+this.temporaryWorkflowFolder;
+        return this.temporaryWorkflowFolder;
     }
     public void setTemporaryWorkflowFolder(String temporaryWorkflowFolder) {
         this.temporaryWorkflowFolder = temporaryWorkflowFolder;
@@ -63,9 +60,6 @@ public class BionimbuzClientConfig {
     }
     public String getBucketsAuthFolder() {
         return this.bucketsAuthFolder;
-    }
-    public void setBucketsAuthFolder(String bucketsAuthFolder) {
-        this.bucketsAuthFolder = getRootPath()+ bucketsAuthFolder;
     }
     public String getGcloudFolder() {
         return this.gcloudFolder;
