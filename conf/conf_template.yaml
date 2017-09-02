@@ -4,7 +4,7 @@
 bionimbuz-address: "http://127.0.0.1:8181"
 
 #path application web
-root-path: "/home/biolabid2/BionimbuzClient/"
+root-path: "/path/to/BionimbuzClient/"
 
 #application address
 address: "127.0.0.1"
@@ -15,5 +15,7 @@ tmp-workflow-folder: "tmp/"
 # Folder that authentication
 buckets-auth-folder: "WebContent/resources/apiCredentials/"
 
-#Storage Mode
-storage-mode: "1"
+ # Storage mode 
+ # 0 - localhost 
+ # 1 - cloud
+storage-mode: "0"
