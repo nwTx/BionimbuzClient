@@ -1,15 +1,16 @@
 package br.unb.cic.bionimbuz.web.beans;
 
-import br.unb.cic.bionimbuz.model.Workflow;
-import br.unb.cic.bionimbuz.model.WorkflowStatus;
-import br.unb.cic.bionimbuz.rest.service.RestService;
 import java.io.Serializable;
 import java.util.List;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import br.unb.cic.bionimbuz.exception.ServerNotReachableException;
+import br.unb.cic.bionimbuz.model.Workflow;
+import br.unb.cic.bionimbuz.model.WorkflowStatus;
+import br.unb.cic.bionimbuz.rest.service.RestService;
 
 /**
  * Controls workflow/status.xhtml page
@@ -20,12 +21,11 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class WorkflowStatusBean implements Serializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowStatusBean.class);
+    private static final long serialVersionUID = 382824367287385072L;
 
     @Inject
     private SessionBean sessionBean;
-    
-    private List<Workflow> userWorkflows;
+
     private final RestService restService = new RestService();
 
     /**
@@ -52,16 +52,9 @@ public class WorkflowStatusBean implements Serializable {
      * Returns user workflow list
      *
      * @return
+     * @throws ServerNotReachableException
      */
-    public List<Workflow> getUserWorkflows() {
-        try {
-            return restService.getWorkflowStatus(sessionBean.getLoggedUser());
-        } catch (Exception ex) {
-            LOGGER.error("[Exception] " + ex.getMessage());
-            ex.printStackTrace();
-
-            return null;
-        }
+    public List<Workflow> getUserWorkflows() throws ServerNotReachableException {
+        return this.restService.getWorkflowStatus(this.sessionBean.getLoggedUser());
     }
-
 }
