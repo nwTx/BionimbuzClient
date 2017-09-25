@@ -18,11 +18,11 @@ public class InstanceView implements Serializable {
     @ManagedProperty("#{instanceService}")
     private InstanceService service;
  
-//    @PostConstruct
-//    public void init() {        
-//        instances = service.getInstances();
-//        
-//    }
+    @PostConstruct
+    public void init() {        
+        instances = service.getInstances();
+        
+    }
 
     public List<String> getCPU() {
         return CPU;

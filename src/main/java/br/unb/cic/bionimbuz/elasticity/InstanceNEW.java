@@ -12,13 +12,6 @@ public class InstanceNEW implements Serializable {
     
     public InstanceNEW() {}
 
-//    public InstanceNEW(String id, String name, String state, String provider) {
-//        this.id = id;
-//        this.name = name;
-//        this.state = state;
-//        this.provider = provider;
-//    }
-
     public InstanceNEW(String id, String name, String state, String provider, String CPUutilization) {
         this.id = id;
         this.name = name;

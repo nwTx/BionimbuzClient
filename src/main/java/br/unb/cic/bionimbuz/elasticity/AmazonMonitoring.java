@@ -43,7 +43,6 @@ public class AmazonMonitoring {
     final String awsAccessKey = "";
     final String awsSecretKey = "";
     
-
     public ArrayList<Datapoint> monitoring(String instanceId) {
         final AmazonCloudWatchClient client = client(awsAccessKey, awsSecretKey);
         final GetMetricStatisticsRequest request = request(instanceId);

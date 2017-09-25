@@ -12,91 +12,56 @@
         <!-- Center Content -->
         <ui:define name="conteudo_centro">
 
-            <!--            <h:form id="form">
-                            <p:growl id="growl" autoUpdate="true"/>
-            
-                            <p:commandButton value="Create" id="withIcon" actionListener="#{button.buttonAction}" update="tabela" icon="ui-icon-star">
-                                             <f:ajax  render="tabela" ></f:ajax> 
-                            </p:commandButton>
-                            <p:dataTable id="tabela" var="instances" value="#{PredictionTableView.instances}">
-                                <p:column headerText="Id" style="width:50px">
-                                    <h:outputText value="#{instances.id}" />
-                                </p:column>
-                                <p:column headerText="Provider" style="width:50px">
-                                    <h:outputText value="#{instances.provider}" />
-                                </p:column>
-                                <p:column headerText="CPU" style="width:20px">
-                                    <h:outputText value="#{instances.cpu}" />
-                                </p:column>
-                                <p:column headerText="Memoria" style="width:40px">
-                                    <h:outputText value="#{instances.memoria}" />
-                                </p:column>
-                                <p:column headerText="Preco" style="width:50px">
-                                    <h:outputText value="#{instances.preco}" />
-                                </p:column>
-                                <p:column headerText="Programa" style="width:50px">
-                                    <h:outputText value="#{instances.programa}" />
-                                </p:column>
-                                <p:column headerText="time to create" style="width:150px">
-                                    <h:outputText value="#{instances.timetocreate}" />
-                                </p:column>
-                                <p:column headerText="pode criar?" style="width:150px">
-                                    <h:outputText value="#{instances.isnow}" />
-                                </p:column>
-                                <p:column headerText="pode criar?" style="width:150px">
-                                    <pe:timer  timeout="#{instances.delay}" /> 
-                                </p:column>
-                            </p:dataTable>
-                        </h:form> -->
-
-
             <h:form id="form2">
-                <p:commandButton update=":form2:tabela" icon="fa-refresh"/>
                 
-<!--                <p:poll interval="1" update=":form2:tabela"/>-->
-                <p:dataTable id="tabela" var="instance" value="#{instanceView.instances}">
+                <p:commandButton icon="fa fa-refresh" update=":form2:tabela" />
+                <p:commandButton value="Create Amazon" actionListener="#{elasticityButton.createVM}"/>
+                
+                <!--<p:commandButton update=":form2:tabela" icon="fa-refresh"/>
+                <p:poll interval="1" update=":form2:tabela"/>-->
+                
+                <p:dataTable id="tabela" var="instance" value="#{instanceView.instances}" rowKey="#{instance.id}"
+                             selection="#{instanceView.selectedInstance}" selectionMode="single">
                     <p:column headerText="Id">
                         <h:outputText value="#{instance.id}" />
                     </p:column>
                     <p:column headerText="State">
                         <h:outputText value="#{instance.state}" />
                     </p:column>
-                    <p:column headerText="CPU Utilization">
-                        <h:outputText value="#{instance.CPUutilization}" />
+                    <p:column headerText="Provider">
+                        <h:outputText value="Amazon" />
                     </p:column>
-                    
+
                 </p:dataTable>
-                
-<!--                <p:contextMenu for="instances">
+
+                <p:contextMenu for="tabela">
                     <p:menuitem value="View" update="instanceDetail" icon="ui-icon-search" oncomplete="PF('instDialog').show()"/>
                     <p:menuitem value="start" icon="fa fa-toggle-right" />
                     <p:menuitem value="stop" icon="fa fa-pause" />
                     <p:menuitem value="reboot"  icon="fa fa-refresh" />
-                    <p:menuitem value="shutdown"  icon="fa fa-power-off" />
-                    <p:menuitem value="terminate"  icon="fa fa-times-circle" />
-                </p:contextMenu>-->
+                    <p:menuitem value="terminate"  icon="fa fa-times-circle" actionListener="#{elasticityButton.stopInstance(instanceView.selectedInstance.id)}" />
+                    <p:menuitem value="Execute Elasticity"  icon="fa fa-skyatlas" actionListener="#{elasticityButton.executeElasticity(instanceView.selectedInstance.id)}" />
+                </p:contextMenu>
 
-<!--                <p:dialog header="Instance Info" widgetVar="instDialog" resizable="false">
+                <p:dialog header="Instance Info" widgetVar="instDialog" resizable="false">
                     <p:outputPanel id="instanceDetail" style="text-align:center;">
                         <p:panelGrid  columns="2" rendered="#{not empty instanceView.selectedInstance}">
                             <f:facet name="header">
-                                <p:graphicImage name="/home/guilherme/BionimbuzClient/WebContent/resources/img/amazon-s3.png"/> 
+                                <p:graphicImage name="img/amazon-s3.png"/> 
                             </f:facet> 
 
-                            <h:outputText value="CPU Utilization:" />
-                            <h:outputText value="#{instanceView.selectedInstance.CPUutilization}" />
-
+                            <h:outputText value="Instance ID:" />
+                            <h:outputText value="#{instanceView.selectedInstance.id}" />                   
+                            
+                            <h:outputText value="CPU Utilization: (last hour average)" />
+<!--                            <h:outputText value="#{instanceView.selectedInstance.CPUutilization}" />-->
+                                <h:outputText value="48%" />
+                            
                         </p:panelGrid>
                     </p:outputPanel>
-                </p:dialog>-->
+                </p:dialog>
             </h:form>
-            <!--            <h:form>
             
-                            <p:panel header="Virtual Machine Status">
-                                <p:chart type="bar" model="#{chartView.barModel}" />						
-                            </p:panel>
-            
-                        </h:form>-->
         </ui:define>
 
     </ui:decorate>
