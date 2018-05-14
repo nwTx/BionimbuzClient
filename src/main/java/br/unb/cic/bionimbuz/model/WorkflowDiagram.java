@@ -180,7 +180,7 @@ public class WorkflowDiagram {
      * @param outputName
      * @param outputFormat
      */
-    public void setJobFields(String id, ArrayList<FileInfo> inputs, String referenceFile, String arguments, String url, String dependency, String outputName, String outputFormat) {
+    public void setJobFields(String id, ArrayList<FileInfo> inputs, String referenceFile, String arguments, String url, ArrayList<String> dependency, String outputName, String outputFormat) {
         int cont = 0;
 
         // Iterates over the joblist
@@ -211,8 +211,10 @@ public class WorkflowDiagram {
                 job.addOutput(outputName + "_output_" + id + ((outputFormat==null) ? "" : outputFormat));
 
                 // Adds job dependencies
-                if (dependency != null) {
-                    job.addDependency(dependency);
+                if (!dependency.isEmpty()) {
+                    for (String dep : dependency) {
+                        job.addDependency(dep);    
+                    }    
                 }
 
                 // Sets its input url

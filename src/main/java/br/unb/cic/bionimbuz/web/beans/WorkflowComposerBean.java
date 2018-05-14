@@ -79,8 +79,8 @@ public class WorkflowComposerBean implements Serializable {
     private String clickedElementId;
     private String inputURL;
     private String arguments;
-    private String dependency;
-    private String currentJobOutput = "";
+    private ArrayList<String> dependency = new ArrayList<>();
+    private ArrayList<String> currentJobOutput = new ArrayList<>();
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
     private final ArrayList<String> references;
     private String chosenReference = "";
@@ -334,13 +334,14 @@ public class WorkflowComposerBean implements Serializable {
      * @param event
      */
     public void onConnect(ConnectEvent event) {
+    	
         final DiagramElement clickedElement = (DiagramElement) event.getTargetElement().getData();
 
         // Add dependency
-        if (((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || ((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
-            this.dependency = null;
+        /*if (((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || ((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
+            //this.dependency = null;
         } else {
-            this.dependency = ((DiagramElement) event.getSourceElement().getData()).getId();
+        	this.dependency.add(((DiagramElement) event.getSourceElement().getData()).getId());
         }
 
         if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
@@ -352,6 +353,31 @@ public class WorkflowComposerBean implements Serializable {
 
             // Call input pick painel
             context.execute("PF('file_dlg').show();");
+        
+        */
+        
+        if (!((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || !((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
+            //this.dependency = null;
+            if (!(this.dependency).isEmpty()) {
+            	this.showMessage("Tem dependencia");
+                //this.dependency.add(((DiagramElement) event.getSourceElement().getData()).getId());
+            }else {
+            	this.showMessage("Nao Tem dependencia");
+            	this.dependency.add(((DiagramElement) event.getSourceElement().getData()).getId());
+            }
+        	
+        }
+
+        if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
+            final RequestContext context = RequestContext.getCurrentInstance();
+
+            // Sets clicked element id to be used to set element input file
+            this.clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
+            this.clickedElement = (DiagramElement) event.getTargetElement().getData();
+
+            // Call input pick painel
+            context.execute("PF('file_dlg').show();");
+        
 
         } else {
             this.suspendEvent = false;
@@ -399,7 +425,7 @@ public class WorkflowComposerBean implements Serializable {
         this.workflowDiagram.setJobFields(this.clickedElementId, this.inputFiles, this.chosenReference, this.arguments, this.inputURL, this.dependency, this.clickedElement.getName(), this.fileFormat);
 
         // Saves current job output filename in case the next job uses it as input
-        this.currentJobOutput = this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat;
+        this.currentJobOutput.add(this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat);
 
         // Resets fields
         this.inputFiles = new ArrayList<>();
@@ -415,22 +441,29 @@ public class WorkflowComposerBean implements Serializable {
         // Creates the input file as the output file from the last Job. Need
         // fake values, because of "null of string" exception of Avro.
         final FileInfo file = new FileInfo();
-        file.setName(this.currentJobOutput);
-        file.setHash("");
-        file.setSize(0l);
-        file.setUploadTimestamp("");
-        file.setUserId(this.sessionBean.getLoggedUser().getId());
 
         // Creates the input file list with the file info
         final ArrayList<FileInfo> inputs = new ArrayList<>();
-        inputs.add(file);
+
+        for (String current : currentJobOutput) {
+            file.setName(current);
+            file.setHash("");
+            file.setSize(0l);
+            file.setUploadTimestamp("");
+            file.setUserId(this.sessionBean.getLoggedUser().getId());
+
+            inputs.add(file);
+        }
+
+
+
+        
 
         // Sets element input list
         this.workflowDiagram.setJobFields(this.clickedElementId, inputs, this.chosenReference, this.arguments, this.inputURL, this.dependency, this.clickedElement.getName(), this.fileFormat);
 
         // Saves current job output filename in case the next job uses it as input
-        this.currentJobOutput = this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat;
-
+        this.currentJobOutput.add(this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat);
         // Resets fields
         this.inputFiles = new ArrayList<>();
         this.arguments = "";
@@ -972,5 +1005,6 @@ public class WorkflowComposerBean implements Serializable {
     public void setSelectedservicesList(List<PluginService> selectedservicesList) {
         this.selectedservicesList = selectedservicesList;
     }
+
 
 }

@@ -469,43 +469,66 @@
     <!--                                                        DIALOGS                                                    -->
     <!-- ***************************************************************************************************************** -->
     <!-- File Dialog: Used for the user to pick inputs -->
-    <p:dialog widgetVar="file_dlg" showEffect="fade" header="Entrada"
+    <p:dialog id="file_dlg1" widgetVar="file_dlg" showEffect="fade" header="Entrada"
               hideEffect="fade" modal="true" closable="false">
         <h:form id="file_form">
-            <p:panel>
+            <p:panel  id="files">
                 Escolha a o arquivo de entrada deste passo e seus parâmetros.
             </p:panel>
             <br />
             <p:accordionPanel>
                 <p:tab title="Arquivos">
-                    <p:fieldset id="file_list_dlg" legend="Lista de Arquivos">
-                        <p:panel>
-                            Caso não tenho realizado o upload dos arquivos necessários para essa execução, faça-o 
-                            <p:commandLink value="aqui" action="upload_file"/>
-                        </p:panel>
-                        <br />
-                        <div style="text-align: center;">
-                            <p:dataTable value="#{workflowComposerBean.loggedUser.files}" var="f" style="width: 1000px"
-                                         paginator="true" rows="5" emptyMessage="Nenhum arquivo encontrado"
-                                         selection="#{workflowComposerBean.inputFiles}" rowKey="#{f.name}" >
+                    <p:tabView scrollable="true">
+                        <p:tab id="file_list_dlg" title="Lista de Arquivos">
+                            <p:panel>
+                                Caso não tenho realizado o upload dos arquivos necessários para essa execução, faça-o 
+                                <p:commandLink value="aqui" action="upload_file"/>
+                            </p:panel>
+                            <br />
+                            <div style="text-align: center;">
+                                <p:dataTable value="#{workflowComposerBean.loggedUser.files}" var="f" style="width: 1000px"
+                                             paginator="true" rows="5" emptyMessage="Nenhum arquivo encontrado"
+                                             selection="#{workflowComposerBean.inputFiles}" rowKey="#{f.name}" >
 
-                                <p:column headerText="Nome" width="25em" style="text-align: center">
-                                    <p:outputLabel value="#{f.name}"/>
-                                </p:column>
+                                    <p:column headerText="Nome" width="25em" style="text-align: center">
+                                        <p:outputLabel value="#{f.name}"/>
+                                    </p:column>
 
-                                <p:column headerText="Upload em" width="25em" style="text-align: center">
-                                    <p:outputLabel value="#{f.uploadTimestamp}"/>
-                                </p:column>
+                                    <p:column headerText="Upload em" width="25em" style="text-align: center">
+                                        <p:outputLabel value="#{f.uploadTimestamp}"/>
+                                    </p:column>
 
-                                <p:column headerText="Tamanho" width="25em" style="text-align: center">
-                                    <p:outputLabel value="#{f.size} Kb"/>
-                                </p:column>
+                                    <p:column headerText="Tamanho" width="25em" style="text-align: center">
+                                        <p:outputLabel value="#{f.size} Kb"/>
+                                    </p:column>
 
-                                <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
-                            </p:dataTable>
-                        </div>
-                    </p:fieldset>
+                                    <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                        <p:tab id="dep_list_dlg" title="Dependências" >
+                            <p:panel>
+                                Marque aqui a dependência do elemento selecionado
+                            </p:panel>
+                            <br />
+                            <div style="text-align: center;">
+                                <p:dataTable value="#{workflowComposerBean.selectedservicesList}" var="g" style="width: 1000px"
+                                             paginator="true" rows="5" emptyMessage="Nenhum etapa encontrada" 
+                                            rowKey="#{g.name}" >
+
+                                    <p:column headerText="Nome" width="25em" style="text-align: center">
+                                        <p:outputLabel value="#{g.name}"/>
+                                    </p:column>
+                                     <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
+
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                    </p:tabView>
                 </p:tab>
+            </p:accordionPanel>
+            <br />       
+                    
                 <!--                <p:tab title="URL">
                                     <p:fieldset legend="URL">
                                         Digite a URL de onde se encontra seu arquivo (URL de um armazenamento, link do Dropbox, link do Google Drive, ...). <br />
@@ -513,9 +536,8 @@
                                         <h:inputText id="url" style="width: 99%; margin: 3px" value="#{workflowComposerBean.inputURL}"/>
                                     </p:fieldset>
                                 </p:tab>-->
-
-            </p:accordionPanel>
-            <br />
+                
+            
             <div style="text-align: center;">
                 <h:panelGrid columns="23" cellpadding="3" cellspacing="7">
                     <p:fieldset legend="Argumentos de entrada">
@@ -550,12 +572,13 @@
             <p:panel>
                 Para nao utilizar dados de entrada, clique em 'Pular'. 
                 Neste caso, a entrada deste passo sera apenas a saida do passo anterior. <br />
-                <p:commandButton value="Confirmar" action="#{workflowComposerBean.setJobFields()}" 
-                                 update=":form:growl" style="margin: 5px"
-                                 onclick="PF('file_dlg').hide()"/>
-                <p:commandButton value="Pular" update=":form:growl" style="margin: 5px"
-                                 action="#{workflowComposerBean.setJobFieldsWithOutput()}"
-                                 onclick="PF('file_dlg').hide()"/>
+                <p:commandButton value="Confirmar"  update=":file_dlg1, :form:growl"
+                                action="#{workflowComposerBean.setJobFields()}" 
+                                style="margin: 5px"
+                                onclick="PF('file_dlg').hide()"/>
+                <p:commandButton value="Pular" update=":file_dlg1, :form:growl" style="margin: 5px"
+                                action="#{workflowComposerBean.setJobFieldsWithOutput()}"
+                                onclick="PF('file_dlg').hide()"/>
             </p:panel>
         </h:form>
     </p:dialog>
