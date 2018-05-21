@@ -356,6 +356,8 @@ public class WorkflowComposerBean implements Serializable {
         
         */
         
+
+        /*
         if (!((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || !((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
             //this.dependency = null;
             if (!(this.dependency).isEmpty()) {
@@ -367,7 +369,9 @@ public class WorkflowComposerBean implements Serializable {
             }
         	
         }
-
+        */
+        
+        
         if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
             final RequestContext context = RequestContext.getCurrentInstance();
 
@@ -415,6 +419,16 @@ public class WorkflowComposerBean implements Serializable {
 
         this.suspendEvent = true;
     }
+
+
+    /*
+    public void addDependency(){
+        if (!((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || !((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
+
+        }
+    }
+    */
+
 
     /**
      * Sets the step fields (like, inputfiles, arguments, ...)
