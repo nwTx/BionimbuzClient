@@ -116,8 +116,13 @@
                                 </f:facet>
                                 <p:diagram id="workflow_diagram"
                                            value="#{workflowComposerBean.workflowModel}"
-                                           style="height:500px" >
-                                    <p:ajax event="connect" listener="#{workflowComposerBean.onConnect}" />
+                                           style="height:600px" var="el" >
+                                    <f:facet name="element">
+                                    	<div style="text-align: center;">
+                                        	<p:commandLink value="#{el.name}"  style="margin-top:1em;" onclick="PF('file_dlg').show();"/>
+                                        </div> 
+                                	</f:facet>
+                                    <p:ajax event="connect" listener="#{workflowComposerBean.onConnect}" update=":file_form:files" />
                                     <p:ajax event="disconnect" listener="#{workflowComposerBean.onDisconnect}" />
                                     <p:ajax event="connectionChange" listener="#{workflowComposerBean.onConnectionChange}" />
                                 </p:diagram>
@@ -470,7 +475,7 @@
     <!-- ***************************************************************************************************************** -->
     <!-- File Dialog: Used for the user to pick inputs -->
     <p:dialog id="file_dlg1" widgetVar="file_dlg" showEffect="fade" header="Entrada"
-              hideEffect="fade" modal="true" closable="false">
+              hideEffect="fade" modal="true" closable="false" style="800px" autoUpdate="True">
         <h:form id="file_form">
             <p:panel  id="files">
                 Escolha a o arquivo de entrada deste passo e seus parâmetros.
@@ -506,7 +511,7 @@
                                 </p:dataTable>
                             </div>
                         </p:tab>
-                        <p:tab id="dep_list_dlg" title="Dependências" >
+                       <!--  <p:tab id="dep_list_dlg" title="Dependências" >
                             <p:panel>
                                 Marque aqui a dependência do elemento selecionado
                             </p:panel>
@@ -519,11 +524,13 @@
                                     <p:column headerText="Nome" width="25em" style="text-align: center">
                                         <p:outputLabel value="#{g.name}"/>
                                     </p:column>
-                                     <p:column headerText="Escolha" style="text-align: center" selectionMode="multiple" />
-
+                                    <p:column headerText="Adicionar/Remover" style="text-align: center" >  
+                                        <p:commandButton icon="ui-icon-plus" action="#{workflowComposerBean.addDependency(g)}" update=":file_form:files"/>
+                                        <p:commandButton icon="ui-icon-minus" update=":form:growl"/>
+                                    </p:column>
                                 </p:dataTable>
                             </div>
-                        </p:tab>
+                        </p:tab> --> 
                     </p:tabView>
                 </p:tab>
             </p:accordionPanel>
@@ -572,11 +579,11 @@
             <p:panel>
                 Para nao utilizar dados de entrada, clique em 'Pular'. 
                 Neste caso, a entrada deste passo sera apenas a saida do passo anterior. <br />
-                <p:commandButton value="Confirmar"  update=":file_dlg1, :form:growl"
+                <p:commandButton value="Confirmar"  update=":form:growl"
                                 action="#{workflowComposerBean.setJobFields()}" 
                                 style="margin: 5px"
                                 onclick="PF('file_dlg').hide()"/>
-                <p:commandButton value="Pular" update=":file_dlg1, :form:growl" style="margin: 5px"
+                <p:commandButton value="Pular" update=":form:growl" style="margin: 5px"
                                 action="#{workflowComposerBean.setJobFieldsWithOutput()}"
                                 onclick="PF('file_dlg').hide()"/>
             </p:panel>
@@ -625,5 +632,5 @@
             PF('pbClient').setValue(0);
             PF('startButton1').enable();
         }
-    </script>
+	</script>
 </html>

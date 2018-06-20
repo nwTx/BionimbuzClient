@@ -80,6 +80,7 @@ public class WorkflowComposerBean implements Serializable {
     private String inputURL;
     private String arguments;
     private ArrayList<String> dependency = new ArrayList<>();
+    private ArrayList<String> dependency_inputs = new ArrayList<>();
     private ArrayList<String> currentJobOutput = new ArrayList<>();
     private ArrayList<FileInfo> inputFiles = new ArrayList<>();
     private final ArrayList<String> references;
@@ -88,6 +89,13 @@ public class WorkflowComposerBean implements Serializable {
     private final List<String> supportedFormats;
     private String fileFormat;
     private SLA sla;
+    // Creates the input file as the output file from the last Job. Need
+    // fake values, because of "null of string" exception of Avro.
+    //private ArrayList<FileInfo> inputs = new ArrayList<>();
+
+
+    
+
 
     // ----------------------- SLA Declarations------------------
     private String panel1 = "Hide-Panel1";
@@ -336,56 +344,37 @@ public class WorkflowComposerBean implements Serializable {
     public void onConnect(ConnectEvent event) {
     	
         final DiagramElement clickedElement = (DiagramElement) event.getTargetElement().getData();
-
-        // Add dependency
-        /*if (((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || ((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
+        //final DiagramElement sourceElement = (DiagramElement) event.getSourceElement().getData();
+        
+        
+        
+        if (((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || ((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
             //this.dependency = null;
-        } else {
+        	this.showMessage("Não tem dependencia de inicio e fim");
+        }else {
         	this.dependency.add(((DiagramElement) event.getSourceElement().getData()).getId());
+        	this.dependency_inputs.add(((DiagramElement) event.getSourceElement().getData()).getName() + "_output_" + ((DiagramElement) event.getSourceElement().getData()).getId());
         }
+        this.showMessage("Dependencias:"+this.dependency.size());
 
         if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
-            final RequestContext context = RequestContext.getCurrentInstance();
+            //final RequestContext context = RequestContext.getCurrentInstance();
 
             // Sets clicked element id to be used to set element input file
             this.clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
             this.clickedElement = (DiagramElement) event.getTargetElement().getData();
 
+            
+   
             // Call input pick painel
-            context.execute("PF('file_dlg').show();");
-        
-        */
-        
-
-        /*
-        if (!((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || !((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
-            //this.dependency = null;
-            if (!(this.dependency).isEmpty()) {
-            	this.showMessage("Tem dependencia");
-                //this.dependency.add(((DiagramElement) event.getSourceElement().getData()).getId());
-            }else {
-            	this.showMessage("Nao Tem dependencia");
-            	this.dependency.add(((DiagramElement) event.getSourceElement().getData()).getId());
-            }
-        	
-        }
-        */
-        
-        
-        if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
-            final RequestContext context = RequestContext.getCurrentInstance();
-
-            // Sets clicked element id to be used to set element input file
-            this.clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
-            this.clickedElement = (DiagramElement) event.getTargetElement().getData();
-
-            // Call input pick painel
-            context.execute("PF('file_dlg').show();");
+            //context.execute("PF('file_dlg').show();");
         
 
         } else {
             this.suspendEvent = false;
         }
+
+        
     }
 
     /**
@@ -398,13 +387,13 @@ public class WorkflowComposerBean implements Serializable {
         final DiagramElement clickedElement = (DiagramElement) event.getTargetElement().getData();
 
         if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
-            final RequestContext context = RequestContext.getCurrentInstance();
+            //final RequestContext context = RequestContext.getCurrentInstance();
 
             // Sets clicked element id to be used to set element input file
             this.clickedElementId = ((DiagramElement) event.getTargetElement().getData()).getId();
 
             // Call input pick painel
-            context.execute("PF('file_dlg').show();");
+            //context.execute("PF('file_dlg').show();");
         } else {
             this.suspendEvent = false;
         }
@@ -419,15 +408,6 @@ public class WorkflowComposerBean implements Serializable {
 
         this.suspendEvent = true;
     }
-
-
-    /*
-    public void addDependency(){
-        if (!((DiagramElement) event.getSourceElement().getData()).getName().equals("Inicio") || !((DiagramElement) event.getSourceElement().getData()).getName().equals("Fim")) {
-
-        }
-    }
-    */
 
 
     /**
@@ -448,36 +428,45 @@ public class WorkflowComposerBean implements Serializable {
         this.fileFormat = "";
     }
 
+    
+ 
     /**
      * Sets job fields when the "jump" button is pressed
      */
-    public void setJobFieldsWithOutput() {
+    public void setJobFieldsWithOutput() { 
+    	
+    	
         // Creates the input file as the output file from the last Job. Need
         // fake values, because of "null of string" exception of Avro.
-        final FileInfo file = new FileInfo();
-
-        // Creates the input file list with the file info
         final ArrayList<FileInfo> inputs = new ArrayList<>();
+        
+        //for (String aux: dependency_inputs) {
+        //	aux = aux + this.fileFormat;
+        //}
+        
 
-        for (String current : currentJobOutput) {
-            file.setName(current);
-            file.setHash("");
-            file.setSize(0l);
-            file.setUploadTimestamp("");
-            file.setUserId(this.sessionBean.getLoggedUser().getId());
-
-            inputs.add(file);
+        for (String current: currentJobOutput) {
+        	final FileInfo file = new FileInfo();
+        	
+        	for(String dep_name: dependency_inputs) {
+        		if (current.contains(dep_name)) {
+        			file.setName(current);
+        		    file.setHash("");
+        		    file.setSize(0l);
+        		    file.setUploadTimestamp("");
+        		    file.setUserId(this.sessionBean.getLoggedUser().getId());
+        		   	inputs.add(file);
+        		}
+        	}
         }
 
-
-
-        
 
         // Sets element input list
         this.workflowDiagram.setJobFields(this.clickedElementId, inputs, this.chosenReference, this.arguments, this.inputURL, this.dependency, this.clickedElement.getName(), this.fileFormat);
 
         // Saves current job output filename in case the next job uses it as input
         this.currentJobOutput.add(this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat);
+        
         // Resets fields
         this.inputFiles = new ArrayList<>();
         this.arguments = "";
