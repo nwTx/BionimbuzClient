@@ -354,8 +354,9 @@ public class WorkflowComposerBean implements Serializable {
         }else {
         	this.dependency.add(((DiagramElement) event.getSourceElement().getData()).getId());
         	this.dependency_inputs.add(((DiagramElement) event.getSourceElement().getData()).getName() + "_output_" + ((DiagramElement) event.getSourceElement().getData()).getId());
+        	
         }
-        this.showMessage("Dependencias:"+this.dependency.size());
+
 
         if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
             //final RequestContext context = RequestContext.getCurrentInstance();
@@ -426,6 +427,7 @@ public class WorkflowComposerBean implements Serializable {
         this.arguments = "";
         this.inputURL = "";
         this.fileFormat = "";
+        this.dependency_inputs = new ArrayList<>();
     }
 
     
@@ -445,10 +447,10 @@ public class WorkflowComposerBean implements Serializable {
         //}
         
 
-        for (String current: currentJobOutput) {
+        for (String dep_name: dependency_inputs) {
         	final FileInfo file = new FileInfo();
         	
-        	for(String dep_name: dependency_inputs) {
+        	for(String current: currentJobOutput) {
         		if (current.contains(dep_name)) {
         			file.setName(current);
         		    file.setHash("");
@@ -472,6 +474,7 @@ public class WorkflowComposerBean implements Serializable {
         this.arguments = "";
         this.inputURL = "";
         this.fileFormat = "";
+        this.dependency_inputs = new ArrayList<>();
     }
 
     // private String createInstance(String provider, String type , String nameInstance) throws InterruptedException {

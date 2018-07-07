@@ -111,12 +111,18 @@
                             <p:panel>
                                 <f:facet name="header">
                                     <div style="text-align: center;">
-                                        <p:outputLabel value="Diagrama" />
+                                        <h:outputLabel value="Diagrama" />
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <h:outputLabel value="Importante: após ligar as setas de determinada etapa, clicar em seu respectivo nome" />
+                                    </div>
+                                   	<div style="text-align: center;">
+                                        <h:outputLabel value="A ordem dos inputs de determinada etapa é definido pela ordem em que as setas são ligadas" />
                                     </div>
                                 </f:facet>
                                 <p:diagram id="workflow_diagram"
                                            value="#{workflowComposerBean.workflowModel}"
-                                           style="height:600px" var="el" >
+                                           style="height:500px" var="el" >
                                     <f:facet name="element">
                                     	<div style="text-align: center;">
                                         	<p:commandLink value="#{el.name}"  style="margin-top:1em;" onclick="PF('file_dlg').show();"/>
