@@ -356,8 +356,6 @@ public class WorkflowComposerBean implements Serializable {
         	this.dependency_inputs.add(((DiagramElement) event.getSourceElement().getData()).getName() + "_output_" + ((DiagramElement) event.getSourceElement().getData()).getId());
         	
         }
-
-
         if (!this.suspendEvent && !clickedElement.getName().equals("Inicio") && !clickedElement.getName().equals("Fim")) {
             //final RequestContext context = RequestContext.getCurrentInstance();
 
@@ -467,8 +465,11 @@ public class WorkflowComposerBean implements Serializable {
         this.workflowDiagram.setJobFields(this.clickedElementId, inputs, this.chosenReference, this.arguments, this.inputURL, this.dependency, this.clickedElement.getName(), this.fileFormat);
 
         // Saves current job output filename in case the next job uses it as input
-        this.currentJobOutput.add(this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat);
-        
+       
+        if(this.fileFormat != null){
+        	this.currentJobOutput.add(this.clickedElement.getName() + "_output_" + this.clickedElementId + this.fileFormat);
+        }
+        	
         // Resets fields
         this.inputFiles = new ArrayList<>();
         this.arguments = "";
